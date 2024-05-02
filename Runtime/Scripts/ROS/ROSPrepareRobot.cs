@@ -117,7 +117,7 @@ namespace DefaultNamespace
             }
 
             var motion_model_tf = transform.Find("sam_motion_model");
-            if(gameObject.TryGetComponent<SamActuatorController>(out var cont))
+            if(motion_model_tf.gameObject.TryGetComponent<SamActuatorController>(out var cont))
             {
                 cont.Setup(robot);
             }

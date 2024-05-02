@@ -117,7 +117,7 @@ Rigidbody:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 769613593491211083}
   serializedVersion: 4
-  m_Mass: 0.05
+  m_Mass: 1
   m_Drag: 0
   m_AngularDrag: 0.05
   m_CenterOfMass: {x: 0, y: 0, z: 0}
@@ -292,7 +292,7 @@ Rigidbody:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1011411963412393352}
   serializedVersion: 4
-  m_Mass: 0.05
+  m_Mass: 1
   m_Drag: 0
   m_AngularDrag: 0.05
   m_CenterOfMass: {x: 0, y: 0, z: 0}
@@ -397,13 +397,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   depthBeforeSubmerged: 0.15
-  displacementAmount: 10
+  displacementAmount: 1.5
   motionModel: {fileID: 4405586027991340006}
   addGravity: 0
-  volumeMesh: {fileID: 10207, guid: 0000000000000000e000000000000000, type: 0}
-  automaticCenterOfGravity: 0
-  volume: 0
-  density: 997
 --- !u!33 &298425090669020811
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -571,7 +567,7 @@ Rigidbody:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2097766587614453283}
   serializedVersion: 4
-  m_Mass: 0.05
+  m_Mass: 1
   m_Drag: 0
   m_AngularDrag: 0.05
   m_CenterOfMass: {x: 0, y: 0, z: 0}
@@ -760,7 +756,7 @@ Rigidbody:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4405586027991340006}
   serializedVersion: 4
-  m_Mass: 0.5
+  m_Mass: 1
   m_Drag: 0
   m_AngularDrag: 0.05
   m_CenterOfMass: {x: 0, y: 0, z: 0}
@@ -972,7 +968,7 @@ Rigidbody:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6244550232803860154}
   serializedVersion: 4
-  m_Mass: 0.05
+  m_Mass: 1
   m_Drag: 0
   m_AngularDrag: 0.05
   m_CenterOfMass: {x: 0, y: 0, z: 0}
@@ -1147,7 +1143,7 @@ Rigidbody:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6400639389763548344}
   serializedVersion: 4
-  m_Mass: 0.05
+  m_Mass: 1
   m_Drag: 0
   m_AngularDrag: 0.05
   m_CenterOfMass: {x: 0, y: 0, z: 0}
@@ -1252,13 +1248,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   depthBeforeSubmerged: 0.15
-  displacementAmount: 10
+  displacementAmount: 1.5
   motionModel: {fileID: 4405586027991340006}
   addGravity: 0
-  volumeMesh: {fileID: 10207, guid: 0000000000000000e000000000000000, type: 0}
-  automaticCenterOfGravity: 0
-  volume: 0
-  density: 997
 --- !u!33 &9176340800619411374
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -1464,7 +1456,7 @@ Rigidbody:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7825571145818982171}
   serializedVersion: 4
-  m_Mass: 0.05
+  m_Mass: 1
   m_Drag: 0
   m_AngularDrag: 0.05
   m_CenterOfMass: {x: 0, y: 0, z: 0}
@@ -1569,13 +1561,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   depthBeforeSubmerged: 0.15
-  displacementAmount: 10
+  displacementAmount: 1.5
   motionModel: {fileID: 4405586027991340006}
   addGravity: 0
-  volumeMesh: {fileID: 10207, guid: 0000000000000000e000000000000000, type: 0}
-  automaticCenterOfGravity: 0
-  volume: 0
-  density: 997
 --- !u!33 &8228022903653507335
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -1742,7 +1730,7 @@ Rigidbody:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 9096152113463414747}
   serializedVersion: 4
-  m_Mass: 0.05
+  m_Mass: 1
   m_Drag: 0
   m_AngularDrag: 0.05
   m_CenterOfMass: {x: 0, y: 0, z: 0}

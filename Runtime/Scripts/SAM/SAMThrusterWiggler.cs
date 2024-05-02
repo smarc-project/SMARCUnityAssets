@@ -1,4 +1,3 @@
-using Force;
 using UnityEngine;
 
 namespace DefaultNamespace
@@ -16,8 +15,8 @@ namespace DefaultNamespace
         {
             // We will read the thruster angles from the force model
             // so that we dont care what is controlling that model
-            var sam_motion_model = robot.transform.gameObject;
-            _samForceModel = GetComponentInChildren<ISAMControl>();
+            var sam_motion_model = robot.transform.parent.gameObject;
+            _samForceModel = sam_motion_model.GetComponent<ISAMControl>();
 
             // Need access to the thruster_yaw_link object
             // Normally the transform.Find method would work for this, but
@@ -52,8 +51,8 @@ namespace DefaultNamespace
             if(front_prop_link == null || back_prop_link == null) return;
             else{
                 // These guys can just turn and stop whereever.
-                front_prop_link.Rotate(Vector3.forward * (float)(_samForceModel.rpm1) * 4 * Time.deltaTime);
-                back_prop_link.Rotate(Vector3.forward * -(float)(_samForceModel.rpm2) * 4 * Time.deltaTime);
+                front_prop_link.Rotate(Vector3.forward * (float)(_samForceModel.rpm1*60) * Time.deltaTime);
+                back_prop_link.Rotate(Vector3.forward * -(float)(_samForceModel.rpm2*60) * Time.deltaTime);
             }
         }
     }

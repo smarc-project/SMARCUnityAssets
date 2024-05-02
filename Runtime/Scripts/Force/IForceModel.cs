@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace Force
+namespace DefaultNamespace
 {
     public interface IForceModel
     {
