@@ -30,19 +30,22 @@ namespace VehicleComponents.Sensors
         public override bool UpdateSensor(double deltaTime)
         {
             var ab = articulationBody;
-            localVelocity = ab.transform.InverseTransformVector(ab.velocity);
+            // localVelocity = ab.transform.InverseTransformVector(ab.velocity);
+            localVelocity = ab.velocity;
             if (deltaTime > 0)
             {
                 Vector3 deltaLinearAcceleration = localVelocity - lastVelocity;
                 linearAcceleration = deltaLinearAcceleration / (float)deltaTime;
+                // Debug.Log("deltaTime in IMU is " + deltaTime);
+                Debug.Log("calculated acc in imu is " + linearAcceleration);
             }
             
             angularVelocity = ab.transform.InverseTransformVector(-1f * ab.angularVelocity);
             eulerAngles = ab.transform.rotation.eulerAngles;
             orientation = Quaternion.Euler(eulerAngles);
-
+            
             lastVelocity = localVelocity;
-
+            
             if (withGravity)
             {
                 // Find the global gravity in the local frame and add to the computed linear acceleration

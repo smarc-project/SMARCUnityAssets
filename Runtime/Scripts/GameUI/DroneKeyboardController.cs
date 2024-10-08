@@ -31,7 +31,7 @@ namespace GameUI
             backleftProp = backleftPropGo.GetComponent<Propeller>();
         }
 
-        void Update()
+        void FixedUpdate()
         {
             if(Input.GetMouseButtonDown(1)) mouseDown = true;
             if(Input.GetMouseButtonUp(1)) mouseDown = false;

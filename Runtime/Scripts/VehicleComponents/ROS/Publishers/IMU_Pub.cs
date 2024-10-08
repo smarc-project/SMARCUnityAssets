@@ -25,7 +25,11 @@ namespace VehicleComponents.ROS.Publishers
             if(useNED) ROSMsg.orientation = sensor.orientation.To<NED>();
             else ROSMsg.orientation = sensor.orientation.To<ENU>();
             ROSMsg.angular_velocity = sensor.angularVelocity.To<FLU>();
+            // Debug.Log("published acc :" + sensor.linearAcceleration );
             ROSMsg.linear_acceleration = sensor.linearAcceleration.To<FLU>();
+            // Debug.Log("acceleration is : " + 100f*sensor.linearAcceleration);
+            Debug.Log("publishing now");
+            // ROSMsg.linear_acceleration = sensor.linearAcceleration;
         }
     }
 }
