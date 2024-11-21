@@ -10,7 +10,7 @@ using Rope;
 using MathNet.Numerics.LinearAlgebra;
 using MathNet.Numerics.LinearAlgebra.Double;
 
-public class DroneLoadController: MonoBehaviour 
+public class DroneLoadController: MonoBehaviour
 {
     [Header("Basics")]
     [Tooltip("Baselink of the drone")]
@@ -23,8 +23,8 @@ public class DroneLoadController: MonoBehaviour
     [Header("Tracking")]
     [Tooltip("An object to follow")]
     public Transform TrackingTargetTF;
-    
-    
+
+
     [Header("Load")]
     [Tooltip("The rope object that this drone is expected to get connected, maybe. Will be used to check for attachment state and such.")]
     public Transform Rope; // TODO remove this requirement.
@@ -33,10 +33,11 @@ public class DroneLoadController: MonoBehaviour
     [Tooltip("The position of where the load is attached to the rope. rope_link on SAM")]
     public Transform LoadLinkTF; // The position of the AUV is taken at the base of the rope
 
+    public bool LoadControl;
+
     [Header("Props")]
-    public Transform PropFR;
-    public Transform PropFL, PropBR, PropBL;
-    
+    public Transform PropFR, PropFL, PropBR, PropBL;
+
 
 
 	Propeller[] propellers;
@@ -55,7 +56,7 @@ public class DroneLoadController: MonoBehaviour
 
     // Quadrotor parameters
     double mQ;
-    double d;
+    double rotor_moment_arm;
     Matrix<double> J;
     float c_tau_f;
 
@@ -79,7 +80,7 @@ public class DroneLoadController: MonoBehaviour
 
 
 	// Use this for initialization
-	void Start() 
+	void Start()
     {
 		propellers = new Propeller[4];
 		propellers[0] = PropFL.GetComponent<Propeller>();
@@ -89,8 +90,17 @@ public class DroneLoadController: MonoBehaviour
 
         base_link_ab = BaseLink.GetComponent<ArticulationBody>();
 
-        R_sb_d_prev = DenseMatrix.OfArray(new double[,] { { 1, 0, 0 }, { 0, 1, 0 }, { 0, 0, 1 } });
-        R_sb_c_prev = DenseMatrix.OfArray(new double[,] { { 1, 0, 0 }, { 0, 1, 0 }, { 0, 0, 1 } });
+        // Prev code TODO: Delete
+        // R_sb_d_prev = DenseMatrix.OfArray(new double[,] { { 1, 0, 0 }, { 0, 1, 0 }, { 0, 0, 1 } });
+        // R_sb_c_prev = DenseMatrix.OfArray(new double[,] { { 1, 0, 0 }, { 0, 1, 0 }, { 0, 0, 1 } });
+        R_sb_d_prev = DenseMatrix.CreateDiagonal(3, 3, 1.0);
+        R_sb_c_prev = DenseMatrix.CreateDiagonal(3, 3, 1.0);
+
+        // Example of how to instatiate a diagonal matrix
+        // TODO: Delete later
+        // double[] diagonal = {1,0,1};
+        // Matrix<double> dummy = DenseMatrix.CreateDiagonal(3,3, index => diagonal[index]);
+        
         W_b_d_prev = DenseVector.OfArray(new double[] { 0, 0, 0 });
         W_b_c_prev = DenseVector.OfArray(new double[] { 0, 0, 0 });
         q_c_prev = DenseVector.OfArray(new double[] { 0, 0, 0 });
@@ -99,11 +109,13 @@ public class DroneLoadController: MonoBehaviour
 		propellers_rpms = new float[] { 0, 0, 0, 0 };
 
         if(LoadLinkTF != null) load_link_ab = LoadLinkTF.GetComponent<ArticulationBody>();
-        
+
         // Quadrotor parameters
         mQ = base_link_ab.mass;
-        d = 0.315;
+        rotor_moment_arm = 0.315;
+        // Right hand rule from ROS, where in Unity the coordinate system is left hand rule, so need to flip 
         J = DenseMatrix.OfArray(new double[,] { { base_link_ab.inertiaTensor.x, 0, 0 }, { 0, base_link_ab.inertiaTensor.z, 0 }, { 0, 0, base_link_ab.inertiaTensor.y } });
+        Debug.Log(J);
         c_tau_f = 8.004e-4f;
 
         mL = 0;
@@ -111,7 +123,7 @@ public class DroneLoadController: MonoBehaviour
         if(LoadLinkTF != null)
         {
             ArticulationBody[] sam_ab_list = LoadLinkTF.root.gameObject.GetComponentsInChildren<ArticulationBody>();
-            foreach (ArticulationBody sam_ab in sam_ab_list) 
+            foreach (ArticulationBody sam_ab in sam_ab_list)
             {
                 mL += sam_ab.mass;
             }
@@ -127,9 +139,9 @@ public class DroneLoadController: MonoBehaviour
         // TODO: get this working by smoothing out network effects
         // InvokeRepeating("ComputeRPMs", Time.fixedDeltaTime, dt);
 	}
-	
+
 	// Update is called once per frame
-	void FixedUpdate() 
+	void FixedUpdate()
     {
 		ComputeRPMs();
         ApplyRPMs();
@@ -147,7 +159,7 @@ public class DroneLoadController: MonoBehaviour
         kW = 0.5;
         kq = 2;
         kw = 0.5;
-        
+
         // Quadrotor states
         Vector<double> xQ_s = BaseLink.transform.position.To<ENU>().ToDense();
         Vector<double> vQ_s = base_link_ab.velocity.To<ENU>().ToDense();
@@ -172,7 +184,7 @@ public class DroneLoadController: MonoBehaviour
         vL_s_d = DenseVector.OfArray(new double[] { 0, 0, 0 });
         aL_s_d = DenseVector.OfArray(new double[] { 0, 0, 0 });
 
-        
+
         Vector<double> b1d = DenseVector.OfArray(new double[] { Math.Sqrt(2)/2, Math.Sqrt(2)/2, 0 });
 
         // Load position controller
@@ -189,14 +201,14 @@ public class DroneLoadController: MonoBehaviour
         // Load attitude controller
         Vector<double> eq = _Hat(q)*_Hat(q)*q_c;
         Vector<double> eq_dot = q_dot - _Cross(_Cross(q_c, q_c_dot), q);
-        
+
         Vector<double> F_pd = -kq*eq - kw*eq_dot;
         Vector<double> F_ff = mQ*l*(q*_Cross(q_c, q_c_dot))*_Cross(q, q_dot) + mQ*l*_Cross(_Cross(q_c, q_c_ddot), q);
         Vector<double> F_for_f = F_n - F_pd - F_ff;
-        
+
         F_n = -(q_c*q)*q;
         Vector<double> F_for_M = F_n - F_pd - F_ff;
-        
+
         // Quadrotor attitude controller
         Vector<double> b3c = F_for_M/F_for_M.Norm(2);
         Vector<double> b1c = -_Cross(b3c, _Cross(b3c, b1d))/_Cross(b3c, b1d).Norm(2);
@@ -213,7 +225,7 @@ public class DroneLoadController: MonoBehaviour
 
         f = F_for_f*(R_sb*e3);
         M = -kR*eR - kW*eW + _Cross(W_b, J*W_b) - J*(_Hat(W_b)*R_sb.Transpose()*R_sb_c*W_b_c - R_sb.Transpose()*R_sb_c*W_b_c_dot);
-        
+
         // Transform M to NED frame (from ENU) for the propeller forces mapping
         Matrix<double> R_ws = DenseMatrix.OfArray(new double[,] { { 0, 1, 0 },
                                                                     { 1, 0, 0 },
@@ -226,7 +238,7 @@ public class DroneLoadController: MonoBehaviour
         q_c_prev = q_c;
         q_c_dot_prev = q_c_dot;
 
-        if (times1 < 2) 
+        if (times1 < 2)
         {
             times1++;
             f = 0;
@@ -246,7 +258,7 @@ public class DroneLoadController: MonoBehaviour
         kv = 5.6*mQ;
         kR = 8.81;
         kW = 2.54;
-        
+
         // Quadrotor states
         Vector<double> x_s = BaseLink.transform.position.To<NED>().ToDense();
         Vector<double> v_s = base_link_ab.velocity.To<NED>().ToDense();
@@ -296,7 +308,7 @@ public class DroneLoadController: MonoBehaviour
         Matrix<double> R_sb_d = DenseMatrix.OfArray(new double[,] { { b1d_temp[0], b2d[0], b3d[0] },
                                                                     { b1d_temp[1], b2d[1], b3d[1] },
                                                                     { b1d_temp[2], b2d[2], b3d[2] } });
-        
+
         Vector<double> W_b_d = _Vee(_Logm3(R_sb_d_prev.Transpose()*R_sb_d)/dt);
         Vector<double> W_b_d_dot = (W_b_d - W_b_d_prev)/dt;
 
@@ -309,7 +321,7 @@ public class DroneLoadController: MonoBehaviour
         R_sb_d_prev = R_sb_d;
         W_b_d_prev = W_b_d;
 
-        if (times2 < 2 || M.Norm(2) > 100) 
+        if (times2 < 2 || M.Norm(2) > 100)
         {
             times2++;
             f = 0;
@@ -319,7 +331,7 @@ public class DroneLoadController: MonoBehaviour
         return (f, M);
     }
 
-	void ComputeRPMs() 
+	void ComputeRPMs()
     {
         t = Time.time;
 
@@ -332,24 +344,24 @@ public class DroneLoadController: MonoBehaviour
         else (f, M) = TrackingControl();
 
         // Convert to propeller forces
-        Matrix<double> T = DenseMatrix.OfArray(new double[,] { { 1, 1, 1, 1 }, { 0, -d, 0, d }, { d, 0, -d, 0 }, { -c_tau_f, c_tau_f, -c_tau_f, c_tau_f } });
+        Matrix<double> T = DenseMatrix.OfArray(new double[,] { { 1, 1, 1, 1 }, { 0, -rotor_moment_arm, 0, rotor_moment_arm }, { rotor_moment_arm, 0, -rotor_moment_arm, 0 }, { -c_tau_f, c_tau_f, -c_tau_f, c_tau_f } });
         Vector<double> F = T.Inverse() * DenseVector.OfArray(new double[] { f, M[0], M[1], M[2] });
 
         // Debug.Log($"f: {f}, M: {M}");
 
         // Set propeller rpms
-        for (int i = 0; i < propellers.Length; i++) 
+        for (int i = 0; i < propellers.Length; i++)
             propellers_rpms[i] = (float)F[i]/propellers[i].RPMToForceMultiplier;
 	}
 
-	void ApplyRPMs() 
+	void ApplyRPMs()
     {
         // TODO: try clamping rpms to zero
-		for (int i = 0; i < propellers.Length; i++) 
+		for (int i = 0; i < propellers.Length; i++)
             propellers[i].SetRpm(propellers_rpms[i]);
 	}
 
-    static Vector<double> _Cross(Vector<double> a, Vector<double> b) 
+    static Vector<double> _Cross(Vector<double> a, Vector<double> b)
     {
         // Calculate each component of the cross product
         double c1 = a[1] * b[2] - a[2] * b[1];
@@ -360,19 +372,19 @@ public class DroneLoadController: MonoBehaviour
         return DenseVector.OfArray(new double[] { c1, c2, c3 });
     }
 
-    static Matrix<double> _Hat(Vector<double> v) 
+    static Matrix<double> _Hat(Vector<double> v)
     {
         return DenseMatrix.OfArray(new double[,] { { 0, -v[2], v[1] },
                                                    { v[2], 0, -v[0] },
                                                    { -v[1], v[0], 0 } });
     }
-    
-    static Vector<double> _Vee(Matrix<double> S) 
+
+    static Vector<double> _Vee(Matrix<double> S)
     {
         return DenseVector.OfArray(new double[] { S[2, 1], S[0, 2], S[1, 0] });
     }
 
-    static Matrix<double> _Logm3(Matrix<double> R) 
+    static Matrix<double> _Logm3(Matrix<double> R)
     {
 		double acosinput = (R[0, 0] + R[1, 1] + R[2, 2] - 1) / 2.0;
 		Matrix<double> m_ret = DenseMatrix.OfArray(new double[,] { { 0, 0, 0 }, { 0, 0, 0 }, { 0, 0, 0 } });
@@ -396,7 +408,7 @@ public class DroneLoadController: MonoBehaviour
 		}
 	}
 
-    static Vector3 ToUnity(Vector<double> v) 
+    static Vector3 ToUnity(Vector<double> v)
     {
         return new Vector3((float)v[0], (float)v[2], (float)v[1]);
     }
