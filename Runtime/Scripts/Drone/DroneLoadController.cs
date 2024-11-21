@@ -1,9 +1,4 @@
-﻿/// <summary>
-/// Tracking controller is implemented per "Geometric tracking control of a quadrotor UAV on SE(3)" 
-/// Source: https://ieeexplore.ieee.org/document/5717652
-/// 
-/// </summary>
-using System;
+﻿using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -15,7 +10,12 @@ using Rope;
 using MathNet.Numerics.LinearAlgebra;
 using MathNet.Numerics.LinearAlgebra.Double;
 
-public class DroneLoadController: MonoBehaviour
+/// <summary>
+/// Tracking controller is implemented per "Geometric tracking control of a quadrotor UAV on SE(3)" 
+/// Source: https://ieeexplore.ieee.org/document/5717652
+/// 
+/// </summary>
+public class DroneLoadController: MonoBehaviour 
 {
     [Header("Basics")]
     [Tooltip("Baselink of the drone")]
@@ -29,7 +29,6 @@ public class DroneLoadController: MonoBehaviour
     [Tooltip("An object to follow")]
     public Transform TrackingTargetTF;
 
-
     [Header("Load")]
     [Tooltip("The rope object that this drone is expected to get connected, maybe. Will be used to check for attachment state and such.")]
     public Transform Rope; // TODO remove this requirement.
@@ -40,8 +39,10 @@ public class DroneLoadController: MonoBehaviour
     [Tooltip("Defines whether controller is in a load control state (when true), or in position tracking (when false)")]
     public bool LoadControl;
 
+
     [Header("Props")]
-    public Transform PropFR, PropFL, PropBR, PropBL;
+    public Transform PropFR;
+    public Transform PropFL, PropBR, PropBL;
 
 
 
@@ -81,7 +82,7 @@ public class DroneLoadController: MonoBehaviour
 
     // Simulation parameters
     double g;
-    Vector<double> E3 = DenseVector.OfArray(new double[] { 0, 0, 1 });
+    static readonly Vector<double> E3 = DenseVector.OfArray(new double[] { 0, 0, 1 });
     float dt;
     float t;
 
@@ -205,7 +206,7 @@ public class DroneLoadController: MonoBehaviour
         Vector<double> q_c_dot = DenseVector.OfArray(new double[] { 0, 0, 0 });//(q_c - q_c_prev)/dt;
         Vector<double> q_c_ddot = DenseVector.OfArray(new double[] { 0, 0, 0 });//(q_c_dot - q_c_dot_prev)/dt;
         Vector<double> F_n = (A*q)*q;
-        Debug.DrawRay(ToUnity(xQ_s), ToUnity(q_c), Color.magenta);
+        Debug.DrawRay(ToUnityVector(xQ_s), ToUnityVector(q_c), Color.magenta);
 
         // Load attitude controller
         Vector<double> eq = _HatMap(q)*_HatMap(q)*q_c;
@@ -443,7 +444,7 @@ public class DroneLoadController: MonoBehaviour
 		}
 	}
 
-    static Vector3 ToUnity(Vector<double> v)
+    private static Vector3 ToUnityVector(Vector<double> v)
     {
         return new Vector3((float)v[0], (float)v[2], (float)v[1]);
     }
