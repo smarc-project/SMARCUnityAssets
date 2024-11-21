@@ -1,4 +1,9 @@
-﻿using System;
+﻿/// <summary>
+/// Tracking controller is implemented per "Geometric tracking control of a quadrotor UAV on SE(3)" 
+/// Source: https://ieeexplore.ieee.org/document/5717652
+/// 
+/// </summary>
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -32,7 +37,7 @@ public class DroneLoadController: MonoBehaviour
     public bool AttackTheBuoy = false;
     [Tooltip("The position of where the load is attached to the rope. rope_link on SAM")]
     public Transform LoadLinkTF; // The position of the AUV is taken at the base of the rope
-
+    [Tooltip("Defines whether controller is in a load control state (when true), or in position tracking (when false)")]
     public bool LoadControl;
 
     [Header("Props")]
@@ -55,18 +60,28 @@ public class DroneLoadController: MonoBehaviour
 
 
     // Quadrotor parameters
-    double mQ;
-    double rotor_moment_arm;
-    Matrix<double> J;
-    float c_tau_f;
+    double massQuadrotor;
+    const double ROTOR_MOMENT_ARM = 0.315;
+    Matrix<double> inertiaJ;
+    const float TORQUE_COEFFICIENT = 8.004e-4f;
+
+    // Map from propeller forces to Global Forces
+    // Map when multiplied by [f1, f2, f3, f4].Transpose() createas the global forces [f, M_1, M_2, M_3].Traspose()
+    static readonly Matrix<double> PROPELLOR_FORCE_TO_GLOBAL_MAP = DenseMatrix.OfArray(new double[,] 
+    { 
+        { 1, 1, 1, 1 },
+        { 0, -ROTOR_MOMENT_ARM, 0, ROTOR_MOMENT_ARM },
+        { ROTOR_MOMENT_ARM, 0, -ROTOR_MOMENT_ARM, 0 },
+        { -TORQUE_COEFFICIENT, TORQUE_COEFFICIENT, -TORQUE_COEFFICIENT, TORQUE_COEFFICIENT }
+    });
 
     // Load parameters
-    double mL;
-    double l;
+    double massLoad;
+    double loadDistance;
 
     // Simulation parameters
     double g;
-    Vector<double> e3;
+    Vector<double> E3 = DenseVector.OfArray(new double[] { 0, 0, 1 });
     float dt;
     float t;
 
@@ -90,9 +105,7 @@ public class DroneLoadController: MonoBehaviour
 
         base_link_ab = BaseLink.GetComponent<ArticulationBody>();
 
-        // Prev code TODO: Delete
-        // R_sb_d_prev = DenseMatrix.OfArray(new double[,] { { 1, 0, 0 }, { 0, 1, 0 }, { 0, 0, 1 } });
-        // R_sb_c_prev = DenseMatrix.OfArray(new double[,] { { 1, 0, 0 }, { 0, 1, 0 }, { 0, 0, 1 } });
+        // Creating identity matrices (3 x 3) for previous frame transforms
         R_sb_d_prev = DenseMatrix.CreateDiagonal(3, 3, 1.0);
         R_sb_c_prev = DenseMatrix.CreateDiagonal(3, 3, 1.0);
 
@@ -111,21 +124,18 @@ public class DroneLoadController: MonoBehaviour
         if(LoadLinkTF != null) load_link_ab = LoadLinkTF.GetComponent<ArticulationBody>();
 
         // Quadrotor parameters
-        mQ = base_link_ab.mass;
-        rotor_moment_arm = 0.315;
+        massQuadrotor = base_link_ab.mass;
         // Right hand rule from ROS, where in Unity the coordinate system is left hand rule, so need to flip 
-        J = DenseMatrix.OfArray(new double[,] { { base_link_ab.inertiaTensor.x, 0, 0 }, { 0, base_link_ab.inertiaTensor.z, 0 }, { 0, 0, base_link_ab.inertiaTensor.y } });
-        Debug.Log(J);
-        c_tau_f = 8.004e-4f;
+        inertiaJ = DenseMatrix.OfArray(new double[,] { { base_link_ab.inertiaTensor.x, 0, 0 }, { 0, base_link_ab.inertiaTensor.z, 0 }, { 0, 0, base_link_ab.inertiaTensor.y } });
 
-        mL = 0;
+        massLoad = 0;
         // Use this load mass when load_link is on sam
         if(LoadLinkTF != null)
         {
             ArticulationBody[] sam_ab_list = LoadLinkTF.root.gameObject.GetComponentsInChildren<ArticulationBody>();
             foreach (ArticulationBody sam_ab in sam_ab_list)
             {
-                mL += sam_ab.mass;
+                massLoad += sam_ab.mass;
             }
         }
         // mL = 15;
@@ -133,7 +143,6 @@ public class DroneLoadController: MonoBehaviour
 
         // Simulation parameters
         g = Physics.gravity.magnitude;
-        e3 = DenseVector.OfArray(new double[] { 0, 0, 1 });
         dt = 1f/ControlFrequency;
 
         // TODO: get this working by smoothing out network effects
@@ -153,8 +162,8 @@ public class DroneLoadController: MonoBehaviour
         Vector<double> M;
 
         // Gains
-        kx = 16*mQ;
-        kv = 5.6*mQ;
+        kx = 16*massQuadrotor;
+        kv = 5.6*massQuadrotor;
         kR = 10;
         kW = 0.5;
         kq = 2;
@@ -171,9 +180,9 @@ public class DroneLoadController: MonoBehaviour
         // Load states
         Vector<double> xL_s = LoadLinkTF.position.To<ENU>().ToDense();
         Vector<double> vL_s = load_link_ab.velocity.To<ENU>().ToDense();
-        l = (xL_s - xQ_s).Norm(2);
-        Vector<double> q = (xL_s - xQ_s)/l;
-        Vector<double> q_dot = (vL_s - vQ_s)/l;
+        loadDistance = (xL_s - xQ_s).Norm(2);
+        Vector<double> q = (xL_s - xQ_s)/loadDistance;
+        Vector<double> q_dot = (vL_s - vQ_s)/loadDistance;
 
         // Desired states
         Vector<double> xL_s_d;//Math.Pow(0.5*t-5, 2) });
@@ -191,7 +200,7 @@ public class DroneLoadController: MonoBehaviour
         Vector<double> ex = (xL_s - xL_s_d)*Math.Min(DistanceErrorCap/(xL_s - xL_s_d).Norm(2), 1);
         Vector<double> ev = vL_s - vL_s_d;
 
-        Vector<double> A = -kx*ex - kv*ev + (mQ+mL)*(aL_s_d + g*e3) + mQ*l*(q_dot*q_dot)*q;
+        Vector<double> A = -kx*ex - kv*ev + (massQuadrotor+massLoad)*(aL_s_d + g*E3) + massQuadrotor*loadDistance*(q_dot*q_dot)*q;
         Vector<double> q_c = -A/A.Norm(2);
         Vector<double> q_c_dot = DenseVector.OfArray(new double[] { 0, 0, 0 });//(q_c - q_c_prev)/dt;
         Vector<double> q_c_ddot = DenseVector.OfArray(new double[] { 0, 0, 0 });//(q_c_dot - q_c_dot_prev)/dt;
@@ -199,11 +208,11 @@ public class DroneLoadController: MonoBehaviour
         Debug.DrawRay(ToUnity(xQ_s), ToUnity(q_c), Color.magenta);
 
         // Load attitude controller
-        Vector<double> eq = _Hat(q)*_Hat(q)*q_c;
+        Vector<double> eq = _HatMap(q)*_HatMap(q)*q_c;
         Vector<double> eq_dot = q_dot - _Cross(_Cross(q_c, q_c_dot), q);
 
         Vector<double> F_pd = -kq*eq - kw*eq_dot;
-        Vector<double> F_ff = mQ*l*(q*_Cross(q_c, q_c_dot))*_Cross(q, q_dot) + mQ*l*_Cross(_Cross(q_c, q_c_ddot), q);
+        Vector<double> F_ff = massQuadrotor*loadDistance*(q*_Cross(q_c, q_c_dot))*_Cross(q, q_dot) + massQuadrotor*loadDistance*_Cross(_Cross(q_c, q_c_ddot), q);
         Vector<double> F_for_f = F_n - F_pd - F_ff;
 
         F_n = -(q_c*q)*q;
@@ -217,14 +226,14 @@ public class DroneLoadController: MonoBehaviour
                                                                     { b1c[1], b2c[1], b3c[1] },
                                                                     { b1c[2], b2c[2], b3c[2] } });
 
-        Vector<double> W_b_c = _Vee(_Logm3(R_sb_c_prev.Transpose()*R_sb_c)/dt);
+        Vector<double> W_b_c = _VeeMap(_Logm3(R_sb_c_prev.Transpose()*R_sb_c)/dt);
         Vector<double> W_b_c_dot = (W_b_c - W_b_c_prev)/dt;
 
-        Vector<double> eR = 0.5*_Vee(R_sb_c.Transpose()*R_sb - R_sb.Transpose()*R_sb_c);
+        Vector<double> eR = 0.5*_VeeMap(R_sb_c.Transpose()*R_sb - R_sb.Transpose()*R_sb_c);
         Vector<double> eW = W_b - R_sb.Transpose()*R_sb_c*W_b_c;
 
-        f = F_for_f*(R_sb*e3);
-        M = -kR*eR - kW*eW + _Cross(W_b, J*W_b) - J*(_Hat(W_b)*R_sb.Transpose()*R_sb_c*W_b_c - R_sb.Transpose()*R_sb_c*W_b_c_dot);
+        f = F_for_f*(R_sb*E3);
+        M = -kR*eR - kW*eW + _Cross(W_b, inertiaJ*W_b) - inertiaJ*(_HatMap(W_b)*R_sb.Transpose()*R_sb_c*W_b_c - R_sb.Transpose()*R_sb_c*W_b_c_dot);
 
         // Transform M to NED frame (from ENU) for the propeller forces mapping
         Matrix<double> R_ws = DenseMatrix.OfArray(new double[,] { { 0, 1, 0 },
@@ -254,8 +263,8 @@ public class DroneLoadController: MonoBehaviour
         Vector<double> M;
 
         // Gains
-        kx = 16*mQ;
-        kv = 5.6*mQ;
+        kx = 16*massQuadrotor;
+        kv = 5.6*massQuadrotor;
         kR = 8.81;
         kW = 2.54;
 
@@ -301,7 +310,7 @@ public class DroneLoadController: MonoBehaviour
         Vector<double> ex = (x_s - x_s_d)*Math.Min(DistanceErrorCap/(x_s - x_s_d).Norm(2), 1);
         Vector<double> ev = v_s - v_s_d;
 
-        Vector<double> pid = -kx*ex - kv*ev - mQ*g*e3 + mQ*a_s_d;
+        Vector<double> pid = -kx*ex - kv*ev - massQuadrotor*g*E3 + massQuadrotor*a_s_d;
         Vector<double> b3d = -pid/pid.Norm(2);
         Vector<double> b2d = _Cross(b3d, b1d)/_Cross(b3d, b1d).Norm(2);
         Vector<double> b1d_temp = _Cross(b2d, b3d);
@@ -309,14 +318,14 @@ public class DroneLoadController: MonoBehaviour
                                                                     { b1d_temp[1], b2d[1], b3d[1] },
                                                                     { b1d_temp[2], b2d[2], b3d[2] } });
 
-        Vector<double> W_b_d = _Vee(_Logm3(R_sb_d_prev.Transpose()*R_sb_d)/dt);
+        Vector<double> W_b_d = _VeeMap(_Logm3(R_sb_d_prev.Transpose()*R_sb_d)/dt);
         Vector<double> W_b_d_dot = (W_b_d - W_b_d_prev)/dt;
 
-        Vector<double> eR = 0.5*_Vee(R_sb_d.Transpose()*R_sb - R_sb.Transpose()*R_sb_d);
+        Vector<double> eR = 0.5*_VeeMap(R_sb_d.Transpose()*R_sb - R_sb.Transpose()*R_sb_d);
         Vector<double> eW = W_b - R_sb.Transpose()*R_sb_d*W_b_d;
 
-        f = -pid*(R_sb*e3);
-        M = -kR*eR - kW*eW + _Cross(W_b, J*W_b) - J*(_Hat(W_b)*R_sb.Transpose()*R_sb_d*W_b_d - R_sb.Transpose()*R_sb_d*W_b_d_dot);
+        f = -pid*(R_sb*E3);
+        M = -kR*eR - kW*eW + _Cross(W_b, inertiaJ*W_b) - inertiaJ*(_HatMap(W_b)*R_sb.Transpose()*R_sb_d*W_b_d - R_sb.Transpose()*R_sb_d*W_b_d_dot);
 
         R_sb_d_prev = R_sb_d;
         W_b_d_prev = W_b_d;
@@ -343,9 +352,8 @@ public class DroneLoadController: MonoBehaviour
         if (Rope != null && Rope.childCount == 2) (f, M) = SuspendedLoadControl();
         else (f, M) = TrackingControl();
 
-        // Convert to propeller forces
-        Matrix<double> T = DenseMatrix.OfArray(new double[,] { { 1, 1, 1, 1 }, { 0, -rotor_moment_arm, 0, rotor_moment_arm }, { rotor_moment_arm, 0, -rotor_moment_arm, 0 }, { -c_tau_f, c_tau_f, -c_tau_f, c_tau_f } });
-        Vector<double> F = T.Inverse() * DenseVector.OfArray(new double[] { f, M[0], M[1], M[2] });
+        Vector<double> globalForces = _StackForceMomentVector(f, M);
+        Vector<double> F = PROPELLOR_FORCE_TO_GLOBAL_MAP.Inverse() * globalForces;
 
         // Debug.Log($"f: {f}, M: {M}");
 
@@ -361,6 +369,9 @@ public class DroneLoadController: MonoBehaviour
             propellers[i].SetRpm(propellers_rpms[i]);
 	}
 
+    /// <summary>
+    /// Cross product operation for R^3 vectors
+    /// </summary>
     static Vector<double> _Cross(Vector<double> a, Vector<double> b)
     {
         // Calculate each component of the cross product
@@ -372,16 +383,40 @@ public class DroneLoadController: MonoBehaviour
         return DenseVector.OfArray(new double[] { c1, c2, c3 });
     }
 
-    static Matrix<double> _Hat(Vector<double> v)
+    /// <summary>
+    ///  Constructs skew symmetric matrix from vector. Also known as the hat map.
+    /// </summary>
+    /// <param name="v"></param>
+    /// <returns></returns>
+    private static Matrix<double> _HatMap(Vector<double> v)
     {
         return DenseMatrix.OfArray(new double[,] { { 0, -v[2], v[1] },
                                                    { v[2], 0, -v[0] },
                                                    { -v[1], v[0], 0 } });
     }
 
-    static Vector<double> _Vee(Matrix<double> S)
+    /// <summary>
+    ///  Constructs vector from skew symmetric matrix. Also known as the vee map.
+    /// </summary>
+    /// <param name="S"></param>
+    /// <returns></returns>
+    private static Vector<double> _VeeMap(Matrix<double> S)
     {
         return DenseVector.OfArray(new double[] { S[2, 1], S[0, 2], S[1, 0] });
+    }
+
+    /// <summary>
+    /// Stacks global force and moment vector as: [f moment[0] moment[1] moment[2]].Transpose() where 0-2 refer to axis index
+    /// 
+    /// <para>
+    /// f, referes to global force along axis of propellors hence it is only a scaler
+    /// </para>
+    /// </summary>
+    /// <param name="f"></param>
+    /// <param name="moments"></param>
+    /// <returns></returns>
+    private static Vector<double> _StackForceMomentVector(double f, Vector<double> moments){
+        return DenseVector.OfArray(new double[] { f, moments[0], moments[1], moments[2] });
     }
 
     static Matrix<double> _Logm3(Matrix<double> R)
@@ -398,7 +433,7 @@ public class DroneLoadController: MonoBehaviour
 				omg = (1.0 / Math.Sqrt(2 * (1 + R[1, 1])))*DenseVector.OfArray(new double[] { R[0, 1], 1 + R[1, 1], R[2, 1] });
 			else
 				omg = (1.0 / Math.Sqrt(2 * (1 + R[0, 0])))*DenseVector.OfArray(new double[] { 1 + R[0, 0], R[1, 0], R[2, 0] });
-			m_ret = _Hat(Math.PI * omg);
+			m_ret = _HatMap(Math.PI * omg);
 			return m_ret;
 		}
 		else {
