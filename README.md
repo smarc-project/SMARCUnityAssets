@@ -14,7 +14,7 @@ I suggest starting with one of the pre-configured projects:
   - Lesser graphical fidelity, but runs easier.
   - Does not have Unity Water Simulation (water is a plane).
 
-You can find more detailed instructions on using these projects [here](./Documentation/Index.md).
+You can find more detailed instructions on using these projects [here](./Documentation/README.md).
 
 ## Installation for non-SMaRC projects
 

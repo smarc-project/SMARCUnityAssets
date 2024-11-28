@@ -24,7 +24,7 @@ namespace Force.LookUpTable
 
         public static (Vector3 forces, Vector3 moments) CalculateDamping(Rigidbody rb, Transform samTransform)
         {
-            var inverseTransformDirection = samTransform.InverseTransformDirection(rb.velocity);
+            var inverseTransformDirection = samTransform.InverseTransformDirection(rb.linearVelocity);
             var transformAngularVelocity = samTransform.InverseTransformDirection(rb.angularVelocity);
             var uvw_nm_nb = inverseTransformDirection.To<NED>().ToDense(); // Might need to revisit. Rel. velocity in point m block.
             var pqr_nm = FRD.ConvertAngularVelocityFromRUF(transformAngularVelocity).ToDense(); // FRD is same as NED for ANGLES ONLY

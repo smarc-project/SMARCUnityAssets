@@ -7,10 +7,7 @@ using RosMessageTypes.Tf2;
 using Unity.Robotics.Core;
 using Unity.Robotics.ROSTCPConnector;
 using Unity.Robotics.ROSTCPConnector.ROSGeometry;
-using UnityEditor.PackageManager;
 using UnityEngine;
-
-using LinkAttachment = VehicleComponents.LinkAttachment;
 
 namespace VehicleComponents.ROS.Publishers
 {

@@ -10,11 +10,15 @@ using VehicleComponents.ROS.Core;
 namespace VehicleComponents.ROS.Publishers
 {
     [RequireComponent(typeof(SensorIMU))]
-    class Odometry_Pub: ROSPublisher<OdometryMsg, SensorIMU>
+    public class Odometry_Pub: ROSPublisher<OdometryMsg, SensorIMU>
     { 
         [Tooltip("If false, orientation is in ENU in ROS.")]
         public bool useNED = false;
 
+        public OdometryMsg GetRosMsg()
+        {
+            return ROSMsg;
+        }
         protected override void InitializePublication()
         {
             ROSMsg.header.frame_id = "map_gt";

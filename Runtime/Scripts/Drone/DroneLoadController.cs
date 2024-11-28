@@ -289,7 +289,7 @@ public class DroneLoadController: MonoBehaviour
         
         // Quadrotor states
         Vector<double> xQ_s = BaseLink.transform.position.To<ENU>().ToDense();
-        Vector<double> vQ_s = base_link_ab.velocity.To<ENU>().ToDense();
+        Vector<double> vQ_s = base_link_ab.linearVelocity.To<ENU>().ToDense();
         Matrix<double> R_sb = DenseMatrix.OfArray(new double[,] { { BaseLink.transform.right.x, BaseLink.transform.forward.x, BaseLink.transform.up.x },
                                                                 { BaseLink.transform.right.z, BaseLink.transform.forward.z, BaseLink.transform.up.z },
                                                                 { BaseLink.transform.right.y, BaseLink.transform.forward.y, BaseLink.transform.up.y } });
@@ -763,4 +763,3 @@ public static class MinimumSnapTrajectory
         }
         return result;
     }
-}

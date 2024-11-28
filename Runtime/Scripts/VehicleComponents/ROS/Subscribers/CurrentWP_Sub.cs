@@ -3,10 +3,12 @@ using System.Collections.Generic;
 using UnityEngine;
 
 using RosMessageTypes.SmarcMission; // GotoWaypointMsg
-using VehicleComponents.Sensors; // GPSRef
+using GeoRef; // GPSRef
 
 using Unity.Robotics.ROSTCPConnector.ROSGeometry; 
 using Unity.Robotics.ROSTCPConnector;
+
+
 
 namespace VehicleComponents.ROS.Subscribers
 {
@@ -23,7 +25,7 @@ namespace VehicleComponents.ROS.Subscribers
         [Tooltip("The topic will be namespaced under the root objects name if the given topic does not start with '/'.")]
         public string topic;
         ROSConnection ros;
-        GPSReferencePoint gpsRef;
+        GlobalReferencePoint gpsRef;
 
         [Tooltip("Position: Teleport this object itself to where the WP is. LineRenderer: Draw some lines to represent the WP, fancier.")]
         public PointingType pointingType;
@@ -39,7 +41,7 @@ namespace VehicleComponents.ROS.Subscribers
             ros = ROSConnection.GetOrCreateInstance();
             ros.Subscribe<GotoWaypointMsg>(topic, UpdateMessage);
 
-            var gpsRefs = FindObjectsByType<GPSReferencePoint>(FindObjectsSortMode.None);
+            var gpsRefs = FindObjectsByType<GlobalReferencePoint>(FindObjectsSortMode.None);
             if(gpsRefs.Length < 1)
             {
                 Debug.Log("[CurrentWP_Sub] No GPS Reference found in the scene. Not gonna work!");
