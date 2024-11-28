@@ -1,0 +1,91 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1001 &2781811526550313521
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 773861078808927764, guid: d7ba18bcf853116459c3becb08f01c65, type: 3}
+      propertyPath: m_Name
+      value: LiDAR 128 channel res
+      objectReference: {fileID: 0}
+    - target: {fileID: 773861078808927764, guid: d7ba18bcf853116459c3becb08f01c65, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 773861078808927765, guid: d7ba18bcf853116459c3becb08f01c65, type: 3}
+      propertyPath: m_RootOrder
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 773861078808927765, guid: d7ba18bcf853116459c3becb08f01c65, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 773861078808927765, guid: d7ba18bcf853116459c3becb08f01c65, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.39
+      objectReference: {fileID: 0}
+    - target: {fileID: 773861078808927765, guid: d7ba18bcf853116459c3becb08f01c65, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 773861078808927765, guid: d7ba18bcf853116459c3becb08f01c65, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 773861078808927765, guid: d7ba18bcf853116459c3becb08f01c65, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 773861078808927765, guid: d7ba18bcf853116459c3becb08f01c65, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 773861078808927765, guid: d7ba18bcf853116459c3becb08f01c65, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 773861078808927765, guid: d7ba18bcf853116459c3becb08f01c65, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 773861078808927765, guid: d7ba18bcf853116459c3becb08f01c65, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 773861078808927765, guid: d7ba18bcf853116459c3becb08f01c65, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 773861080551603223, guid: d7ba18bcf853116459c3becb08f01c65, type: 3}
+      propertyPath: _maxRange
+      value: 150
+      objectReference: {fileID: 0}
+    - target: {fileID: 773861080551603223, guid: d7ba18bcf853116459c3becb08f01c65, type: 3}
+      propertyPath: _frequency
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 773861080551603223, guid: d7ba18bcf853116459c3becb08f01c65, type: 3}
+      propertyPath: _scanPattern
+      value: 
+      objectReference: {fileID: 11400000, guid: e4461be772cd0b7488ed536ecd21f9db, type: 2}
+    - target: {fileID: 773861080551603223, guid: d7ba18bcf853116459c3becb08f01c65, type: 3}
+      propertyPath: _pointsNumPerScan
+      value: 460800
+      objectReference: {fileID: 0}
+    - target: {fileID: 773861080551603304, guid: d7ba18bcf853116459c3becb08f01c65, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7417028832377807650, guid: d7ba18bcf853116459c3becb08f01c65, type: 3}
+      propertyPath: _topicName
+      value: /evolo/Lidar/HighRes
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: d7ba18bcf853116459c3becb08f01c65, type: 3}

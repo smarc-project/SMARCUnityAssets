@@ -1,17 +1,12 @@
 using System; //Bit converter
 using UnityEngine;
-
-using System.Linq;
 using System.Collections.Generic;
 
 using Unity.Burst;
 using Unity.Collections;
 using Unity.Jobs;
 using Unity.Robotics.ROSTCPConnector.ROSGeometry;
-
-using Random = UnityEngine.Random;
 using NormalDistribution = DefaultNamespace.NormalDistribution;
-using UnityEditor.Experimental.GraphView;
 
 
 namespace VehicleComponents.Sensors

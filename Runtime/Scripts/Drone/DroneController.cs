@@ -71,7 +71,7 @@ namespace DroneControlScripts
 				propellers_forces[i] = quadcopterAB.mass * Physics.gravity.magnitude/(float)NumPropellers;
 			
 
-			Vector3 vel_in_world = quadcopterAB.velocity;
+			Vector3 vel_in_world = quadcopterAB.linearVelocity;
 			Vector3 vel_in_body = transform.InverseTransformDirection (vel_in_world);
 
 			// Add/Decrease the throttle to keep a target vertical velocity

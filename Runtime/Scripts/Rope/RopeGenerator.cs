@@ -1,9 +1,5 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEditor.EditorTools;
 using UnityEngine;
 using Utils = DefaultNamespace.Utils;
-using TFPub = VehicleComponents.ROS.Publishers.ROSTransformTreePublisher;
 
 namespace Rope
 {

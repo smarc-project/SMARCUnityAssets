@@ -34,12 +34,12 @@ namespace DefaultNamespace
 
         public void FixedUpdate()
         {
-            var mainBodyVelocity = mainBody.velocity;
+            var mainBodyVelocity = mainBody.linearVelocity;
             var mainBodyAngularVelocity = mainBody.angularVelocity;
             var mainBodyMass = mainBody.mass;
 
 
-            var inverseTransformDirection_local = transform.InverseTransformDirection(mainBody.velocity);
+            var inverseTransformDirection_local = transform.InverseTransformDirection(mainBody.linearVelocity);
             var transformAngularVelocity_local = transform.InverseTransformDirection(mainBody.angularVelocity);
 
             //An additional transform. From Unity RUF to a more appropriate frame of reference.

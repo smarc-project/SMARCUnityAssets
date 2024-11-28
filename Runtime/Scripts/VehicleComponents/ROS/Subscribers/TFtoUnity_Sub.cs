@@ -10,7 +10,7 @@ using Unity.Robotics.Core;
 using Unity.Robotics.ROSTCPConnector.ROSGeometry; 
 
 using Utils = DefaultNamespace.Utils;
-using GPSReferencePoint = VehicleComponents.Sensors.GPSReferencePoint;
+using GlobalReferencePoint = GeoRef.GlobalReferencePoint;
 
 
 namespace VehicleComponents.ROS.Subscribers
@@ -28,7 +28,7 @@ namespace VehicleComponents.ROS.Subscribers
 
         // easting,northing wrt unity-origin.
         public double[] unity_origin_in_utm;
-        GPSReferencePoint gpsRef;
+        GlobalReferencePoint gpsRef;
         HashSet<string> initialized_utm_map_frames;
 
 
@@ -41,7 +41,7 @@ namespace VehicleComponents.ROS.Subscribers
             // UTM stuff needs speical handling due to their large numbers
             // and Unity's float representation in transforms.
             transform.position = Vector3.zero;
-            var gpsRefs = FindObjectsByType<GPSReferencePoint>(FindObjectsSortMode.None);
+            var gpsRefs = FindObjectsByType<GlobalReferencePoint>(FindObjectsSortMode.None);
             if(gpsRefs.Length < 1)
             {
                 Debug.Log("No GPS Reference found in the scene. UTM-related functions will not work!");

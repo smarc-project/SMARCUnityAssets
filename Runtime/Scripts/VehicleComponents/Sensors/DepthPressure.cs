@@ -17,7 +17,14 @@ namespace VehicleComponents.Sensors
 
         void Start()
         {
-            _waterModel = FindObjectsByType<WaterQueryModel>(FindObjectsSortMode.None)[0];
+            var waterModels = FindObjectsByType<WaterQueryModel>(FindObjectsSortMode.None);
+            if(waterModels.Length > 0) _waterModel = waterModels[0];
+            else 
+            {
+                Debug.LogWarning("DepthPressure: No WaterQueryModel found in the scene, disabling sensor");
+                enabled = false;
+            }
+
         }
 
 

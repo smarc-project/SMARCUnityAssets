@@ -30,10 +30,17 @@ namespace GameUI
         public float rollRpms = 0.1f;
         public float moveRpms = 800f;
 
-        [Header("Mouse control")] [Tooltip("Use these when you dont want to press down for 10 minutes")]
-        public bool useBothRpms = false;
+        [Header("Bricks on Keys")] [Tooltip("Use these when you dont want to press down for 10 minutes")]
+        public List<string> PutABrickOnKeys = new List<string>();
 
-        public float bothRpms = 0f;
+        bool GetKeyDown(string key)
+        {
+            if (PutABrickOnKeys.Contains(key))
+            {
+                return true;
+            }
+            return Input.GetKeyDown(key);
+        }
 
         void Awake()
         {
@@ -48,12 +55,6 @@ namespace GameUI
         void Update()
         {
 
-            if (useBothRpms)
-            {
-                frontProp.SetRpm(bothRpms);
-                backProp.SetRpm(bothRpms);
-            }
-
             // Ignore inputs while the right mouse
             // button is held down. Since this is used for camera controls.
             // There is no "while button down" check, so we DIY.
@@ -61,25 +62,25 @@ namespace GameUI
             if(Input.GetMouseButtonUp(1)) mouseDown = false;
             if(mouseDown) return;
 
-            if (Input.GetKeyDown("down"))
+            if (GetKeyDown("down"))
             {
                 frontProp.SetRpm(-moveRpms);
                 backProp.SetRpm(-moveRpms);
             }
 
-            if (Input.GetKeyDown("q"))
+            if (GetKeyDown("q"))
             {
                 frontProp.SetRpm(-rollRpms);
                 backProp.SetRpm(rollRpms);
             }
 
-            if (Input.GetKeyDown("e"))
+            if (GetKeyDown("e"))
             {
                 frontProp.SetRpm(rollRpms);
                 backProp.SetRpm(-rollRpms);
             }
 
-            if (Input.GetKeyDown("up"))
+            if (GetKeyDown("up"))
             {
                 frontProp.SetRpm(moveRpms);
                 backProp.SetRpm(moveRpms);
@@ -91,12 +92,12 @@ namespace GameUI
                 backProp.SetRpm(0);
             }
 
-            if (Input.GetKeyDown("a"))
+            if (GetKeyDown("a"))
             {
                 yaw.SetAngle(-1);
             }
 
-            if (Input.GetKeyDown("d"))
+            if (GetKeyDown("d"))
             {
                 yaw.SetAngle(1);
             }
@@ -106,12 +107,12 @@ namespace GameUI
                 yaw.SetAngle(0);
             }
 
-            if (Input.GetKeyDown("w"))
+            if (GetKeyDown("w"))
             {
                 pitch.SetAngle(-1);
             }
 
-            if (Input.GetKeyDown("s"))
+            if (GetKeyDown("s"))
             {
                 pitch.SetAngle(1);
             }
@@ -121,32 +122,32 @@ namespace GameUI
                 pitch.SetAngle(0);
             }
 
-            if (Input.GetKeyDown("r"))
+            if (GetKeyDown("r"))
             {
                 vbs.SetPercentage(0f);
             }
 
-            if (Input.GetKeyDown("f"))
+            if (GetKeyDown("f"))
             {
                 vbs.SetPercentage(50f);
             }
 
-            if (Input.GetKeyDown("c"))
+            if (GetKeyDown("c"))
             {
                 vbs.SetPercentage(100f);
             }
 
-            if (Input.GetKeyDown("t"))
+            if (GetKeyDown("t"))
             {
                 lcg.SetPercentage(0f);
             }
 
-            if (Input.GetKeyDown("g"))
+            if (GetKeyDown("g"))
             {
                 lcg.SetPercentage(50f);
             }
 
-            if (Input.GetKeyDown("v"))
+            if (GetKeyDown("v"))
             {
                 lcg.SetPercentage(100f);
             }

@@ -2,6 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Utils = DefaultNamespace.Utils;
+using Force;  // MixedBody is in the Force namespace
+
 
 using VehicleComponents.ROS.Core;
 
@@ -42,10 +44,17 @@ namespace VehicleComponents.Actuators
             {
                 current = current.parent;
                 ArticulationBody articulationBody = current.GetComponent<ArticulationBody>();
-                if (articulationBody != null && articulationBody.name == "base_link")
+                Rigidbody rigidBody = current.GetComponent<Rigidbody>();
+
+                /*if (articulationBody != null && articulationBody.name == "base_link")
                 {
                    // Debug.Log("base_link articulation body found: " + articulationBody);
                     baseLinkArticulationBody = articulationBody;
+                }*/
+                if ((articulationBody != null || rigidBody != null) && current.name == "base_link" ) //current, articulatedBody and RigidBody should all have same name
+                {
+                    baseLinkMixedBody = new MixedBody(articulationBody, rigidBody);
+                    break;
                 }
             }
             if(HoverDefault) InitializeRPMToStayAfloat();
@@ -59,8 +68,8 @@ namespace VehicleComponents.Actuators
             // Visualize the applied force
             Debug.DrawRay(transform.position, (float)r * transform.forward, Color.red);
             
-            parentArticulationBody.AddForceAtPosition((float)r * parentArticulationBody.transform.forward,
-                                                   parentArticulationBody.transform.position,
+            parentMixedBody.AddForceAtPosition((float)r * parentMixedBody.transform.forward,
+                                                   parentMixedBody.transform.position,
                                                    ForceMode.Force);
             
             // Dont spin the props (which lets physics handle the torques and such) if we are applying manual
@@ -71,19 +80,21 @@ namespace VehicleComponents.Actuators
                 int torque_sign = TorqueUp ? 1 : -1;
                 float torque = torque_sign * c_tau_f * (float)r;
                 Vector3 torqueVector = torque * transform.forward;
-                parentArticulationBody.AddTorque(torqueVector, ForceMode.Force);
+                parentMixedBody.AddTorque(torqueVector, ForceMode.Force);
             }
             else
             {
                 int direction = reverse? -1 : 1;
-                parentArticulationBody.SetDriveTargetVelocity(ArticulationDriveAxis.X, direction*(float)rpm);
+                parentMixedBody.SetDriveTargetVelocity(ArticulationDriveAxis.X, direction*(float)rpm);
             }
         }
 
         private void InitializeRPMToStayAfloat()
         {
             // Calculate the required force to counteract gravity
-            float requiredForce = baseLinkArticulationBody.mass * Physics.gravity.magnitude;
+            //float requiredForce = baseLinkArticulationBody.mass * Physics.gravity.magnitude;
+            float requiredForce = baseLinkMixedBody.mass * Physics.gravity.magnitude;
+
             // Debug.Log("Required force to stay afloat: " + requiredForce);
 
             // Calculate the required RPM for each propeller
@@ -101,4 +112,3 @@ namespace VehicleComponents.Actuators
         }
         
     }
-}

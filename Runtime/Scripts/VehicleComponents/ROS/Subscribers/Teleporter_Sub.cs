@@ -77,14 +77,14 @@ namespace VehicleComponents.ROS.Subscribers
 
             foreach(var ab in ABparts)
             {
-                ab.velocity = Vector3.zero;
+                ab.linearVelocity = Vector3.zero;
                 ab.angularVelocity = Vector3.zero;
                 ab.ResetArticulationBody();
             }
 
             foreach(var rb in RBparts)
             {
-                rb.velocity = Vector3.zero;
+                rb.linearVelocity = Vector3.zero;
                 rb.angularVelocity = Vector3.zero;
             }
         }

@@ -8,7 +8,7 @@ using RosMessageTypes.Tf2;
 using Unity.Robotics.Core;
 using Unity.Robotics.ROSTCPConnector.ROSGeometry;
 
-using GPSRef = VehicleComponents.Sensors.GPSReferencePoint;
+using GPSRef = GeoRef.GlobalReferencePoint;
 
 
 namespace VehicleComponents.ROS.Publishers
@@ -24,7 +24,7 @@ namespace VehicleComponents.ROS.Publishers
         TFMessageMsg ROSMsg;
 
 
-        void Start() // to let the GPSRef do its thing in Awake()
+        void Start()
         {
             var utmpubs = FindObjectsByType<UTMtoMapPublisher>(FindObjectsSortMode.None);
             if(utmpubs.Length > 1)
@@ -35,23 +35,23 @@ namespace VehicleComponents.ROS.Publishers
             var gpsRefs = FindObjectsByType<GPSRef>(FindObjectsSortMode.None);
             if(gpsRefs.Length < 1)
             {
-                Debug.LogWarning("[UTM->Map pub] No GPS Reference found in the scene. There must be at least one!");
+                Debug.LogWarning("[UTM->Map pub] No Global Reference Point found in the scene. There must be at least one! Disabling UTM->Map publisher.");
+                enabled = false;
+                return;
             }
             else gpsRef = gpsRefs[0];
 
-            if(gpsRef == null) return;
             // make sure this is in the origin
             // why origin? so that we can tell all other tf publishers
             // in the scene to publish a "global" frame that is map_gt
             // and they wont need to do any origin shenanigans that way
-            this.transform.localPosition = Vector3.zero;
+            transform.localPosition = Vector3.zero;
             ros = ROSConnection.GetOrCreateInstance();
             ros.RegisterPublisher<TFMessageMsg>(topic);
         }
 
         void CreateMsg()
         {
-            if(gpsRef == null) return;
             string utm_zone_band = $"utm_{gpsRef.zone}_{gpsRef.band}";
             // this is the position of unity-world in utm coordinates
             double lat, lon, originEasting, originNorthing;
@@ -76,9 +76,11 @@ namespace VehicleComponents.ROS.Publishers
                 new TransformMsg() // 0-transform
             );
 
-            var tfMessageList = new List<TransformStampedMsg>();
-            tfMessageList.Add(utmZBToUtm);
-            tfMessageList.Add(utmToMap);
+            var tfMessageList = new List<TransformStampedMsg>
+            {
+                utmZBToUtm,
+                utmToMap
+            };
 
             // These transforms never change during play mode
             // so we can publish the same message all the time

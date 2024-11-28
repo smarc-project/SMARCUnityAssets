@@ -16,7 +16,7 @@ namespace Force
         private void FixedUpdate()
         {
 
-            _rigidbody.AddForce(-_rigidbody.velocity
+            _rigidbody.AddForce(-_rigidbody.linearVelocity
                                 * waterDrag, ForceMode.Acceleration);
             _rigidbody.AddTorque(-_rigidbody.angularVelocity
                                  * waterAngularDrag, ForceMode.Acceleration);

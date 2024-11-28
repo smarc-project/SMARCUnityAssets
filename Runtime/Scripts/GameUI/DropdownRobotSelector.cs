@@ -39,6 +39,7 @@ namespace GameUI
             selectedRobotRoot = robots[0].transform.root.gameObject;
             dropdown.value = 0;
             dropdown.RefreshShownValue();
+            OnToggleKBControl(true);
             UpdateToggles();
         }
 

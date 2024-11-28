@@ -71,8 +71,12 @@ namespace VehicleComponents.Acoustics
         Vector3[] entireSphereVecs;
         Vector3[] bottomFiringVectors;
 
+
+        [Header("Debug")]
         [Tooltip("Draw debug lines to visualize paths of the signal.")]
         public bool DrawSignalLines = true;
+        [Tooltip("Set to true to broadcast a test message once.")]
+        public bool testBroadcast = false;
 
 
         WaterQueryModel waterModel;
@@ -480,6 +484,11 @@ namespace VehicleComponents.Acoustics
 
         void FixedUpdate()
         {
+            if(testBroadcast)
+            {
+                testBroadcast = false;
+                Write("Test broadcast from " + name);
+            }
             // TODO tie this to some frequency as well.
             // modems usually have a limit, as a function of
             // data size

@@ -74,7 +74,7 @@ namespace DefaultNamespace
             var theta = transform.localEulerAngles.z;
             var psi = -transform.localEulerAngles.y;
 
-            var velocity = transform.InverseTransformDirection(rigidBody.velocity);
+            var velocity = transform.InverseTransformDirection(rigidBody.linearVelocity);
             var u = velocity.x;
             var v = velocity.z;
             var w = -velocity.y;

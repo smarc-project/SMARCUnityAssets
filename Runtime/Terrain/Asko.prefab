@@ -106,8 +106,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 87cdffaeb76a6cdfc8249f26f0766f47, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  originIsLatLon: 1
-  drawLineToReferencePoint: 0
+  originMode: 0
   lon: 17.596178
   lat: 58.811481
   band: V

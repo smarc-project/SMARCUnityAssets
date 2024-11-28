@@ -58,8 +58,8 @@ namespace Rope
             Rigidbody rb = o.AddComponent<Rigidbody>();
             rb.useGravity = false;
             rb.inertiaTensor = Vector3.one * 1e-6f;
-            rb.drag = 1f;
-            rb.angularDrag = 1f;
+            rb.linearDamping = 1f;
+            rb.angularDamping = 1f;
             rb.mass = 0.1f;
             return rb;
         }

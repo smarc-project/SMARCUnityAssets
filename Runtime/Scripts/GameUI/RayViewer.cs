@@ -1,8 +1,6 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
-using NUnit.Framework.Internal.Builders;
-using UnityEditor.EditorTools;
+
 using UnityEngine;
 
 using Sonar = VehicleComponents.Sensors.Sonar;
@@ -97,29 +95,39 @@ namespace GameUI
                 HitsParticleSystem = HitsDrawer.AddComponent<ParticleSystem>();
                 
                 var rendererModule = HitsDrawer.GetComponent<ParticleSystemRenderer>();
-                rendererModule.material = new Material(Shader.Find("Particles/Standard Unlit"));
-                rendererModule.alignment = ParticleSystemRenderSpace.World;
-                rendererModule.sortMode = ParticleSystemSortMode.YoungestInFront;
-                rendererModule.renderMode = ParticleSystemRenderMode.Mesh;
-                rendererModule.mesh = Resources.GetBuiltinResource<Mesh>("Quad.fbx");
+                var mat = Shader.Find("Particles/Standard Unlit");
+                if(mat == null) 
+                {
+                    DrawHits = false;
+                    Debug.Log($"Material 'Particles/Standard Unlit' not found, sonar hits wont be drawn. Found: {mat}");
+                    HitsDrawer.SetActive(false);
+                }
+                else
+                {
+                    rendererModule.material = new Material(mat);
+                    rendererModule.alignment = ParticleSystemRenderSpace.World;
+                    rendererModule.sortMode = ParticleSystemSortMode.YoungestInFront;
+                    rendererModule.renderMode = ParticleSystemRenderMode.Mesh;
+                    rendererModule.mesh = Resources.GetBuiltinResource<Mesh>("Quad.fbx");
 
-                
-                var mainModule = HitsParticleSystem.main;
-                mainModule.startSpeed = 0f;
-                mainModule.playOnAwake = false;
-                mainModule.maxParticles = sonar.TotalRayCount * MaxParticlesMultiplier;
-                mainModule.startColor = Color.red;
-                mainModule.startSize = HitsSize;
-                mainModule.startLifetime = HitsLifetime;
-                mainModule.simulationSpace = ParticleSystemSimulationSpace.World;
-                mainModule.ringBufferMode = ParticleSystemRingBufferMode.PauseUntilReplaced;
+                    
+                    var mainModule = HitsParticleSystem.main;
+                    mainModule.startSpeed = 0f;
+                    mainModule.playOnAwake = false;
+                    mainModule.maxParticles = sonar.TotalRayCount * MaxParticlesMultiplier;
+                    mainModule.startColor = Color.red;
+                    mainModule.startSize = HitsSize;
+                    mainModule.startLifetime = HitsLifetime;
+                    mainModule.simulationSpace = ParticleSystemSimulationSpace.World;
+                    mainModule.ringBufferMode = ParticleSystemRingBufferMode.PauseUntilReplaced;
 
-                var emissionModule = HitsParticleSystem.emission;
-                emissionModule.enabled = false;
-                var shapeModule = HitsParticleSystem.shape;
-                shapeModule.enabled = false;  
-                
-                HitsEmitParams = new ParticleSystem.EmitParams[sonar.TotalRayCount];
+                    var emissionModule = HitsParticleSystem.emission;
+                    emissionModule.enabled = false;
+                    var shapeModule = HitsParticleSystem.shape;
+                    shapeModule.enabled = false;  
+                    
+                    HitsEmitParams = new ParticleSystem.EmitParams[sonar.TotalRayCount];
+                }
 
             }
         }
@@ -158,30 +166,27 @@ namespace GameUI
 
         void UpdateHits()
         {
-            if (HitsParticleSystem != null)
+            if (!DrawHits || HitsParticleSystem == null || HitsEmitParams == null) return;
+            
+            for (int i = 0; i < sonar.TotalRayCount; i++)
             {
-                if (DrawHits)
-                {
-                    for (int i = 0; i < sonar.TotalRayCount; i++)
-                    {
-                        var emitParams = HitsEmitParams[i];
-                        var hitPoint = sonar.SonarHits[i].Hit.point;
-                        var surfaceNormal = sonar.SonarHits[i].Hit.normal;
-                        if(surfaceNormal == null) continue;
-                        if(surfaceNormal == Vector3.zero) surfaceNormal = Vector3.up;
+                var emitParams = HitsEmitParams[i];
+                var hitPoint = sonar.SonarHits[i].Hit.point;
+                var surfaceNormal = sonar.SonarHits[i].Hit.normal;
+                if(surfaceNormal == null) continue;
+                if(surfaceNormal == Vector3.zero) surfaceNormal = Vector3.up;
 
-                        float normalizedZ = Mathf.InverseLerp(sonar.HitsMaxHeight, sonar.HitsMinHeight, hitPoint.y);
-                        if (UseRainbow) emitParams.startColor = Rainbow(normalizedZ);
-                        else emitParams.startColor = Color.red;
-                        emitParams.position = hitPoint + 0.03f*surfaceNormal;
-                        emitParams.rotation3D = Quaternion.LookRotation(-surfaceNormal).eulerAngles;
-                        emitParams.startSize = HitsSize;
-                        emitParams.startLifetime = HitsLifetime;
-                        
-                        HitsParticleSystem.Emit(emitParams, 1);
-                    }
-                }
+                float normalizedZ = Mathf.InverseLerp(sonar.HitsMaxHeight, sonar.HitsMinHeight, hitPoint.y);
+                if (UseRainbow) emitParams.startColor = Rainbow(normalizedZ);
+                else emitParams.startColor = Color.red;
+                emitParams.position = hitPoint + 0.03f*surfaceNormal;
+                emitParams.rotation3D = Quaternion.LookRotation(-surfaceNormal).eulerAngles;
+                emitParams.startSize = HitsSize;
+                emitParams.startLifetime = HitsLifetime;
+                
+                HitsParticleSystem.Emit(emitParams, 1);
             }
+                
         }
 
         void Update()
