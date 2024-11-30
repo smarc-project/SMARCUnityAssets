@@ -1,143 +1,445 @@
-﻿using System.Collections;
+using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using UnityEngine;
+using Unity.Robotics.ROSTCPConnector.ROSGeometry; // Important for ENU and NED
+using DefaultNamespace.LookUpTable; // Needed for ToDense() system
+using VehicleComponents.Actuators;
 
-namespace DroneControlScripts
-{
-	public class DroneController : MonoBehaviour {
-
-		//public float max_throttle = 10f;
-
-		[Header("Controllers")]
-		public PIDController altitude_controller;
-		public PIDController pitch_controller;
-		public PIDController roll_controller;
-		public PIDController yaw_controller;
-
-		//public float target_altitude = 1.0f;
-
-		public Vector3 linear_velocity;
-		public Vector3 angular_velocity;
-
-		// An array holding references to the propellers 
-		// where the downward forces will be applied
-		private GameObject[] propellers;
-		private GameObject[] propellers_act;
-		private float[] propellers_forces;
-		private float torque;
-		public int NumPropellers = 4;
-
-		// The body of the quadcopter on which the forces
-		// will be applied (forces and torque)
-		ArticulationBody quadcopterAB;
-
-		// Use this for initialization
-		void Start () {
-			quadcopterAB = gameObject.GetComponent<ArticulationBody> ();
-			
-			quadcopterAB.centerOfMass = Vector3.zero;
-			propellers = new GameObject[NumPropellers];
-			propellers[0] = GameObject.Find ("propeller1_link");
-			propellers[1] = GameObject.Find ("propeller2_link");
-			propellers[2] = GameObject.Find ("propeller3_link");
-			propellers[3] = GameObject.Find ("propeller4_link");
-			propellers_act = new GameObject[NumPropellers];
-			propellers_act[0] = GameObject.Find ("propeller_1");
-			propellers_act[1] = GameObject.Find ("propeller_2");
-			propellers_act[2] = GameObject.Find ("propeller_3");
-			propellers_act[3] = GameObject.Find ("propeller_4");
-
-            propellers_forces = new float[NumPropellers];
-			
-		}
-		
-		// Update is called once per frame
-		void FixedUpdate () {
-			ComputeForcesTorque ();
-			ApplyForcesTorque ();
-		}
-
-		public void UpdateVelocities(Vector3 linear_velocity, Vector3 angular_velocity) {
-			this.linear_velocity = linear_velocity;
-			this.angular_velocity = angular_velocity;
-		}
+using MathNet.Numerics.LinearAlgebra;
+using MathNet.Numerics.LinearAlgebra.Double;
+// using MinimumSnapTrajectory = Trajectory.MinimumSnapTrajectory;
 
 
 
-		void ComputeForcesTorque() {
+// Directives for publishing messages
+using Unity.Robotics.Core; //Clock
+using Unity.Robotics.ROSTCPConnector;
+using StdMessages = RosMessageTypes.Std;
 
-			// 1/4 of the gravity of compensated by each of the propellers
-			for(int i = 0 ; i < NumPropellers ; ++i)
-				propellers_forces[i] = quadcopterAB.mass * Physics.gravity.magnitude/(float)NumPropellers;
-			
+namespace DroneController {
 
-			Vector3 vel_in_world = quadcopterAB.linearVelocity;
-			Vector3 vel_in_body = transform.InverseTransformDirection (vel_in_world);
+    /// <summary>
+    /// Enumeration of possible drone controller states. Enables future expansion of various controllers
+    /// </summary>
+    public enum DroneControllerState
+    {
+        TrackingControl = 0,
+        LoadControl = 1,
+        TrackingControlMinSnap = 2,
+    }
 
-			// Add/Decrease the throttle to keep a target vertical velocity
-			// the velocity is measured along the vertical axis in the world coordinates
-			// not the local vertical axis of the rigidbody
-			float command_altitude = altitude_controller.Update(linear_velocity.y - vel_in_world.y, Time.fixedDeltaTime);
-			for (int i = 0; i < NumPropellers; ++i)
-				propellers_forces [i] += command_altitude /(float)NumPropellers;
+    /// <summary>
+    /// Convenience class for returning controller error and converting it into ROS supported message formats
+    /// </summary>
+    public class ControllerError
+    {
+        private Vector<double> positionError;
+        private Vector<double> velocityError;
+        private Vector<double> orientationError;
+
+        // Constructors
+        public ControllerError(Vector<double> position, Vector<double> velocity, Vector<double> orientationError)
+        {
+            this.positionError = position;
+            this.velocityError = velocity;
+            this.orientationError = orientationError;
+        }
+
+        public ControllerError()
+        {
+            this.positionError = DenseVector.OfArray(new double [] {0,0,0});
+            this.velocityError = DenseVector.OfArray(new double [] {0,0,0});
+        }
+
+        /// <summary>
+        /// Controller error message format takes the form of the following array structurs
+        /// Index: [0,3): Position Error
+        /// Index: [3,6): Velocity Error
+        /// Index: [6,9): Orientation Error
+        /// </summary>
+        public double [] ReturnMessageFormat(){
+
+            // Create a list to store the combined elements
+            // NOTE: going between types a lot here due to need to be an double []
+            List<double> result = new List<double>();
+
+            // concatenates list using C# built in AddRange
+            result.AddRange(this.positionError);
+            result.AddRange(this.velocityError);
+            result.AddRange(this.orientationError);
+
+            // Convert the list to an array as this is the required ROS datatype
+            double[] arrayResult = result.ToArray();
+            return arrayResult;
+        }
+
+    }
+
+    /// <summary>
+    /// Geometric tracking drone controller for quadrotor drone. Class can implement multiple methods but currently only implements geometric tracking control
+    /// </summary>
+    public class DroneController : MonoBehaviour
+    {
+        [Header("Basics")]
+        [Tooltip("Baselink of drone")]
+        public GameObject BaseLink;
+        ArticulationBody baseLinkDroneAB;
+
+        [Header("Tracking")]
+        [Tooltip("An object to follow for drone tracking control")]
+        public Transform TrackingTargetTF;
+
+        [Header("Drone Configuration")]
+        [Tooltip("The euclidean distance from the center of gravity of the drone to rotor (assumes square prop configuration)")]
+
+        /// <value> Distance from the center of the quadrotor to each propeller (assumes square prop configuration) (m) </value>
+        public double rotorMomentArm = 0.315;
+
+        [Tooltip("The ratio specifying how much of the rotor force is translated into torque around the drones 3rd axis (normal to the rotor plane)")]
+
+        /// <value> The amount of rotor torque that gets translated into the drones 3rd axis. </value>
+        public double torqueCoefficient = 0.08;
+
+        [Header("Propellors")]
+        public Transform propFR;
+        public Transform propFL, propBR, propBL;
+
+        /// <value> Maps the individual rotor forces to a global force and moment set</value>
+        public Matrix<double> propellorForceToGlobalMap;
+        public Matrix<double> propellerForceToGlobalMapInverse;
+
+        Propeller[] propellers;
+
+        [Header("Control Mode")]
+        [Tooltip("Currently only implemented controller is TrackingControl")]
+        public DroneControllerState controllerState = DroneControllerState.TrackingControl;
+
+        ////////////////// SYSTEM SPECIFIC //////////////////
+        double massQuadrotor;
+        Matrix<double> inertiaJ;
+        const int NUM_PROPS = 4;
+
+        // Cached values to avoid recompute
+        static readonly Vector<double> e3 = DenseVector.OfArray(new double[] { 0, 0, 1 });
+        double g;
+        float dt;
+
+        // State Tracking
+        Matrix<double> desiredAttitude_prev;
+
+        Vector<double> targetAngularVelocity_prev;
+
+        
+        [Header("Controller Debug Logging")]
+        [Tooltip("By setting to true controller errors will be broadcast over ROS")]
+        public bool debugLoggingController = false;
+
+        // Message Publishing
+        ROSConnection ros;
+        string topicName;
+
+        // Initialization function
+        void Start()
+        {
+            propellers = new Propeller[4];
+            propellers[0] = propFL.GetComponent<Propeller>();
+            propellers[1] = propFR.GetComponent<Propeller>();
+            propellers[2] = propBR.GetComponent<Propeller>();
+            propellers[3] = propBL.GetComponent<Propeller>();
+
+            propellorForceToGlobalMap = DenseMatrix.OfArray(new double[,]
+                { { 1, 1, 1, 1 },
+                { rotorMomentArm, 0, -rotorMomentArm, 0 },
+                { 0, -rotorMomentArm, 0, rotorMomentArm },
+                { torqueCoefficient, -torqueCoefficient, torqueCoefficient, -torqueCoefficient }
+                }
+            ); // NOTE: Checked
+
+            propellerForceToGlobalMapInverse = propellorForceToGlobalMap.Inverse();
+
+            baseLinkDroneAB = BaseLink.GetComponent<ArticulationBody>();
+            massQuadrotor = baseLinkDroneAB.mass; // Quadrotor mass (kg)
+
+            // Creating diagonal matrix of inertia (no off diagonal terms)
+            double[] diagonal = { baseLinkDroneAB.inertiaTensor.x, baseLinkDroneAB.inertiaTensor.z, baseLinkDroneAB.inertiaTensor.y };
+            inertiaJ = DenseMatrix.CreateDiagonal(3, 3, index => diagonal[index]);
+            g = Physics.gravity.magnitude;
+            
+            // Creating identity matrices (3 x 3) for previous frame transforms
+            desiredAttitude_prev = DenseMatrix.CreateDiagonal(3, 3, 1.0);
+
+
+            // Creating zero vector for previous frame angular velocities
+            targetAngularVelocity_prev = DenseVector.OfArray(new double[] { 0, 0, 0 });
+
+            dt = Time.fixedDeltaTime;
+
+
+            // Message Publishing Setup if debugging is enabled
+            if (debugLoggingController){
+                ros = ROSConnection.GetOrCreateInstance();
+                topicName = $"/{BaseLink.transform.root.name}/controller_tuning/error";
+                ros.RegisterPublisher<StdMessages.Float64MultiArrayMsg>(topicName);
+            }
+        }
+
+        /// <summary>
+        /// Main control loop of the system running at the unity fixed update time step.
+        /// </summary>
+        void FixedUpdate()
+        {
+            double f = 0;
+            Vector<double> M = DenseVector.OfArray(new double[] { 0, 0, 0 });
+            ControllerError controllerError = new ControllerError();
+
+            if (controllerState == DroneControllerState.TrackingControl)
+            {
+                (f, M, controllerError) = ComputeTrackingControl();
+            }
+            else if (controllerState == DroneControllerState.LoadControl)
+            {
+                // TODO: Implement me
+                Debug.LogWarning($"{Enum.GetName(typeof(DroneControllerState), DroneControllerState.LoadControl)} state is not implemented");
+                Debug.LogWarning("Changing controller to Tracking control"); controllerState = DroneControllerState.TrackingControl;
+                return;
+            }
+            else if (controllerState == DroneControllerState.TrackingControlMinSnap)
+            {
+                // TODO: Implement me
+                Debug.LogWarning($"{Enum.GetName(typeof(DroneControllerState), DroneControllerState.TrackingControlMinSnap)} state is not implemented");
+                Debug.LogWarning("Changing controller to Tracking control");
+                controllerState = DroneControllerState.TrackingControl;
+                return;
+            }
+            else
+            {
+                Debug.Log("Controller state is outside possible states");
+                Debug.LogWarning("Changing controller to Tracking control");
+                controllerState = DroneControllerState.TrackingControl;
+                return;
+            }
+
+            float[] currPropellerRPMs = ComputeRPMs(f, M);
+            ApplyRPMs(currPropellerRPMs);
+
+            if (debugLoggingController){
+                PublishTopicMessage(controllerError);
+            }
+
+        }
+
+        /// <summary>
+        /// Logs out messages to ROS topic for further post processing
+        /// </summary>
+        void PublishTopicMessage(ControllerError controllerError){
+            StdMessages.Float64MultiArrayMsg msg = new StdMessages.Float64MultiArrayMsg();
+            msg.data = controllerError.ReturnMessageFormat();
+            ros.Publish(topicName, msg);
+        }
+
+        /// <summary>
+        /// Tracking controller is implemented per "Geometric tracking control of a quadrotor UAV on SE(3)"
+        /// Source: https://ieeexplore.ieee.org/document/5717652
+        /// </summary>
+        (double, Vector<double>, ControllerError) ComputeTrackingControl()
+        {
+            double f;
+            Vector<double> M;
+
+            ////////////////// SYSTEM SPECIFIC //////////////////
+            // Gains
+            double kx = 13 * massQuadrotor;
+            double kv = 5.6 * massQuadrotor;
+            double kR = 8.81;
+            double kW = 1.54;
+            /////////////////////////////////////////////////////
 
 
 
-			float command_pitch = pitch_controller.Update (linear_velocity.z - vel_in_body.z, Time.fixedDeltaTime);
-			//Debug.Log (vel_in_body + "target : " + linear_velocity + " command pitch : "+ command_pitch);
-			// Apply the pitch to the front propellers
-			propellers_forces[0] -= command_pitch/(float)NumPropellers;
-			propellers_forces[1] -= command_pitch/(float)NumPropellers;
-			// And the opposite to the back
-			propellers_forces[2] += command_pitch/(float)NumPropellers;
-			propellers_forces[3] += command_pitch/(float)NumPropellers;
+            // Quadrotor states
+            // NOTE: checked these
+            Vector<double> dronePosition = BaseLink.transform.position.To<ENU>().ToDense(); 
+            Vector<double> droneVelocity = baseLinkDroneAB.velocity.To<ENU>().ToDense();
+            Matrix<double> currentAttitude = DenseMatrix.OfArray(new double[,] { { BaseLink.transform.right.x, BaseLink.transform.forward.x, BaseLink.transform.up.x },
+                                                                    { BaseLink.transform.right.z, BaseLink.transform.forward.z, BaseLink.transform.up.z },
+                                                                    { BaseLink.transform.right.y, BaseLink.transform.forward.y, BaseLink.transform.up.y } });
+            Vector<double> droneAngularVelocity = -1f * BaseLink.transform.InverseTransformDirection(baseLinkDroneAB.angularVelocity).To<ENU>().ToDense();
+
+            // Desired states
+            Vector<double> targetPosition;
+            Vector<double> targetVelocity;
+            Vector<double> targetAccel;
+
+            targetPosition = TrackingTargetTF.position.To<ENU>().ToDense();
+            targetVelocity = DenseVector.OfArray(new double[] { 0, 0, 0 });
+            targetAccel = DenseVector.OfArray(new double[] { 0, 0, 0 });
 
 
-			float command_roll = roll_controller.Update (linear_velocity.x - vel_in_body.x, Time.fixedDeltaTime);
-			//Debug.Log(linear_velocity.z + " ; " +  quadcopterRB.velocity.z);
-			// Apply the roll to the left propellers
-			propellers_forces[0] += command_roll/(float)NumPropellers;
-			propellers_forces[2] += command_roll/(float)NumPropellers;
-			// And the opposite to the right
-			propellers_forces[1] -= command_roll/(float)NumPropellers;
-			propellers_forces[3] -= command_roll/(float)NumPropellers;
+            // Control
 
-			// Clamp the forces to prevent negative values
-			for (int i = 0; i < NumPropellers; ++i)
-				if (propellers_forces [i] < 0.0f)
-					propellers_forces [i] = 0.0f;
-			//propellers_forces [i] = Mathf.Clamp (propellers_forces [i], 0.0f, max_throttle);
+            // FIXME: Hardcoded Error cap on distance. May need fixing in the future
+            float distanceErrorCap = 10f;
+            Vector<double> errorTrackingPosition = (dronePosition - targetPosition) * Math.Min(distanceErrorCap / (dronePosition - targetPosition).Norm(2), 1);
 
-			Vector3 rot_in_world = quadcopterAB.angularVelocity;
-			Vector3 rot_in_body = transform.InverseTransformDirection (rot_in_world);
-			//Debug.Log (angular_velocity.y + " " + rot_in_body.y);
-			float command_yaw = yaw_controller.Update (angular_velocity.y - rot_in_body.y, Time.fixedDeltaTime);
-			torque = command_yaw;
-		}
+            Vector<double> errorTrackingVelocity = droneVelocity - targetVelocity;
 
-		void ApplyForcesTorque() {
-			
-			Vector3 propellerUp, propellerPos;
-			float maxForce = 0.0f;
-			for (int i = 0; i < NumPropellers; ++i) {
-				propellerUp = propellers [i].transform.forward;
-				propellerPos = propellers [i].transform.position;
-				quadcopterAB.AddForceAtPosition (propellers_forces[i] * propellerUp, propellerPos);
-
-				// For debug, to visualize the applied forces
-				if (propellers_forces [i] > maxForce)
-					maxForce = propellers_forces [i];
-			}
+            Vector<double> pidGain = _ComputePIDTerm(
+                kx,
+                kv,
+                g,
+                massQuadrotor,
+                targetAccel,
+                errorTrackingPosition,
+                errorTrackingVelocity);
 
 
-			for (int i = 0; i < NumPropellers; ++i) {
-				propellerUp = propellers [i].transform.forward;
-				propellerPos = propellers [i].transform.position;
-				Debug.DrawRay (propellerPos, propellers_forces [i] / maxForce * propellerUp, Color.red);
-			}
-			quadcopterAB.AddTorque (torque/100f * quadcopterAB.transform.up);
-			//Debug.Log (quadcopterRB.transform.up + " " + propellers [0].transform.up);
-		}
+            Matrix<double> desiredAttitude = _ComputeDesiredAttitudeVectors(pidGain);
 
-	}
+            Vector<double> targetAngularVelocity = DenseVector.OfArray(new double[] { 0, 0, 0 });
+            Vector<double> targetAngularVelocity_dot = (targetAngularVelocity - targetAngularVelocity_prev) / dt;
+
+            Vector<double> errorRotation = 0.5 * _VeeMap(desiredAttitude.Transpose() * currentAttitude - currentAttitude.Transpose() * desiredAttitude);
+            Vector<double> eOmega = droneAngularVelocity - currentAttitude.Transpose() * desiredAttitude * targetAngularVelocity;
+            ControllerError controllerError = new ControllerError(errorTrackingPosition, errorTrackingVelocity, errorRotation);
+
+            f = pidGain * (currentAttitude * e3);
+            M = -kR * errorRotation - kW * eOmega + _Cross(droneAngularVelocity, inertiaJ * droneAngularVelocity) - inertiaJ * (_HatMap(droneAngularVelocity) * currentAttitude.Transpose() * desiredAttitude *targetAngularVelocity - currentAttitude.Transpose() * desiredAttitude * targetAngularVelocity_dot);
+
+            // Updating trailing values needed at each computation
+            desiredAttitude_prev = desiredAttitude;
+            targetAngularVelocity_prev = targetAngularVelocity;
+
+            return (f, M, controllerError);
+        }
+
+        /// <summary>
+        /// Stacks force scaler and moment vecotrs into single Vector
+        /// </summary>
+        private static Vector<double> _StackForceMomentVector(double f, Vector<double> moments)
+        {
+            return DenseVector.OfArray(new double[] { f, moments[0], moments[1], moments[2] });
+        }
+
+        /// <summary>
+        /// Computes RPMs needed for control regardless of controller state
+        /// </summary>
+        /// <param name="f"> Desired forces </param>
+        /// <param name="M"> Desired moments </param>
+        float[] ComputeRPMs(double f, Vector<double> M)
+        {
+
+            Vector<double> globalForces = _StackForceMomentVector(f, M);
+            Vector<double> F_star = propellerForceToGlobalMapInverse * globalForces;
+            Vector<double> F = F_star;
+
+            for (int i = 0; i < NUM_PROPS; i++)
+            {
+                if (F[i] < 0)
+                {
+                    F[i] = 0;
+                }
+            }
+
+            // Constructs propeller RPM vector 
+            float[] currPropVals = { 0, 0, 0, 0 };
+            for (int i = 0; i < propellers.Length; i++)
+                currPropVals[i] = (float)F[i] / propellers[i].RPMToForceMultiplier;
+            return currPropVals;
+        }
+
+        /// <summary>
+        /// Applies RPMs to unity drone object 
+        ///
+        /// Ensures thats propellers does not have a negative RPM
+        /// </summary>
+        void ApplyRPMs(float[] propellersRPMs)
+        {
+            // Debug.Log($"RPM: {propellersRPMs[0]:F2},{propellersRPMs[1]:F2},{propellersRPMs[2]:F2},{propellersRPMs[3]:F2}"); // desired position
+            for (int i = 0; i < propellers.Length; i++)
+            {
+                // Now, all props should always have positive rpms, but just in case...
+                if (propellersRPMs[i] < 0)
+                {
+                    Debug.LogWarning("Propeller " + i + " has negative RPMs: " + propellersRPMs[i]);
+                    propellersRPMs[i] = 0;
+                }
+                propellers[i].SetRpm(propellersRPMs[i]);
+            }
+        }
+
+        /// <summary>
+        /// Computes "PID"-like gain for tracking controller
+        /// </summary>
+        private static Vector<double> _ComputePIDTerm(double gainX,
+                                                      double gainV,
+                                                      double gravityMagnitude,
+                                                      double mass,
+                                                      Vector<double> desiredAcceleration,
+                                                      Vector<double> errorPosition,
+                                                      Vector<double> errorVelocity)
+        {
+            // This is upper term of equation (12) from geometric tracking paper
+            Vector<double> pid = -gainX * errorPosition - gainV * errorVelocity + mass * gravityMagnitude * e3 + mass * desiredAcceleration;
+            return pid;
+        }
+
+        /// <summary>
+        /// Computes desired attitude vector for quadrotor from Geometric Tracking and Control.
+        ///
+        /// Computes the desired headings for body vectors 1,2,3 where 3 is normal to rotor plane.
+        /// Equations that pertain to this section can be found in Tracking Errors Section
+        /// </summary>
+        private static Matrix<double> _ComputeDesiredAttitudeVectors(Vector<double> pid)
+        {
+
+            Vector<double> b1d = DenseVector.OfArray(new double[] { Math.Sqrt(2) / 2, -Math.Sqrt(2) / 2, 0 });
+            Vector<double> b3d = pid / pid.Norm(2);
+            Vector<double> b2d = _Cross(b3d, b1d) / _Cross(b3d, b1d).Norm(2);
+            b1d = _Cross(b2d, b3d);
+            // NOTE: If needed can update for performance to just manually creating matrix like before can easily be re-implemented here
+            Matrix<double> R_sb_d = CreateMatrix.DenseOfColumns(new Vector<double>[] { b1d, b2d, b3d });
+
+            return R_sb_d;
+        }
+
+
+        /// <summary>
+        /// Cross product operation for R^3 vectors
+        /// </summary>
+        /// TODO: Does cross product exist in unity math
+        private static Vector<double> _Cross(Vector<double> a, Vector<double> b)
+        {
+            // Calculate each component of the cross product
+            double c1 = a[1] * b[2] - a[2] * b[1];
+            double c2 = a[2] * b[0] - a[0] * b[2];
+            double c3 = a[0] * b[1] - a[1] * b[0];
+
+            // Create a new vector for the result
+            return DenseVector.OfArray(new double[] { c1, c2, c3 });
+        }
+        /// <summary>
+        ///  Constructs skew symmetric matrix from vector. Also known as the hat map.
+        /// </summary>
+        /// <param name="v"></param>
+        /// <returns></returns>
+        private static Matrix<double> _HatMap(Vector<double> v)
+        {
+            return DenseMatrix.OfArray(new double[,] { { 0, -v[2], v[1] },
+                                                       { v[2], 0, -v[0] },
+                                                       { -v[1], v[0], 0 } });
+        }
+
+
+        /// <summary>
+        ///  Constructs vector from skew symmetric matrix. Also known as the vee map.
+        /// </summary>
+        /// <param name="S"></param>
+        /// <returns></returns>
+        private static Vector<double> _VeeMap(Matrix<double> S)
+        {
+            return DenseVector.OfArray(new double[] { S[2, 1], S[0, 2], S[1, 0] });
+        }
+    }
 }

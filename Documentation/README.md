@@ -1,4 +1,7 @@
 **Table of contents:**
+
+
+<!--toc:start-->
 - [General Concepts and Phrases](#general-concepts-and-phrases)
 - [Force](#force)
   - [ForcePoint](#forcepoint)
@@ -47,8 +50,8 @@
     - [Publishers](#publishers)
       - [TF](#tf)
     - [Subscribers](#subscribers)
-      - [Teleporter\_Sub](#teleporter_sub)
-      - [CurrentWP\_Sub](#currentwp_sub)
+      - [Teleporter_Sub](#teleportersub)
+      - [CurrentWP_Sub](#currentwpsub)
       - [Actuator Subscriber](#actuator-subscriber)
 - [Utilities](#utilities)
   - [Rope](#rope)
@@ -62,8 +65,9 @@
     - [Keyboard Controller](#keyboard-controller)
     - [ROS Controls](#ros-controls)
   - [Quadrotor](#quadrotor)
-    - [Keyboard controller](#keyboard-controller-1)
-    - [Geometric Tracking Controller](#geometric-tracking-controller)
+    - [Keyboard controller](#keyboard-controller)
+    - [Drone Geometric Tracking Controller](#drone-geometric-tracking-controller)
+      - [Literature References](#literature-references)
   - [GameUI](#gameui)
   - [WinchSystem](#winchsystem)
   - [Evolo](#evolo)
@@ -77,9 +81,7 @@
 
 - [Developer Environment Setup](#developer-environment-setup)
   - [CSharp SDK and LSP Setup](#csharp-sdk-and-lsp-setup)
-
-
-
+<!--toc:end-->
 
 # General Concepts and Phrases
 - **Body**: Refers to either an Articulation Body(AB), or a Rigidbody(RB) in Unity.
@@ -921,18 +923,24 @@ We have implemented a simple quadrotor drone, available as a prefab under `SMARC
 - **Motion RPM**: The RPMs to add/remove to hovering RPMs when moving normally.
 - **Lifting RPM**: Extra RPMs over the motion RPMs when pressing *Space* and a direction key.
 
-### Geometric Tracking Controller
+### Drone Geometric Tracking Controller
 
 ![DroneController](Media/DroneController.png)
 
-- **Base Link**: Base link of the drone itself.
-- **Control Freq.**: Frequency of control inputs, set to `FixedUpdate()` frequency for best results.
+- **Base Link**: Base link of the drone itself, provides positional, velocity, and orientation information to controller.
 - **Distance Error Cap**: Limit the aggressiveness of the drone motion. The bigger this is, the more aggressively the drone will tilt to propel itself directly at the target.
 - **Tracking Target TF**: An object to track. This can be literally anything. The drone will control towards this object. By default the quadrotor prefab has a `DroneTarget` object that you can use. You can move this around in the editor while the game is running or move it any other way, like from ROS using [the teleporter](#teleporter_sub).
-- **Load**: This controller can also control for a suspended load.
-  - **Rope**: The rope object that the load is suspended with.
-  - **Attack The Buoy**: If checked, the drone will ignore Tracking Target TF above and instead go for the buoy of the rope.
-  - **Load Link TF**: The transform where the rope's base is attached. Usually a part of another robot.
+- **Debug Logging Control**: Enables turning on the sending ROS Messages from drone controller over ROS for plotting and evaluating controller performance. ROS message is broadcasted over `baselink.name/controller_tuning/error`.
+
+
+
+#### Literature References
+Drone controller is implemented based on the following reference papers:
+- [Tracking Control](https://ieeexplore.ieee.org/document/5717652)
+
+Previous controllers were implemented based on the references below. There is possibility to expand this controller to accommodate these other methods.
+- [Suspended Load Control](https://hybrid-robotics.berkeley.edu/publications/CDC2013_supplement.pdf)
+- [Minimum Snap Trajectories](https://ieeexplore.ieee.org/document/9257897)
 
 
 ## GameUI
