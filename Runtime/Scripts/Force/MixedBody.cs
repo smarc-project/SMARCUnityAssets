@@ -71,6 +71,30 @@ namespace Force
                 else rb.mass = value;
             }
         }
+        public ArticulationDrive xDrive
+        {
+            get{if (ab != null){return ab.xDrive;}
+                else { throw new InvalidOperationException("The 'ab' part of MixedBody is null. Cannot get 'xDrive'.");}
+            }
+            set{if (ab != null){ab.xDrive = value;
+                } else { throw new InvalidOperationException("The 'ab' part of MixedBody is null. Cannot set 'xDrive'.");}
+            }
+        }
+
+        public ArticulationReducedSpace jointPosition
+        {
+            get 
+            { 
+                if (ab != null) { return ab.jointPosition; } 
+                else { throw new InvalidOperationException("The 'ab' part of MixedBody is null. 'jointPosition' is only valid for ArticulationBody."); } 
+            }
+            set 
+            { 
+                if (ab != null) { ab.jointPosition = value; } 
+                else { throw new InvalidOperationException("The 'ab' part of MixedBody is null. 'jointPosition' is only valid for ArticulationBody."); } 
+            }
+        }
+
 
         public float drag
         {
@@ -89,7 +113,23 @@ namespace Force
                 else rb.angularDrag = value;
             }
         }
-
+        public Vector3 angularVelocity
+        {
+            get {return ab ? ab.angularVelocity : rb.angularVelocity; }
+            set {
+                if(ab != null) ab.angularVelocity = value;
+                else rb.angularVelocity = value;
+            }
+        } 
+        public Vector3 velocity
+        {
+            get {return ab ? ab.velocity : rb.velocity; }
+            set {
+                if(ab != null) ab.velocity = value;
+                else rb.velocity = value;
+            }
+        }
+        
         public Vector3 position
         {
             get {return ab ? ab.transform.position : rb.transform.position; }
@@ -107,6 +147,13 @@ namespace Force
             else
                 rb.AddForceAtPosition(force, position, mode);
         }
+        public void AddTorque(Vector3 torque, ForceMode mode = ForceMode.Force)
+        {
+            if (ab != null)
+                ab.AddTorque(torque, mode);
+            else 
+                rb.AddTorque(torque, mode);
+        } 
 
         public void ConnectToJoint(Joint j)
         {
@@ -153,5 +200,30 @@ namespace Force
             return totalMass;
 
         }
+        
+    
+        public void SetDriveTarget(ArticulationDriveAxis axis, float target)
+        {
+            if (ab != null)
+            {
+                ab.SetDriveTarget(axis, target);
+            }
+            else
+            {
+                throw new InvalidOperationException("The 'ab' part of MixedBody is null. 'SetDriveTarget' is only valid for ArticulationBody.");
+            }
+        }    
+        public void SetDriveTargetVelocity(ArticulationDriveAxis axis, float velocity)
+        {
+            if (ab != null)
+            {
+                ab.SetDriveTargetVelocity(axis, velocity);
+            }
+            else
+            {
+                throw new InvalidOperationException("The 'ab' part of MixedBody is null. 'SetDriveTargetVelocity' is only valid for ArticulationBody.");
+            }
+        }
+
     }
 }

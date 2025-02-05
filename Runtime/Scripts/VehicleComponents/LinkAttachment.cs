@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Utils = DefaultNamespace.Utils;
+using Force;
 
 namespace VehicleComponents
 {
@@ -21,8 +22,10 @@ namespace VehicleComponents
         public float roll = 0f, pitch = 0f, yaw = 0f;
 
         protected GameObject attachedLink;
-        protected ArticulationBody articulationBody;
         protected ArticulationBody parentArticulationBody;
+        protected ArticulationBody articulationBody;
+        protected MixedBody mixedBody;
+        protected MixedBody parentMixedBody;
 
         protected void Awake()
         {
@@ -31,9 +34,6 @@ namespace VehicleComponents
 
         protected void Attach()
         {
-            // This object needs to dig down from the root
-            // and find an object with the given name to become
-            // a child under.
             attachedLink = Utils.FindDeepChildWithName(transform.root.gameObject, linkName);
             if (attachedLink == null)
             {
@@ -42,8 +42,7 @@ namespace VehicleComponents
                 return;
             }
 
-            transform.SetPositionAndRotation
-            (
+            transform.SetPositionAndRotation(
                 attachedLink.transform.position,
                 attachedLink.transform.rotation
             );
@@ -51,10 +50,6 @@ namespace VehicleComponents
             transform.Rotate(Vector3.right, pitch);
             transform.Rotate(Vector3.forward, roll);
 
-            // ...except if its a camera, ROS
-            // defines it with Y forw, Z right, X up (mapped to unity)
-            // instead of ZXY
-            // so we gotta turn our ZXY camera to match the YZX frame
             if (rotateForROSCamera)
             {
                 transform.Rotate(Vector3.up, 90);
@@ -63,11 +58,21 @@ namespace VehicleComponents
             }
 
             transform.SetParent(attachedLink.transform);
+            
+            ArticulationBody ab = GetComponent<ArticulationBody>();
+            Rigidbody rb = GetComponent<Rigidbody>();
 
-            TryGetComponent<ArticulationBody>(out articulationBody);
-            attachedLink.TryGetComponent<ArticulationBody>(out parentArticulationBody);
-            if (articulationBody == null) articulationBody = parentArticulationBody;
+            mixedBody = new MixedBody(ab, rb);
+
+            ArticulationBody parentAB = attachedLink.GetComponent<ArticulationBody>();
+            Rigidbody parentRB = attachedLink.GetComponent<Rigidbody>();
+
+            parentMixedBody = new MixedBody(parentAB, parentRB);
+
+            if (!mixedBody.isValid) mixedBody = parentMixedBody;
         }
+
+
 
         void FixedUpdate()
         {
