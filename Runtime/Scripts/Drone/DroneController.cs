@@ -261,7 +261,7 @@ namespace DroneController {
             // Quadrotor states
             // NOTE: checked these
             Vector<double> dronePosition = BaseLink.transform.position.To<ENU>().ToDense(); 
-            Vector<double> droneVelocity = baseLinkDroneAB.velocity.To<ENU>().ToDense();
+            Vector<double> droneVelocity = baseLinkDroneAB.linearVelocity.To<ENU>().ToDense();
             Matrix<double> currentAttitude = DenseMatrix.OfArray(new double[,] { { BaseLink.transform.right.x, BaseLink.transform.forward.x, BaseLink.transform.up.x },
                                                                     { BaseLink.transform.right.z, BaseLink.transform.forward.z, BaseLink.transform.up.z },
                                                                     { BaseLink.transform.right.y, BaseLink.transform.forward.y, BaseLink.transform.up.y } });

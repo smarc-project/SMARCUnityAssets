@@ -29,7 +29,7 @@ namespace VehicleComponents.Actuators
 
         [SerializeField] private ArticulationBody baseLinkArticulationBody;
         private float c_tau_f = 0.08f;
-        
+        private MixedBody baseLinkMixedBody; 
         
         public void SetRpm(double rpm)
         {
@@ -112,3 +112,4 @@ namespace VehicleComponents.Actuators
         }
         
     }
+}
