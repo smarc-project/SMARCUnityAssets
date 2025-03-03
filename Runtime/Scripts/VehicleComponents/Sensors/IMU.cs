@@ -31,18 +31,19 @@ namespace VehicleComponents.Sensors
         {
             var ab = articulationBody;
             localVelocity = ab.transform.InverseTransformVector(ab.velocity);
+            
             if (deltaTime > 0)
             {
                 Vector3 deltaLinearAcceleration = localVelocity - lastVelocity;
                 linearAcceleration = deltaLinearAcceleration / (float)deltaTime;
+                
             }
-            
             angularVelocity = ab.transform.InverseTransformVector(-1f * ab.angularVelocity);
             eulerAngles = ab.transform.rotation.eulerAngles;
             orientation = Quaternion.Euler(eulerAngles);
-
-            lastVelocity = localVelocity;
-
+            
+            lastVelocity = localVelocity; 
+            
             if (withGravity)
             {
                 // Find the global gravity in the local frame and add to the computed linear acceleration

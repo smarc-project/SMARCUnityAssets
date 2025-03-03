@@ -154,7 +154,7 @@ namespace Importer
             model.localPosition = forcePoint.transform.localPosition;
             model.localRotation = forcePoint.transform.localRotation;
             model.localScale = forcePoint.transform.localScale;
-            model.volumeObjectTransformPath = forcePoint.volumeObject.transform.GetPath(toStore?.transform);
+            model.volumeObjectTransformPath = forcePoint.VolumeObject.transform.GetPath(toStore?.transform);
             return model;
         }
 
@@ -171,7 +171,7 @@ namespace Importer
             }
 
             var point = transform.gameObject.AddComponent<ForcePoint>();
-            point.volumeObject = loadedRobot.transform.Find(volumeObjectTransformPath).gameObject;
+            point.VolumeObject = loadedRobot.transform.Find(volumeObjectTransformPath).gameObject;
             point.ConnectedArticulationBody = loadedRobot.transform.Find("base_link").GetComponent<ArticulationBody>();
             point.ConnectedRigidbody = loadedRobot.transform.Find("base_link").GetComponent<Rigidbody>();
         }

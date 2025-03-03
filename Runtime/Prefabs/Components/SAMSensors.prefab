@@ -425,6 +425,7 @@ Transform:
   - {fileID: 1288243303893278256}
   - {fileID: 3019645885186991366}
   - {fileID: 3756791423329683274}
+  - {fileID: 3485582565932541366}
   - {fileID: 3173918186795279577}
   - {fileID: 7483860395581452217}
   - {fileID: 8183599049189183586}
@@ -1219,6 +1220,7 @@ MonoBehaviour:
   RayMaterial: {fileID: -6478536213147159724, guid: 982c4d158e289562aa45be9f01a615a1, type: 3}
   RayThickness: 0.05
   DrawHits: 1
+  DrawEveryNthFrame: 10
   UseRainbow: 1
   HitsSize: 0.1
   HitsLifetime: 1
@@ -1342,6 +1344,61 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   linkName: odom
   retryUntilSuccess: 1
+  rotateForROSCamera: 0
+  roll: 0
+  pitch: 0
+  yaw: 0
+  m_GlobalFrameIds:
+  - map
+  suffix: _gt
+  frequency: 10
+  ErrorOnPublish: 0
+--- !u!1 &7228304869328427846
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3485582565932541366}
+  - component: {fileID: 3586967825466594158}
+  m_Layer: 0
+  m_Name: ROS_TF Rope
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &3485582565932541366
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7228304869328427846}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 7714421906245486986}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &3586967825466594158
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7228304869328427846}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 78564e3e0c2d8c65cb6601a38bee530d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  linkName: Rope
+  retryUntilSuccess: 0
   rotateForROSCamera: 0
   roll: 0
   pitch: 0
@@ -1955,6 +2012,7 @@ MonoBehaviour:
   RayMaterial: {fileID: 765158034006431142, guid: 4c69fe22859e53c60b1e6d411903d798, type: 3}
   RayThickness: 0.05
   DrawHits: 1
+  DrawEveryNthFrame: 10
   UseRainbow: 1
   HitsSize: 0.2
   HitsLifetime: 10

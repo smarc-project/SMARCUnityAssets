@@ -24,6 +24,8 @@ namespace VehicleComponents.ROS.Publishers
         [Header("P")]
         public float fxp=1;
         public float fyp=1, cxp=1, cyp=1, Tx=1, Ty=1;
+        Camera cam;
+
 
         protected override void InitializePublication()
         {
@@ -34,6 +36,7 @@ namespace VehicleComponents.ROS.Publishers
             ROSMsg.height = (uint) sensor.textureHeight;
             ROSMsg.width = (uint) sensor.textureWidth;
             ROSMsg.header.frame_id = sensor.linkName;
+            cam = GetComponent<Camera>();
         }
 
         protected override void UpdateMessage()
@@ -41,6 +44,13 @@ namespace VehicleComponents.ROS.Publishers
             ROSMsg.header.stamp = new TimeStamp(Clock.time);   
 
             float[] D = {k1,k2,t1,t2,k3};
+            
+            // Camera intrinsic matrix K 
+            fx = cam.focalLength * ROSMsg.width / cam.sensorSize.x;
+            fy = cam.focalLength * ROSMsg.height / cam.sensorSize.y;
+            cx = ROSMsg.width / 2f;
+            cy = ROSMsg.height / 2f;
+            
             float[] K = {
                 fx, 0,  cx,
                 0,  fy, cy,

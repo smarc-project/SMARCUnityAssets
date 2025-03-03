@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Utils = DefaultNamespace.Utils;
 
-using RosMessageTypes.Sam; // PercentStamped
+using RosMessageTypes.Smarc; // PercentStamped
 using IPercentageActuator = VehicleComponents.Actuators.IPercentageActuator;
 
 namespace VehicleComponents.ROS.Subscribers
@@ -11,9 +11,9 @@ namespace VehicleComponents.ROS.Subscribers
 
     [RequireComponent(typeof(IPercentageActuator))]
     public class PercentageCommand_Sub : Actuator_Sub<PercentStampedMsg>
-    {    
+    {
         IPercentageActuator act;
-        
+
         void Awake()
         {
             act = GetComponent<IPercentageActuator>();

@@ -1,5 +1,5 @@
 using UnityEngine;
-using RosMessageTypes.Sam;
+using RosMessageTypes.Smarc;
 using Unity.Robotics.Core; // Clock
 
 using IPercentageActuator = VehicleComponents.Actuators.IPercentageActuator;

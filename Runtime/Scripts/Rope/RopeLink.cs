@@ -13,7 +13,7 @@ namespace Rope
     [RequireComponent(typeof(CapsuleCollider))]
     public class RopeLink : MonoBehaviour
     {
-        [Header("Rope physics")]
+        [Header("Rope Joints")]
         [Tooltip("Stiffness properties of the rope (spring, damper, maxForce)")]
         public float spring = 0.1f;
         public float damper = 0.1f;
@@ -23,62 +23,103 @@ namespace Rope
         // we want these saved with the object (so you dont have to re-generate 100 times...),
         // but not shown in editor since they are set by the RopeGenerator on creation.
         [HideInInspector][SerializeField] RopeGenerator generator;
-        [HideInInspector][SerializeField] bool isBuoy = false;
         [HideInInspector][SerializeField] float ropeDiameter;
         [HideInInspector][SerializeField] float ropeCollisionDiameter;
         [HideInInspector][SerializeField] float segmentLength;
-        [HideInInspector][SerializeField] float segmentRigidbodyMass;
-        [HideInInspector][SerializeField] float segmentGravityMass;
-        bool attached = false;
-        GameObject connectedHookGO;
+        [HideInInspector][SerializeField] float segmentMass;
+        bool isTightTowardsVehicle = false;
+        bool isTightTowardsBuoy = false;
+        float tightTowardsVehicleLength;
+        float tightTowardsBuoyLength;
 
         CapsuleCollider capsule;
-        [HideInInspector] public ConfigurableJoint ropeJoint, hookJoint;
+        [HideInInspector] public ConfigurableJoint linkJoint;
         Rigidbody rb;
 
-        readonly string hookConnectionPointName = "ConnectionPoint";
+        [HideInInspector][SerializeField] Transform firstSegmentTransform;
+        [HideInInspector][SerializeField] Transform lastSegmentTransform;
 
-        public void SetRopeParams(RopeGenerator ropeGenerator, bool isBuoy)
+
+        // Called by RopeGenerator
+        public void SetRopeParams(RopeGenerator ropeGenerator)
         {
             generator = ropeGenerator;
             ropeDiameter = generator.RopeDiameter;
             ropeCollisionDiameter = generator.RopeCollisionDiameter;
             segmentLength = generator.SegmentLength;
-            segmentRigidbodyMass = generator.SegmentRBMass;
-            segmentGravityMass = isBuoy? generator.BuoyGrams * 0.001f : generator.IdealMassPerSegment;
-
-            this.isBuoy = isBuoy;
+            segmentMass = generator.SegmentMass;
 
             SetupBits();
             // center of rotation for front and back links
             // also where we put things like force points
             var (frontSpherePos, backSpherePos) = SpherePositions();
-            ropeJoint = GetComponent<ConfigurableJoint>();
-            SetupConfigJoint(ropeJoint, backSpherePos);
-            SetupBalloon();
+            linkJoint = GetComponent<ConfigurableJoint>();
+            SetupJoint(linkJoint, backSpherePos);
         }
 
+        public void AssignFirstAndLastSegments()
+        {
+            firstSegmentTransform = generator.RopeContainer.transform.GetChild(0);
+            lastSegmentTransform = generator.RopeContainer.transform.GetChild(generator.NumSegments-1);
+        }
+
+        public void SetupConnectionToPrevLink(Transform prevLink)
+        {
+            linkJoint = GetComponent<ConfigurableJoint>();
+            var linkZ = prevLink.localPosition.z + generator.SegmentLength;
+            transform.localPosition = new Vector3(0, 0, linkZ);
+            transform.rotation = prevLink.rotation;
+            linkJoint.autoConfigureConnectedAnchor = false;
+            linkJoint.connectedBody = prevLink.GetComponent<Rigidbody>();
+            linkJoint.connectedAnchor = linkJoint.anchor + new Vector3(0, 0, segmentLength);
+        }
+
+        public void SetupConnectionToVehicle(
+            GameObject vehicleConnectionLink,
+            GameObject vehicleBaseLink)
+        {
+            // First link in the chain, not connected to another link
+            linkJoint = GetComponent<ConfigurableJoint>();
+            linkJoint.connectedArticulationBody = vehicleConnectionLink.GetComponent<ArticulationBody>();
+
+            transform.position = vehicleConnectionLink.transform.position;
+            transform.rotation = vehicleConnectionLink.transform.rotation;
+
+            // make the first link not collide with its attached base link
+            if(vehicleBaseLink.TryGetComponent<Collider>(out Collider baseCollider))
+            {
+                var linkCollider = GetComponent<Collider>();
+                Physics.IgnoreCollision(linkCollider, baseCollider);
+            }
+
+            // disable the back force point as it is ON the joint
+            var backFP = transform.Find("ForcePoint_B");
+            backFP.gameObject.SetActive(false);
+        }
+
+        public RopeGenerator GetGenerator()
+        {
+            return generator;
+        }
 
 
         SoftJointLimitSpring MakeSJLS(float spring, float damper)
         {
-            var sjls = new SoftJointLimitSpring
+            return new SoftJointLimitSpring
             {
                 damper = damper,
                 spring = spring
             };
-            return sjls;
         }
 
         JointDrive MakeJD(float spring, float damper, float maximumForce)
         {
-            var drive = new JointDrive
+            return new JointDrive
             {
                 positionSpring = spring,
                 positionDamper = damper,
                 maximumForce = maximumForce
             };
-            return drive;
         }
 
         public (Vector3, Vector3) SpherePositions()
@@ -87,7 +128,7 @@ namespace Rope
         }
 
 
-        public void SetupConfigJoint(ConfigurableJoint joint, Vector3 anchorPosition)
+        void SetupJoint(ConfigurableJoint joint, Vector3 anchorPosition)
         {
             // This setup was found here
             // https://forums.tigsource.com/index.php?topic=64389.msg1389271#msg1389271
@@ -119,9 +160,7 @@ namespace Rope
             var FP_sphereCollider = FP_tf.GetComponent<SphereCollider>();
             FP_sphereCollider.radius = ropeDiameter/2;
             var FP = FP_tf.GetComponent<ForcePoint>();
-            FP.depthBeforeSubmerged = ropeDiameter;
-            FP.mass = segmentGravityMass;
-            FP.addGravity = true;
+            FP.DepthBeforeSubmerged = ropeDiameter*5;             
         }
 
         void SetupVisuals(Vector3 frontSpherePos, Vector3 backSpherePos)
@@ -152,130 +191,23 @@ namespace Rope
             capsule.center = new Vector3(0, ropeCollisionDiameter/2-ropeDiameter/2, segmentLength/2);
             capsule.height = segmentLength+ropeCollisionDiameter; // we want the collision to overlap with the child's
 
-            // Having the rope be _so tiny_ is problematic for
-            // physics calculations.
-            // But having it be heavy is problematic for lifting
-            // with drone and such.
-            // So we set the mass of the rigidbody to be large, and 
-            // apply our own custom gravity(with ForcePoints) with small mass.
-            // Mass is large in the RB for interactions, but gravity is small
-            // for lifting.
             rb = GetComponent<Rigidbody>();
-            rb.mass = segmentRigidbodyMass;
-            rb.useGravity = false;
+            rb.mass = segmentMass;
+            rb.centerOfMass = new Vector3(0, 0, segmentLength/2);
 
             SetupForcePoint(transform.Find("ForcePoint_F"), frontSpherePos);
             SetupForcePoint(transform.Find("ForcePoint_B"), backSpherePos);
             SetupVisuals(frontSpherePos, backSpherePos);
         }
 
-        void SetupBalloon()
-        {
-            if(!isBuoy) return;
-
-            // Add a visual sphere to the rope as the buoy balloon
-            var visuals = transform.Find("Visuals");
-            Transform sphere = GameObject.CreatePrimitive(PrimitiveType.Sphere).transform;
-            sphere.SetParent(visuals);
-            sphere.localPosition = new Vector3(0, ropeDiameter, segmentLength);
-            var rad = segmentLength-ropeDiameter;
-            var scale = new Vector3(rad, rad, rad);
-            sphere.localScale = scale;
-            // and make it collidable
-            var collider = sphere.GetComponent<SphereCollider>();
-            collider.radius = rad;
-        }
-
-        public void SetupConnectionToPrevLink(Transform prevLink)
-        {
-            ropeJoint = GetComponent<ConfigurableJoint>();
-            var linkZ = prevLink.localPosition.z + generator.SegmentLength;
-            transform.localPosition = new Vector3(0, 0, linkZ);
-            transform.rotation = prevLink.rotation;
-            ropeJoint.autoConfigureConnectedAnchor = false;
-            ropeJoint.connectedBody = prevLink.GetComponent<Rigidbody>();
-            ropeJoint.connectedAnchor = ropeJoint.anchor + new Vector3(0, 0, segmentLength);
-        }
-
-        public void SetupConnectionToVehicle(
-            GameObject vehicleBaseLinkConnection,
-            GameObject baseLink)
-        {
-            // First link in the chain, not connected to another link
-            ropeJoint = GetComponent<ConfigurableJoint>();
-            ropeJoint.connectedArticulationBody = vehicleBaseLinkConnection.GetComponent<ArticulationBody>();
-
-            transform.localPosition = new Vector3(0, 0, generator.SegmentLength/2);
-            transform.rotation = vehicleBaseLinkConnection.transform.rotation;
-
-            // make the first link not collide with its attached base link
-            if(baseLink.TryGetComponent<Collider>(out Collider baseCollider))
-            {
-                var linkCollider = GetComponent<Collider>();
-                Physics.IgnoreCollision(linkCollider, baseCollider);
-            }           
-        }
-
-        public void ConnectToHook(GameObject hookGO)
-        {
-            hookJoint = gameObject.AddComponent<ConfigurableJoint>();
-            var (frontSpherePos, backSpherePos) = SpherePositions();
-            SetupConfigJoint(hookJoint, frontSpherePos);
-
-            try
-            {
-                hookJoint.autoConfigureConnectedAnchor = false;
-                hookJoint.connectedAnchor = hookGO.transform.Find(hookConnectionPointName).localPosition;
-            }
-            catch(Exception)
-            {
-                Debug.Log("Hook object did not have a ConnectionPoint child, connecting where we touched...");
-            }
-
-            var hookAB = hookGO.GetComponent<ArticulationBody>();
-            hookJoint.connectedArticulationBody = hookAB;
-            attached = true;
-        }
-
-
-        public void SetMassScaleForPulling(float pullerOverPulledMassRatio)
-        {
-            if(attached)
-            {
-                hookJoint.massScale = pullerOverPulledMassRatio / rb.mass;
-            }
-            else
-            {
-                ropeJoint.connectedMassScale = pullerOverPulledMassRatio / rb.mass;
-            }
-        }
-
-
-        void OnCollisionEnter(Collision collision)
-        {
-            if(!isBuoy) return;
-            if(attached) return;
-            
-            if (collision.gameObject.TryGetComponent(out RopeHook rh))
-            {
-                Physics.IgnoreCollision(collision.collider, GetComponent<Collider>());
-
-                connectedHookGO = collision.gameObject;
-                ConnectToHook(connectedHookGO);
-                // by default the rope is usually too light to actually pull the vehicle
-                // it is attached to.
-                // we dont change that here, but instead check if the rope is tight in
-                // FixedUpdate() and replace the rope with sticks (for physics stability) that
-                // _can_ pull the vehicle.
-                // The many-links version of the rope is basically only for visual goals like
-                // cameras identifying the rope and such.
-            }
-        }
-
         void Awake()
         {
             rb = GetComponent<Rigidbody>();
-            ropeJoint = GetComponent<ConfigurableJoint>();
+            linkJoint = GetComponent<ConfigurableJoint>();
+
+            
+            tightTowardsVehicleLength = Vector3.Distance(firstSegmentTransform.position, transform.position);
+            tightTowardsBuoyLength = Vector3.Distance(lastSegmentTransform.position, transform.position);
 
             // disable self-collisions
             var ropeLinks = FindObjectsByType<RopeLink>(FindObjectsSortMode.None);
@@ -287,23 +219,23 @@ namespace Rope
 
         void FixedUpdate()
         {
-            if(!isBuoy) return;
-            if(!attached) return;
-            // if its a buoy rope bit, and attached to a hook
-            // check if the distance from the front join of buoy
-            // to back-joint of first link is about equal to rope length
-            // that means the rope is tight.
-            // then we can replace the rope with a stick to make it more stable in sim.
-            var firstRopeLinkObject = generator.RopeContainer.transform.GetChild(0);
-            var firstJoint = firstRopeLinkObject.GetComponent<Joint>();
-            var vehicleJointPos = firstJoint.transform.position + firstJoint.anchor;
-            var hookJointPos = transform.position + hookJoint.anchor;
-            var directLength = Vector3.Distance(vehicleJointPos, hookJointPos);
-            if(Mathf.Abs(directLength-generator.RopeLength) <= generator.RopeReplacementAccuracy)
-            {
-                Debug.Log($"Rope length reached {directLength}m and got replaced!");
-                generator.ReplaceRopeWithStick(connectedHookGO);
-            }
+            var distanceToVehicle = Vector3.Distance(firstSegmentTransform.position, transform.position);
+            isTightTowardsVehicle = Mathf.Abs(distanceToVehicle-tightTowardsVehicleLength) <= generator.RopeTightnessTolerance;
+            var distanceToBuoy = Vector3.Distance(lastSegmentTransform.position, transform.position);
+            isTightTowardsBuoy = Mathf.Abs(distanceToBuoy-tightTowardsBuoyLength) <= generator.RopeTightnessTolerance;
+        }
+
+        void OnDrawGizmos()
+        {
+            if(!generator.DrawGizmos) return;
+
+            Gizmos.color = isTightTowardsVehicle? Color.blue : Color.green;
+            var p = transform.position + transform.forward*segmentLength/3;
+            Gizmos.DrawSphere(p, ropeDiameter*1.1f);
+            
+            Gizmos.color = isTightTowardsBuoy? Color.red : Color.green;
+            p = transform.position + transform.forward*segmentLength*2/3;
+            Gizmos.DrawSphere(p, ropeDiameter*1.1f);
         }
         
         

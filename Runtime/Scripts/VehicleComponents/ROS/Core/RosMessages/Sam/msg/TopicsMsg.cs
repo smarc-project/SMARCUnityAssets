@@ -26,6 +26,52 @@ namespace RosMessageTypes.Sam
         public const string THRUSTER1_CMD_TOPIC = "'core/thruster1_cmd'";
         public const string THRUSTER2_CMD_TOPIC = "'core/thruster2_cmd'";
         public const string THRUST_VECTOR_CMD_TOPIC = "'core/thrust_vector_cmd'";
+        public const string DEPTH_TOPIC = "'core/depth20_pressure'";
+        public const string DVL_TOPIC = "'core/dvl'";
+        public const string LEAK_TOPIC = "'core/leak'";
+        public const string VBS_FB_TOPIC = "'core/vbs_fb'";
+        public const string LCG_FB_TOPIC = "'core/lcg_fb'";
+        public const string THRUSTER1_FB_TOPIC = "'core/thruster1_fb'";
+        public const string THRUSTER2_FB_TOPIC = "'core/thruster2_fb'";
+        public const string STIM_IMU_TOPIC = "'core/imu'";
+        public const string SBG_IMU_TOPIC = "'core/sbg_imu'";
+        public const string PRESS_DEPTH20_TOPIC = "'core/depth20_pressure'";
+        public const string SIDESCAN_TOPIC = "'payload/sidescan'";
+        public const string TOGGLE_SIDESCAN_SERVICE = "'payload/toggle_sidescan'";
+        public const string SIDESCAN_STATUS_TOPIC = "'payload/sidescan_status'";
+        // UAVCAN bridge topics
+        public const string GPS_FIX_TOPIC = "'core/can_gps'";
+        public const string MAGNETIC_FIELD_TOPIC = "'core/compass'";
+        public const string VBS_TANK_TEMPERATURE_TOPIC = "'core/vbs_tank_temperature'";
+        public const string ESC_STATUS0_TOPIC = "'core/esc_status0_fb'";
+        public const string ESC_STATUS1_TOPIC = "'core/esc_status1_fb'";
+        public const string CIRCUIT_STATUS_TOPIC = "'core/circuit_status'";
+        public const string YOST_IMU_TOPIC = "'core/yost_imu'";
+        public const string PRESS_DEPTH300_TOPIC = "'core/depth3000_pressure'";
+        public const string MOTOR_TEMP_TOPIC = "'core/motor_temp'";
+        public const string MOTOR_OIL_PRESSURE_TOPIC = "'core/motor_oil_pressure'";
+        public const string VBS_TANK_PRESSURE_TOPIC = "'core/vbs_tank_pressure'";
+        public const string BATTERY_STATUS_TOPIC = "'core/battery_status'";
+        public const string CONSUMED_CHARED_ARRAY_TOPIC = "'core/consumed_charged_array'";
+        public const string CTD_FB_TOPIC = "'core/ctd_fb'";
+        public const string THRUSTERS_FEEDBACK_TOPIC = "'core/thrusters_fb'";
+        public const string PANIC_FB_TOPIC = "'core/panic_fb'";
+        public const string LEAK_TOPIC_FB = "'core/leak_fb'";
+        public const string UTIL_CMD_TOPIC = "'core/util_cmd'";
+        public const string ARRAY_CMD_TOPIC = "'core/util_array_cmd'";
+        public const string TCG_CMD_TOPIC = "'core/tcg_cmd'";
+        public const string DUAL_THRUSTER_CMD_TOPIC = "'core/thruster_cmd'";
+        public const string LIGHTS_CMD_TOPIC = "'core/light_cmd'";
+        public const string PANIC_CMD_TOPIC = "'core/panic_cmd'";
+        public const string DROPWEIGHTS_CMD_TOPIC = "'core/dropweights_cmd'";
+        public const string LED_CMD_TOPIC = "'core/led_cmd'";
+        public const string DVL_CMD_TOPIC = "'core/dvl_relay'";
+        public const string SSS_CMD_TOPIC = "'core/sss_relay'";
+        public const string TOGGLE_7V_CMD_TOPIC = "'core/enable_7v'";
+        public const string GET_NODE_INFO_SRV = "'core/uavcan_get_node_info'";
+        public const string GET_TRANSPORT_STATS_SRV = "'core/uavcan_get_transport_stats'";
+        public const string RESTART_NODE_SRV = "'core/uavcan_restart_node'";
+        public const string UPDATE_BATTERY_SRV = "'core/uavcan_update_battery'";
 
         public TopicsMsg()
         {

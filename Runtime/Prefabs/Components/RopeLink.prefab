@@ -17,7 +17,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1072381918643874274
 Transform:
   m_ObjectHideFlags: 0
@@ -134,7 +134,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1330680881955517944
 Transform:
   m_ObjectHideFlags: 0
@@ -209,17 +209,15 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3220833670880742058}
-  - component: {fileID: 5318667478105785325}
-  - component: {fileID: 7791353921457315705}
-  - component: {fileID: 4876152612544120068}
   - component: {fileID: 3260935119812365718}
+  - component: {fileID: 4876152612544120068}
   m_Layer: 0
   m_Name: ForcePoint_B
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &3220833670880742058
 Transform:
   m_ObjectHideFlags: 0
@@ -235,56 +233,40 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1649529466708576780}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!33 &5318667478105785325
-MeshFilter:
+--- !u!114 &3260935119812365718
+MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4420765165816499496}
-  m_Mesh: {fileID: 10207, guid: 0000000000000000e000000000000000, type: 0}
---- !u!23 &7791353921457315705
-MeshRenderer:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4420765165816499496}
-  m_Enabled: 0
-  m_CastShadows: 0
-  m_ReceiveShadows: 0
-  m_DynamicOccludee: 0
-  m_StaticShadowCaster: 0
-  m_MotionVectors: 0
-  m_LightProbeUsage: 0
-  m_ReflectionProbeUsage: 0
-  m_RayTracingMode: 2
-  m_RayTraceProcedural: 0
-  m_RenderingLayerMask: 1
-  m_RendererPriority: 0
-  m_Materials:
-  - {fileID: 0}
-  m_StaticBatchInfo:
-    firstSubMesh: 0
-    subMeshCount: 0
-  m_StaticBatchRoot: {fileID: 0}
-  m_ProbeAnchor: {fileID: 0}
-  m_LightProbeVolumeOverride: {fileID: 0}
-  m_ScaleInLightmap: 1
-  m_ReceiveGI: 1
-  m_PreserveUVs: 0
-  m_IgnoreNormalsForChartDetection: 0
-  m_ImportantGI: 0
-  m_StitchLightmapSeams: 1
-  m_SelectedEditorRenderState: 3
-  m_MinimumChartSize: 4
-  m_AutoUVMaxDistance: 0.5
-  m_AutoUVMaxAngle: 89
-  m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
-  m_SortingOrder: 0
-  m_AdditionalVertexStreams: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9cabd620bcc508e47915e35234c68c5c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ConnectedArticulationBody: {fileID: 0}
+  ConnectedRigidbody: {fileID: 2453692462447050752}
+  VolumeObject: {fileID: 6502671150740987231}
+  VolumeMesh: {fileID: 0}
+  Volume: 0
+  WaterDensity: 997
+  DepthBeforeSubmerged: 0.03
+  MaxBuoyancyForce: 0.1
+  UnderwaterDrag: 1
+  UnderwaterAngularDrag: 0
+  AirDrag: 0.1
+  AirAngularDrag: 0
+  IsUnderwater: 0
+  AddGravity: 0
+  AutomaticCenterOfGravity: 0
+  Mass: 0
+  DrawForces: 0
+  GizmoSize: 0.01
+  AppliedBuoyancyForce: 0
+  AppliedGravityForce: 0
+  ApplyCustomForce: 0
+  CustomForce: {x: 0, y: 0, z: 0}
 --- !u!135 &4876152612544120068
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -306,29 +288,6 @@ SphereCollider:
   serializedVersion: 3
   m_Radius: 0
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &3260935119812365718
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4420765165816499496}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9cabd620bcc508e47915e35234c68c5c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  ConnectedArticulationBody: {fileID: 0}
-  ConnectedRigidbody: {fileID: 2453692462447050752}
-  volumeObject: {fileID: 0}
-  volumeMesh: {fileID: 0}
-  volume: 0.000001
-  WaterDensity: 997
-  depthBeforeSubmerged: 0.3
-  addGravity: 0
-  automaticCenterOfGravity: 0
-  mass: 0
-  drawForces: 1
 --- !u!1 &6502671150740987231
 GameObject:
   m_ObjectHideFlags: 0
@@ -346,7 +305,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &8603847845976021564
 Transform:
   m_ObjectHideFlags: 0
@@ -421,10 +380,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 720764538486028133}
-  - component: {fileID: 6430226332961413082}
-  - component: {fileID: 4660306551167620851}
-  - component: {fileID: 5890788663254625585}
   - component: {fileID: 5096116835249348008}
+  - component: {fileID: 5890788663254625585}
   m_Layer: 0
   m_Name: ForcePoint_F
   m_TagString: Untagged
@@ -447,56 +404,40 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1649529466708576780}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!33 &6430226332961413082
-MeshFilter:
+--- !u!114 &5096116835249348008
+MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8003534790774156089}
-  m_Mesh: {fileID: 10207, guid: 0000000000000000e000000000000000, type: 0}
---- !u!23 &4660306551167620851
-MeshRenderer:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8003534790774156089}
-  m_Enabled: 0
-  m_CastShadows: 0
-  m_ReceiveShadows: 0
-  m_DynamicOccludee: 0
-  m_StaticShadowCaster: 0
-  m_MotionVectors: 0
-  m_LightProbeUsage: 0
-  m_ReflectionProbeUsage: 0
-  m_RayTracingMode: 2
-  m_RayTraceProcedural: 0
-  m_RenderingLayerMask: 1
-  m_RendererPriority: 0
-  m_Materials:
-  - {fileID: 0}
-  m_StaticBatchInfo:
-    firstSubMesh: 0
-    subMeshCount: 0
-  m_StaticBatchRoot: {fileID: 0}
-  m_ProbeAnchor: {fileID: 0}
-  m_LightProbeVolumeOverride: {fileID: 0}
-  m_ScaleInLightmap: 1
-  m_ReceiveGI: 1
-  m_PreserveUVs: 0
-  m_IgnoreNormalsForChartDetection: 0
-  m_ImportantGI: 0
-  m_StitchLightmapSeams: 1
-  m_SelectedEditorRenderState: 3
-  m_MinimumChartSize: 4
-  m_AutoUVMaxDistance: 0.5
-  m_AutoUVMaxAngle: 89
-  m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
-  m_SortingOrder: 0
-  m_AdditionalVertexStreams: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9cabd620bcc508e47915e35234c68c5c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ConnectedArticulationBody: {fileID: 0}
+  ConnectedRigidbody: {fileID: 2453692462447050752}
+  VolumeObject: {fileID: 6502671150740987231}
+  VolumeMesh: {fileID: 0}
+  Volume: 0
+  WaterDensity: 997
+  DepthBeforeSubmerged: 0.03
+  MaxBuoyancyForce: 0.1
+  UnderwaterDrag: 1
+  UnderwaterAngularDrag: 0
+  AirDrag: 0.1
+  AirAngularDrag: 0
+  IsUnderwater: 0
+  AddGravity: 0
+  AutomaticCenterOfGravity: 0
+  Mass: 0
+  DrawForces: 0
+  GizmoSize: 0.01
+  AppliedBuoyancyForce: 0
+  AppliedGravityForce: 0
+  ApplyCustomForce: 0
+  CustomForce: {x: 0, y: 0, z: 0}
 --- !u!135 &5890788663254625585
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -518,29 +459,6 @@ SphereCollider:
   serializedVersion: 3
   m_Radius: 0
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &5096116835249348008
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8003534790774156089}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9cabd620bcc508e47915e35234c68c5c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  ConnectedArticulationBody: {fileID: 0}
-  ConnectedRigidbody: {fileID: 2453692462447050752}
-  volumeObject: {fileID: 0}
-  volumeMesh: {fileID: 0}
-  volume: 0.000001
-  WaterDensity: 997
-  depthBeforeSubmerged: 0.3
-  addGravity: 0
-  automaticCenterOfGravity: 0
-  mass: 0
-  drawForces: 1
 --- !u!1 &8527497976637253487
 GameObject:
   m_ObjectHideFlags: 0
@@ -550,8 +468,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1649529466708576780}
-  - component: {fileID: 4447885801482707029}
   - component: {fileID: 10039788946428091}
+  - component: {fileID: 4447885801482707029}
   - component: {fileID: 1080205937504706963}
   - component: {fileID: 2453692462447050752}
   - component: {fileID: 3607058454141938631}
@@ -580,6 +498,29 @@ Transform:
   - {fileID: 3220833670880742058}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &10039788946428091
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8527497976637253487}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7284c59de35753c1aabd86a7273926ff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  spring: 0.1
+  damper: 0.1
+  maximumForce: 5000
+  generator: {fileID: 0}
+  ropeDiameter: 0
+  ropeCollisionDiameter: 0
+  segmentLength: 0
+  segmentMass: 0
+  linkJoint: {fileID: 0}
+  firstSegmentTransform: {fileID: 0}
+  lastSegmentTransform: {fileID: 0}
 --- !u!136 &4447885801482707029
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -603,30 +544,6 @@ CapsuleCollider:
   m_Height: 0
   m_Direction: 2
   m_Center: {x: 0, y: 0.01, z: 0}
---- !u!114 &10039788946428091
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8527497976637253487}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7284c59de35753c1aabd86a7273926ff, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  spring: 0.1
-  damper: 0.5
-  maximumForce: 5000
-  generator: {fileID: 0}
-  isBuoy: 0
-  ropeDiameter: 0
-  ropeCollisionDiameter: 0
-  segmentLength: 0
-  segmentRigidbodyMass: 0
-  segmentGravityMass: 0
-  ropeJoint: {fileID: 0}
-  hookJoint: {fileID: 0}
 --- !u!114 &1080205937504706963
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -652,7 +569,7 @@ Rigidbody:
   m_Drag: 0
   m_AngularDrag: 0
   m_CenterOfMass: {x: 0, y: 0, z: 0}
-  m_InertiaTensor: {x: 0.01, y: 0.01, z: 0.01}
+  m_InertiaTensor: {x: 0.00001, y: 0.00001, z: 0.00001}
   m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
   m_IncludeLayers:
     serializedVersion: 2
@@ -661,8 +578,8 @@ Rigidbody:
     serializedVersion: 2
     m_Bits: 0
   m_ImplicitCom: 0
-  m_ImplicitTensor: 1
-  m_UseGravity: 0
+  m_ImplicitTensor: 0
+  m_UseGravity: 1
   m_IsKinematic: 0
   m_Interpolate: 0
   m_Constraints: 0
