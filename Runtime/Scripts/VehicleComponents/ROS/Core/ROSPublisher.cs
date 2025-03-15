@@ -30,6 +30,12 @@ namespace VehicleComponents.ROS.Core
 
         protected void Start()
         {
+            if(topic == null || topic == "")
+            {
+                Debug.LogError("ROS Publisher topic is not set!");
+                enabled = false;
+                return;
+            }
             // We namespace the topics with the root name
             if(topic[0] != '/') topic = $"/{transform.root.name}/{topic}";
 
