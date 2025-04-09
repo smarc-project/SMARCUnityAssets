@@ -41,6 +41,8 @@ namespace SmarcGUI.Connections
         public Toggle SubToSimToggle;
         public Toggle SubToRealToggle;
         public Toggle TLSToggle;
+        public TMP_InputField UserNameInput;
+        public TMP_InputField PasswordInput;
 
         public Button ConnectButton;
         public TMP_Text ConnectButtonText;
@@ -133,7 +135,7 @@ namespace SmarcGUI.Connections
             ConnectButtonText.text = "Connect";
         }
 
-        async void ToggleConnection()
+        void ToggleConnection()
         {
             if(mqttClient is null || !mqttClient.IsConnected)
             {
@@ -154,6 +156,11 @@ namespace SmarcGUI.Connections
             mqttClient = mqttFactory.CreateMqttClient();
 
             var mqttClientOptionsUnbuilt = new MqttClientOptionsBuilder().WithTcpServer(host: ServerAddress, port: ServerPort);
+
+            if(!string.IsNullOrEmpty(UserNameInput.text) && !string.IsNullOrEmpty(PasswordInput.text))
+            {
+                mqttClientOptionsUnbuilt = mqttClientOptionsUnbuilt.WithCredentials(UserNameInput.text, PasswordInput.text);
+            }
 
             if(TLSToggle.isOn)
             {
