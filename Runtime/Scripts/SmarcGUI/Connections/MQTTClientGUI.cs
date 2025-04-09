@@ -85,6 +85,9 @@ namespace SmarcGUI.Connections
             ContextInput.interactable = interactable;
             SubToRealToggle.interactable = interactable;
             SubToSimToggle.interactable = interactable;
+            TLSToggle.interactable = interactable;
+            UserNameInput.interactable = interactable;
+            PasswordInput.interactable = interactable;
         }
 
 
