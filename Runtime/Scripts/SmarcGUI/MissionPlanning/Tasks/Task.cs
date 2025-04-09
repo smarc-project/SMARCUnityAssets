@@ -1,19 +1,43 @@
 using System.Collections.Generic;
 using Newtonsoft.Json;
 using SmarcGUI.MissionPlanning.Params;
+using System;
+using UnityEngine;
 
 namespace SmarcGUI.MissionPlanning.Tasks
 {
     [JsonObject(NamingStrategyType = typeof(Newtonsoft.Json.Serialization.KebabCaseNamingStrategy))]
-    public class Task
+    public abstract class Task
     {
         public string Name{get; set;}
         public string Description;
         public string TaskUuid;
-        public Dictionary<string, object> Params = new();
+        public Dictionary<string, object> Params;
+
+        public static Dictionary<string, Type> GetAllKnownTaskTypes()
+        {
+            var taskType = typeof(Task);
+            var d = new Dictionary<string, Type>();
+
+            foreach (var assembly in System.AppDomain.CurrentDomain.GetAssemblies())
+            {
+                foreach (var type in assembly.GetTypes())
+                {
+                    if (type.IsSubclassOf(taskType) && !type.IsAbstract)
+                    {
+                        d.Add(type.Name, type);
+                    }
+                }
+            }
+            return d;
+        }
+
+        public abstract void SetParams();
 
         public Task()
         {
+            Params = new Dictionary<string, object>();
+            SetParams();
             OnTaskModified();
         }
 

@@ -58,6 +58,10 @@ namespace SmarcGUI.MissionPlanning.Tasks
 
         public void SetTask(Task task, TSTGUI tstGUI)
         {
+            foreach(var param in task.Params)
+            {
+                Debug.Log($"taskgui, param: {param.Key}, type: {param.Value.GetType()}");
+            }
             this.task = task;
             this.tstGUI = tstGUI;
             TaskName.text = task.Name;

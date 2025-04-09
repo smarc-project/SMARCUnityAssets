@@ -12,6 +12,8 @@ using SmarcGUI.MissionPlanning.Params;
 using SmarcGUI.Connections;
 
 
+
+
 namespace SmarcGUI.MissionPlanning
 {
     [RequireComponent(typeof(GUIState))]
@@ -38,7 +40,6 @@ namespace SmarcGUI.MissionPlanning
         public Transform TasksScrollContent;
         public TMP_Dropdown TaskTypeDropdown;
         public Button AddTaskButton;
-        public List<string> BasicTaskTypes = new(){"move-to", "move-path", "custom"};
 
 
         [Header("Prefabs")]
@@ -56,6 +57,8 @@ namespace SmarcGUI.MissionPlanning
         Color RunMissionButtonOriginalColor;
         TMP_Text RunMissionButtonText;
 
+        Dictionary<string, Type> TaskTypes;
+
         void Awake()
         {
             guiState = GetComponent<GUIState>();
@@ -65,12 +68,31 @@ namespace SmarcGUI.MissionPlanning
             RunMissionButton.onClick.AddListener(() => guiState.SelectedRobotGUI.SendStartTSTCommand(SelectedTSTGUI.tst));
             AddTaskButton.onClick.AddListener(() => SelectedTSTGUI.OnTaskAdded(new TaskSpec(TaskTypeDropdown.options[TaskTypeDropdown.value].text, null)));
 
+            // this finds all task types in the assembly through reflection.
+            if(TaskTypes == null) TaskTypes = Task.GetAllKnownTaskTypes();
             TaskTypeDropdown.ClearOptions();
-            TaskTypeDropdown.AddOptions(BasicTaskTypes);
+            var taskNames = new List<string>(TaskTypes.Keys);
+            TaskTypeDropdown.AddOptions(taskNames);
 
             RunMissionButtonImage = RunMissionButton.GetComponent<Image>();
             RunMissionButtonText = RunMissionButton.GetComponentInChildren<TMP_Text>();
             RunMissionButtonOriginalColor = RunMissionButtonImage.color;   
+        }
+
+        public dynamic CreateTask(string taskName)
+        {
+            if(TaskTypes == null) TaskTypes = Task.GetAllKnownTaskTypes();
+            if(!TaskTypes.ContainsKey(taskName))
+            {
+                guiState.Log($"Task type {taskName} not found!");
+                return null;
+            }
+            dynamic task = Activator.CreateInstance(TaskTypes[taskName]);
+            foreach(var param in task.Params)
+            {
+                Debug.Log($"mps, param: {param.Key}, type: {param.Value.GetType()}");
+            }
+            return task;
         }
 
         void Start()
