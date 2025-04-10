@@ -41,13 +41,20 @@ namespace VehicleComponents.ROS.Publishers
                 enabled = false;
                 return;
             }
-            else gpsRef = gpsRefs[0];
+            if(gpsRefs.Length > 1)
+            {
+                Debug.LogWarning("[UTM->Map pub] Found too many Global Reference Points in the scene, there should only be one! Using the first!");
+            }
+            
+            gpsRef = gpsRefs[0];
 
             // make sure this is in the origin
             // why origin? so that we can tell all other tf publishers
             // in the scene to publish a "global" frame that is map_gt
             // and they wont need to do any origin shenanigans that way
-            transform.localPosition = Vector3.zero;
+            transform.position = Vector3.zero;
+            transform.rotation = Quaternion.identity;
+
             if(!registered)
             {
                 rosCon.RegisterPublisher<TFMessageMsg>(topic);
@@ -58,10 +65,14 @@ namespace VehicleComponents.ROS.Publishers
             var (originEasting, originNorthing, _, _) = gpsRef.GetUTMLatLonOfObject(gameObject);
             var utm_zone_band = $"utm_{gpsRef.UTMZone}_{gpsRef.UTMBand}";
 
+            var mapgt_in_utm = new TransformMsg();
+            mapgt_in_utm.translation.x = originEasting;
+            mapgt_in_utm.translation.y = originNorthing;
+
             utmToMapMsg = new TransformStampedMsg(
                 new HeaderMsg(new TimeStamp(Clock.time), "utm"), //header
                 "map_gt", //child frame_id
-                new TransformMsg() // 0-transform
+                mapgt_in_utm
             );
 
             // also create a dummy utm_Z_B -> utm tf for people
@@ -73,10 +84,6 @@ namespace VehicleComponents.ROS.Publishers
                 new TransformMsg() // 0-transform
             );
 
-            // create transform message from utm to map_gt
-            originTf = new TransformMsg();
-            originTf.translation.x = originEasting;
-            originTf.translation.y = originNorthing;
             List<TransformStampedMsg> tfMessageList = new List<TransformStampedMsg>
             {
                 utmZBToUtmMsg,
@@ -96,6 +103,15 @@ namespace VehicleComponents.ROS.Publishers
             var stamp = new TimeStamp(Clock.time);
             utmToMapMsg.header.stamp = stamp;
             utmZBToUtmMsg.header.stamp = stamp;
+
+            List<TransformStampedMsg> tfMessageList = new List<TransformStampedMsg>
+            {
+                utmZBToUtmMsg,
+                utmToMapMsg
+            };
+            // These transforms never change during play mode
+            // so we can publish the same message all the time
+            tfMessage = new TFMessageMsg(tfMessageList.ToArray());
 
             rosCon.Publish(topic, tfMessage);
         }
