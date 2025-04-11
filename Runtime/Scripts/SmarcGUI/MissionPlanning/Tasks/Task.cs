@@ -7,7 +7,7 @@ using UnityEngine;
 namespace SmarcGUI.MissionPlanning.Tasks
 {
     [JsonObject(NamingStrategyType = typeof(Newtonsoft.Json.Serialization.KebabCaseNamingStrategy))]
-    public abstract class Task
+    public class Task
     {
         public string Name{get; set;}
         public string Description;
@@ -32,7 +32,7 @@ namespace SmarcGUI.MissionPlanning.Tasks
             return d;
         }
 
-        public abstract void SetParams();
+        public virtual void SetParams(){}
 
         public Task()
         {

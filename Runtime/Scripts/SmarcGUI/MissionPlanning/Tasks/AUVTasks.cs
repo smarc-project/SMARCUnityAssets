@@ -1,4 +1,6 @@
-using UnityEngine;
+
+
+using SmarcGUI.MissionPlanning.Params;
 
 namespace SmarcGUI.MissionPlanning.Tasks
 {
@@ -8,8 +10,7 @@ namespace SmarcGUI.MissionPlanning.Tasks
         {
             Name = "auv-depth-move-to";
             Description = "Move to a position and depth";
-            Params.Add("lat", 0);
-            Params.Add("lon", 0);
+            Params.Add("latlon", new LatLon());
             Params.Add("target_depth", 0);
             Params.Add("min_altitude", 0);
             Params.Add("rpm", 0);
@@ -23,8 +24,7 @@ namespace SmarcGUI.MissionPlanning.Tasks
         {
             Name = "auv-altitude-move-to";
             Description = "Move to a position and altitude";
-            Params.Add("lat", 0);
-            Params.Add("lon", 0);
+            Params.Add("latlon", new LatLon());
             Params.Add("target_altitude", 0);
             Params.Add("max_depth", 0);
             Params.Add("rpm", 0);
@@ -38,13 +38,9 @@ namespace SmarcGUI.MissionPlanning.Tasks
         {
             Name = "auv-hydrobatic-move-to";
             Description = "Move to a position, depth and orientation";
-            Params.Add("lat", 0);
-            Params.Add("lon", 0);
+            Params.Add("latlon", new LatLon());
             Params.Add("target_depth", 0);
-            Params.Add("qx", 0);
-            Params.Add("qy", 0);
-            Params.Add("qz", 0);
-            Params.Add("qw", 1);
+            Params.Add("orientation", new Orientation());
             Params.Add("timeout", 0);
         }
     }

@@ -57,8 +57,8 @@ namespace SmarcGUI.MissionPlanning.Params
 
         void NotifyPathChange()
         {
-            taskgui?.OnParamChanged();
-            listParamGUI?.OnParamChanged();
+            if(taskgui != null) taskgui.OnParamChanged();
+            if(listParamGUI != null) listParamGUI.OnParamChanged();
         }
 
         void Awake()
@@ -152,17 +152,17 @@ namespace SmarcGUI.MissionPlanning.Params
 
         public void OnDisable()
         {
-            worldMarker?.gameObject?.SetActive(false);
+            if(worldMarker != null) worldMarker.gameObject.SetActive(false);
         }
 
         public void OnEnable()
         {
-            worldMarker?.gameObject?.SetActive(true);
+            if(worldMarker != null) worldMarker.gameObject.SetActive(true);
         }
 
         protected override void OnSelectedChange()
         {
-            worldMarker?.ToggleDraggable(isSelected);
+            if(worldMarker != null) worldMarker.ToggleDraggable(isSelected);
         }
 
         public List<Vector3> GetWorldPath()

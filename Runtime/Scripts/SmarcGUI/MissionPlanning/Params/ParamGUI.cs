@@ -92,19 +92,19 @@ namespace SmarcGUI.MissionPlanning.Params
             if(eventData.button == PointerEventData.InputButton.Left)
             {
                 isSelected = !isSelected;
-                SelectedHighlightRT?.gameObject.SetActive(isSelected);
+                if(SelectedHighlightRT != null) SelectedHighlightRT.gameObject.SetActive(isSelected);
                 OnSelectedChange();
             }
         }
 
         public void OnPointerExit(PointerEventData eventData)
         {
-            HighlightRT?.gameObject.SetActive(false);
+            if(HighlightRT != null) HighlightRT.gameObject.SetActive(false);
         }
 
         public void OnPointerEnter(PointerEventData eventData)
         {
-            HighlightRT?.gameObject.SetActive(true);
+            if(HighlightRT != null) HighlightRT.gameObject.SetActive(true);
         }
 
         protected virtual void OnSelectedChange()
