@@ -2,7 +2,6 @@ using System.Collections.Generic;
 using Newtonsoft.Json;
 using SmarcGUI.MissionPlanning.Params;
 using System;
-using UnityEngine;
 
 namespace SmarcGUI.MissionPlanning.Tasks
 {
@@ -70,9 +69,20 @@ namespace SmarcGUI.MissionPlanning.Tasks
                     var geoPoints = JsonConvert.DeserializeObject<List<GeoPoint>>(paramValue.ToString());
                     paramUpdates.Add(param.Key, geoPoints);
                 }
+                else if(param.Key == "orientation")
+                {
+                    var orientation = JsonConvert.DeserializeObject<Orientation>(paramValue.ToString());
+                    paramUpdates.Add(param.Key, orientation);
+                }
+                else if(param.Key == "latlon")
+                {
+                    var latlon = JsonConvert.DeserializeObject<LatLon>(paramValue.ToString());
+                    paramUpdates.Add(param.Key, latlon);
+                }
                 else
                 {
                     // We don't know what this is... so we turn it into a string and show it
+                    
                     paramUpdates.Add(param.Key, paramValue.ToString());
                 }
                 // Add other known stuff like this...

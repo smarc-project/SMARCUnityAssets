@@ -11584,14 +11584,12 @@ MonoBehaviour:
   TasksScrollContent: {fileID: 4512513558757945864}
   TaskTypeDropdown: {fileID: 9089891483673677959}
   AddTaskButton: {fileID: 7520032996863823159}
-  BasicTaskTypes:
-  - move-to
-  - move-path
-  - custom
   TSTPrefab: {fileID: 5083224055965222135, guid: 7a664c3a8729e974aad211f5c730b81e, type: 3}
   TaskPrefab: {fileID: 6192201629958831668, guid: 7273d37636706b14b9dc7ad898109724, type: 3}
   PrimitiveParamPrefab: {fileID: 1497497768590733871, guid: 28ed7d2ce6ee4434b800def4843291cc, type: 3}
   GeoPointParamPrefab: {fileID: 5193145669377553919, guid: 26fa60fe5a4709346aa4c61309083d6b, type: 3}
+  LatLonParamPrefab: {fileID: 5193145669377553919, guid: 8cdefaaf213dbf14989297a67b78182b, type: 3}
+  OrientationParamPrefab: {fileID: 5193145669377553919, guid: 89f90b08d5d948244b28cebb297d4328, type: 3}
   ListParamPrefab: {fileID: 4724736429469239046, guid: e5af100246a2b3d469d9e861d6259b83, type: 3}
   SelectedTSTGUI: {fileID: 0}
 --- !u!114 &123414369969908222

@@ -1,8 +1,5 @@
-using System.Collections.Generic;
 using GeoRef;
-using SmarcGUI.WorldSpace;
 using TMPro;
-using UnityEngine;
 
 
 namespace SmarcGUI.MissionPlanning.Params
