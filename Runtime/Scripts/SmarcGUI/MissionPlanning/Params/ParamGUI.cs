@@ -82,7 +82,7 @@ namespace SmarcGUI.MissionPlanning.Params
 
         public void OnPointerClick(PointerEventData eventData)
         {
-            if(eventData.button == PointerEventData.InputButton.Right)
+            if(listParamGUI != null && eventData.button == PointerEventData.InputButton.Right)
             {
                 var contextMenuGO = Instantiate(ContextMenuPrefab);
                 var contextMenu = contextMenuGO.GetComponent<ListItemContextMenu>();

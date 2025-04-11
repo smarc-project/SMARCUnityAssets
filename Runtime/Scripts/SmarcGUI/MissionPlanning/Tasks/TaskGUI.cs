@@ -74,9 +74,8 @@ namespace SmarcGUI.MissionPlanning.Tasks
         void InstantiateParam(Transform parent, Dictionary<string, object> taskParams, string paramKey)
         {
             if(missionPlanStore == null) missionPlanStore = FindFirstObjectByType<MissionPlanStore>();
-            GameObject paramGO;
             GameObject paramPrefab = missionPlanStore.GetParamPrefab(taskParams[paramKey]);
-            paramGO = Instantiate(paramPrefab, parent);
+            GameObject paramGO = Instantiate(paramPrefab, parent);
             paramGO.GetComponent<ParamGUI>().SetParam(taskParams, paramKey, this);
         }
 
@@ -87,7 +86,6 @@ namespace SmarcGUI.MissionPlanning.Tasks
             // this seems to let the scroll view do its thing, and then update the size after.
             // Basically delaying the update by one frame.
             needsHeightUpdate = true;
-            ActuallyUpdateHeight();
         }
 
         void ActuallyUpdateHeight()

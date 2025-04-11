@@ -90,10 +90,6 @@ namespace SmarcGUI.MissionPlanning.Tasks
         public void OnTaskAdded(TaskSpec taskSpec)
         {
             Task newTask = missionPlanStore.CreateTask(taskSpec.Name);
-            foreach(var param in newTask.Params)
-            {
-                Debug.Log($"tstgui, param: {param.Key}, value: {param.Value}");
-            }
             tst.Children.Add(newTask);
             CreateTaskGUI(newTask);
             OnParamChanged();

@@ -47,6 +47,8 @@ namespace SmarcGUI.MissionPlanning
         public GameObject TaskPrefab;
         public GameObject PrimitiveParamPrefab;
         public GameObject GeoPointParamPrefab;
+        public GameObject LatLonParamPrefab;
+        public GameObject OrientationParamPrefab;
         public GameObject ListParamPrefab;
 
         [Header("State of mission planning GUI")]
@@ -217,6 +219,8 @@ namespace SmarcGUI.MissionPlanning
                 string or int or float or bool => PrimitiveParamPrefab,
                 GeoPoint => GeoPointParamPrefab,
                 IList => ListParamPrefab,
+                LatLon => LatLonParamPrefab,
+                Orientation => OrientationParamPrefab,
                 _ => PrimitiveParamPrefab,
             };
         }

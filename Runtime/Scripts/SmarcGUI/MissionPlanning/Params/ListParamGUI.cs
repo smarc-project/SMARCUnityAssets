@@ -53,7 +53,7 @@ namespace SmarcGUI.MissionPlanning.Params
             paramList.Add(newParam);
 
             // Instantiate the new parameter GUI
-            missionPlanStore ??= FindFirstObjectByType<MissionPlanStore>();
+            if(missionPlanStore == null) missionPlanStore = FindFirstObjectByType<MissionPlanStore>();
             GameObject paramPrefab = missionPlanStore.GetParamPrefab(newParam);
             GameObject paramGO = Instantiate(paramPrefab, content);
             paramGO.GetComponent<ParamGUI>().SetParam(paramList, math.max(0, paramList.Count - 1), this);
@@ -144,8 +144,8 @@ namespace SmarcGUI.MissionPlanning.Params
 
         public void OnParamChanged()
         {
-            taskgui?.OnParamChanged();
-            listParamGUI?.OnParamChanged();
+            if(taskgui != null) taskgui.OnParamChanged();
+            if(listParamGUI != null) listParamGUI.OnParamChanged();
         }
     }
 }
