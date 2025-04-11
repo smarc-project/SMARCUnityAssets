@@ -36,7 +36,7 @@ namespace SmarcGUI.MissionPlanning.Tasks
         Color RunButtonOriginalColor;
         TMP_Text RunButtonText;
 
-        bool needsHeightUpdate = false;
+        bool needsHeightUpdate = true;
 
         void Awake()
         {
@@ -58,10 +58,6 @@ namespace SmarcGUI.MissionPlanning.Tasks
 
         public void SetTask(Task task, TSTGUI tstGUI)
         {
-            foreach(var param in task.Params)
-            {
-                Debug.Log($"taskgui, param: {param.Key}, type: {param.Value.GetType()}");
-            }
             this.task = task;
             this.tstGUI = tstGUI;
             TaskName.text = task.Name;
@@ -91,6 +87,7 @@ namespace SmarcGUI.MissionPlanning.Tasks
             // this seems to let the scroll view do its thing, and then update the size after.
             // Basically delaying the update by one frame.
             needsHeightUpdate = true;
+            ActuallyUpdateHeight();
         }
 
         void ActuallyUpdateHeight()

@@ -52,11 +52,6 @@ namespace SmarcGUI.MissionPlanning
         [Header("State of mission planning GUI")]
         public TSTGUI SelectedTSTGUI;
 
-
-        Image RunMissionButtonImage;
-        Color RunMissionButtonOriginalColor;
-        TMP_Text RunMissionButtonText;
-
         Dictionary<string, Type> TaskTypes;
 
         void Awake()
@@ -69,29 +64,21 @@ namespace SmarcGUI.MissionPlanning
             AddTaskButton.onClick.AddListener(() => SelectedTSTGUI.OnTaskAdded(new TaskSpec(TaskTypeDropdown.options[TaskTypeDropdown.value].text, null)));
 
             // this finds all task types in the assembly through reflection.
-            if(TaskTypes == null) TaskTypes = Task.GetAllKnownTaskTypes();
+            TaskTypes ??= Task.GetAllKnownTaskTypes();
             TaskTypeDropdown.ClearOptions();
             var taskNames = new List<string>(TaskTypes.Keys);
             TaskTypeDropdown.AddOptions(taskNames);
-
-            RunMissionButtonImage = RunMissionButton.GetComponent<Image>();
-            RunMissionButtonText = RunMissionButton.GetComponentInChildren<TMP_Text>();
-            RunMissionButtonOriginalColor = RunMissionButtonImage.color;   
         }
 
         public dynamic CreateTask(string taskName)
         {
-            if(TaskTypes == null) TaskTypes = Task.GetAllKnownTaskTypes();
+            TaskTypes ??= Task.GetAllKnownTaskTypes();
             if(!TaskTypes.ContainsKey(taskName))
             {
                 guiState.Log($"Task type {taskName} not found!");
                 return null;
             }
             dynamic task = Activator.CreateInstance(TaskTypes[taskName]);
-            foreach(var param in task.Params)
-            {
-                Debug.Log($"mps, param: {param.Key}, type: {param.Value.GetType()}");
-            }
             return task;
         }
 
@@ -100,7 +87,6 @@ namespace SmarcGUI.MissionPlanning
             // Documents on win, user home on linux/mac
             MissionStoragePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Personal), Path.Combine("SMaRCUnity", "MissionPlans"));
             Directory.CreateDirectory(MissionStoragePath);
-            LoadMissionPlans();
         }
 
         void LateUpdate()
