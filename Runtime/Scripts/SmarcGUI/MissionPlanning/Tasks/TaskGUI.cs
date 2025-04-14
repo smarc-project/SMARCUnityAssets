@@ -32,15 +32,16 @@ namespace SmarcGUI.MissionPlanning.Tasks
         GUIState guiState;
         TSTGUI tstGUI;
         RectTransform rt;
+        float baseHeight;
         Image RunButtonImage;
         Color RunButtonOriginalColor;
         TMP_Text RunButtonText;
 
-        bool needsHeightUpdate = true;
 
         void Awake()
         {
             rt = GetComponent<RectTransform>();
+            baseHeight = rt.sizeDelta.y;
             missionPlanStore = FindFirstObjectByType<MissionPlanStore>();
             guiState = FindFirstObjectByType<GUIState>();
             DescriptionField.onValueChanged.AddListener(desc => task.Description = desc);
@@ -80,26 +81,22 @@ namespace SmarcGUI.MissionPlanning.Tasks
         }
 
 
+        // void ActuallyUpdateHeight()
         public void UpdateHeight()
         {
-            // Why? because this is under a scroll view and we cant have size-fitter component without problems
-            // this seems to let the scroll view do its thing, and then update the size after.
-            // Basically delaying the update by one frame.
-            needsHeightUpdate = true;
-        }
-
-        void ActuallyUpdateHeight()
-        {
-            float totalHeight = 0;
-            var paramsRT = Params.GetComponent<RectTransform>();
-            totalHeight += paramsRT.sizeDelta.y;
-            var nameRT = TaskName.GetComponent<RectTransform>();
-            totalHeight += nameRT.sizeDelta.y;
-            var descRT = DescriptionField.GetComponent<RectTransform>();
-            totalHeight += descRT.sizeDelta.y;
-            rt.sizeDelta = new Vector2(rt.sizeDelta.x, totalHeight + BottomPadding);
-            needsHeightUpdate = false;
-        }
+            float newHeight = baseHeight;
+            if(Params.gameObject.activeSelf)
+            {
+                float paramsHeight = 0;
+                foreach(Transform child in Params.transform)
+                {
+                    var paramRT = child.GetComponent<RectTransform>();
+                    paramsHeight += paramRT.sizeDelta.y;
+                }
+                newHeight += paramsHeight + BottomPadding;
+            }
+            rt.sizeDelta = new Vector2(rt.sizeDelta.x, newHeight);
+            }
 
 
         public void OnPointerClick(PointerEventData eventData)
@@ -125,7 +122,6 @@ namespace SmarcGUI.MissionPlanning.Tasks
 
         void LateUpdate()
         {
-            if(needsHeightUpdate) ActuallyUpdateHeight();
             RunButton.interactable = guiState.SelectedRobotGUI != null;
             if(guiState.SelectedRobotGUI == null)
             {
