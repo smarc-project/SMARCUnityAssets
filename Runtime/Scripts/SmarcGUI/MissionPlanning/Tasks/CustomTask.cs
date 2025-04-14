@@ -9,6 +9,7 @@ namespace SmarcGUI.MissionPlanning.Tasks
         {
             Name = "custom-task";
             Description = "A custom task with JSON params";
+            Params.Add("action-name", "custom-action");
             Params.Add("json-params", "{}");
         }
 
