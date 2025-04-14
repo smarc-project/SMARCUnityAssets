@@ -960,6 +960,8 @@ MonoBehaviour:
   RunButton: {fileID: 3209249580089359672}
   WarningRT: {fileID: 5459040116557469687}
   ContextMenuPrefab: {fileID: 5700513683117687523, guid: dc50e97ebddcc6a47ac3dec88f9b8116, type: 3}
+  TaskGhostPrefab: {fileID: 1601458213576630560, guid: ca93e13c63ac33af69d8e1ff5900e24f, type: 3}
+  WorldMarkersName: WorldMarkers
 --- !u!1 &6214090480317902547
 GameObject:
   m_ObjectHideFlags: 0

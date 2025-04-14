@@ -26,6 +26,11 @@ namespace SmarcGUI.MissionPlanning.Tasks
 
         [Header("Prefabs")]
         public GameObject ContextMenuPrefab;
+        public GameObject TaskGhostPrefab;
+
+        [Header("Worldspace")]
+        public string WorldMarkersName = "WorldMarkers";
+        Transform WorldMarkers;
 
 
         MissionPlanStore missionPlanStore;
@@ -36,6 +41,7 @@ namespace SmarcGUI.MissionPlanning.Tasks
         Image RunButtonImage;
         Color RunButtonOriginalColor;
         TMP_Text RunButtonText;
+        TaskGhost taskGhost;
 
 
         void Awake()
@@ -49,6 +55,8 @@ namespace SmarcGUI.MissionPlanning.Tasks
             RunButtonImage = RunButton.GetComponent<Image>();
             RunButtonText = RunButton.GetComponentInChildren<TMP_Text>();
             RunButtonOriginalColor = RunButtonImage.color;
+
+            WorldMarkers = GameObject.Find(WorldMarkersName).transform;
         }
         
         void OnRunTask()
@@ -72,6 +80,8 @@ namespace SmarcGUI.MissionPlanning.Tasks
                 InstantiateParam(Params.transform, task.Params, task.Params.Keys.ElementAt(i));
 
             UpdateHeight();
+    
+            taskGhost = Instantiate(TaskGhostPrefab, WorldMarkers).GetComponent<TaskGhost>();
         }
 
         void InstantiateParam(Transform parent, Dictionary<string, object> taskParams, string paramKey)
@@ -163,6 +173,7 @@ namespace SmarcGUI.MissionPlanning.Tasks
             }
             UpdateHeight();
             guiState.RegisterRobotSelectionChangedListener(this);
+            if(taskGhost != null) taskGhost.gameObject.SetActive(true);
         }
 
         void OnDisable()
@@ -172,6 +183,7 @@ namespace SmarcGUI.MissionPlanning.Tasks
                 child.gameObject.SetActive(false);
             }
             guiState.UnregisterRobotSelectionChangedListener(this);
+            if(taskGhost != null) taskGhost.gameObject.SetActive(false);
         }
 
         public void OnListItemUp()
