@@ -60,7 +60,7 @@ namespace SmarcGUI
 
         Transform worldMarkersTF;
         Transform ghostTF;
-        WorldspaceGhost ghost;
+        RobotGhost ghost;
         GameObject simRobotGO;
         Transform simRobotBaseLinkTF;
 
@@ -164,7 +164,7 @@ namespace SmarcGUI
                 ghostTF.name = $"Remote {robotname}";
                 ghostTF.SetParent(worldMarkersTF);
                 ghostTF.gameObject.SetActive(false);
-                ghost = ghostTF.GetComponent<WorldspaceGhost>();
+                ghost = ghostTF.GetComponent<RobotGhost>();
 
                 robotOverlayGO = Instantiate(RobotGUIOverlayPrefab);
                 robotOverlayGO.name = $"{robotname}_Overlay";

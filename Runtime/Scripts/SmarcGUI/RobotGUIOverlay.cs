@@ -39,7 +39,7 @@ namespace SmarcGUI
         Transform robotTF;
         Rigidbody robotRB;
         ArticulationBody robotAB;
-        WorldspaceGhost robotGhost;
+        RobotGhost robotGhost;
 
         Renderer[] robotRenderers;
         GUIState guiState;
@@ -207,7 +207,7 @@ namespace SmarcGUI
             this.robotTF = robotTF;
             if(robotTF.gameObject.TryGetComponent(out Rigidbody rb)) robotRB = rb;
             if(robotTF.gameObject.TryGetComponent(out ArticulationBody ab)) robotAB = ab;
-            if(robotTF.gameObject.TryGetComponent(out WorldspaceGhost wsGhost)) robotGhost = wsGhost;
+            if(robotTF.gameObject.TryGetComponent(out RobotGhost rGhost)) robotGhost = rGhost;
 
             robotRenderers = robotTF.GetComponentsInChildren<Renderer>();
             switch (infoSource)
