@@ -11,7 +11,7 @@ using UnityEngine.UI;
 
 namespace SmarcGUI.MissionPlanning.Tasks
 {
-    public class TaskGUI : MonoBehaviour, IHeightUpdatable, IPointerClickHandler, IPointerExitHandler, IPointerEnterHandler, IListItem, IPathInWorld, IParamChangeListener
+    public class TaskGUI : MonoBehaviour, IHeightUpdatable, IRobotSelectionChangeListener, IPointerClickHandler, IPointerExitHandler, IPointerEnterHandler, IListItem, IPathInWorld, IParamChangeListener
     {
         public float BottomPadding = 5;
         public Task task;
@@ -63,6 +63,8 @@ namespace SmarcGUI.MissionPlanning.Tasks
             this.tstGUI = tstGUI;
             TaskName.text = task.Name;
             DescriptionField.text = task.Description;
+            
+            guiState.RegisterRobotSelectionChangedListener(this);
 
             // instead of a foreach, we need to iterate over index because the param itself could modify the
             // individual parameter at this point
@@ -120,10 +122,10 @@ namespace SmarcGUI.MissionPlanning.Tasks
             HighlightRT.gameObject.SetActive(true);
         }
 
-        void LateUpdate()
+        public void OnRobotSelectionChange(RobotGUI SelectedRobotGUI)
         {
-            RunButton.interactable = guiState.SelectedRobotGUI != null;
-            if(guiState.SelectedRobotGUI == null)
+            RunButton.interactable = SelectedRobotGUI != null;
+            if(SelectedRobotGUI == null)
             {
                 WarningRT.gameObject.SetActive(false);
                 RunButtonImage.color = RunButtonOriginalColor;
@@ -132,13 +134,13 @@ namespace SmarcGUI.MissionPlanning.Tasks
             else
             {
                 // warning highlight if the selected robot does not have this task available
-                if(guiState.SelectedRobotGUI.InfoSource == InfoSource.SIM) WarningRT.gameObject.SetActive(false);
-                else WarningRT.gameObject.SetActive(!guiState.SelectedRobotGUI.TasksAvailableNames.Contains(task.Name));
+                if(SelectedRobotGUI.InfoSource == InfoSource.SIM) WarningRT.gameObject.SetActive(false);
+                else WarningRT.gameObject.SetActive(!SelectedRobotGUI.TasksAvailableNames.Contains(task.Name));
 
                 // make the RUN button green if it is already running this task
                 // use the task uuid to check this, since many tasks of the same type can be running
                 // 
-                if(guiState.SelectedRobotGUI.TasksExecutingUuids.Contains(task.TaskUuid))
+                if(SelectedRobotGUI.TasksExecutingUuids.Contains(task.TaskUuid))
                 {
                     RunButtonImage.color = Color.green;
                     RunButton.interactable = false;
@@ -150,8 +152,8 @@ namespace SmarcGUI.MissionPlanning.Tasks
                     RunButtonText.text = "Run";
                 }
             } 
-
         }
+
 
         void OnEnable()
         {
@@ -160,6 +162,7 @@ namespace SmarcGUI.MissionPlanning.Tasks
                 child.gameObject.SetActive(true);
             }
             UpdateHeight();
+            guiState.RegisterRobotSelectionChangedListener(this);
         }
 
         void OnDisable()
@@ -168,6 +171,7 @@ namespace SmarcGUI.MissionPlanning.Tasks
             {
                 child.gameObject.SetActive(false);
             }
+            guiState.UnregisterRobotSelectionChangedListener(this);
         }
 
         public void OnListItemUp()
@@ -182,6 +186,7 @@ namespace SmarcGUI.MissionPlanning.Tasks
 
         public void OnListItemDelete()
         {
+            guiState.UnregisterRobotSelectionChangedListener(this);
             tstGUI.DeleteTask(this);
         }
 

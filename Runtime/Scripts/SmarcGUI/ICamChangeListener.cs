@@ -4,6 +4,6 @@ namespace SmarcGUI
 {
     public interface ICamChangeListener
     {
-        void OnCamChange(Camera newCam);
+        public void OnCamChange(Camera newCam);
     }
 }

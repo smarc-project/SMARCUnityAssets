@@ -55,6 +55,7 @@ namespace SmarcGUI
 
 
         List<ICamChangeListener> camChangeListeners = new();
+        List<IRobotSelectionChangeListener> robotSelectionChangeListeners = new();
 
 
         string CameraTextFromCamera(Camera c)
@@ -145,6 +146,7 @@ namespace SmarcGUI
             camChangeListeners.Remove(listener);
         }
 
+
         public void OnCameraChanged(int camIndex)
         {
             var selection = cameraDropdown.options[camIndex];
@@ -162,12 +164,33 @@ namespace SmarcGUI
             }
         }
 
+
+        public void RegisterRobotSelectionChangedListener(IRobotSelectionChangeListener listener)
+        {
+            if(listener == null) return;
+            if(robotSelectionChangeListeners.Contains(listener)) return;
+            robotSelectionChangeListeners.Add(listener);
+        }
+
+        public void UnregisterRobotSelectionChangedListener(IRobotSelectionChangeListener listener)
+        {
+            if(listener == null) return;
+            if(!robotSelectionChangeListeners.Contains(listener)) return;
+            robotSelectionChangeListeners.Remove(listener);
+        }
+
+
         public void OnRobotSelectionChanged(RobotGUI robotgui)
         {
             SelectedRobotGUI = robotgui.IsSelected? robotgui : null;
             foreach(var r in RobotGuis)
             {
                 if(r.Value.RobotName != robotgui.RobotName) r.Value.Deselect();
+            }
+
+            foreach(var listener in robotSelectionChangeListeners)
+            {
+                listener.OnRobotSelectionChange(SelectedRobotGUI);
             }
         }
         
