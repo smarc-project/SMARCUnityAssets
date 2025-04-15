@@ -2,13 +2,17 @@ using UnityEngine;
 
 namespace SmarcGUI.WorldSpace
 {
-    public class PointMarker : MonoBehaviour, IWorldDraggable
+    public class PointMarker : MonoBehaviour, IWorldDraggable, IParamChangeListener
     {
         IParamHasXZ paramXZ;
         IParamHasY paramY;
+        IParamHasHeading paramHeading;
+        IParamHasOrientation paramOrientation;
 
         GameObject dragArrows;
         GameObject arrowYup, arrowYdown;
+        Transform headingCone;
+        Transform orientationModel;
 
         void Awake()
         {
@@ -19,6 +23,12 @@ namespace SmarcGUI.WorldSpace
             arrowYdown = das.NY.gameObject;
             arrowYup.SetActive(false);
             arrowYdown.SetActive(false);
+
+            headingCone = transform.Find("Heading");
+            headingCone.gameObject.SetActive(false);
+
+            orientationModel = transform.Find("OrientationModel");
+            orientationModel.gameObject.SetActive(false);
         }
 
         public void OnWorldDrag(Vector3 deltaPos)
@@ -26,33 +36,63 @@ namespace SmarcGUI.WorldSpace
             transform.position += deltaPos;
         }
 
-        public void OnWorldDragEnd()
+        public void OnWorldDragEnd(DragConstraint dragConstraint)
         {
-            paramXZ?.SetXZ(transform.position.x, transform.position.z);
-            paramY?.SetY(transform.position.y);
+            if(dragConstraint == DragConstraint.XZ ||
+               dragConstraint == DragConstraint.X  || 
+               dragConstraint == DragConstraint.Z)
+            {
+                paramXZ?.SetXZ(transform.position.x, transform.position.z);
+            }
+            else if(dragConstraint == DragConstraint.Y)
+            {
+                paramY?.SetY(transform.position.y);
+            }
         }
 
         public void SetXZParam(IParamHasXZ param)
         {
+            if(param == null) return;
             paramXZ = param;
             var (x, z) = param.GetXZ();
-            var y = 0f;
-            if(paramY != null) y = paramY.GetY();
-            transform.position = new Vector3(x, y, z);
+            transform.position = new Vector3(x, transform.position.y, z);
             dragArrows.SetActive(true);
         }
 
         public void SetYParam(IParamHasY param)
         {
+            if(param == null) return;
             paramY = param;
             arrowYup.SetActive(true);
             arrowYdown.SetActive(true);
-            if(paramXZ != null)
-            {
-                var (x, z) = paramXZ.GetXZ();
-                transform.position = new Vector3(x, param.GetY(), z);
-            }
+            var y = param.GetY();
+            transform.position = new Vector3(transform.position.x, y, transform.position.z);
         }
 
+        public void SetHeadingParam(IParamHasHeading param)
+        {
+            if(param == null) return;
+            paramHeading = param;
+            headingCone.localEulerAngles = new Vector3(0, param.GetHeading(), 0);
+            headingCone.gameObject.SetActive(paramXZ != null);
+        }
+
+        public void SetOrientationParam(IParamHasOrientation param)
+        {
+            if(param == null) return;
+            paramOrientation = param;
+            var o = param.GetOrientation();
+            var q = new Quaternion(o.x, o.y, o.z, o.w);
+            orientationModel.localRotation = q;
+            orientationModel.gameObject.SetActive(paramXZ != null);
+        }
+
+        public void OnParamChanged()
+        {
+            SetYParam(paramY);
+            SetXZParam(paramXZ);
+            SetHeadingParam(paramHeading);
+            SetOrientationParam(paramOrientation);
+        }
     }
 }

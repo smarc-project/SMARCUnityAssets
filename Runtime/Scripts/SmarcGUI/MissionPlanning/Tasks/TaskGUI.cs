@@ -34,6 +34,7 @@ namespace SmarcGUI.MissionPlanning.Tasks
         [Header("Worldspace")]
         public string WorldMarkersCollectionName = "WorldMarkers";
         Transform WorldMarkersCollection;
+        PointMarker pointmarker = null;
 
 
         MissionPlanStore missionPlanStore;
@@ -84,7 +85,6 @@ namespace SmarcGUI.MissionPlanning.Tasks
             // following parameters onto the same point, until a new horizontal point containing parameter
             // is found. This allows tasks with split poses (like latlon + depth + oritentaiton as separate params)
             // Meaning, a task can split the 6DOF pose into 2+1+1+1+1 if it wants to...
-            PointMarker pointmarker = null;
             for(int i=0; i<task.Params.Count; i++)
             {
                 var paramgui = InstantiateParamGui(Params.transform, task.Params, task.Params.Keys.ElementAt(i));
@@ -106,13 +106,15 @@ namespace SmarcGUI.MissionPlanning.Tasks
             }
 
             UpdateHeight();
+
             // no marker, meaning we can not know where this task is in the world, so the rest of the params
             // wont be visualized in the world.
             if(pointmarker == null) return; 
-
             foreach(ParamGUI paramgui in Params.GetComponentsInChildren<ParamGUI>())
             {
                 if(paramgui is IParamHasY paramY) pointmarker.SetYParam(paramY);
+                if(paramgui is IParamHasHeading paramH) pointmarker.SetHeadingParam(paramH);
+                if(paramgui is IParamHasOrientation paramO) pointmarker.SetOrientationParam(paramO);
             }
             
     
@@ -249,6 +251,7 @@ namespace SmarcGUI.MissionPlanning.Tasks
         {
             tstGUI.OnParamChanged();
             task.OnTaskModified();
+            if(pointmarker != null) pointmarker.OnParamChanged();
         }
     }
 }

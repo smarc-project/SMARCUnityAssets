@@ -1,10 +1,11 @@
+using SmarcGUI.WorldSpace;
 using TMPro;
 using UnityEngine;
 
 
 namespace SmarcGUI.MissionPlanning.Params
 {
-    public class OrientationParamGUI : ParamGUI
+    public class OrientationParamGUI : ParamGUI, IParamHasOrientation
     {
         [Header("OrientationParamGUI")]
         public TMP_InputField qwField, qxField, qyField, qzField;
@@ -98,6 +99,16 @@ namespace SmarcGUI.MissionPlanning.Params
                 OnEulerZChanged("0");
                 return;
             }
+        }
+
+        public Orientation GetOrientation()
+        {
+            return (Orientation)paramValue;
+        }
+
+        public void SetOrientation(Orientation orientation)
+        {
+            paramValue = orientation;
         }
     }
 }

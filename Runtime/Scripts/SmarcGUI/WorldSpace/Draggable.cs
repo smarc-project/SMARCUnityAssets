@@ -86,7 +86,7 @@ namespace SmarcGUI.WorldSpace
 
         public void OnEndDrag(PointerEventData eventData)
         {
-            if(DraggedObject != null) DraggedObject.GetComponent<IWorldDraggable>()?.OnWorldDragEnd();
+            if(DraggedObject != null) DraggedObject.GetComponent<IWorldDraggable>()?.OnWorldDragEnd(DragConstraint);
         }
     }
 }
