@@ -24,7 +24,7 @@ namespace SmarcGUI.MissionPlanning.Params
 
         protected override void SetupFields()
         {
-            depth = -10;
+            depth = -1;
             DepthField.text = depth.ToString();
         }
 
