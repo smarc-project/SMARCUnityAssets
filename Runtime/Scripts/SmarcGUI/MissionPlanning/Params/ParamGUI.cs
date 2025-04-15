@@ -8,6 +8,7 @@ namespace SmarcGUI.MissionPlanning.Params
 {
     public class ParamGUI : MonoBehaviour, IPointerClickHandler, IPointerExitHandler, IPointerEnterHandler, IListItem
     {
+        [Header("ParamGUI")]
         public TMP_Text Label;
         
         protected IDictionary paramsDict;
@@ -80,6 +81,12 @@ namespace SmarcGUI.MissionPlanning.Params
         protected virtual void SetupFields()
         {
             throw new System.NotImplementedException();
+        }
+
+        protected void NotifyPathChange()
+        {
+            if(taskgui != null) taskgui.OnParamChanged();
+            if(listParamGUI != null) listParamGUI.OnParamChanged();
         }
 
         public void OnPointerClick(PointerEventData eventData)

@@ -1,12 +1,14 @@
 using GeoRef;
 using SmarcGUI.WorldSpace;
 using TMPro;
+using UnityEngine;
 
 
 namespace SmarcGUI.MissionPlanning.Params
 {
     public class GeoPointParamGUI : ParamGUI, IParamHasXZ, IParamHasY
     {
+        [Header("GeoPointParamGUI")]
         public TMP_InputField LatField, LonField, AltField;
         GlobalReferencePoint globalReferencePoint;
 
@@ -44,11 +46,6 @@ namespace SmarcGUI.MissionPlanning.Params
             }
         }
 
-        void NotifyPathChange()
-        {
-            if(taskgui != null) taskgui.OnParamChanged();
-            if(listParamGUI != null) listParamGUI.OnParamChanged();
-        }
 
         void Awake()
         {

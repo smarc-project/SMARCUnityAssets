@@ -1,12 +1,14 @@
 using GeoRef;
 using SmarcGUI.WorldSpace;
 using TMPro;
+using UnityEngine;
 
 
 namespace SmarcGUI.MissionPlanning.Params
 {
     public class LatLonParamGUI : ParamGUI, IParamHasXZ
     {
+        [Header("LatLonParamGUI")]
         public TMP_InputField LatField, LonField;
 
         GlobalReferencePoint globalReferencePoint;
@@ -32,12 +34,6 @@ namespace SmarcGUI.MissionPlanning.Params
                 LonField.text = value.ToString();
                 NotifyPathChange();
             }
-        }
-
-        void NotifyPathChange()
-        {
-            if(taskgui != null) taskgui.OnParamChanged();
-            if(listParamGUI != null) listParamGUI.OnParamChanged();
         }
 
         void Awake()

@@ -9,6 +9,7 @@ namespace SmarcGUI.MissionPlanning.Params
 {
     public class ListParamGUI : ParamGUI, IHeightUpdatable, IPathInWorld, IParamChangeListener
     {
+        [Header("ListParamGUI")]
         RectTransform rt;
 
         public RectTransform content;

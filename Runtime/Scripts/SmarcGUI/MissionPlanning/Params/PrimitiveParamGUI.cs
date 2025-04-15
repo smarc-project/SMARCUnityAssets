@@ -1,5 +1,6 @@
 using TMPro;
 using System.Collections.Generic;
+using UnityEngine;
 
 
 
@@ -8,6 +9,7 @@ namespace SmarcGUI.MissionPlanning.Params
 
     class PrimitiveParamGUI : ParamGUI
     {
+        [Header("PrimitiveParamGUI")]
         public TMP_InputField InputField;
         public TMP_Dropdown ChoiceDropdown;
         

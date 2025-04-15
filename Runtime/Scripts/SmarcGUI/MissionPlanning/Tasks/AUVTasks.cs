@@ -11,7 +11,7 @@ namespace SmarcGUI.MissionPlanning.Tasks
             Name = "auv-depth-move-to";
             Description = "Move to a position and depth";
             Params.Add("latlon", new LatLon());
-            Params.Add("target_depth", 0);
+            Params.Add("target_depth", new Depth());
             Params.Add("min_altitude", 0);
             Params.Add("rpm", 0);
             Params.Add("timeout", 0);
@@ -25,7 +25,7 @@ namespace SmarcGUI.MissionPlanning.Tasks
             Name = "auv-altitude-move-to";
             Description = "Move to a position and altitude";
             Params.Add("latlon", new LatLon());
-            Params.Add("target_altitude", 0);
+            Params.Add("target_altitude", new Altitude());
             Params.Add("max_depth", 0);
             Params.Add("rpm", 0);
             Params.Add("timeout", 0);
@@ -39,7 +39,7 @@ namespace SmarcGUI.MissionPlanning.Tasks
             Name = "auv-hydrobatic-move-to";
             Description = "Move to a position, depth and orientation";
             Params.Add("latlon", new LatLon());
-            Params.Add("target_depth", 0);
+            Params.Add("target_depth", new Depth());
             Params.Add("orientation", new Orientation());
             Params.Add("timeout", 0);
         }
@@ -51,7 +51,7 @@ namespace SmarcGUI.MissionPlanning.Tasks
         {
             Name = "cruise-depth-at-heading";
             Description = "Cruise at a depth and heading";
-            Params.Add("target_depth", -1);
+            Params.Add("target_depth", new Depth());
             Params.Add("target_heading", 0);
             Params.Add("min_altitude", 0);
             Params.Add("rpm", 0);
@@ -65,7 +65,7 @@ namespace SmarcGUI.MissionPlanning.Tasks
         {
             Name = "cruise-depth-at-heading";
             Description = "Cruise at a depth and heading";
-            Params.Add("target_altitude", -1);
+            Params.Add("target_altitude", new Altitude());
             Params.Add("target_heading", 0);
             Params.Add("max_depth", 0);
             Params.Add("rpm", 0);

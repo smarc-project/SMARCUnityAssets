@@ -6,6 +6,7 @@ namespace SmarcGUI.MissionPlanning.Params
 {
     public class OrientationParamGUI : ParamGUI
     {
+        [Header("OrientationParamGUI")]
         public TMP_InputField qwField, qxField, qyField, qzField;
         public TMP_InputField xField, yField, zField;
         
@@ -30,11 +31,6 @@ namespace SmarcGUI.MissionPlanning.Params
             NotifyPathChange();
         }
 
-        void NotifyPathChange()
-        {
-            if(taskgui != null) taskgui.OnParamChanged();
-            if(listParamGUI != null) listParamGUI.OnParamChanged();
-        }
 
         void Awake()
         {
