@@ -73,7 +73,7 @@ namespace SmarcGUI.WorldSpace
 
             if (DraggedObject != null)
             {
-                DraggedObject?.GetComponent<IWorldDraggable>()?.OnWorldDrag(motion);
+                DraggedObject.GetComponent<IWorldDraggable>()?.OnWorldDrag(motion);
                 // transform.position = newPos;
             }
             else
@@ -86,7 +86,7 @@ namespace SmarcGUI.WorldSpace
 
         public void OnEndDrag(PointerEventData eventData)
         {
-            DraggedObject?.GetComponent<IWorldDraggable>()?.OnWorldDragEnd();
+            if(DraggedObject != null) DraggedObject.GetComponent<IWorldDraggable>()?.OnWorldDragEnd();
         }
     }
 }

@@ -11,12 +11,14 @@ namespace SmarcGUI.MissionPlanning.Params
         public TMP_Text Label;
         
         protected IDictionary paramsDict;
-        protected string paramKey;
+        public string ParamKey{get; protected set;}
         protected TaskGUI taskgui;
 
         protected IList paramsList;
-        public int paramIndex{get; protected set;}
+        public int ParamIndex{get; protected set;}
         protected ListParamGUI listParamGUI;
+
+        public string ParamName => $"{taskgui.name}_param_{ParamKey ?? ParamIndex.ToString()}";
 
         public RectTransform HighlightRT;
         public RectTransform SelectedHighlightRT;
@@ -37,20 +39,20 @@ namespace SmarcGUI.MissionPlanning.Params
 
         public object paramValue
         {
-            get => paramsDict!=null? paramsDict[paramKey] : paramsList[paramIndex];
+            get => paramsDict!=null? paramsDict[ParamKey] : paramsList[ParamIndex];
             protected set
             {
                 if(paramsDict!=null)
-                    paramsDict[paramKey] = value;
+                    paramsDict[ParamKey] = value;
                 else
-                    paramsList[paramIndex] = value;
+                    paramsList[ParamIndex] = value;
             }
         }
 
         public void SetParam(IDictionary paramsDict, string paramKey, TaskGUI taskgui)
         {
             this.paramsDict = paramsDict;
-            this.paramKey = paramKey;
+            this.ParamKey = paramKey;
             this.taskgui = taskgui;
             UpdateLabel();
             SetupFields();
@@ -58,7 +60,7 @@ namespace SmarcGUI.MissionPlanning.Params
         public void SetParam(IList paramsList, int paramIndex, ListParamGUI listParamGUI)
         {   
             this.paramsList = paramsList;
-            this.paramIndex = paramIndex;
+            this.ParamIndex = paramIndex;
             this.listParamGUI = listParamGUI;
             UpdateLabel();
             SetupFields();
@@ -66,12 +68,12 @@ namespace SmarcGUI.MissionPlanning.Params
 
         void UpdateLabel()
         {
-            Label.text = paramKey ?? paramIndex.ToString();
+            Label.text = ParamKey ?? ParamIndex.ToString();
         }
 
         public void UpdateIndex(int newIndex)
         {
-            paramIndex = newIndex;
+            ParamIndex = newIndex;
             UpdateLabel();
         }
 

@@ -1,24 +1,14 @@
-using System.Collections.Generic;
 using GeoRef;
 using SmarcGUI.WorldSpace;
 using TMPro;
-using UnityEngine;
 
 
 namespace SmarcGUI.MissionPlanning.Params
 {
-
-
-    public class GeoPointParamGUI : ParamGUI, IPathInWorld
+    public class GeoPointParamGUI : ParamGUI, IParamHasXZ, IParamHasY
     {
         public TMP_InputField LatField, LonField, AltField;
-
-        public GameObject WorldMarkerPrefab;
-        public string WorldMarkersName = "WorldMarkers";
-
-        GeoPointMarker worldMarker;
         GlobalReferencePoint globalReferencePoint;
-        Transform WorldMarkers;
 
         public float altitude
         {
@@ -64,7 +54,6 @@ namespace SmarcGUI.MissionPlanning.Params
         {
             globalReferencePoint = FindFirstObjectByType<GlobalReferencePoint>();
             guiState = FindFirstObjectByType<GUIState>();
-            WorldMarkers = GameObject.Find(WorldMarkersName).transform;
         }
 
         protected override void SetupFields()
@@ -72,9 +61,9 @@ namespace SmarcGUI.MissionPlanning.Params
             if(altitude == 0 && latitude == 0 && longitude == 0)
             {
                 // set this to be the same as the previous geo point
-                if (paramIndex > 0)
+                if (ParamIndex > 0)
                 {
-                    var previousGp = (GeoPoint)paramsList[paramIndex - 1];
+                    var previousGp = (GeoPoint)paramsList[ParamIndex - 1];
                     latitude = previousGp.latitude;
                     longitude = previousGp.longitude;
                     altitude = previousGp.altitude;
@@ -98,8 +87,6 @@ namespace SmarcGUI.MissionPlanning.Params
             LonField.onValueChanged.AddListener(OnLonChanged);
             AltField.onValueChanged.AddListener(OnAltChanged);
 
-            worldMarker = Instantiate(WorldMarkerPrefab, WorldMarkers).GetComponent<GeoPointMarker>();
-            worldMarker.SetGeoPointParamGUI(this);
             OnSelectedChange();
         }
 
@@ -119,7 +106,6 @@ namespace SmarcGUI.MissionPlanning.Params
                 OnLatChanged(latitude.ToString());
                 return;
             }
-            worldMarker.OnGUILatLonChanged();
             NotifyPathChange();
         }
 
@@ -132,7 +118,6 @@ namespace SmarcGUI.MissionPlanning.Params
                 OnLonChanged(longitude.ToString());
                 return;
             }
-            worldMarker.OnGUILatLonChanged();
             NotifyPathChange();
         }   
 
@@ -145,29 +130,32 @@ namespace SmarcGUI.MissionPlanning.Params
                 OnAltChanged(altitude.ToString());
                 return;
             }
-            worldMarker.OnGUIAltChanged();
             NotifyPathChange();
         }
 
-        public void OnDisable()
+
+
+        public (float, float) GetXZ()
         {
-            if(worldMarker != null) worldMarker.gameObject.SetActive(false);
+            var (tx,tz) = globalReferencePoint.GetUnityXZFromLatLon(latitude, longitude);
+            return ((float)tx, (float)tz);
         }
 
-        public void OnEnable()
+        public void SetXZ(float x, float z)
         {
-            if(worldMarker != null) worldMarker.gameObject.SetActive(true);
+            var (lat, lon) = globalReferencePoint.GetLatLonFromUnityXZ(x, z);
+            latitude = lat;
+            longitude = lon;
         }
 
-        protected override void OnSelectedChange()
+        public float GetY()
         {
-            if(worldMarker != null) worldMarker.ToggleDraggable(isSelected);
+            return altitude;
         }
 
-        public List<Vector3> GetWorldPath()
+        public void SetY(float y)
         {
-            if(worldMarker == null) return new List<Vector3>();
-            return new List<Vector3> { worldMarker.transform.position };
+            altitude = y;
         }
     }
 }

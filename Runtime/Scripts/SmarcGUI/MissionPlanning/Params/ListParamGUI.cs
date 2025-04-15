@@ -64,29 +64,29 @@ namespace SmarcGUI.MissionPlanning.Params
         public void MoveParamUp(ParamGUI paramgui)
         {
             if(paramList == null) return;
-            if(paramgui.paramIndex == 0) return;
-            (paramList[paramgui.paramIndex-1], paramList[paramgui.paramIndex]) = (paramList[paramgui.paramIndex], paramList[paramgui.paramIndex-1]);
-            paramgui.transform.SetSiblingIndex(paramgui.paramIndex - 1);
-            paramgui.UpdateIndex(paramgui.paramIndex - 1);
-            paramgui.transform.parent.GetChild(paramgui.paramIndex+1).GetComponent<ParamGUI>().UpdateIndex(paramgui.paramIndex+1);
+            if(paramgui.ParamIndex == 0) return;
+            (paramList[paramgui.ParamIndex-1], paramList[paramgui.ParamIndex]) = (paramList[paramgui.ParamIndex], paramList[paramgui.ParamIndex-1]);
+            paramgui.transform.SetSiblingIndex(paramgui.ParamIndex - 1);
+            paramgui.UpdateIndex(paramgui.ParamIndex - 1);
+            paramgui.transform.parent.GetChild(paramgui.ParamIndex+1).GetComponent<ParamGUI>().UpdateIndex(paramgui.ParamIndex+1);
         }
         
 
         public void MoveParamDown(ParamGUI paramgui)
         {
             if(paramList == null) return;
-            if(paramgui.paramIndex == paramList.Count-1) return;
-            (paramList[paramgui.paramIndex+1], paramList[paramgui.paramIndex]) = (paramList[paramgui.paramIndex], paramList[paramgui.paramIndex+1]);
-            paramgui.transform.SetSiblingIndex(paramgui.paramIndex + 1);
-            paramgui.UpdateIndex(paramgui.paramIndex + 1);
-            paramgui.transform.parent.GetChild(paramgui.paramIndex-1).GetComponent<ParamGUI>().UpdateIndex(paramgui.paramIndex-1);
+            if(paramgui.ParamIndex == paramList.Count-1) return;
+            (paramList[paramgui.ParamIndex+1], paramList[paramgui.ParamIndex]) = (paramList[paramgui.ParamIndex], paramList[paramgui.ParamIndex+1]);
+            paramgui.transform.SetSiblingIndex(paramgui.ParamIndex + 1);
+            paramgui.UpdateIndex(paramgui.ParamIndex + 1);
+            paramgui.transform.parent.GetChild(paramgui.ParamIndex-1).GetComponent<ParamGUI>().UpdateIndex(paramgui.ParamIndex-1);
         }
 
         public void DeleteParam(ParamGUI paramgui)
         {
             if(paramList == null) return;
-            var originalIndex = paramgui.paramIndex;
-            paramList.RemoveAt(paramgui.paramIndex);
+            var originalIndex = paramgui.ParamIndex;
+            paramList.RemoveAt(paramgui.ParamIndex);
             Destroy(paramgui.gameObject);
             // Update the indices of the remaining parameters that was originally below deleted one
             for(int i=originalIndex; i<paramgui.transform.parent.childCount; i++)

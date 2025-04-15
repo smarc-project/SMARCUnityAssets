@@ -1,10 +1,11 @@
 using GeoRef;
+using SmarcGUI.WorldSpace;
 using TMPro;
 
 
 namespace SmarcGUI.MissionPlanning.Params
 {
-    public class LatLonParamGUI : ParamGUI
+    public class LatLonParamGUI : ParamGUI, IParamHasXZ
     {
         public TMP_InputField LatField, LonField;
 
@@ -50,9 +51,9 @@ namespace SmarcGUI.MissionPlanning.Params
             if(latitude == 0 && longitude == 0)
             {
                 // set this to be the same as the previous geo point
-                if (paramIndex > 0)
+                if (ParamIndex > 0)
                 {
-                    var previousGp = (LatLon)paramsList[paramIndex - 1];
+                    var previousGp = (LatLon)paramsList[ParamIndex - 1];
                     latitude = previousGp.latitude;
                     longitude = previousGp.longitude;
                     guiState.Log("New LatLon set to previous.");
@@ -104,6 +105,19 @@ namespace SmarcGUI.MissionPlanning.Params
                 return;
             }
             NotifyPathChange();
-        }   
+        }
+
+        public (float, float) GetXZ()
+        {
+            var (tx,tz) = globalReferencePoint.GetUnityXZFromLatLon(latitude, longitude);
+            return ((float)tx, (float)tz);
+        }
+
+        public void SetXZ(float x, float z)
+        {
+            var (lat, lon) = globalReferencePoint.GetLatLonFromUnityXZ(x, z);
+            latitude = lat;
+            longitude = lon;
+        }
     }
 }

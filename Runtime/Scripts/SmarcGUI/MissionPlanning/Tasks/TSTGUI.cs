@@ -81,7 +81,7 @@ namespace SmarcGUI.MissionPlanning.Tasks
 
         void OnSelectionChanged()
         {
-            SelectedHighlightRT?.gameObject.SetActive(isSelected);
+            if(SelectedHighlightRT != null) SelectedHighlightRT.gameObject.SetActive(isSelected);
             missionPlanStore.OnTSTSelected(isSelected? this : null);
             UpdateTasksGUI();
             PathLineRenderer.enabled = isSelected;
