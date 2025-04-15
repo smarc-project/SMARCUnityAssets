@@ -1,8 +1,9 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace SmarcGUI.WorldSpace
 {
-    public class PointMarker : MonoBehaviour, IWorldDraggable, IParamChangeListener
+    public class PointMarker : MonoBehaviour, IWorldDraggable, IParamChangeListener, IPathInWorld
     {
         IParamHasXZ paramXZ;
         IParamHasY paramY;
@@ -93,6 +94,13 @@ namespace SmarcGUI.WorldSpace
             SetXZParam(paramXZ);
             SetHeadingParam(paramHeading);
             SetOrientationParam(paramOrientation);
+        }
+
+        public List<Vector3> GetWorldPath()
+        {
+            var l = new List<Vector3>();
+            if(paramXZ != null) l.Add(transform.position);
+            return l;
         }
     }
 }

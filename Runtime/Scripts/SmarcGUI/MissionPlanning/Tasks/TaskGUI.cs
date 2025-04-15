@@ -27,8 +27,7 @@ namespace SmarcGUI.MissionPlanning.Tasks
         [Header("Prefabs")]
         public GameObject ContextMenuPrefab;
         public GameObject PointMarkerPrefab;
-        public GameObject OrientationMarkerPrefab;
-        public GameObject VerticalMarkerPrefab;
+
 
 
         [Header("Worldspace")]
@@ -210,6 +209,7 @@ namespace SmarcGUI.MissionPlanning.Tasks
             }
             UpdateHeight();
             guiState.RegisterRobotSelectionChangedListener(this);
+            if(pointmarker != null) pointmarker.gameObject.SetActive(true);
         }
 
         void OnDisable()
@@ -219,6 +219,8 @@ namespace SmarcGUI.MissionPlanning.Tasks
                 child.gameObject.SetActive(false);
             }
             guiState.UnregisterRobotSelectionChangedListener(this);
+            if(pointmarker != null) pointmarker.gameObject.SetActive(false);
+
         }
 
         public void OnListItemUp()
@@ -235,6 +237,7 @@ namespace SmarcGUI.MissionPlanning.Tasks
         {
             guiState.UnregisterRobotSelectionChangedListener(this);
             tstGUI.DeleteTask(this);
+            if(pointmarker != null) Destroy(pointmarker.gameObject);
         }
 
         public List<Vector3> GetWorldPath()
@@ -244,6 +247,7 @@ namespace SmarcGUI.MissionPlanning.Tasks
             {
                 if(child.TryGetComponent<IPathInWorld>(out var paramGUI)) path.AddRange(paramGUI.GetWorldPath());
             }
+            if(pointmarker != null) path.AddRange(pointmarker.GetWorldPath());
             return path;
         }
 
