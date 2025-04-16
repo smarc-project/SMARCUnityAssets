@@ -15,6 +15,9 @@ namespace SmarcGUI.WorldSpace
         Transform headingCone;
         Transform orientationModel;
 
+        LineRenderer lineToShadow;
+        Transform shadowMarker;
+
         void Awake()
         {
             dragArrows = transform.Find("DragArrows").gameObject;
@@ -30,6 +33,11 @@ namespace SmarcGUI.WorldSpace
 
             orientationModel = transform.Find("OrientationModel");
             orientationModel.gameObject.SetActive(false);
+
+            shadowMarker = transform.Find("ShadowOnWater");
+            shadowMarker.gameObject.SetActive(false);
+            lineToShadow = shadowMarker.GetComponent<LineRenderer>();
+            lineToShadow.enabled = false;
         }
 
         public void OnWorldDrag(Vector3 deltaPos)
@@ -68,6 +76,24 @@ namespace SmarcGUI.WorldSpace
             arrowYdown.SetActive(true);
             var y = param.GetY();
             transform.position = new Vector3(transform.position.x, y, transform.position.z);
+            if(Mathf.Abs(y) > 1)
+            {
+                shadowMarker.gameObject.SetActive(true);
+                lineToShadow.enabled = true;
+                shadowMarker.position = new Vector3(transform.position.x, 0, transform.position.z);
+                lineToShadow.startWidth = 0.1f;
+                lineToShadow.endWidth = 0.1f;
+                lineToShadow.startColor = Color.yellow;
+                lineToShadow.endColor = Color.yellow;
+                lineToShadow.positionCount = 2;
+                lineToShadow.SetPosition(0, transform.position);
+                lineToShadow.SetPosition(1, shadowMarker.position);
+            }
+            else
+            {
+                shadowMarker.gameObject.SetActive(false);
+                lineToShadow.enabled = false;
+            }
         }
 
         public void SetHeadingParam(IParamHasHeading param)
