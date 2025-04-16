@@ -16,7 +16,8 @@ namespace SmarcGUI
     public class GUIState : MonoBehaviour, IPointerExitHandler, IPointerEnterHandler
     {
         public string UUID{get; private set;}
-        public bool MouseOnGUI{get; private set;}
+        public bool MouseOnGUI{get; set;}
+        public bool MouseDragging{get; set;}
 
         [Tooltip("Cursor position in normalized coordinates on the screen (0-1)")]
         public Vector2 CursorInView => new(0.5f, 0.5f);

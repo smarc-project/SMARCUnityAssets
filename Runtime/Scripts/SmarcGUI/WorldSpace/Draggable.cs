@@ -16,6 +16,8 @@ namespace SmarcGUI.WorldSpace
 
     public class Draggable : MonoBehaviour, IDragHandler, IEndDragHandler
     {
+        [Header("Drag Settings")]
+        [Tooltip("The button to use for dragging")]
         public PointerEventData.InputButton Button = PointerEventData.InputButton.Left;
         public DragConstraint DragConstraint = DragConstraint.XZ;
         public Transform DraggedObject;
@@ -33,6 +35,8 @@ namespace SmarcGUI.WorldSpace
         {
             if (eventData.button != Button) return;
             if (guiState.CurrentCam == null) return;
+
+            guiState.MouseDragging = true;
             
             // https://gist.github.com/SimonDarksideJ/477f5674285b63cba8e752c43950ed7c
             Ray camRay = guiState.CurrentCam.ScreenPointToRay(Input.mousePosition); // Get the ray from mouse position
@@ -87,6 +91,10 @@ namespace SmarcGUI.WorldSpace
         public void OnEndDrag(PointerEventData eventData)
         {
             if(DraggedObject != null) DraggedObject.GetComponent<IWorldDraggable>()?.OnWorldDragEnd(DragConstraint);
+            guiState.MouseDragging = false;
         }
+
+
+        
     }
 }

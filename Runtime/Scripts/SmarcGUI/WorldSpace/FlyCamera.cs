@@ -43,7 +43,7 @@ namespace SmarcGUI.WorldSpace
 		void OnDisable() => Focused = false;
 
 		void Update() {
-			if(guiState.MouseOnGUI)
+			if(guiState.MouseDragging)
 			{
 				Focused = false;
 				return;
