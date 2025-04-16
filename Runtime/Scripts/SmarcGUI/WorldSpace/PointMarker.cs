@@ -28,8 +28,6 @@ namespace SmarcGUI.WorldSpace
         float farAwayDistSq;
         public string UnderlayCanvasName = "Canvas-Under";
         Canvas underlayCanvas;
-        public RectTransform HeadingArrowRT;
-        public Image PositionImg;
 
 
 
