@@ -45,9 +45,9 @@ namespace SmarcGUI.MissionPlanning.Params
         protected override void SetupFields()
         {
             UpdateTexts();
-            xField.onValueChanged.AddListener(OnEulerXChanged);
-            yField.onValueChanged.AddListener(OnEulerYChanged);
-            zField.onValueChanged.AddListener(OnEulerZChanged);
+            xField.onEndEdit.AddListener(OnEulerXChanged);
+            yField.onEndEdit.AddListener(OnEulerYChanged);
+            zField.onEndEdit.AddListener(OnEulerZChanged);
 
             OnSelectedChange();
         }

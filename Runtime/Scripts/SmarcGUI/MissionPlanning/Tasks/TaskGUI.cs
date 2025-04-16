@@ -52,7 +52,7 @@ namespace SmarcGUI.MissionPlanning.Tasks
             baseHeight = rt.sizeDelta.y;
             missionPlanStore = FindFirstObjectByType<MissionPlanStore>();
             guiState = FindFirstObjectByType<GUIState>();
-            DescriptionField.onValueChanged.AddListener(desc => task.Description = desc);
+            DescriptionField.onEndEdit.AddListener(desc => task.Description = desc);
             RunButton.onClick.AddListener(OnRunTask);
             RunButtonImage = RunButton.GetComponent<Image>();
             RunButtonText = RunButton.GetComponentInChildren<TMP_Text>();

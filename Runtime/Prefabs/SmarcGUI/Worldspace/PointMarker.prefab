@@ -394,6 +394,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9f039d70e4163414283f894db90b731b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  dragArrows: {fileID: 5798960700372538306}
+  headingCone: {fileID: 6584857778855209095}
+  orientationModel: {fileID: 5318650960590254592}
+  shadowMarker: {fileID: 8566289295520018864}
+  FarAwayDistance: 50
+  UnderlayCanvasName: Canvas-Under
+  HeadingArrowRT: {fileID: 0}
+  PositionImg: {fileID: 0}
 --- !u!1001 &1109300791401723399
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -820,5 +828,10 @@ PrefabInstance:
 --- !u!4 &1984742441284726584 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 7480239099355543948, guid: e13d9e0dfa45aa54993b9b2a435dff50, type: 3}
+  m_PrefabInstance: {fileID: 8954314292295489204}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &5798960700372538306 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 3188004691369657718, guid: e13d9e0dfa45aa54993b9b2a435dff50, type: 3}
   m_PrefabInstance: {fileID: 8954314292295489204}
   m_PrefabAsset: {fileID: 0}

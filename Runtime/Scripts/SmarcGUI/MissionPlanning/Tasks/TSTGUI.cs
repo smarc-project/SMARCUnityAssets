@@ -34,7 +34,7 @@ namespace SmarcGUI.MissionPlanning.Tasks
         {
             guiState = FindFirstObjectByType<GUIState>();
             missionPlanStore = FindFirstObjectByType<MissionPlanStore>();
-            DescriptionField.onValueChanged.AddListener(OnDescriptionChanged);
+            DescriptionField.onEndEdit.AddListener(OnDescriptionChanged);
         }
 
 
