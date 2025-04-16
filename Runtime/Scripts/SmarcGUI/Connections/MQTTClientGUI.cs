@@ -371,7 +371,7 @@ namespace SmarcGUI.Connections
                                     robotgui.OnPingCmdReceived(pingCmd);
                                     break;
                                 default:
-                                    guiState.Log($"Unhandled exec/command: {topic} -> {payload}");
+                                    guiState.Log($"{topic}\n{payload}");
                                     break;
                             }
                             break;
@@ -384,15 +384,15 @@ namespace SmarcGUI.Connections
                                     robotgui.OnPongResponseReceived(pong);
                                     break;
                                 default:
-                                    guiState.Log($"Unhandled exec/response: {topic} -> {payload}");
+                                    guiState.Log($"{topic}\n{payload}");
                                     break;
                             }
                             break;  
                         case "feedback":
-                            guiState.Log($"Unhandled exec/feedback: {topic} -> {payload}");
+                            guiState.Log($"{topic}\n{payload}");
                             break;
                         default:
-                            guiState.Log($"Unhandled exec: {topic} -> {payload}");
+                            guiState.Log($"{topic}\n{payload}");
                             break;
                     }
                     break;
@@ -429,7 +429,7 @@ namespace SmarcGUI.Connections
                             robotgui.OnRollReceived(roll);
                             break;
                         default:
-                            guiState.Log($"Received unhandled sensor info from {topic}");
+                            guiState.Log($"{topic}\n{payload}");
                             break;
                     }
                     break;
