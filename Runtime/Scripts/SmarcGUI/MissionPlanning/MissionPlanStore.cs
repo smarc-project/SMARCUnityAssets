@@ -7,6 +7,7 @@ using System;
 using Newtonsoft.Json;
 using UnityEngine.UI;
 using System.Collections;
+using System.Text.RegularExpressions;
 using SmarcGUI.MissionPlanning.Tasks;
 using SmarcGUI.MissionPlanning.Params;
 using SmarcGUI.Connections;
@@ -75,13 +76,26 @@ namespace SmarcGUI.MissionPlanning
             TaskTypeDropdown.AddOptions(taskNames);
         }
 
+        string ConvertDashToCamelCase(string input)
+        {
+            var camelized = Regex.Replace(input, "-.", m => m.Value.ToUpper().Substring(1));
+            return char.ToUpper(camelized[0]) + camelized.Substring(1);
+        }
+
+
         public dynamic CreateTask(string taskName)
         {
             TaskTypes ??= Task.GetAllKnownTaskTypes();
             if(!TaskTypes.ContainsKey(taskName))
             {
-                guiState.Log($"Task type {taskName} not found!");
-                return null;
+                // taskName could be in the waraps format too...
+                // convert the name to CamelCase from kebab-case
+                taskName = ConvertDashToCamelCase(taskName);
+                if(!TaskTypes.ContainsKey(taskName))
+                {
+                    guiState.Log($"Task type {taskName} not defined in the GUI! Creating a custom task instead!");
+                    taskName = "CustomTask";
+                }
             }
             dynamic task = Activator.CreateInstance(TaskTypes[taskName]);
             return task;

@@ -90,6 +90,7 @@ namespace SmarcGUI.MissionPlanning.Tasks
         public void OnTaskAdded(TaskSpec taskSpec)
         {
             Task newTask = missionPlanStore.CreateTask(taskSpec.Name);
+            if(newTask == null) return;
             tst.Children.Add(newTask);
             CreateTaskGUI(newTask);
             OnParamChanged();

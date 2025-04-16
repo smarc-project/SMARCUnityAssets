@@ -363,6 +363,7 @@ namespace SmarcGUI.Connections
                     {
                         case "command":
                             BaseCommand cmd = new(payload);
+                            if(cmd.Sender == "UnityGUI") return; // ignore self commands lol
                             switch(cmd.Command)
                             {
                                 case "ping":
@@ -370,7 +371,7 @@ namespace SmarcGUI.Connections
                                     robotgui.OnPingCmdReceived(pingCmd);
                                     break;
                                 default:
-                                    guiState.Log($"Received unhandled exec/command from mqtt: {topic}");
+                                    guiState.Log($"Unhandled exec/command: {topic} -> {payload}");
                                     break;
                             }
                             break;
@@ -383,15 +384,15 @@ namespace SmarcGUI.Connections
                                     robotgui.OnPongResponseReceived(pong);
                                     break;
                                 default:
-                                    guiState.Log($"Received unhandled exec/response from mqtt: {topic}");
+                                    guiState.Log($"Unhandled exec/response: {topic} -> {payload}");
                                     break;
                             }
                             break;  
                         case "feedback":
-                            guiState.Log($"Received unhandled exec/feedback from mqtt: {topic}");
+                            guiState.Log($"Unhandled exec/feedback: {topic} -> {payload}");
                             break;
                         default:
-                            guiState.Log($"Received unhandled exec from mqtt: {topic}");
+                            guiState.Log($"Unhandled exec: {topic} -> {payload}");
                             break;
                     }
                     break;
