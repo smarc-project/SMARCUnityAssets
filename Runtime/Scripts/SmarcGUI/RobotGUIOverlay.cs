@@ -61,6 +61,20 @@ namespace SmarcGUI
                 return;  
             }
 
+            // check if the robot position is in front of the camera
+            Vector3 toRobot = robotTF.position - guiState.CurrentCam.transform.position;
+            var dot = Vector3.Dot(guiState.CurrentCam.transform.forward, toRobot);
+            if (dot < 1)
+            {
+                BoundingBoxRT.gameObject.SetActive(false);
+                RobotNameText.gameObject.SetActive(false);
+                return;
+            }
+            else
+            {
+                RobotNameText.gameObject.SetActive(true);
+            }
+
             Vector3 posDiff = robotTF.position - guiState.CurrentCam.transform.position;
             bool faraway = posDiff.sqrMagnitude > farDistSq;
             bool tooClose = posDiff.sqrMagnitude < 1;
