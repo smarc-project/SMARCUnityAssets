@@ -2,6 +2,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
+using SmarcGUI.MissionPlanning;
+
 namespace SmarcGUI.WorldSpace
 {
     public class PointMarker : MonoBehaviour, IWorldDraggable, IParamChangeListener, IPathInWorld
@@ -26,8 +28,8 @@ namespace SmarcGUI.WorldSpace
         [Header("2D visuals")]
         public float FarAwayDistance = 50;
         float farAwayDistSq;
-        public string UnderlayCanvasName = "Canvas-Under";
-        Canvas underlayCanvas;
+        public GameObject PointMarkerOverlayPrefab;
+        PointMarkerOverlay overlay;
 
 
 
@@ -35,7 +37,6 @@ namespace SmarcGUI.WorldSpace
         {
             guiState = FindFirstObjectByType<GUIState>();
             farAwayDistSq = FarAwayDistance * FarAwayDistance;
-            underlayCanvas = GameObject.Find(UnderlayCanvasName).GetComponent<Canvas>();
 
             dragArrows.SetActive(false);
             var das = dragArrows.GetComponent<DragArrows>();
@@ -139,6 +140,13 @@ namespace SmarcGUI.WorldSpace
             return l;
         }
 
+        public float GetHeading()
+        {
+            if(paramHeading != null) return headingCone.localRotation.eulerAngles.y;
+            if(paramOrientation != null) return orientationModel.localRotation.eulerAngles.y;
+            return 400;
+        }
+
         void LateUpdate()
         {
             // disable all 3D stuff if the camera is far away and replace them with screen-space 2D markers
@@ -155,11 +163,19 @@ namespace SmarcGUI.WorldSpace
                     orientationModel.gameObject.SetActive(false);
                     shadowMarker.gameObject.SetActive(false);
                     lineToShadow.enabled = false;
+                    if(overlay == null)
+                    {
+                        var overlayGO = Instantiate(PointMarkerOverlayPrefab);
+                        overlay = overlayGO.GetComponent<PointMarkerOverlay>();
+                        overlay.SetPointMarker(this);
+                    }
+                    overlay.gameObject.SetActive(true);
                 }
                 else
                 {
                     // because not everything should be enabled
                     // and this already has that logic.
+                    overlay.gameObject.SetActive(false);
                     OnParamChanged(); 
                 }
                 closeEnough = closeEnoughNow;
