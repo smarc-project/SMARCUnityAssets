@@ -23,7 +23,6 @@ namespace SmarcGUI.WorldSpace
         public Transform shadowMarker;
 
         GUIState guiState;
-        bool closeEnough = true;
 
         [Header("2D visuals")]
         public float FarAwayDistance = 50;
@@ -38,18 +37,24 @@ namespace SmarcGUI.WorldSpace
             guiState = FindFirstObjectByType<GUIState>();
             farAwayDistSq = FarAwayDistance * FarAwayDistance;
 
-            dragArrows.SetActive(false);
             var das = dragArrows.GetComponent<DragArrows>();
             arrowYup = das.PY.gameObject;
             arrowYdown = das.NY.gameObject;
-            arrowYup.SetActive(false);
-            arrowYdown.SetActive(false);
-            headingCone.gameObject.SetActive(false);
-            orientationModel.gameObject.SetActive(false);
-            shadowMarker.gameObject.SetActive(false);
+
             lineToShadow = shadowMarker.GetComponent<LineRenderer>();
-            lineToShadow.enabled = false;
+            lineToShadow.startWidth = 0.1f;
+            lineToShadow.endWidth = 0.1f;
+            lineToShadow.startColor = Color.yellow;
+            lineToShadow.endColor = Color.yellow;
+            lineToShadow.positionCount = 2;
+
+            var overlayGO = Instantiate(PointMarkerOverlayPrefab);
+            overlay = overlayGO.GetComponent<PointMarkerOverlay>();
+            overlay.SetPointMarker(this);
+
+            UpdateWidgets(false);
         }
+
 
         public void OnWorldDrag(Vector3 deltaPos)
         {
@@ -68,6 +73,7 @@ namespace SmarcGUI.WorldSpace
             {
                 paramY?.SetY(transform.position.y);
             }
+            
         }
 
         public void SetXZParam(IParamHasXZ param)
@@ -76,35 +82,20 @@ namespace SmarcGUI.WorldSpace
             paramXZ = param;
             var (x, z) = param.GetXZ();
             transform.position = new Vector3(x, transform.position.y, z);
-            dragArrows.SetActive(true);
+            if(shadowMarker != null)
+            {
+                shadowMarker.position = new Vector3(transform.position.x, 0, transform.position.z);
+                lineToShadow.SetPosition(0, transform.position);
+                lineToShadow.SetPosition(1, shadowMarker.position);
+            }
         }
 
         public void SetYParam(IParamHasY param)
         {
             if(param == null) return;
             paramY = param;
-            arrowYup.SetActive(true);
-            arrowYdown.SetActive(true);
             var y = param.GetY();
             transform.position = new Vector3(transform.position.x, y, transform.position.z);
-            if(Mathf.Abs(y) > 1)
-            {
-                shadowMarker.gameObject.SetActive(true);
-                lineToShadow.enabled = true;
-                shadowMarker.position = new Vector3(transform.position.x, 0, transform.position.z);
-                lineToShadow.startWidth = 0.1f;
-                lineToShadow.endWidth = 0.1f;
-                lineToShadow.startColor = Color.yellow;
-                lineToShadow.endColor = Color.yellow;
-                lineToShadow.positionCount = 2;
-                lineToShadow.SetPosition(0, transform.position);
-                lineToShadow.SetPosition(1, shadowMarker.position);
-            }
-            else
-            {
-                shadowMarker.gameObject.SetActive(false);
-                lineToShadow.enabled = false;
-            }
         }
 
         public void SetHeadingParam(IParamHasHeading param)
@@ -112,7 +103,6 @@ namespace SmarcGUI.WorldSpace
             if(param == null) return;
             paramHeading = param;
             headingCone.localEulerAngles = new Vector3(0, param.GetHeading(), 0);
-            headingCone.gameObject.SetActive(paramXZ != null);
         }
 
         public void SetOrientationParam(IParamHasOrientation param)
@@ -147,6 +137,22 @@ namespace SmarcGUI.WorldSpace
             return 400;
         }
 
+        void UpdateWidgets(bool draw3Dwidgets)
+        {
+            if(paramXZ == null) draw3Dwidgets = false;
+            overlay.gameObject.SetActive(!draw3Dwidgets);
+
+            dragArrows.SetActive(draw3Dwidgets);
+            headingCone.gameObject.SetActive(paramHeading != null && draw3Dwidgets);
+            orientationModel.gameObject.SetActive(paramOrientation != null && draw3Dwidgets);
+            
+            arrowYup.SetActive(paramY != null && draw3Dwidgets);
+            arrowYdown.SetActive(paramY != null && draw3Dwidgets);
+            var y = paramY != null ? paramY.GetY() : 0;
+            shadowMarker.gameObject.SetActive(Mathf.Abs(y) > 1 && draw3Dwidgets);
+            lineToShadow.enabled = Mathf.Abs(y) > 1  && draw3Dwidgets;
+        }
+
         void LateUpdate()
         {
             // disable all 3D stuff if the camera is far away and replace them with screen-space 2D markers
@@ -154,33 +160,7 @@ namespace SmarcGUI.WorldSpace
             if(guiState.CurrentCam == null) return;
             var camDiff = transform.position - guiState.CurrentCam.transform.position;
             bool closeEnoughNow = camDiff.sqrMagnitude < farAwayDistSq;
-            if(closeEnoughNow != closeEnough)
-            {
-                if(!closeEnoughNow)
-                {
-                    dragArrows.SetActive(false);
-                    headingCone.gameObject.SetActive(false);
-                    orientationModel.gameObject.SetActive(false);
-                    shadowMarker.gameObject.SetActive(false);
-                    lineToShadow.enabled = false;
-                    if(overlay == null)
-                    {
-                        var overlayGO = Instantiate(PointMarkerOverlayPrefab);
-                        overlay = overlayGO.GetComponent<PointMarkerOverlay>();
-                        overlay.SetPointMarker(this);
-                    }
-                    overlay.gameObject.SetActive(true);
-                }
-                else
-                {
-                    // because not everything should be enabled
-                    // and this already has that logic.
-                    overlay.gameObject.SetActive(false);
-                    OnParamChanged(); 
-                }
-                closeEnough = closeEnoughNow;
-            }
-
+            UpdateWidgets(closeEnoughNow);
         }
     }
 }

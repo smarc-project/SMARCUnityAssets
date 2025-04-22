@@ -1,5 +1,3 @@
-using System.Linq;
-using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 using DefaultNamespace;
@@ -48,7 +46,6 @@ namespace SmarcGUI.MissionPlanning
             }
             PositionImg.gameObject.SetActive(true);
 
-            // basically copy RobotGUIOverlay UpdateArrows() here.
             bool camTooLow = Mathf.Abs(toMarker.y) < 10;
             HeadingArrowRT.gameObject.SetActive(!camTooLow);
             

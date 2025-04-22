@@ -253,9 +253,9 @@ namespace SmarcGUI.MissionPlanning.Tasks
 
         public void OnParamChanged()
         {
-            tstGUI.OnParamChanged();
-            task.OnTaskModified();
             if(pointmarker != null) pointmarker.OnParamChanged();
+            task.OnTaskModified();
+            tstGUI.OnParamChanged();
         }
     }
 }
