@@ -83,7 +83,7 @@ namespace SmarcGUI.MissionPlanning
         }
 
 
-        public dynamic CreateTask(string taskName)
+        public Task CreateTask(string taskName)
         {
             TaskTypes ??= Task.GetAllKnownTaskTypes();
             if(!TaskTypes.ContainsKey(taskName))
@@ -97,8 +97,7 @@ namespace SmarcGUI.MissionPlanning
                     taskName = "CustomTask";
                 }
             }
-            dynamic task = Activator.CreateInstance(TaskTypes[taskName]);
-            return task;
+            return (Task)Activator.CreateInstance(TaskTypes[taskName]);
         }
 
         void Start()
