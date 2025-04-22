@@ -18,7 +18,7 @@ namespace SmarcGUI.MissionPlanning.Tasks
             var taskType = typeof(Task);
             var d = new Dictionary<string, Type>();
 
-            foreach (var assembly in System.AppDomain.CurrentDomain.GetAssemblies())
+            foreach (var assembly in AppDomain.CurrentDomain.GetAssemblies())
             {
                 foreach (var type in assembly.GetTypes())
                 {
@@ -42,7 +42,7 @@ namespace SmarcGUI.MissionPlanning.Tasks
 
         public void OnTaskModified()
         {
-            TaskUuid = System.Guid.NewGuid().ToString();
+            TaskUuid = Guid.NewGuid().ToString();
         }
 
         public string ToJson()
@@ -55,10 +55,13 @@ namespace SmarcGUI.MissionPlanning.Tasks
             // Cant modify a dictionary while iterating over it
             Dictionary<string, object> paramUpdates = new();
 
+            // Dont like this, but we need to deserialize the params into their correct types
+            // maybe we can do sth a little more elegant in the future...
+            // this (wrongly) assumes that param types and param names are tied together
+            // no such thing as "position" that is of type "latlon" etc.
             foreach (var param in Params)
             {
                 var paramValue = param.Value;
-                if (paramValue is string || paramValue is int || paramValue is float || paramValue is bool) continue;
                 if(Name == "move-to" && param.Key == "waypoint")
                 {
                     var geoPoint = JsonConvert.DeserializeObject<GeoPoint>(paramValue.ToString());
@@ -69,23 +72,36 @@ namespace SmarcGUI.MissionPlanning.Tasks
                     var geoPoints = JsonConvert.DeserializeObject<List<GeoPoint>>(paramValue.ToString());
                     paramUpdates.Add(param.Key, geoPoints);
                 }
-                else if(param.Key == "orientation")
-                {
-                    var orientation = JsonConvert.DeserializeObject<Orientation>(paramValue.ToString());
-                    paramUpdates.Add(param.Key, orientation);
-                }
+                // AUVTasks
                 else if(param.Key == "latlon")
                 {
                     var latlon = JsonConvert.DeserializeObject<LatLon>(paramValue.ToString());
                     paramUpdates.Add(param.Key, latlon);
                 }
+                else if(param.Key == "target_depth")
+                {
+                    var depth = JsonConvert.DeserializeObject<Depth>(paramValue.ToString());
+                    paramUpdates.Add(param.Key, depth);
+                }
+                else if(param.Key == "target_heading")
+                {
+                    var heading = JsonConvert.DeserializeObject<Heading>(paramValue.ToString());
+                    paramUpdates.Add(param.Key, heading);
+                }
+                else if(param.Key == "orientation")
+                {
+                    var orientation = JsonConvert.DeserializeObject<Orientation>(paramValue.ToString());
+                    paramUpdates.Add(param.Key, orientation);
+                }
                 else
                 {
-                    // We don't know what this is... so we turn it into a string and show it
+                    // nothing specially handled, primitive types are handled by default
+                    if (paramValue is string || paramValue is int || paramValue is float || paramValue is bool) continue;
                     
+                    // not handled specially, and not a primitive...
+                    // We don't know what this is... so we turn it into a string and show it
                     paramUpdates.Add(param.Key, paramValue.ToString());
                 }
-                // Add other known stuff like this...
             }
 
             foreach (var update in paramUpdates)
