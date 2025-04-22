@@ -4,8 +4,8 @@ namespace SmarcGUI.WorldSpace
 {
     public interface IWorldDraggable
     {
-        public void OnWorldDrag(Vector3 newPos);
-        public void OnWorldDragEnd();
+        public void OnWorldDrag(Vector3 deltaPos);
+        public void OnWorldDragEnd(DragConstraint dragConstraint);
 
     }
 }

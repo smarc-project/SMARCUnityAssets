@@ -39,7 +39,7 @@ namespace SmarcGUI
         Transform robotTF;
         Rigidbody robotRB;
         ArticulationBody robotAB;
-        WorldspaceGhost robotGhost;
+        RobotGhost robotGhost;
 
         Renderer[] robotRenderers;
         GUIState guiState;
@@ -59,6 +59,20 @@ namespace SmarcGUI
                 BoundingBoxRT.gameObject.SetActive(false);
                 RobotNameText.gameObject.SetActive(false);
                 return;  
+            }
+
+            // check if the robot position is in front of the camera
+            Vector3 toRobot = robotTF.position - guiState.CurrentCam.transform.position;
+            var dot = Vector3.Dot(guiState.CurrentCam.transform.forward, toRobot);
+            if (dot < 1)
+            {
+                BoundingBoxRT.gameObject.SetActive(false);
+                RobotNameText.gameObject.SetActive(false);
+                return;
+            }
+            else
+            {
+                RobotNameText.gameObject.SetActive(true);
             }
 
             Vector3 posDiff = robotTF.position - guiState.CurrentCam.transform.position;
@@ -207,7 +221,7 @@ namespace SmarcGUI
             this.robotTF = robotTF;
             if(robotTF.gameObject.TryGetComponent(out Rigidbody rb)) robotRB = rb;
             if(robotTF.gameObject.TryGetComponent(out ArticulationBody ab)) robotAB = ab;
-            if(robotTF.gameObject.TryGetComponent(out WorldspaceGhost wsGhost)) robotGhost = wsGhost;
+            if(robotTF.gameObject.TryGetComponent(out RobotGhost rGhost)) robotGhost = rGhost;
 
             robotRenderers = robotTF.GetComponentsInChildren<Renderer>();
             switch (infoSource)

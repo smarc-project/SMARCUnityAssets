@@ -11,7 +11,7 @@ using UnityEngine.UI;
 
 namespace SmarcGUI.MissionPlanning.Tasks
 {
-    public class TaskGUI : MonoBehaviour, IHeightUpdatable, IPointerClickHandler, IPointerExitHandler, IPointerEnterHandler, IListItem, IPathInWorld, IParamChangeListener
+    public class TaskGUI : MonoBehaviour, IHeightUpdatable, IRobotSelectionChangeListener, IPointerClickHandler, IPointerExitHandler, IPointerEnterHandler, IListItem, IPathInWorld, IParamChangeListener
     {
         public float BottomPadding = 5;
         public Task task;
@@ -26,28 +26,39 @@ namespace SmarcGUI.MissionPlanning.Tasks
 
         [Header("Prefabs")]
         public GameObject ContextMenuPrefab;
+        public GameObject PointMarkerPrefab;
+
+
+
+        [Header("Worldspace")]
+        public string WorldMarkersCollectionName = "WorldMarkers";
+        Transform WorldMarkersCollection;
+        PointMarker pointmarker = null;
 
 
         MissionPlanStore missionPlanStore;
         GUIState guiState;
         TSTGUI tstGUI;
         RectTransform rt;
+        float baseHeight;
         Image RunButtonImage;
         Color RunButtonOriginalColor;
         TMP_Text RunButtonText;
 
-        bool needsHeightUpdate = false;
 
         void Awake()
         {
             rt = GetComponent<RectTransform>();
+            baseHeight = rt.sizeDelta.y;
             missionPlanStore = FindFirstObjectByType<MissionPlanStore>();
             guiState = FindFirstObjectByType<GUIState>();
-            DescriptionField.onValueChanged.AddListener(desc => task.Description = desc);
+            DescriptionField.onEndEdit.AddListener(desc => task.Description = desc);
             RunButton.onClick.AddListener(OnRunTask);
             RunButtonImage = RunButton.GetComponent<Image>();
             RunButtonText = RunButton.GetComponentInChildren<TMP_Text>();
             RunButtonOriginalColor = RunButtonImage.color;
+
+            WorldMarkersCollection = GameObject.Find(WorldMarkersCollectionName).transform;
         }
         
         void OnRunTask()
@@ -62,45 +73,78 @@ namespace SmarcGUI.MissionPlanning.Tasks
             this.tstGUI = tstGUI;
             TaskName.text = task.Name;
             DescriptionField.text = task.Description;
+            
+            guiState.RegisterRobotSelectionChangedListener(this);
 
-            // instead of a foreach, we need to iterate over index because the param itself could modify the
-            // individual parameter at this point
+
+            // we create world-markers for each parameter that actually has a position
+            // if no parameter in the task has a position, it can not be visualized in the world
+            // if a parameter has its horizontal position and vertical position defined by separate
+            // parameters, then we first create the horizontal point, then _add_ the info from
+            // following parameters onto the same point, until a new horizontal point containing parameter
+            // is found. This allows tasks with split poses (like latlon + depth + oritentaiton as separate params)
+            // Meaning, a task can split the 6DOF pose into 2+1+1+1+1 if it wants to...
             for(int i=0; i<task.Params.Count; i++)
-                InstantiateParam(Params.transform, task.Params, task.Params.Keys.ElementAt(i));
+            {
+                var paramgui = InstantiateParamGui(Params.transform, task.Params, task.Params.Keys.ElementAt(i));
+                if(paramgui is IParamHasXZ paramXZ)
+                {
+                    if(pointmarker != null)
+                    {
+                        // this task already has a marker?!
+                        // so it defines _multiple_ horizontal points... individually.
+                        // I am not going to handle this case! Make that a new interface!
+                        Debug.LogError("Task has multiple parameters that implement IParamHasXZ, this is not supported!");
+                        return;
+                    }
+                    var markerGO = Instantiate(PointMarkerPrefab, WorldMarkersCollection);
+                    markerGO.name = $"{task.Name}_param_{i}";
+                    pointmarker = markerGO.GetComponent<PointMarker>();
+                    pointmarker.SetXZParam(paramXZ);
+                }
+            }
 
             UpdateHeight();
+
+            // no marker, meaning we can not know where this task is in the world, so the rest of the params
+            // wont be visualized in the world.
+            if(pointmarker == null) return; 
+            foreach(ParamGUI paramgui in Params.GetComponentsInChildren<ParamGUI>())
+            {
+                if(paramgui is IParamHasY paramY) pointmarker.SetYParam(paramY);
+                if(paramgui is IParamHasHeading paramH) pointmarker.SetHeadingParam(paramH);
+                if(paramgui is IParamHasOrientation paramO) pointmarker.SetOrientationParam(paramO);
+            }
+            
+    
         }
 
-        void InstantiateParam(Transform parent, Dictionary<string, object> taskParams, string paramKey)
+        ParamGUI InstantiateParamGui(Transform parent, Dictionary<string, object> taskParams, string paramKey)
         {
             if(missionPlanStore == null) missionPlanStore = FindFirstObjectByType<MissionPlanStore>();
-            GameObject paramGO;
             GameObject paramPrefab = missionPlanStore.GetParamPrefab(taskParams[paramKey]);
-            paramGO = Instantiate(paramPrefab, parent);
-            paramGO.GetComponent<ParamGUI>().SetParam(taskParams, paramKey, this);
+            GameObject paramGO = Instantiate(paramPrefab, parent);
+            var paramgui = paramGO.GetComponent<ParamGUI>();
+            paramgui.SetParam(taskParams, paramKey, this);
+            return paramgui;
         }
 
 
         public void UpdateHeight()
         {
-            // Why? because this is under a scroll view and we cant have size-fitter component without problems
-            // this seems to let the scroll view do its thing, and then update the size after.
-            // Basically delaying the update by one frame.
-            needsHeightUpdate = true;
-        }
-
-        void ActuallyUpdateHeight()
-        {
-            float totalHeight = 0;
-            var paramsRT = Params.GetComponent<RectTransform>();
-            totalHeight += paramsRT.sizeDelta.y;
-            var nameRT = TaskName.GetComponent<RectTransform>();
-            totalHeight += nameRT.sizeDelta.y;
-            var descRT = DescriptionField.GetComponent<RectTransform>();
-            totalHeight += descRT.sizeDelta.y;
-            rt.sizeDelta = new Vector2(rt.sizeDelta.x, totalHeight + BottomPadding);
-            needsHeightUpdate = false;
-        }
+            float newHeight = baseHeight;
+            if(Params.activeSelf)
+            {
+                float paramsHeight = 0;
+                foreach(Transform child in Params.transform)
+                {
+                    var paramRT = child.GetComponent<RectTransform>();
+                    paramsHeight += paramRT.sizeDelta.y;
+                }
+                newHeight += paramsHeight + BottomPadding;
+            }
+            rt.sizeDelta = new Vector2(rt.sizeDelta.x, newHeight);
+            }
 
 
         public void OnPointerClick(PointerEventData eventData)
@@ -124,11 +168,10 @@ namespace SmarcGUI.MissionPlanning.Tasks
             HighlightRT.gameObject.SetActive(true);
         }
 
-        void LateUpdate()
+        public void OnRobotSelectionChange(RobotGUI SelectedRobotGUI)
         {
-            if(needsHeightUpdate) ActuallyUpdateHeight();
-            RunButton.interactable = guiState.SelectedRobotGUI != null;
-            if(guiState.SelectedRobotGUI == null)
+            RunButton.interactable = SelectedRobotGUI != null;
+            if(SelectedRobotGUI == null)
             {
                 WarningRT.gameObject.SetActive(false);
                 RunButtonImage.color = RunButtonOriginalColor;
@@ -137,13 +180,13 @@ namespace SmarcGUI.MissionPlanning.Tasks
             else
             {
                 // warning highlight if the selected robot does not have this task available
-                if(guiState.SelectedRobotGUI.InfoSource == InfoSource.SIM) WarningRT.gameObject.SetActive(false);
-                else WarningRT.gameObject.SetActive(!guiState.SelectedRobotGUI.TasksAvailableNames.Contains(task.Name));
+                if(SelectedRobotGUI.InfoSource == InfoSource.SIM) WarningRT.gameObject.SetActive(false);
+                else WarningRT.gameObject.SetActive(!SelectedRobotGUI.TasksAvailableNames.Contains(task.Name));
 
                 // make the RUN button green if it is already running this task
                 // use the task uuid to check this, since many tasks of the same type can be running
                 // 
-                if(guiState.SelectedRobotGUI.TasksExecutingUuids.Contains(task.TaskUuid))
+                if(SelectedRobotGUI.TasksExecutingUuids.Contains(task.TaskUuid))
                 {
                     RunButtonImage.color = Color.green;
                     RunButton.interactable = false;
@@ -155,8 +198,8 @@ namespace SmarcGUI.MissionPlanning.Tasks
                     RunButtonText.text = "Run";
                 }
             } 
-
         }
+
 
         void OnEnable()
         {
@@ -165,6 +208,8 @@ namespace SmarcGUI.MissionPlanning.Tasks
                 child.gameObject.SetActive(true);
             }
             UpdateHeight();
+            guiState.RegisterRobotSelectionChangedListener(this);
+            if(pointmarker != null) pointmarker.gameObject.SetActive(true);
         }
 
         void OnDisable()
@@ -173,6 +218,9 @@ namespace SmarcGUI.MissionPlanning.Tasks
             {
                 child.gameObject.SetActive(false);
             }
+            guiState.UnregisterRobotSelectionChangedListener(this);
+            if(pointmarker != null) pointmarker.gameObject.SetActive(false);
+
         }
 
         public void OnListItemUp()
@@ -187,7 +235,9 @@ namespace SmarcGUI.MissionPlanning.Tasks
 
         public void OnListItemDelete()
         {
+            guiState.UnregisterRobotSelectionChangedListener(this);
             tstGUI.DeleteTask(this);
+            if(pointmarker != null) Destroy(pointmarker.gameObject);
         }
 
         public List<Vector3> GetWorldPath()
@@ -195,16 +245,17 @@ namespace SmarcGUI.MissionPlanning.Tasks
             var path = new List<Vector3>();
             foreach(Transform child in Params.transform)
             {
-                var paramGUI = child.GetComponent<IPathInWorld>();
-                if(paramGUI != null) path.AddRange(paramGUI.GetWorldPath());
+                if(child.TryGetComponent<IPathInWorld>(out var paramGUI)) path.AddRange(paramGUI.GetWorldPath());
             }
+            if(pointmarker != null) path.AddRange(pointmarker.GetWorldPath());
             return path;
         }
 
         public void OnParamChanged()
         {
-            tstGUI.OnParamChanged();
+            if(pointmarker != null) pointmarker.OnParamChanged();
             task.OnTaskModified();
+            tstGUI.OnParamChanged();
         }
     }
 }

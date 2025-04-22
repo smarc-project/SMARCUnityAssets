@@ -1,5 +1,6 @@
 using TMPro;
 using System.Collections.Generic;
+using UnityEngine;
 
 
 
@@ -8,6 +9,7 @@ namespace SmarcGUI.MissionPlanning.Params
 
     class PrimitiveParamGUI : ParamGUI
     {
+        [Header("PrimitiveParamGUI")]
         public TMP_InputField InputField;
         public TMP_Dropdown ChoiceDropdown;
         
@@ -20,19 +22,19 @@ namespace SmarcGUI.MissionPlanning.Params
                     InputField.gameObject.SetActive(true);
                     InputField.text = s;
                     InputField.contentType = TMP_InputField.ContentType.Standard;
-                    InputField.onValueChanged.AddListener(OnInputFieldChanged);
+                    InputField.onEndEdit.AddListener(OnInputFieldChanged);
                     break;
                 case int i:
                     InputField.gameObject.SetActive(true);
                     InputField.text = i.ToString();
                     InputField.contentType = TMP_InputField.ContentType.IntegerNumber;
-                    InputField.onValueChanged.AddListener(OnInputFieldChanged);
+                    InputField.onEndEdit.AddListener(OnInputFieldChanged);
                     break;
                 case float f:
                     InputField.gameObject.SetActive(true);
                     InputField.text = f.ToString();
                     InputField.contentType = TMP_InputField.ContentType.DecimalNumber;
-                    InputField.onValueChanged.AddListener(OnInputFieldChanged);
+                    InputField.onEndEdit.AddListener(OnInputFieldChanged);
                     break;
                 case bool b:
                     ChoiceDropdown.gameObject.SetActive(true);

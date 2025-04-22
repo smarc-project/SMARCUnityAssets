@@ -16,7 +16,8 @@ namespace SmarcGUI
     public class GUIState : MonoBehaviour, IPointerExitHandler, IPointerEnterHandler
     {
         public string UUID{get; private set;}
-        public bool MouseOnGUI{get; private set;}
+        public bool MouseOnGUI{get; set;}
+        public bool MouseDragging{get; set;}
 
         [Tooltip("Cursor position in normalized coordinates on the screen (0-1)")]
         public Vector2 CursorInView => new(0.5f, 0.5f);
@@ -55,6 +56,7 @@ namespace SmarcGUI
 
 
         List<ICamChangeListener> camChangeListeners = new();
+        List<IRobotSelectionChangeListener> robotSelectionChangeListeners = new();
 
 
         string CameraTextFromCamera(Camera c)
@@ -145,6 +147,7 @@ namespace SmarcGUI
             camChangeListeners.Remove(listener);
         }
 
+
         public void OnCameraChanged(int camIndex)
         {
             var selection = cameraDropdown.options[camIndex];
@@ -162,12 +165,33 @@ namespace SmarcGUI
             }
         }
 
+
+        public void RegisterRobotSelectionChangedListener(IRobotSelectionChangeListener listener)
+        {
+            if(listener == null) return;
+            if(robotSelectionChangeListeners.Contains(listener)) return;
+            robotSelectionChangeListeners.Add(listener);
+        }
+
+        public void UnregisterRobotSelectionChangedListener(IRobotSelectionChangeListener listener)
+        {
+            if(listener == null) return;
+            if(!robotSelectionChangeListeners.Contains(listener)) return;
+            robotSelectionChangeListeners.Remove(listener);
+        }
+
+
         public void OnRobotSelectionChanged(RobotGUI robotgui)
         {
             SelectedRobotGUI = robotgui.IsSelected? robotgui : null;
             foreach(var r in RobotGuis)
             {
                 if(r.Value.RobotName != robotgui.RobotName) r.Value.Deselect();
+            }
+
+            foreach(var listener in robotSelectionChangeListeners)
+            {
+                listener.OnRobotSelectionChange(SelectedRobotGUI);
             }
         }
         

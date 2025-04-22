@@ -24,6 +24,8 @@ namespace SmarcGUI.WorldSpace
 
         void LateUpdate()
         {
+            if(guiState.MouseDragging) return;
+
             if(dragAction.triggered)
             {
                 var mouseDelta = dragAction.ReadValue<Vector2>();

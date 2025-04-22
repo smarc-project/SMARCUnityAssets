@@ -60,7 +60,7 @@ namespace SmarcGUI
 
         Transform worldMarkersTF;
         Transform ghostTF;
-        WorldspaceGhost ghost;
+        RobotGhost ghost;
         GameObject simRobotGO;
         Transform simRobotBaseLinkTF;
 
@@ -137,6 +137,8 @@ namespace SmarcGUI
                 mqttClient.SubToTopic(robotNamespace+"sensor/heading");
                 mqttClient.SubToTopic(robotNamespace+"sensor/course");
                 mqttClient.SubToTopic(robotNamespace+"sensor/speed");
+                mqttClient.SubToTopic(robotNamespace+"sensor/roll");
+                mqttClient.SubToTopic(robotNamespace+"sensor/pitch");
                 mqttClient.SubToTopic(robotNamespace+"exec/command");
                 mqttClient.SubToTopic(robotNamespace+"exec/response");
                 mqttClient.SubToTopic(robotNamespace+"exec/feedback");
@@ -162,7 +164,7 @@ namespace SmarcGUI
                 ghostTF.name = $"Remote {robotname}";
                 ghostTF.SetParent(worldMarkersTF);
                 ghostTF.gameObject.SetActive(false);
-                ghost = ghostTF.GetComponent<WorldspaceGhost>();
+                ghost = ghostTF.GetComponent<RobotGhost>();
 
                 robotOverlayGO = Instantiate(RobotGUIOverlayPrefab);
                 robotOverlayGO.name = $"{robotname}_Overlay";
@@ -367,7 +369,7 @@ namespace SmarcGUI
 
         public void OnRollReceived(float roll)
         {
-            ghost.UpdateRoll(roll);
+            ghost.UpdateRoll(-roll);
         }
 
         public void OnCourseReceived(float course)

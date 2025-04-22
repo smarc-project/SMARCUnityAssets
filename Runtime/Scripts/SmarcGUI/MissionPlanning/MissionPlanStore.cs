@@ -7,9 +7,12 @@ using System;
 using Newtonsoft.Json;
 using UnityEngine.UI;
 using System.Collections;
+using System.Text.RegularExpressions;
 using SmarcGUI.MissionPlanning.Tasks;
 using SmarcGUI.MissionPlanning.Params;
 using SmarcGUI.Connections;
+
+
 
 
 namespace SmarcGUI.MissionPlanning
@@ -38,7 +41,6 @@ namespace SmarcGUI.MissionPlanning
         public Transform TasksScrollContent;
         public TMP_Dropdown TaskTypeDropdown;
         public Button AddTaskButton;
-        public List<string> BasicTaskTypes = new(){"move-to", "move-path", "custom"};
 
 
         [Header("Prefabs")]
@@ -46,15 +48,17 @@ namespace SmarcGUI.MissionPlanning
         public GameObject TaskPrefab;
         public GameObject PrimitiveParamPrefab;
         public GameObject GeoPointParamPrefab;
+        public GameObject LatLonParamPrefab;
+        public GameObject OrientationParamPrefab;
         public GameObject ListParamPrefab;
+        public GameObject DepthParamPrefab;
+        public GameObject AltitudeParamPrefab;
+        public GameObject HeadingParamPrefab;
 
         [Header("State of mission planning GUI")]
         public TSTGUI SelectedTSTGUI;
 
-
-        Image RunMissionButtonImage;
-        Color RunMissionButtonOriginalColor;
-        TMP_Text RunMissionButtonText;
+        Dictionary<string, Type> TaskTypes;
 
         void Awake()
         {
@@ -65,12 +69,35 @@ namespace SmarcGUI.MissionPlanning
             RunMissionButton.onClick.AddListener(() => guiState.SelectedRobotGUI.SendStartTSTCommand(SelectedTSTGUI.tst));
             AddTaskButton.onClick.AddListener(() => SelectedTSTGUI.OnTaskAdded(new TaskSpec(TaskTypeDropdown.options[TaskTypeDropdown.value].text, null)));
 
+            // this finds all task types in the assembly through reflection.
+            TaskTypes ??= Task.GetAllKnownTaskTypes();
             TaskTypeDropdown.ClearOptions();
-            TaskTypeDropdown.AddOptions(BasicTaskTypes);
+            var taskNames = new List<string>(TaskTypes.Keys);
+            TaskTypeDropdown.AddOptions(taskNames);
+        }
 
-            RunMissionButtonImage = RunMissionButton.GetComponent<Image>();
-            RunMissionButtonText = RunMissionButton.GetComponentInChildren<TMP_Text>();
-            RunMissionButtonOriginalColor = RunMissionButtonImage.color;   
+        string ConvertDashToCamelCase(string input)
+        {
+            var camelized = Regex.Replace(input, "-.", m => m.Value.ToUpper().Substring(1));
+            return char.ToUpper(camelized[0]) + camelized.Substring(1);
+        }
+
+
+        public Task CreateTask(string taskName)
+        {
+            TaskTypes ??= Task.GetAllKnownTaskTypes();
+            if(!TaskTypes.ContainsKey(taskName))
+            {
+                // taskName could be in the waraps format too...
+                // convert the name to CamelCase from kebab-case
+                taskName = ConvertDashToCamelCase(taskName);
+                if(!TaskTypes.ContainsKey(taskName))
+                {
+                    guiState.Log($"Task type {taskName} not defined in the GUI! Creating a custom task instead!");
+                    taskName = "CustomTask";
+                }
+            }
+            return (Task)Activator.CreateInstance(TaskTypes[taskName]);
         }
 
         void Start()
@@ -78,7 +105,6 @@ namespace SmarcGUI.MissionPlanning
             // Documents on win, user home on linux/mac
             MissionStoragePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Personal), Path.Combine("SMaRCUnity", "MissionPlans"));
             Directory.CreateDirectory(MissionStoragePath);
-            LoadMissionPlans();
         }
 
         void LateUpdate()
@@ -209,6 +235,11 @@ namespace SmarcGUI.MissionPlanning
                 string or int or float or bool => PrimitiveParamPrefab,
                 GeoPoint => GeoPointParamPrefab,
                 IList => ListParamPrefab,
+                LatLon => LatLonParamPrefab,
+                Orientation => OrientationParamPrefab,
+                Depth => DepthParamPrefab,
+                Altitude => AltitudeParamPrefab,
+                Heading => HeadingParamPrefab,
                 _ => PrimitiveParamPrefab,
             };
         }

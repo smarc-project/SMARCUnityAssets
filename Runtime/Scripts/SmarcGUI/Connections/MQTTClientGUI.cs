@@ -41,6 +41,8 @@ namespace SmarcGUI.Connections
         public Toggle SubToSimToggle;
         public Toggle SubToRealToggle;
         public Toggle TLSToggle;
+        public TMP_InputField UserNameInput;
+        public TMP_InputField PasswordInput;
 
         public Button ConnectButton;
         public TMP_Text ConnectButtonText;
@@ -83,6 +85,9 @@ namespace SmarcGUI.Connections
             ContextInput.interactable = interactable;
             SubToRealToggle.interactable = interactable;
             SubToSimToggle.interactable = interactable;
+            TLSToggle.interactable = interactable;
+            UserNameInput.interactable = interactable;
+            PasswordInput.interactable = interactable;
         }
 
 
@@ -133,7 +138,7 @@ namespace SmarcGUI.Connections
             ConnectButtonText.text = "Connect";
         }
 
-        async void ToggleConnection()
+        void ToggleConnection()
         {
             if(mqttClient is null || !mqttClient.IsConnected)
             {
@@ -154,6 +159,11 @@ namespace SmarcGUI.Connections
             mqttClient = mqttFactory.CreateMqttClient();
 
             var mqttClientOptionsUnbuilt = new MqttClientOptionsBuilder().WithTcpServer(host: ServerAddress, port: ServerPort);
+
+            if(!string.IsNullOrEmpty(UserNameInput.text) && !string.IsNullOrEmpty(PasswordInput.text))
+            {
+                mqttClientOptionsUnbuilt = mqttClientOptionsUnbuilt.WithCredentials(UserNameInput.text, PasswordInput.text);
+            }
 
             if(TLSToggle.isOn)
             {
@@ -353,6 +363,7 @@ namespace SmarcGUI.Connections
                     {
                         case "command":
                             BaseCommand cmd = new(payload);
+                            if(cmd.Sender == "UnityGUI") return; // ignore self commands lol
                             switch(cmd.Command)
                             {
                                 case "ping":
@@ -360,7 +371,7 @@ namespace SmarcGUI.Connections
                                     robotgui.OnPingCmdReceived(pingCmd);
                                     break;
                                 default:
-                                    guiState.Log($"Received unhandled exec/command from mqtt: {topic}");
+                                    guiState.Log($"{topic}\n{payload}");
                                     break;
                             }
                             break;
@@ -373,15 +384,15 @@ namespace SmarcGUI.Connections
                                     robotgui.OnPongResponseReceived(pong);
                                     break;
                                 default:
-                                    guiState.Log($"Received unhandled exec/response from mqtt: {topic}");
+                                    guiState.Log($"{topic}\n{payload}");
                                     break;
                             }
                             break;  
                         case "feedback":
-                            guiState.Log($"Received unhandled exec/feedback from mqtt: {topic}");
+                            guiState.Log($"{topic}\n{payload}");
                             break;
                         default:
-                            guiState.Log($"Received unhandled exec from mqtt: {topic}");
+                            guiState.Log($"{topic}\n{payload}");
                             break;
                     }
                     break;
@@ -418,7 +429,7 @@ namespace SmarcGUI.Connections
                             robotgui.OnRollReceived(roll);
                             break;
                         default:
-                            guiState.Log($"Received unhandled sensor info from {topic}");
+                            guiState.Log($"{topic}\n{payload}");
                             break;
                     }
                     break;

@@ -324,11 +324,11 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 14
+  m_fontSize: 18.9
   m_fontSizeBase: 14
   m_fontWeight: 400
-  m_enableAutoSizing: 0
-  m_fontSizeMin: 18
+  m_enableAutoSizing: 1
+  m_fontSizeMin: 10
   m_fontSizeMax: 72
   m_fontStyle: 0
   m_HorizontalAlignment: 1
@@ -342,7 +342,7 @@ MonoBehaviour:
   m_charWidthMaxAdj: 0
   m_TextWrappingMode: 1
   m_wordWrappingRatios: 0.4
-  m_overflowMode: 0
+  m_overflowMode: 2
   m_linkedTextComponent: {fileID: 0}
   parentLinkedComponent: {fileID: 0}
   m_enableKerning: 1
@@ -900,7 +900,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 450, y: 242.7}
+  m_SizeDelta: {x: 450, y: 65}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &8580117999847590100
 CanvasRenderer:
@@ -960,6 +960,10 @@ MonoBehaviour:
   RunButton: {fileID: 3209249580089359672}
   WarningRT: {fileID: 5459040116557469687}
   ContextMenuPrefab: {fileID: 5700513683117687523, guid: dc50e97ebddcc6a47ac3dec88f9b8116, type: 3}
+  PointMarkerPrefab: {fileID: 3588867308965229156, guid: 0ca34d3b4f0bd6847a8bced61aec8fc7, type: 3}
+  OrientationMarkerPrefab: {fileID: 0}
+  VerticalMarkerPrefab: {fileID: 0}
+  WorldMarkersCollectionName: WorldMarkers
 --- !u!1 &6214090480317902547
 GameObject:
   m_ObjectHideFlags: 0

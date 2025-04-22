@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace SmarcGUI.WorldSpace
 {
-    public class WorldspaceGhost : MonoBehaviour
+    public class RobotGhost : MonoBehaviour
     {
         public Transform ModelTF;
         public float FarAwayDistance = 50;

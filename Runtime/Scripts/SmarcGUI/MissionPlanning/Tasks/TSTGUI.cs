@@ -29,11 +29,12 @@ namespace SmarcGUI.MissionPlanning.Tasks
         MissionPlanStore missionPlanStore;
         GUIState guiState;
 
+
         void Awake()
         {
             guiState = FindFirstObjectByType<GUIState>();
             missionPlanStore = FindFirstObjectByType<MissionPlanStore>();
-            DescriptionField.onValueChanged.AddListener(OnDescriptionChanged);
+            DescriptionField.onEndEdit.AddListener(OnDescriptionChanged);
         }
 
 
@@ -80,24 +81,16 @@ namespace SmarcGUI.MissionPlanning.Tasks
 
         void OnSelectionChanged()
         {
-            SelectedHighlightRT?.gameObject.SetActive(isSelected);
+            if(SelectedHighlightRT != null) SelectedHighlightRT.gameObject.SetActive(isSelected);
             missionPlanStore.OnTSTSelected(isSelected? this : null);
-            // UpdateTasksDropdown();
             UpdateTasksGUI();
             PathLineRenderer.enabled = isSelected;
         }
 
         public void OnTaskAdded(TaskSpec taskSpec)
         {
-            var taskType = taskSpec.Name;
-            // TODO this is brittle... and annoying to remember when time comes to add more tasks
-            Task newTask = taskType switch
-            {
-                "move-to" => new MoveTo("Move to a point", MoveSpeed.STANDARD, new GeoPoint()),
-                "move-path" => new MovePath("Move along a path", MoveSpeed.STANDARD, new List<GeoPoint>()),
-                "custom" => new CustomTask("custom-task", "Custom task with a JSON attached", "{\"totally-valid-json\": 42}"),
-                _ => new CustomTask(taskSpec.Name, "Un-implemented task!")
-            };
+            Task newTask = missionPlanStore.CreateTask(taskSpec.Name);
+            if(newTask == null) return;
             tst.Children.Add(newTask);
             CreateTaskGUI(newTask);
             OnParamChanged();
