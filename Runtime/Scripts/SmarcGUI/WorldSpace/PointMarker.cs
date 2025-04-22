@@ -130,11 +130,11 @@ namespace SmarcGUI.WorldSpace
             return l;
         }
 
-        public float GetHeading()
+        public Vector3 GetHeadingVec()
         {
-            if(paramHeading != null) return headingCone.localRotation.eulerAngles.y;
-            if(paramOrientation != null) return orientationModel.localRotation.eulerAngles.y;
-            return 400;
+            if(paramHeading != null) return headingCone.forward;
+            if(paramOrientation != null) return orientationModel.forward;
+            return Vector3.zero;
         }
 
         void UpdateWidgets(bool draw3Dwidgets)

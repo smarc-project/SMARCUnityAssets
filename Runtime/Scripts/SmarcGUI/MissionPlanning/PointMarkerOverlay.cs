@@ -52,14 +52,13 @@ namespace SmarcGUI.MissionPlanning
             var screenPos = Utils.WorldToCanvasPosition(underlayCanvas, guiState.CurrentCam, pmTF.position);
             PositionImg.rectTransform.anchoredPosition = screenPos;
 
-            var worldHeadingDeg = pointMarker.GetHeading();
-            if(worldHeadingDeg == 400)
+            var worldHeadingVec = pointMarker.GetHeadingVec();
+            if(worldHeadingVec == Vector3.zero)
             {
                 HeadingArrowRT.gameObject.SetActive(false);
                 return;
             }
-            var worldHeading = Quaternion.Euler(0, 0, worldHeadingDeg) * Vector3.up;
-            var worldHeadingTip = pmTF.position + worldHeading;
+            var worldHeadingTip = pmTF.position + worldHeadingVec;
             var screenHeadingTip = Utils.WorldToCanvasPosition(underlayCanvas, guiState.CurrentCam, worldHeadingTip);
             // then, find the angle of the vector in screen space
             var arrowAngle = Vector2.SignedAngle(Vector2.up, screenHeadingTip - screenPos);
