@@ -158,6 +158,7 @@ namespace SmarcGUI.WorldSpace
             // disable all 3D stuff if the camera is far away and replace them with screen-space 2D markers
             // similar to how we display robot ghosts.
             if(guiState.CurrentCam == null) return;
+            if(guiState.MouseDragging) return; //also dont do anything if we are dragging something...
             var camDiff = transform.position - guiState.CurrentCam.transform.position;
             bool closeEnoughNow = camDiff.sqrMagnitude < farAwayDistSq;
             UpdateWidgets(closeEnoughNow);
