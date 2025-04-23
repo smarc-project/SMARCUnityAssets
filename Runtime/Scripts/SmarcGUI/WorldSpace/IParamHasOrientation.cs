@@ -4,7 +4,9 @@ namespace SmarcGUI.WorldSpace
 {
     public interface IParamHasOrientation
     {
-        public Orientation GetOrientation();
-        public void SetOrientation(Orientation orientation);
+        public Orientation GetROSOrientation();
+        public Quaternion GetUnityOrientation();
+        public void SetROSOrientation(Orientation o);
+        public void SetUnityOrientation(Quaternion q);
     }
 }

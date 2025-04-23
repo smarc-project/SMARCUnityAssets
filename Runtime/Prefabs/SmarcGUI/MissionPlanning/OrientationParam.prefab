@@ -1978,9 +1978,9 @@ MonoBehaviour:
   qxField: {fileID: 5151769899253396062}
   qyField: {fileID: 8276478208092401730}
   qzField: {fileID: 8945867491355177503}
-  xField: {fileID: 7539777502088296341}
-  yField: {fileID: 1180154516547384855}
-  zField: {fileID: 7462005784941792811}
+  exField: {fileID: 7539777502088296341}
+  eyField: {fileID: 1180154516547384855}
+  ezField: {fileID: 7462005784941792811}
 --- !u!1 &5352403577443328149
 GameObject:
   m_ObjectHideFlags: 0
