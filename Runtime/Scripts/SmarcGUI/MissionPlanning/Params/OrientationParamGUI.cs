@@ -129,7 +129,7 @@ namespace SmarcGUI.MissionPlanning.Params
                 rosOri.w = 1;
             }
             paramValue = rosOri;
-            
+
             qwField.text = rosOri.w.ToString();
             qxField.text = rosOri.x.ToString();
             qyField.text = rosOri.y.ToString();
@@ -194,20 +194,7 @@ namespace SmarcGUI.MissionPlanning.Params
 
         public Quaternion GetUnityQuaternion()
         {
-            // // first we gotta map the X-forward Y-left Z-up coordinate system
-            // // into unity's Z-forward X-right Y-up coordinate system
-            // var FLUex = exField.text != "" ? float.Parse(exField.text) : 0;
-            // var FLUey = eyField.text != "" ? float.Parse(eyField.text) : 0;
-            // var FLUez = ezField.text != "" ? float.Parse(ezField.text) : 0;
-
-            // var RUFex = -FLUey;
-            // var RUFey = FLUez;
-            // var RUFez = -FLUex;
-
-            // return Quaternion.Euler(RUFex, RUFez, RUFey);
-
             var o = (Orientation)paramValue;
-
             var unityOri = ENU.ConvertToRUF(
                         new Quaternion(
                             (float)o.x,
@@ -220,6 +207,8 @@ namespace SmarcGUI.MissionPlanning.Params
 
         public void SetUnityQuaternion(Quaternion q)
         {
+            // might be nice to have later, when there is a gui widget for setting the orientation
+            // in-world
             Debug.Log("SetUnityQuat not implemented");
         }
     }

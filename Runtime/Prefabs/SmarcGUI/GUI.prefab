@@ -11594,7 +11594,7 @@ MonoBehaviour:
   ListParamPrefab: {fileID: 4724736429469239046, guid: e5af100246a2b3d469d9e861d6259b83, type: 3}
   DepthParamPrefab: {fileID: 1497497768590733871, guid: e2c8e31f0cbea1b4aa7787d1c77c8cf1, type: 3}
   AltitudeParamPrefab: {fileID: 1497497768590733871, guid: 4e333bc0ea160424b9ff255978160b34, type: 3}
-  HeadingParamPrefab: {fileID: 0}
+  HeadingParamPrefab: {fileID: 1497497768590733871, guid: 0ee6819f2928b824486196b6391e3a8b, type: 3}
   SelectedTSTGUI: {fileID: 0}
 --- !u!114 &123414369969908222
 MonoBehaviour:
