@@ -1,6 +1,7 @@
 using SmarcGUI.WorldSpace;
 using TMPro;
 using UnityEngine;
+using System;
 
 using Unity.Robotics.ROSTCPConnector.ROSGeometry;
 
@@ -25,18 +26,22 @@ namespace SmarcGUI.MissionPlanning.Params
         // and the quaternion is given by:
         // q = [qx, qy, qz, qw]
 
-        Orientation CalculateQuaternionFromEuler(float roll, float pitch, float yaw)
+        Orientation RPYtoRosOrientation(float ex, float ey, float ez)
         {
-            float rollRad = Mathf.Deg2Rad * roll;
-            float pitchRad = Mathf.Deg2Rad * pitch;
-            float yawRad = Mathf.Deg2Rad * yaw;
+            // In X forward, Y left, Z up coordinate system!
+            // roll = around x
+            // pitch = around y
+            // yaw = around z
+            float exRad = Mathf.Deg2Rad * ex;
+            float eyRad = Mathf.Deg2Rad * ey;
+            float ezRad = Mathf.Deg2Rad * ez;
 
-            float cy = Mathf.Cos(yawRad * 0.5f);
-            float sy = Mathf.Sin(yawRad * 0.5f);
-            float cp = Mathf.Cos(pitchRad * 0.5f);
-            float sp = Mathf.Sin(pitchRad * 0.5f);
-            float cr = Mathf.Cos(rollRad * 0.5f);
-            float sr = Mathf.Sin(rollRad * 0.5f);
+            float cy = Mathf.Cos(ezRad * 0.5f);
+            float sy = Mathf.Sin(ezRad * 0.5f);
+            float cp = Mathf.Cos(eyRad * 0.5f);
+            float sp = Mathf.Sin(eyRad * 0.5f);
+            float cr = Mathf.Cos(exRad * 0.5f);
+            float sr = Mathf.Sin(exRad * 0.5f);
 
             Orientation q = new Orientation();
             q.w = cr * cp * cy + sr * sp * sy;
@@ -46,30 +51,59 @@ namespace SmarcGUI.MissionPlanning.Params
 
             return q;
         }
+
+        private static double CopySign(double magnitude, double sign)
+        {
+            return Math.Abs(magnitude) * Math.Sign(sign);
+        }
+
+        Vector3 ROSOrientationToRPY(Orientation q)
+        {
+            var angles = new Vector3();
+
+            // roll (x-axis rotation)
+            double sinr_cosp = 2 * (q.w * q.x + q.y * q.z);
+            double cosr_cosp = 1 - 2 * (q.x * q.x + q.y * q.y);
+            angles.x = (float)Math.Atan2(sinr_cosp, cosr_cosp);
+
+            // pitch (y-axis rotation)
+            double sinp = 2 * (q.w * q.y - q.z * q.x);
+            if (Math.Abs(sinp) >= 1)
+            {
+                angles.y = (float)CopySign(Math.PI / 2, sinp);
+            }
+            else
+            {
+                angles.y = (float)Math.Asin(sinp);
+            }
+
+            // yaw (z-axis rotation)
+            double siny_cosp = 2 * (q.w * q.z + q.x * q.y);
+            double cosy_cosp = 1 - 2 * (q.y * q.y + q.z * q.z);
+            angles.z = (float)Math.Atan2(siny_cosp, cosy_cosp);
+
+            return angles;
+        }
         
 
-        void UpdateQuatFromEuler()
+        void UpdateOrientationFromEuler()
         {
             var ex = exField.text != "" ? float.Parse(exField.text) : 0;
             var ey = eyField.text != "" ? float.Parse(eyField.text) : 0;
             var ez = ezField.text != "" ? float.Parse(ezField.text) : 0;
 
-            
-            // pitch = around x
-            // yaw = around y
-            // roll = around z
-            var q = Quaternion.Euler(ex, ey, ez);
+            var o = RPYtoRosOrientation(ex, ey, ez);
 
-            qwField.text = q.w.ToString();
-            qxField.text = q.x.ToString();
-            qyField.text = q.y.ToString();
-            qzField.text = q.z.ToString();
+            qwField.text = o.w.ToString();
+            qxField.text = o.x.ToString();
+            qyField.text = o.y.ToString();
+            qzField.text = o.z.ToString();
+
             var v = (Orientation)paramValue;
-            var q_enu = q.To<ENU>();
-            v.w = q.w;
-            v.x = q.x;
-            v.y = q.y;
-            v.z = q.z;
+            v.w = o.w;
+            v.x = o.x;
+            v.y = o.y;
+            v.z = o.z;
             paramValue = v;
             NotifyPathChange();
         }
@@ -86,7 +120,26 @@ namespace SmarcGUI.MissionPlanning.Params
 
         protected override void SetupFields()
         {
-            UpdateTexts();
+            var rosOri = (Orientation)paramValue;
+            if(rosOri.x == 0 && rosOri.y == 0 && rosOri.z == 0 && rosOri.w == 0)
+            {
+                rosOri.x = 0;
+                rosOri.y = 0;
+                rosOri.z = 0;
+                rosOri.w = 1;
+            }
+            paramValue = rosOri;
+            
+            qwField.text = rosOri.w.ToString();
+            qxField.text = rosOri.x.ToString();
+            qyField.text = rosOri.y.ToString();
+            qzField.text = rosOri.z.ToString();
+
+            var euler = ROSOrientationToRPY(rosOri);
+            exField.text = euler.x.ToString();
+            eyField.text = euler.y.ToString();
+            ezField.text = euler.z.ToString();
+
             exField.onEndEdit.AddListener(OnEulerXChanged);
             eyField.onEndEdit.AddListener(OnEulerYChanged);
             ezField.onEndEdit.AddListener(OnEulerZChanged);
@@ -94,25 +147,11 @@ namespace SmarcGUI.MissionPlanning.Params
             OnSelectedChange();
         }
 
-        void UpdateTexts()
-        {
-            var v = (Orientation)paramValue;
-            qwField.text = v.w.ToString();
-            qxField.text = v.x.ToString();
-            qyField.text = v.y.ToString();
-            qzField.text = v.z.ToString();
-
-            var q = new Quaternion(v.x, v.y, v.z, v.w);
-            var euler = q.eulerAngles;
-            exField.text = euler.x.ToString();
-            eyField.text = euler.y.ToString();
-            ezField.text = euler.z.ToString();
-        }
 
 
         void OnEulerXChanged(string s)
         {
-            try {UpdateQuatFromEuler();}
+            try {UpdateOrientationFromEuler();}
             catch 
             {
                 guiState.Log("Invalid euler X value");
@@ -123,7 +162,7 @@ namespace SmarcGUI.MissionPlanning.Params
 
         void OnEulerYChanged(string s)
         {
-            try {UpdateQuatFromEuler();}
+            try {UpdateOrientationFromEuler();}
             catch 
             {
                 guiState.Log("Invalid euler Y value");
@@ -134,7 +173,7 @@ namespace SmarcGUI.MissionPlanning.Params
 
         void OnEulerZChanged(string s)
         {
-            try {UpdateQuatFromEuler();}
+            try {UpdateOrientationFromEuler();}
             catch 
             {
                 guiState.Log("Invalid euler Z value");
@@ -143,14 +182,45 @@ namespace SmarcGUI.MissionPlanning.Params
             }
         }
 
-        public Orientation GetOrientation()
+        public Orientation GetROSOrientation()
         {
             return (Orientation)paramValue;
         }
 
-        public void SetOrientation(Orientation orientation)
+        public void SetROSOrientation(Orientation orientation)
         {
             paramValue = orientation;
+        }
+
+        public Quaternion GetUnityQuaternion()
+        {
+            // // first we gotta map the X-forward Y-left Z-up coordinate system
+            // // into unity's Z-forward X-right Y-up coordinate system
+            // var FLUex = exField.text != "" ? float.Parse(exField.text) : 0;
+            // var FLUey = eyField.text != "" ? float.Parse(eyField.text) : 0;
+            // var FLUez = ezField.text != "" ? float.Parse(ezField.text) : 0;
+
+            // var RUFex = -FLUey;
+            // var RUFey = FLUez;
+            // var RUFez = -FLUex;
+
+            // return Quaternion.Euler(RUFex, RUFez, RUFey);
+
+            var o = (Orientation)paramValue;
+
+            var unityOri = ENU.ConvertToRUF(
+                        new Quaternion(
+                            (float)o.x,
+                            (float)o.y,
+                            (float)o.z,
+                            (float)o.w));
+
+            return unityOri;
+        }
+
+        public void SetUnityQuaternion(Quaternion q)
+        {
+            Debug.Log("SetUnityQuat not implemented");
         }
     }
 }

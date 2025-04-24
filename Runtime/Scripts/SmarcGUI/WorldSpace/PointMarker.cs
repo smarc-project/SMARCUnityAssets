@@ -109,8 +109,7 @@ namespace SmarcGUI.WorldSpace
         {
             if(param == null) return;
             paramOrientation = param;
-            var o = param.GetOrientation();
-            var q = new Quaternion(o.x, o.y, o.z, o.w);
+            var q = param.GetUnityQuaternion();
             orientationModel.localRotation = q;
             orientationModel.gameObject.SetActive(paramXZ != null);
         }
