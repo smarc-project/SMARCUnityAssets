@@ -133,12 +133,6 @@ namespace SmarcGUI
                 mqttClient.SubToTopic(robotNamespace+"tst_execution_info");
                 mqttClient.SubToTopic(robotNamespace+"direct_execution_info");
                 mqttClient.SubToTopic(robotNamespace+"sensor_info");
-                mqttClient.SubToTopic(robotNamespace+"sensor/position");
-                mqttClient.SubToTopic(robotNamespace+"sensor/heading");
-                mqttClient.SubToTopic(robotNamespace+"sensor/course");
-                mqttClient.SubToTopic(robotNamespace+"sensor/speed");
-                mqttClient.SubToTopic(robotNamespace+"sensor/roll");
-                mqttClient.SubToTopic(robotNamespace+"sensor/pitch");
                 mqttClient.SubToTopic(robotNamespace+"exec/command");
                 mqttClient.SubToTopic(robotNamespace+"exec/response");
                 mqttClient.SubToTopic(robotNamespace+"exec/feedback");
@@ -258,7 +252,10 @@ namespace SmarcGUI
 
         public void OnSensorInfoReceived(WaspSensorInfoMsg msg)
         {
-            return;
+            foreach(string sensorName in msg.SensorDataProvided)
+            {
+                mqttClient.SubToTopic(robotNamespace+"sensor/"+sensorName);
+            }
         }
 
 
