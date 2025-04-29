@@ -70,8 +70,8 @@ namespace SmarcGUI.KeyboardControllers
 
             elevatorHinge.SetAngle((elevatorValue + pitchValue) * elevatorHinge.AngleMax);
 
-            elevonPortHinge.SetAngle((elevatorValue + rollValue) * elevonPortHinge.AngleMax);
-            elevonStbdHinge.SetAngle((elevatorValue - rollValue) * elevonStbdHinge.AngleMax);
+            elevonPortHinge.SetAngle((elevatorValue - rollValue) * elevonPortHinge.AngleMax);
+            elevonStbdHinge.SetAngle((elevatorValue + rollValue) * elevonStbdHinge.AngleMax);
 
             verticalThrusterFrontPort.SetRpm((verticalValue + rollValue + pitchValue) * verticalRpms);
             verticalThrusterFrontStbd.SetRpm((verticalValue - rollValue + pitchValue) * verticalRpms);
