@@ -506,7 +506,7 @@ GameObject:
   - component: {fileID: 4886665786387676753}
   - component: {fileID: 5378080136670906774}
   m_Layer: 0
-  m_Name: thruster_port
+  m_Name: ThrusterPort
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -691,7 +691,7 @@ GameObject:
   - component: {fileID: 2457523893279256373}
   - component: {fileID: 6309090320770876276}
   m_Layer: 0
-  m_Name: thruster_stbd
+  m_Name: ThrusterStbd
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1126,7 +1126,7 @@ GameObject:
   - component: {fileID: 8407507649167833396}
   - component: {fileID: 3360185221928561318}
   m_Layer: 0
-  m_Name: vert_thruster_front_port
+  m_Name: VertThrusterFrontPort
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1169,7 +1169,7 @@ MonoBehaviour:
   rpm: 0
   RPMMax: 3000
   RPMMin: 150
-  RPMToForceMultiplier: 0.01
+  RPMToForceMultiplier: 0.02
   HoverDefault: 0
   NumPropellers: 4
   ApplyTorque: 0
@@ -1209,6 +1209,78 @@ MonoBehaviour:
   resetting: 1
   receivedFrequency: 0
   ReceivedFirstMessage: 0
+--- !u!1 &1851872486568332449
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4146297012918785186}
+  - component: {fileID: 5484218348474997294}
+  - component: {fileID: 7941678749477173086}
+  m_Layer: 0
+  m_Name: ElevonStbd
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4146297012918785186
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1851872486568332449}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0.612, y: 0.233, z: -1.022}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 675674666241882756}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &5484218348474997294
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1851872486568332449}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e920cbbf408fbfb6d98fe04d68f7a8b0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  linkName: elevon_stbd
+  retryUntilSuccess: 1
+  rotateForROSCamera: 0
+  roll: 0
+  pitch: 0
+  yaw: 0
+  angle: 0
+  AngleMax: 0.76
+  reverse: 0
+--- !u!114 &7941678749477173086
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1851872486568332449}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 771d0adfb2667593a8c266a12060997f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  topic: core/elevon_stbd_cmd
+  expectedFrequency: -1
+  resetting: 1
+  receivedFrequency: 0
+  ReceivedFirstMessage: 0
+  angleChoice: 1
 --- !u!1 &1990175017669939580
 GameObject:
   m_ObjectHideFlags: 0
@@ -1222,7 +1294,7 @@ GameObject:
   - component: {fileID: 2290992789141833621}
   - component: {fileID: 1286021298945174430}
   m_Layer: 0
-  m_Name: vert_thruster_front_stbd
+  m_Name: VertThrusterFrontStbd
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1265,7 +1337,7 @@ MonoBehaviour:
   rpm: 0
   RPMMax: 3000
   RPMMin: 150
-  RPMToForceMultiplier: 0.01
+  RPMToForceMultiplier: 0.02
   HoverDefault: 0
   NumPropellers: 4
   ApplyTorque: 0
@@ -1494,7 +1566,7 @@ GameObject:
   - component: {fileID: 4993027437543517855}
   - component: {fileID: 3274884573070327101}
   m_Layer: 0
-  m_Name: vert_thruster_back_stbd
+  m_Name: VertThrusterBackStbd
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1537,7 +1609,7 @@ MonoBehaviour:
   rpm: 0
   RPMMax: 3000
   RPMMin: 150
-  RPMToForceMultiplier: 0.01
+  RPMToForceMultiplier: 0.02
   HoverDefault: 0
   NumPropellers: 4
   ApplyTorque: 0
@@ -2106,6 +2178,78 @@ MonoBehaviour:
   jointName: elevon_port_joint
   EffortLimit: 1000
   VelocityLimit: 1000
+--- !u!1 &3088666195858771038
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 6956409071167865576}
+  - component: {fileID: 5509758317750954899}
+  - component: {fileID: 5656115355840583319}
+  m_Layer: 0
+  m_Name: ElevonPort
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &6956409071167865576
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3088666195858771038}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -0.622, y: 0.206, z: -1.039}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 675674666241882756}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &5509758317750954899
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3088666195858771038}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e920cbbf408fbfb6d98fe04d68f7a8b0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  linkName: elevon_port
+  retryUntilSuccess: 1
+  rotateForROSCamera: 0
+  roll: 0
+  pitch: 0
+  yaw: 0
+  angle: 0
+  AngleMax: 0.76
+  reverse: 0
+--- !u!114 &5656115355840583319
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3088666195858771038}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 771d0adfb2667593a8c266a12060997f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  topic: core/elevon_port_cmd
+  expectedFrequency: -1
+  resetting: 1
+  receivedFrequency: 0
+  ReceivedFirstMessage: 0
+  angleChoice: 1
 --- !u!1 &3112749638478343169
 GameObject:
   m_ObjectHideFlags: 0
@@ -2187,6 +2331,11 @@ Transform:
   - {fileID: 8729885312952273256}
   - {fileID: 6179183156845278506}
   - {fileID: 1979688055076613900}
+  - {fileID: 8895378936511718364}
+  - {fileID: 5337726711209073136}
+  - {fileID: 6956409071167865576}
+  - {fileID: 4146297012918785186}
+  - {fileID: 7308458728438998921}
   m_Father: {fileID: 2802199936676877118}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &3223138373852633122
@@ -2420,7 +2569,7 @@ GameObject:
   - component: {fileID: 4267018064263481766}
   - component: {fileID: 6894557112106137073}
   m_Layer: 0
-  m_Name: vert_thruster_back_port
+  m_Name: VertThrusterBackPort
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2463,7 +2612,7 @@ MonoBehaviour:
   rpm: 0
   RPMMax: 3000
   RPMMin: 150
-  RPMToForceMultiplier: 0.01
+  RPMToForceMultiplier: 0.02
   HoverDefault: 0
   NumPropellers: 4
   ApplyTorque: 0
@@ -3225,6 +3374,78 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   geometryType: 3
+--- !u!1 &4986870767559087563
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 5337726711209073136}
+  - component: {fileID: 3677734391477021078}
+  - component: {fileID: 6893560062159568582}
+  m_Layer: 0
+  m_Name: RudderStbd
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &5337726711209073136
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4986870767559087563}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0.248, y: 0.475, z: -0.908}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 675674666241882756}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &3677734391477021078
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4986870767559087563}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e920cbbf408fbfb6d98fe04d68f7a8b0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  linkName: rudder_stbd
+  retryUntilSuccess: 1
+  rotateForROSCamera: 0
+  roll: 0
+  pitch: 0
+  yaw: 0
+  angle: 0
+  AngleMax: 0.76
+  reverse: 0
+--- !u!114 &6893560062159568582
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4986870767559087563}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 771d0adfb2667593a8c266a12060997f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  topic: core/rudder_stbd_cmd
+  expectedFrequency: -1
+  resetting: 1
+  receivedFrequency: 0
+  ReceivedFirstMessage: 0
+  angleChoice: 1
 --- !u!1 &5061089593730785023
 GameObject:
   m_ObjectHideFlags: 0
@@ -4390,6 +4611,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2802199936676877118}
+  - component: {fileID: 1631846539262112515}
   m_Layer: 0
   m_Name: lolo_auv_v1
   m_TagString: robot
@@ -4415,6 +4637,31 @@ Transform:
   - {fileID: 675674666241882756}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1631846539262112515
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7152737545778712160}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a0fdab8b92ffc7342a5a2435ca1e30a3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  elevatorHingeGo: {fileID: 8939564543920937555}
+  elevonPortHingeGo: {fileID: 3088666195858771038}
+  elevonStbdHingeGo: {fileID: 1851872486568332449}
+  rudderPortHingeGo: {fileID: 8929270944956807269}
+  rudderStbdHingeGo: {fileID: 4986870767559087563}
+  thrusterPortGo: {fileID: 1141031525494773536}
+  thrusterStbdGo: {fileID: 1417483818276494743}
+  verticalThrusterFrontPortGo: {fileID: 1835949919394526367}
+  verticalThrusterFrontStbdGo: {fileID: 1990175017669939580}
+  verticalThrusterBackPortGo: {fileID: 3760023613849309593}
+  verticalThrusterBackStbdGo: {fileID: 2233677225763660634}
+  moveRpms: 800
+  verticalRpms: 3000
 --- !u!1 &7181258836340888077
 GameObject:
   m_ObjectHideFlags: 0
@@ -5134,6 +5381,150 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 46398bc5d6905ad429a6d2d973afe002, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1 &8929270944956807269
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 8895378936511718364}
+  - component: {fileID: 8622398935020907109}
+  - component: {fileID: 1142930201475144146}
+  m_Layer: 0
+  m_Name: RudderPort
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &8895378936511718364
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8929270944956807269}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -0.273, y: 0.475, z: -0.908}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 675674666241882756}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &8622398935020907109
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8929270944956807269}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e920cbbf408fbfb6d98fe04d68f7a8b0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  linkName: rudder_port
+  retryUntilSuccess: 1
+  rotateForROSCamera: 0
+  roll: 0
+  pitch: 0
+  yaw: 0
+  angle: 0
+  AngleMax: 0.76
+  reverse: 0
+--- !u!114 &1142930201475144146
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8929270944956807269}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 771d0adfb2667593a8c266a12060997f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  topic: core/rudder_port_cmd
+  expectedFrequency: -1
+  resetting: 1
+  receivedFrequency: 0
+  ReceivedFirstMessage: 0
+  angleChoice: 1
+--- !u!1 &8939564543920937555
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 7308458728438998921}
+  - component: {fileID: 6705580153912414063}
+  - component: {fileID: 5609090389659058721}
+  m_Layer: 0
+  m_Name: Elevator
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &7308458728438998921
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8939564543920937555}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -0.012, y: 0.233, z: -1.515}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 675674666241882756}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &6705580153912414063
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8939564543920937555}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e920cbbf408fbfb6d98fe04d68f7a8b0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  linkName: elevator
+  retryUntilSuccess: 1
+  rotateForROSCamera: 0
+  roll: 0
+  pitch: 0
+  yaw: 0
+  angle: 0
+  AngleMax: 0.76
+  reverse: 0
+--- !u!114 &5609090389659058721
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8939564543920937555}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 771d0adfb2667593a8c266a12060997f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  topic: core/elevator_cmd
+  expectedFrequency: -1
+  resetting: 1
+  receivedFrequency: 0
+  ReceivedFirstMessage: 0
+  angleChoice: 1
 --- !u!1001 &472361327994526713
 PrefabInstance:
   m_ObjectHideFlags: 0
