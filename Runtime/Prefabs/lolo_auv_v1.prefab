@@ -4630,11 +4630,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5935641589257227573, guid: 3a014debc3b3e05449edaee2fa65ba19, type: 3}
       propertyPath: MaxBuoyancyForce
-      value: 10000
+      value: 1e+9
       objectReference: {fileID: 0}
     - target: {fileID: 5935641589257227573, guid: 3a014debc3b3e05449edaee2fa65ba19, type: 3}
       propertyPath: DepthBeforeSubmerged
-      value: 0.15
+      value: 0.3
       objectReference: {fileID: 0}
     - target: {fileID: 5935641589257227573, guid: 3a014debc3b3e05449edaee2fa65ba19, type: 3}
       propertyPath: UnderwaterAngularDrag
@@ -4732,11 +4732,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5935641589257227573, guid: 3a014debc3b3e05449edaee2fa65ba19, type: 3}
       propertyPath: MaxBuoyancyForce
-      value: 10000
+      value: 1e+9
       objectReference: {fileID: 0}
     - target: {fileID: 5935641589257227573, guid: 3a014debc3b3e05449edaee2fa65ba19, type: 3}
       propertyPath: DepthBeforeSubmerged
-      value: 0.15
+      value: 0.3
       objectReference: {fileID: 0}
     - target: {fileID: 5935641589257227573, guid: 3a014debc3b3e05449edaee2fa65ba19, type: 3}
       propertyPath: UnderwaterAngularDrag
@@ -4834,11 +4834,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5935641589257227573, guid: 3a014debc3b3e05449edaee2fa65ba19, type: 3}
       propertyPath: MaxBuoyancyForce
-      value: 10000
+      value: 1e+9
       objectReference: {fileID: 0}
     - target: {fileID: 5935641589257227573, guid: 3a014debc3b3e05449edaee2fa65ba19, type: 3}
       propertyPath: DepthBeforeSubmerged
-      value: 0.15
+      value: 0.3
       objectReference: {fileID: 0}
     - target: {fileID: 5935641589257227573, guid: 3a014debc3b3e05449edaee2fa65ba19, type: 3}
       propertyPath: UnderwaterAngularDrag
@@ -5184,11 +5184,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5935641589257227573, guid: 3a014debc3b3e05449edaee2fa65ba19, type: 3}
       propertyPath: MaxBuoyancyForce
-      value: 10000
+      value: 1e+9
       objectReference: {fileID: 0}
     - target: {fileID: 5935641589257227573, guid: 3a014debc3b3e05449edaee2fa65ba19, type: 3}
       propertyPath: DepthBeforeSubmerged
-      value: 0.15
+      value: 0.3
       objectReference: {fileID: 0}
     - target: {fileID: 5935641589257227573, guid: 3a014debc3b3e05449edaee2fa65ba19, type: 3}
       propertyPath: UnderwaterAngularDrag
@@ -5286,11 +5286,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5935641589257227573, guid: 3a014debc3b3e05449edaee2fa65ba19, type: 3}
       propertyPath: MaxBuoyancyForce
-      value: 10000
+      value: 1e+9
       objectReference: {fileID: 0}
     - target: {fileID: 5935641589257227573, guid: 3a014debc3b3e05449edaee2fa65ba19, type: 3}
       propertyPath: DepthBeforeSubmerged
-      value: 0.15
+      value: 0.3
       objectReference: {fileID: 0}
     - target: {fileID: 5935641589257227573, guid: 3a014debc3b3e05449edaee2fa65ba19, type: 3}
       propertyPath: UnderwaterAngularDrag
@@ -5450,11 +5450,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5935641589257227573, guid: 3a014debc3b3e05449edaee2fa65ba19, type: 3}
       propertyPath: MaxBuoyancyForce
-      value: 10000
+      value: 1e+9
       objectReference: {fileID: 0}
     - target: {fileID: 5935641589257227573, guid: 3a014debc3b3e05449edaee2fa65ba19, type: 3}
       propertyPath: DepthBeforeSubmerged
-      value: 0.15
+      value: 0.3
       objectReference: {fileID: 0}
     - target: {fileID: 5935641589257227573, guid: 3a014debc3b3e05449edaee2fa65ba19, type: 3}
       propertyPath: UnderwaterAngularDrag
@@ -5676,11 +5676,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5935641589257227573, guid: 3a014debc3b3e05449edaee2fa65ba19, type: 3}
       propertyPath: MaxBuoyancyForce
-      value: 10000
+      value: 1e+9
       objectReference: {fileID: 0}
     - target: {fileID: 5935641589257227573, guid: 3a014debc3b3e05449edaee2fa65ba19, type: 3}
       propertyPath: DepthBeforeSubmerged
-      value: 0.15
+      value: 0.3
       objectReference: {fileID: 0}
     - target: {fileID: 5935641589257227573, guid: 3a014debc3b3e05449edaee2fa65ba19, type: 3}
       propertyPath: UnderwaterAngularDrag
@@ -5778,11 +5778,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5935641589257227573, guid: 3a014debc3b3e05449edaee2fa65ba19, type: 3}
       propertyPath: MaxBuoyancyForce
-      value: 10000
+      value: 1e+9
       objectReference: {fileID: 0}
     - target: {fileID: 5935641589257227573, guid: 3a014debc3b3e05449edaee2fa65ba19, type: 3}
       propertyPath: DepthBeforeSubmerged
-      value: 0.15
+      value: 0.3
       objectReference: {fileID: 0}
     - target: {fileID: 5935641589257227573, guid: 3a014debc3b3e05449edaee2fa65ba19, type: 3}
       propertyPath: UnderwaterAngularDrag
@@ -5880,11 +5880,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5935641589257227573, guid: 3a014debc3b3e05449edaee2fa65ba19, type: 3}
       propertyPath: MaxBuoyancyForce
-      value: 10000
+      value: 1e+9
       objectReference: {fileID: 0}
     - target: {fileID: 5935641589257227573, guid: 3a014debc3b3e05449edaee2fa65ba19, type: 3}
       propertyPath: DepthBeforeSubmerged
-      value: 0.15
+      value: 0.3
       objectReference: {fileID: 0}
     - target: {fileID: 5935641589257227573, guid: 3a014debc3b3e05449edaee2fa65ba19, type: 3}
       propertyPath: UnderwaterAngularDrag
@@ -6044,11 +6044,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5935641589257227573, guid: 3a014debc3b3e05449edaee2fa65ba19, type: 3}
       propertyPath: MaxBuoyancyForce
-      value: 10000
+      value: 1e+9
       objectReference: {fileID: 0}
     - target: {fileID: 5935641589257227573, guid: 3a014debc3b3e05449edaee2fa65ba19, type: 3}
       propertyPath: DepthBeforeSubmerged
-      value: 0.15
+      value: 0.3
       objectReference: {fileID: 0}
     - target: {fileID: 5935641589257227573, guid: 3a014debc3b3e05449edaee2fa65ba19, type: 3}
       propertyPath: UnderwaterAngularDrag
@@ -6146,11 +6146,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5935641589257227573, guid: 3a014debc3b3e05449edaee2fa65ba19, type: 3}
       propertyPath: MaxBuoyancyForce
-      value: 10000
+      value: 1e+9
       objectReference: {fileID: 0}
     - target: {fileID: 5935641589257227573, guid: 3a014debc3b3e05449edaee2fa65ba19, type: 3}
       propertyPath: DepthBeforeSubmerged
-      value: 0.15
+      value: 0.3
       objectReference: {fileID: 0}
     - target: {fileID: 5935641589257227573, guid: 3a014debc3b3e05449edaee2fa65ba19, type: 3}
       propertyPath: UnderwaterAngularDrag
@@ -6248,11 +6248,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5935641589257227573, guid: 3a014debc3b3e05449edaee2fa65ba19, type: 3}
       propertyPath: MaxBuoyancyForce
-      value: 10000
+      value: 1e+9
       objectReference: {fileID: 0}
     - target: {fileID: 5935641589257227573, guid: 3a014debc3b3e05449edaee2fa65ba19, type: 3}
       propertyPath: DepthBeforeSubmerged
-      value: 0.15
+      value: 0.3
       objectReference: {fileID: 0}
     - target: {fileID: 5935641589257227573, guid: 3a014debc3b3e05449edaee2fa65ba19, type: 3}
       propertyPath: UnderwaterAngularDrag
@@ -6474,11 +6474,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5935641589257227573, guid: 3a014debc3b3e05449edaee2fa65ba19, type: 3}
       propertyPath: MaxBuoyancyForce
-      value: 10000
+      value: 1e+9
       objectReference: {fileID: 0}
     - target: {fileID: 5935641589257227573, guid: 3a014debc3b3e05449edaee2fa65ba19, type: 3}
       propertyPath: DepthBeforeSubmerged
-      value: 0.15
+      value: 0.3
       objectReference: {fileID: 0}
     - target: {fileID: 5935641589257227573, guid: 3a014debc3b3e05449edaee2fa65ba19, type: 3}
       propertyPath: UnderwaterAngularDrag
@@ -6576,11 +6576,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5935641589257227573, guid: 3a014debc3b3e05449edaee2fa65ba19, type: 3}
       propertyPath: MaxBuoyancyForce
-      value: 10000
+      value: 1e+9
       objectReference: {fileID: 0}
     - target: {fileID: 5935641589257227573, guid: 3a014debc3b3e05449edaee2fa65ba19, type: 3}
       propertyPath: DepthBeforeSubmerged
-      value: 0.15
+      value: 0.3
       objectReference: {fileID: 0}
     - target: {fileID: 5935641589257227573, guid: 3a014debc3b3e05449edaee2fa65ba19, type: 3}
       propertyPath: UnderwaterAngularDrag
@@ -6678,11 +6678,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5935641589257227573, guid: 3a014debc3b3e05449edaee2fa65ba19, type: 3}
       propertyPath: MaxBuoyancyForce
-      value: 10000
+      value: 1e+9
       objectReference: {fileID: 0}
     - target: {fileID: 5935641589257227573, guid: 3a014debc3b3e05449edaee2fa65ba19, type: 3}
       propertyPath: DepthBeforeSubmerged
-      value: 0.15
+      value: 0.3
       objectReference: {fileID: 0}
     - target: {fileID: 5935641589257227573, guid: 3a014debc3b3e05449edaee2fa65ba19, type: 3}
       propertyPath: UnderwaterAngularDrag
@@ -6846,11 +6846,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5935641589257227573, guid: 3a014debc3b3e05449edaee2fa65ba19, type: 3}
       propertyPath: MaxBuoyancyForce
-      value: 10000
+      value: 1e+9
       objectReference: {fileID: 0}
     - target: {fileID: 5935641589257227573, guid: 3a014debc3b3e05449edaee2fa65ba19, type: 3}
       propertyPath: DepthBeforeSubmerged
-      value: 0.15
+      value: 0.3
       objectReference: {fileID: 0}
     - target: {fileID: 5935641589257227573, guid: 3a014debc3b3e05449edaee2fa65ba19, type: 3}
       propertyPath: UnderwaterAngularDrag
@@ -6948,11 +6948,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5935641589257227573, guid: 3a014debc3b3e05449edaee2fa65ba19, type: 3}
       propertyPath: MaxBuoyancyForce
-      value: 10000
+      value: 1e+9
       objectReference: {fileID: 0}
     - target: {fileID: 5935641589257227573, guid: 3a014debc3b3e05449edaee2fa65ba19, type: 3}
       propertyPath: DepthBeforeSubmerged
-      value: 0.15
+      value: 0.3
       objectReference: {fileID: 0}
     - target: {fileID: 5935641589257227573, guid: 3a014debc3b3e05449edaee2fa65ba19, type: 3}
       propertyPath: UnderwaterAngularDrag
@@ -7050,11 +7050,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5935641589257227573, guid: 3a014debc3b3e05449edaee2fa65ba19, type: 3}
       propertyPath: MaxBuoyancyForce
-      value: 10000
+      value: 1e+9
       objectReference: {fileID: 0}
     - target: {fileID: 5935641589257227573, guid: 3a014debc3b3e05449edaee2fa65ba19, type: 3}
       propertyPath: DepthBeforeSubmerged
-      value: 0.15
+      value: 0.3
       objectReference: {fileID: 0}
     - target: {fileID: 5935641589257227573, guid: 3a014debc3b3e05449edaee2fa65ba19, type: 3}
       propertyPath: UnderwaterAngularDrag
