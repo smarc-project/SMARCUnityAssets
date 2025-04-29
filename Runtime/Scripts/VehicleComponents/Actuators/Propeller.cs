@@ -13,8 +13,9 @@ namespace VehicleComponents.Actuators
     {
         [Header("Propeller")]
         public bool reverse = false;
-        public double rpm;
+        public float rpm;
         public float RPMMax = 100000;
+        public float RPMMin = 0;
         public float RPMToForceMultiplier = 0.005f;
 
         [Header("Drone Propeller")]
@@ -25,16 +26,25 @@ namespace VehicleComponents.Actuators
         public bool ApplyTorque = false;
         [Tooltip("direction of torque")]
         public bool TorqueUp = false;
-        public double DefaultHoverRPM;
+        public float DefaultHoverRPM;
 
         public ArticulationBody baseLinkArticulationBody;
         public Rigidbody baseLinkRigidBody;
         private float c_tau_f = 8.004e-4f;
         private MixedBody baseLinkMixedBody; 
-        
-        public void SetRpm(double rpm)
+
+
+        void OnValidate()
         {
-            this.rpm = Mathf.Clamp((float)rpm, -RPMMax, RPMMax);
+            // make sure the RPM is within the limits
+            if (rpm > RPMMax) rpm = RPMMax;
+            if (rpm < -RPMMax) rpm = -RPMMax;
+        }
+        
+        public void SetRpm(float rpm)
+        {
+            if(Mathf.Abs(rpm) < RPMMin) rpm = 0;
+            this.rpm = Mathf.Clamp(rpm, -RPMMax, RPMMax);
             //if(hoverdefault) Debug.Log("setting rpm to: " + rpm);
         }
         
@@ -46,12 +56,12 @@ namespace VehicleComponents.Actuators
 
         void FixedUpdate()
         {
-            var r = (float)rpm * RPMToForceMultiplier;
+            float r = rpm * RPMToForceMultiplier;
             // if(HoverDefault) Debug.Log("the value of 4xr is: " + r*4 );
 
             // Visualize the applied force
             
-            parentMixedBody.AddForceAtPosition((float)r * parentMixedBody.transform.forward,
+            parentMixedBody.AddForceAtPosition(r * parentMixedBody.transform.forward,
                                                    parentMixedBody.transform.position,
                                                    ForceMode.Force);
             
@@ -61,14 +71,14 @@ namespace VehicleComponents.Actuators
             if(ApplyTorque)   
             {
                 int torque_sign = TorqueUp ? 1 : -1;
-                float torque = torque_sign * c_tau_f * (float)r;
+                float torque = torque_sign * c_tau_f * r;
                 Vector3 torqueVector = torque * transform.forward;
                 parentMixedBody.AddTorque(torqueVector, ForceMode.Force);
             }
             else
             {
                 int direction = reverse? -1 : 1;
-                parentMixedBody.SetDriveTargetVelocity(ArticulationDriveAxis.X, direction*(float)rpm);
+                parentMixedBody.SetDriveTargetVelocity(ArticulationDriveAxis.X, direction*rpm);
             }
         }
 
