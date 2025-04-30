@@ -1,7 +1,0 @@
-<?xml version="1.0" ?>
-<!-- This file is to call the macro defined in sam_auv.urdf.xacro
-so that we can generate a concrete urdf file to be imported in Unity-->
-<robot name="sam_auv" xmlns:xacro="http://ros.org/wiki/xacro">
-  <xacro:include filename="sam_auv.urdf.xacro"/>
-  <xacro:sam_auv/>
-</robot>
