@@ -10,6 +10,8 @@ namespace SmarcGUI.KeyboardControllers
     {
 
         public bool ThrustSteering = true;
+        public bool ThrustRolling = true;
+        public bool ThrustPitching = true;
 
         public GameObject elevatorHingeGo, elevonPortHingeGo, elevonStbdHingeGo;
         public GameObject rudderPortHingeGo, rudderStbdHingeGo;
@@ -64,8 +66,8 @@ namespace SmarcGUI.KeyboardControllers
             var rudderValue = tv.x;
             var elevatorValue = -tv.y;
 
-            thrusterPort.SetRpm((forwardValue + (ThrustSteering ? rudderValue : 0)) * moveRpms);
-            thrusterStbd.SetRpm((forwardValue - (ThrustSteering ? rudderValue : 0)) * moveRpms);
+            thrusterPort.SetRpm((forwardValue + (ThrustSteering ? rudderValue:0)) * moveRpms);
+            thrusterStbd.SetRpm((forwardValue - (ThrustSteering ? rudderValue:0)) * moveRpms);
             
             rudderPortHinge.SetAngle(rudderValue * rudderPortHinge.AngleMax);
             rudderStbdHinge.SetAngle(rudderValue * rudderStbdHinge.AngleMax);
@@ -75,10 +77,10 @@ namespace SmarcGUI.KeyboardControllers
             elevonPortHinge.SetAngle((elevatorValue - rollValue) * elevonPortHinge.AngleMax);
             elevonStbdHinge.SetAngle((elevatorValue + rollValue) * elevonStbdHinge.AngleMax);
 
-            verticalThrusterFrontPort.SetRpm((verticalValue + rollValue + pitchValue) * verticalRpms);
-            verticalThrusterFrontStbd.SetRpm((verticalValue - rollValue + pitchValue) * verticalRpms);
-            verticalThrusterBackPort.SetRpm((verticalValue + rollValue - pitchValue) * verticalRpms);
-            verticalThrusterBackStbd.SetRpm((verticalValue - rollValue - pitchValue) * verticalRpms);
+            verticalThrusterFrontPort.SetRpm((verticalValue + (ThrustRolling? rollValue:0) + (ThrustPitching?pitchValue:0)) * verticalRpms);
+            verticalThrusterFrontStbd.SetRpm((verticalValue - (ThrustRolling? rollValue:0) + (ThrustPitching?pitchValue:0)) * verticalRpms);
+            verticalThrusterBackPort.SetRpm((verticalValue + (ThrustRolling? rollValue:0) - (ThrustPitching?pitchValue:0)) * verticalRpms);
+            verticalThrusterBackStbd.SetRpm((verticalValue - (ThrustRolling? rollValue:0) - (ThrustPitching?pitchValue:0)) * verticalRpms);
         }
 
         public override void OnReset()
