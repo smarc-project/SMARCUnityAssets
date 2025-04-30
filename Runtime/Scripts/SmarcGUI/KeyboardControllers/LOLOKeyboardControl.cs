@@ -9,6 +9,8 @@ namespace SmarcGUI.KeyboardControllers
     public class LOLOKeyboardControl : KeyboardControllerBase
     {
 
+        public bool ThrustSteering = true;
+
         public GameObject elevatorHingeGo, elevonPortHingeGo, elevonStbdHingeGo;
         public GameObject rudderPortHingeGo, rudderStbdHingeGo;
         public GameObject thrusterPortGo, thrusterStbdGo;
@@ -62,8 +64,8 @@ namespace SmarcGUI.KeyboardControllers
             var rudderValue = tv.x;
             var elevatorValue = -tv.y;
 
-            thrusterPort.SetRpm((forwardValue + rudderValue) * moveRpms);
-            thrusterStbd.SetRpm((forwardValue - rudderValue) * moveRpms);
+            thrusterPort.SetRpm((forwardValue + (ThrustSteering ? rudderValue : 0)) * moveRpms);
+            thrusterStbd.SetRpm((forwardValue - (ThrustSteering ? rudderValue : 0)) * moveRpms);
             
             rudderPortHinge.SetAngle(rudderValue * rudderPortHinge.AngleMax);
             rudderStbdHinge.SetAngle(rudderValue * rudderStbdHinge.AngleMax);

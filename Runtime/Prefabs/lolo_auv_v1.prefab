@@ -147,7 +147,7 @@ ArticulationBody:
   m_Enabled: 1
   serializedVersion: 5
   m_Mass: 0.0000001
-  m_ParentAnchorPosition: {x: -0.0024414062, y: 0.0069999993, z: 0.2409668}
+  m_ParentAnchorPosition: {x: -0.0024414062, y: 0.0069999695, z: 0.2409668}
   m_ParentAnchorRotation: {x: 0, y: 0, z: 0.7071068, w: 0.7071068}
   m_AnchorPosition: {x: 0, y: 0, z: 0}
   m_AnchorRotation: {x: 0, y: 0, z: 0.7071068, w: 0.7071068}
@@ -262,7 +262,7 @@ ArticulationBody:
   m_Enabled: 1
   serializedVersion: 5
   m_Mass: 0.0000001
-  m_ParentAnchorPosition: {x: 0.27697754, y: 0.204, z: -1.5510254}
+  m_ParentAnchorPosition: {x: 0.27697754, y: 0.20399952, z: -1.5510254}
   m_ParentAnchorRotation: {x: 0, y: 0.7071068, z: 0, w: 0.7071068}
   m_AnchorPosition: {x: 0, y: 0, z: 0}
   m_AnchorRotation: {x: 0, y: 0.7071068, z: 0, w: 0.7071068}
@@ -971,7 +971,7 @@ ArticulationBody:
   m_Enabled: 1
   serializedVersion: 5
   m_Mass: 0.0000001
-  m_ParentAnchorPosition: {x: -0.25195312, y: 0.287, z: -0.9449463}
+  m_ParentAnchorPosition: {x: -0.25195312, y: 0.2869997, z: -0.9449463}
   m_ParentAnchorRotation: {x: 0, y: 0, z: -0.7071068, w: 0.7071068}
   m_AnchorPosition: {x: 0, y: 0, z: 0}
   m_AnchorRotation: {x: 0, y: 0, z: -0.7071068, w: 0.7071068}
@@ -1237,7 +1237,7 @@ ArticulationBody:
   m_Enabled: 1
   serializedVersion: 5
   m_Mass: 0.0000001
-  m_ParentAnchorPosition: {x: 0.10205078, y: 0.193, z: -1.0830078}
+  m_ParentAnchorPosition: {x: 0.10205078, y: 0.19299984, z: -1.0830078}
   m_ParentAnchorRotation: {x: -0.5, y: 0.5, z: -0.5, w: 0.5}
   m_AnchorPosition: {x: 0, y: 0, z: 0}
   m_AnchorRotation: {x: 0, y: 0.70710677, z: 0, w: 0.70710677}
@@ -1448,6 +1448,7 @@ GameObject:
   - component: {fileID: 4146297012918785186}
   - component: {fileID: 5484218348474997294}
   - component: {fileID: 7941678749477173086}
+  - component: {fileID: 5362321045208250545}
   m_Layer: 0
   m_Name: ElevonStbd
   m_TagString: Untagged
@@ -1509,6 +1510,21 @@ MonoBehaviour:
   receivedFrequency: 0
   ReceivedFirstMessage: 0
   angleChoice: 1
+--- !u!114 &5362321045208250545
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1851872486568332449}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f5e33e53ab7a3054abb0e912e36a998c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  LiftForceMultiplier: 500
+  DragForceMultiplier: 50
+  Orientation: 1
 --- !u!1 &1990175017669939580
 GameObject:
   m_ObjectHideFlags: 0
@@ -1709,7 +1725,7 @@ ArticulationBody:
   m_Enabled: 1
   serializedVersion: 5
   m_Mass: 0.0000001
-  m_ParentAnchorPosition: {x: -0.10205078, y: 0.193, z: -1.0830078}
+  m_ParentAnchorPosition: {x: -0.10205078, y: 0.19299984, z: -1.0830078}
   m_ParentAnchorRotation: {x: -0.5, y: 0.5, z: -0.5, w: 0.5}
   m_AnchorPosition: {x: 0, y: 0, z: 0}
   m_AnchorRotation: {x: 0, y: 0.70710677, z: 0, w: 0.70710677}
@@ -2186,7 +2202,7 @@ ArticulationBody:
   m_Enabled: 1
   serializedVersion: 5
   m_Mass: 0.0000001
-  m_ParentAnchorPosition: {x: -0.27697754, y: 0.204, z: -1.5510254}
+  m_ParentAnchorPosition: {x: -0.27697754, y: 0.20399952, z: -1.5510254}
   m_ParentAnchorRotation: {x: 0, y: 0.7071068, z: 0, w: 0.7071068}
   m_AnchorPosition: {x: 0, y: 0, z: 0}
   m_AnchorRotation: {x: 0, y: 0.7071068, z: 0, w: 0.7071068}
@@ -2519,7 +2535,7 @@ ArticulationBody:
   m_Enabled: 1
   serializedVersion: 5
   m_Mass: 0.0000001
-  m_ParentAnchorPosition: {x: -0.5090332, y: 0.204, z: -1.0400391}
+  m_ParentAnchorPosition: {x: -0.5090332, y: 0.20399952, z: -1.0400391}
   m_ParentAnchorRotation: {x: 0, y: 0, z: 0, w: 1}
   m_AnchorPosition: {x: 0, y: 0, z: 0}
   m_AnchorRotation: {x: 0, y: 0, z: 0, w: 1}
@@ -2602,6 +2618,7 @@ GameObject:
   - component: {fileID: 6956409071167865576}
   - component: {fileID: 5509758317750954899}
   - component: {fileID: 5656115355840583319}
+  - component: {fileID: 2475123470653226916}
   m_Layer: 0
   m_Name: ElevonPort
   m_TagString: Untagged
@@ -2663,6 +2680,21 @@ MonoBehaviour:
   receivedFrequency: 0
   ReceivedFirstMessage: 0
   angleChoice: 1
+--- !u!114 &2475123470653226916
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3088666195858771038}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f5e33e53ab7a3054abb0e912e36a998c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  LiftForceMultiplier: 500
+  DragForceMultiplier: 50
+  Orientation: 1
 --- !u!1 &3112749638478343169
 GameObject:
   m_ObjectHideFlags: 0
@@ -3677,7 +3709,7 @@ ArticulationBody:
   m_Enabled: 1
   serializedVersion: 5
   m_Mass: 0.0000001
-  m_ParentAnchorPosition: {x: 0.25195312, y: 0.287, z: -0.9449463}
+  m_ParentAnchorPosition: {x: 0.25195312, y: 0.2869997, z: -0.9449463}
   m_ParentAnchorRotation: {x: 0, y: 0, z: -0.7071068, w: 0.7071068}
   m_AnchorPosition: {x: 0, y: 0, z: 0}
   m_AnchorRotation: {x: 0, y: 0, z: -0.7071068, w: 0.7071068}
@@ -4030,6 +4062,7 @@ GameObject:
   - component: {fileID: 5337726711209073136}
   - component: {fileID: 3677734391477021078}
   - component: {fileID: 6893560062159568582}
+  - component: {fileID: 4266979242169438577}
   m_Layer: 0
   m_Name: RudderStbd
   m_TagString: Untagged
@@ -4091,6 +4124,21 @@ MonoBehaviour:
   receivedFrequency: 0
   ReceivedFirstMessage: 0
   angleChoice: 1
+--- !u!114 &4266979242169438577
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4986870767559087563}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f5e33e53ab7a3054abb0e912e36a998c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  LiftForceMultiplier: 200
+  DragForceMultiplier: 50
+  Orientation: 0
 --- !u!1 &5061089593730785023
 GameObject:
   m_ObjectHideFlags: 0
@@ -4194,7 +4242,7 @@ ArticulationBody:
   m_Enabled: 1
   serializedVersion: 5
   m_Mass: 0.0000001
-  m_ParentAnchorPosition: {x: -0.38098145, y: 0.241, z: 1.875}
+  m_ParentAnchorPosition: {x: -0.38098145, y: 0.24100018, z: 1.875}
   m_ParentAnchorRotation: {x: -0.5, y: 0.5, z: -0.5, w: 0.5}
   m_AnchorPosition: {x: 0, y: 0, z: 0}
   m_AnchorRotation: {x: 0, y: 0.70710677, z: 0, w: 0.70710677}
@@ -4567,7 +4615,7 @@ ArticulationBody:
   m_Enabled: 1
   serializedVersion: 5
   m_Mass: 0.0000001
-  m_ParentAnchorPosition: {x: 0.5090332, y: 0.204, z: -1.0400391}
+  m_ParentAnchorPosition: {x: 0.5090332, y: 0.20399952, z: -1.0400391}
   m_ParentAnchorRotation: {x: 0, y: 0, z: 0, w: 1}
   m_AnchorPosition: {x: 0, y: 0, z: 0}
   m_AnchorRotation: {x: 0, y: 0, z: 0, w: 1}
@@ -4876,7 +4924,7 @@ ArticulationBody:
   m_Enabled: 1
   serializedVersion: 5
   m_Mass: 0.0000001
-  m_ParentAnchorPosition: {x: 0.38098145, y: 0.241, z: 1.875}
+  m_ParentAnchorPosition: {x: 0.38098145, y: 0.24100018, z: 1.875}
   m_ParentAnchorRotation: {x: -0.5, y: 0.5, z: -0.5, w: 0.5}
   m_AnchorPosition: {x: 0, y: 0, z: 0}
   m_AnchorRotation: {x: 0, y: 0.70710677, z: 0, w: 0.70710677}
@@ -5561,6 +5609,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a0fdab8b92ffc7342a5a2435ca1e30a3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  ThrustSteering: 0
   elevatorHingeGo: {fileID: 8939564543920937555}
   elevonPortHingeGo: {fileID: 3088666195858771038}
   elevonStbdHingeGo: {fileID: 1851872486568332449}
@@ -6433,7 +6482,7 @@ ArticulationBody:
   m_Enabled: 1
   serializedVersion: 5
   m_Mass: 0.0000001
-  m_ParentAnchorPosition: {x: 0, y: 0.203, z: -1.2650146}
+  m_ParentAnchorPosition: {x: 0, y: 0.20300007, z: -1.2650146}
   m_ParentAnchorRotation: {x: 0, y: 0, z: 0, w: 1}
   m_AnchorPosition: {x: 0, y: 0, z: 0}
   m_AnchorRotation: {x: 0, y: 0, z: 0, w: 1}
@@ -6651,6 +6700,7 @@ GameObject:
   - component: {fileID: 8895378936511718364}
   - component: {fileID: 8622398935020907109}
   - component: {fileID: 1142930201475144146}
+  - component: {fileID: 3128894399437828345}
   m_Layer: 0
   m_Name: RudderPort
   m_TagString: Untagged
@@ -6712,6 +6762,21 @@ MonoBehaviour:
   receivedFrequency: 0
   ReceivedFirstMessage: 0
   angleChoice: 1
+--- !u!114 &3128894399437828345
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8929270944956807269}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f5e33e53ab7a3054abb0e912e36a998c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  LiftForceMultiplier: 200
+  DragForceMultiplier: 50
+  Orientation: 0
 --- !u!1 &8939564543920937555
 GameObject:
   m_ObjectHideFlags: 0
@@ -6797,7 +6862,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f5e33e53ab7a3054abb0e912e36a998c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ForceMultiplier: 50
+  LiftForceMultiplier: 1000
+  DragForceMultiplier: 100
+  Orientation: 1
 --- !u!1001 &472361327994526713
 PrefabInstance:
   m_ObjectHideFlags: 0

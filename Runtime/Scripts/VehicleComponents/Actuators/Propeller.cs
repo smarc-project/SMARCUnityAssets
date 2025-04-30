@@ -59,12 +59,6 @@ namespace VehicleComponents.Actuators
             if(Mathf.Abs(rpm) < RPMMin) rpm = 0;
 
             float r = rpm * RPMToForceMultiplier;
-            // if(HoverDefault) Debug.Log("the value of 4xr is: " + r*4 );
-
-            // Visualize the applied force
-
-            ArticulationBody ab = baseLinkArticulationBody;
-            
             
             parentMixedBody.AddForceAtPosition(r * parentMixedBody.transform.forward,
                                                    parentMixedBody.transform.position,
