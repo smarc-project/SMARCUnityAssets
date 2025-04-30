@@ -60,7 +60,7 @@ namespace SmarcGUI.KeyboardControllers
             var pitchValue = pitchAction.ReadValue<float>();
             var tv = tvAction.ReadValue<Vector2>();
             var rudderValue = tv.x;
-            var elevatorValue = tv.y;
+            var elevatorValue = -tv.y;
 
             thrusterPort.SetRpm((forwardValue + rudderValue) * moveRpms);
             thrusterStbd.SetRpm((forwardValue - rudderValue) * moveRpms);

@@ -4008,7 +4008,7 @@ ArticulationBody:
   m_AngularDamping: 1.5
   m_JointFriction: 0.05
   m_CenterOfMass: {x: 0, y: 0.168, z: 0.598}
-  m_InertiaTensor: {x: 1.6202, y: 1.6202, z: 0.0293}
+  m_InertiaTensor: {x: 1061.76, y: 986.73, z: 180.84}
   m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
   m_IncludeLayers:
     serializedVersion: 2
@@ -4017,7 +4017,7 @@ ArticulationBody:
     serializedVersion: 2
     m_Bits: 0
   m_ImplicitCom: 0
-  m_ImplicitTensor: 1
+  m_ImplicitTensor: 0
   m_Immovable: 0
   m_UseGravity: 1
   m_CollisionDetectionMode: 0
