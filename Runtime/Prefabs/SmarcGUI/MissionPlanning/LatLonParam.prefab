@@ -885,7 +885,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
   m_Color: {r: 0, g: 0, b: 1, a: 0.02745098}
-  m_RaycastTarget: 1
+  m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
@@ -915,8 +915,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Label: {fileID: 4954768540894407510}
   HighlightRT: {fileID: 6279876883339760572}
-  SelectedHighlightRT: {fileID: 6462421783140976080}
-  ContextMenuPrefab: {fileID: 5700513683117687523, guid: dc50e97ebddcc6a47ac3dec88f9b8116, type: 3}
   LatField: {fileID: 5860177524517708484}
   LonField: {fileID: 5151769899253396062}
 --- !u!1 &5501844271866313871

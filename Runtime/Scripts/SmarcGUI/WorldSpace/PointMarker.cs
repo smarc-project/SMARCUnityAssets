@@ -3,6 +3,7 @@ using UnityEngine;
 using UnityEngine.UI;
 
 using SmarcGUI.MissionPlanning;
+using TMPro;
 
 namespace SmarcGUI.WorldSpace
 {
@@ -19,6 +20,10 @@ namespace SmarcGUI.WorldSpace
         public Transform headingCone;
         public Transform orientationModel;
         public GameObject HighlightObject;
+        public Canvas FloatingNameCanvas;
+        public TMP_Text FloatingNameText;
+        public TMP_Text FloatingDescriptionText;
+
 
         LineRenderer lineToShadow;
         public Transform shadowMarker;
@@ -77,6 +82,13 @@ namespace SmarcGUI.WorldSpace
                 paramY?.SetY(transform.position.y);
             }
             
+        }
+
+        public void SetName(string name, string desc)
+        {
+            FloatingNameCanvas.gameObject.SetActive(!string.IsNullOrEmpty(name));
+            FloatingNameText.text = name;
+            FloatingDescriptionText.text = desc;
         }
 
         public void SetXZParam(IParamHasXZ param)
@@ -155,6 +167,9 @@ namespace SmarcGUI.WorldSpace
             var y = paramY != null ? paramY.GetY() : 0;
             shadowMarker.gameObject.SetActive(Mathf.Abs(y) > 1 && draw3Dwidgets);
             lineToShadow.enabled = Mathf.Abs(y) > 1  && draw3Dwidgets;
+
+            FloatingNameCanvas.gameObject.SetActive(draw3Dwidgets);
+            FloatingNameCanvas.transform.rotation = guiState.CurrentCam.transform.rotation;
         }
 
         public void Highlight(bool on)

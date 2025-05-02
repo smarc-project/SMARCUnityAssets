@@ -63,19 +63,29 @@ namespace SmarcGUI.MissionPlanning.Tasks
             baseHeight = rt.sizeDelta.y;
             missionPlanStore = FindFirstObjectByType<MissionPlanStore>();
             guiState = FindFirstObjectByType<GUIState>();
-            DescriptionField.onEndEdit.AddListener(desc => task.Description = desc);
+            DescriptionField.onEndEdit.AddListener(OnDescChanged);
             RunButton.onClick.AddListener(OnRunTask);
             RunButtonImage = RunButton.GetComponent<Image>();
             RunButtonText = RunButton.GetComponentInChildren<TMP_Text>();
             RunButtonOriginalColor = RunButtonImage.color;
 
             WorldMarkersCollection = GameObject.Find(WorldMarkersCollectionName).transform;
+
+            OnRobotSelectionChange(guiState.SelectedRobotGUI);
         }
         
         void OnRunTask()
         {
             var robotgui = guiState.SelectedRobotGUI;
+            if(robotgui == null) return;
             robotgui.SendStartTaskCommand(task);
+        }
+
+        void OnDescChanged(string desc)
+        {
+            if(task == null) return;
+            task.Description = desc;
+            if(pointmarker!=null) pointmarker.SetName(task.Name, task.Description);
         }
 
         public void SetTask(Task task, TSTGUI tstGUI)
@@ -109,9 +119,9 @@ namespace SmarcGUI.MissionPlanning.Tasks
                         return;
                     }
                     var markerGO = Instantiate(PointMarkerPrefab, WorldMarkersCollection);
-                    markerGO.name = $"{task.Name}_param_{i}";
                     pointmarker = markerGO.GetComponent<PointMarker>();
                     pointmarker.SetXZParam(paramXZ);
+                    pointmarker.SetName(task.Name, task.Description);
                 }
             }
 
@@ -194,8 +204,8 @@ namespace SmarcGUI.MissionPlanning.Tasks
             if(SelectedRobotGUI == null)
             {
                 WarningRT.gameObject.SetActive(false);
-                RunButtonImage.color = RunButtonOriginalColor;
-                RunButtonText.text = "Run";
+                RunButtonImage.color = Color.gray;
+                RunButtonText.text = "NoRobot";
             }
             else
             {
