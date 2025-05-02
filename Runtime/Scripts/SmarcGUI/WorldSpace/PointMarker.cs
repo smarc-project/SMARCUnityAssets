@@ -91,6 +91,8 @@ namespace SmarcGUI.WorldSpace
             FloatingDescriptionText.text = desc;
             overlay.FloatingNameText.text = name;
             overlay.FloatingDescriptionText.text = desc;
+            float maxWidth = Mathf.Max(overlay.FloatingNameText.preferredWidth, overlay.FloatingDescriptionText.preferredWidth);
+            overlay.FloatingNameBackgroundRT.sizeDelta = new Vector2(maxWidth, overlay.FloatingNameBackgroundRT.sizeDelta.y);
             overlay.FloatingNameCanvas.gameObject.SetActive(!string.IsNullOrEmpty(name));
         }
 

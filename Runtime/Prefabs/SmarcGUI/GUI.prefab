@@ -12562,6 +12562,7 @@ GameObject:
   - component: {fileID: 5930015777740933784}
   - component: {fileID: 6159126078882439185}
   - component: {fileID: 4992900435140258629}
+  - component: {fileID: 261579293964763759}
   m_Layer: 0
   m_Name: ColumnScroll
   m_TagString: Untagged
@@ -12658,6 +12659,19 @@ MonoBehaviour:
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &261579293964763759
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6050688546561081614}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dec0dcb6757bdf04485c26c7ca19ce20, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ParentObject: {fileID: 8167376637399298036}
 --- !u!1 &6053045025569892373
 GameObject:
   m_ObjectHideFlags: 0
@@ -12957,6 +12971,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dec0dcb6757bdf04485c26c7ca19ce20, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  ParentObject: {fileID: 0}
 --- !u!1 &6187969088165105674
 GameObject:
   m_ObjectHideFlags: 0
@@ -12969,6 +12984,7 @@ GameObject:
   - component: {fileID: 528319897799939397}
   - component: {fileID: 2625022358091474031}
   - component: {fileID: 2140729529935003684}
+  - component: {fileID: 509377094833398604}
   m_Layer: 0
   m_Name: ColumnScroll
   m_TagString: Untagged
@@ -13065,6 +13081,19 @@ MonoBehaviour:
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &509377094833398604
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6187969088165105674}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dec0dcb6757bdf04485c26c7ca19ce20, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ParentObject: {fileID: 3449908616601152062}
 --- !u!1 &6231568590630459795
 GameObject:
   m_ObjectHideFlags: 0
@@ -19120,6 +19149,10 @@ PrefabInstance:
       propertyPath: ToggledObject
       value: 
       objectReference: {fileID: 2907898247185687716}
+    - target: {fileID: 3279783181398222497, guid: a378f1281a5403444a5c35895023fbe6, type: 3}
+      propertyPath: ResizeParentObject
+      value: 
+      objectReference: {fileID: 6187969088165105674}
     - target: {fileID: 4016172096343979831, guid: a378f1281a5403444a5c35895023fbe6, type: 3}
       propertyPath: m_Name
       value: CollapseController
@@ -19266,6 +19299,10 @@ PrefabInstance:
       propertyPath: ToggledObject
       value: 
       objectReference: {fileID: 8814183152027494831}
+    - target: {fileID: 3279783181398222497, guid: a378f1281a5403444a5c35895023fbe6, type: 3}
+      propertyPath: ResizeParentObject
+      value: 
+      objectReference: {fileID: 6050688546561081614}
     - target: {fileID: 4016172096343979831, guid: a378f1281a5403444a5c35895023fbe6, type: 3}
       propertyPath: m_Name
       value: CollapseTasksBtn
@@ -19404,6 +19441,10 @@ PrefabInstance:
       propertyPath: ToggledObject
       value: 
       objectReference: {fileID: 5662006293791806690}
+    - target: {fileID: 3279783181398222497, guid: a378f1281a5403444a5c35895023fbe6, type: 3}
+      propertyPath: ResizeParentObject
+      value: 
+      objectReference: {fileID: 6187969088165105674}
     - target: {fileID: 4016172096343979831, guid: a378f1281a5403444a5c35895023fbe6, type: 3}
       propertyPath: m_Name
       value: CollapseRobots
@@ -20100,6 +20141,10 @@ PrefabInstance:
       propertyPath: ToggledObject
       value: 
       objectReference: {fileID: 6127286290271272451}
+    - target: {fileID: 3279783181398222497, guid: a378f1281a5403444a5c35895023fbe6, type: 3}
+      propertyPath: ResizeParentObject
+      value: 
+      objectReference: {fileID: 6050688546561081614}
     - target: {fileID: 4016172096343979831, guid: a378f1281a5403444a5c35895023fbe6, type: 3}
       propertyPath: m_Name
       value: CollapseMissionPlans
@@ -20931,6 +20976,10 @@ PrefabInstance:
       propertyPath: ToggledObject
       value: 
       objectReference: {fileID: 1780189587196479449}
+    - target: {fileID: 3279783181398222497, guid: a378f1281a5403444a5c35895023fbe6, type: 3}
+      propertyPath: ResizeParentObject
+      value: 
+      objectReference: {fileID: 6187969088165105674}
     - target: {fileID: 4016172096343979831, guid: a378f1281a5403444a5c35895023fbe6, type: 3}
       propertyPath: m_Name
       value: CollapseConnections

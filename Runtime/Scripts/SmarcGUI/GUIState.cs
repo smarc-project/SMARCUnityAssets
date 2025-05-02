@@ -230,7 +230,11 @@ namespace SmarcGUI
             // if the context menu for the world is open, we assume someone has r-clicked the world
             // and would rather use their pointer position than the camera position.
             // this only works if the context menu doesnt destroy itself before we get here.
-            Vector3 targetPos = WorldContextMenu.gameObject ? Input.mousePosition : DefaultPointerPos;
+            Vector3 targetPos = DefaultPointerPos;
+            if(WorldContextMenu != null && WorldContextMenu.gameObject != null)
+            {
+                targetPos = Input.mousePosition;
+            }
             Ray ray = CurrentCam.ScreenPointToRay(targetPos);
             Plane zeroPlane = new(Vector3.up, Vector3.zero);
             var dist = 10f;

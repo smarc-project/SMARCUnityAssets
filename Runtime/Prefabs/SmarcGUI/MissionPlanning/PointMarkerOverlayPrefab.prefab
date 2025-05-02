@@ -602,6 +602,7 @@ MonoBehaviour:
   FloatingNameCanvas: {fileID: 80481799801973080}
   FloatingNameText: {fileID: 976535762615652807}
   FloatingDescriptionText: {fileID: 1130557882852566963}
+  FloatingNameBackgroundRT: {fileID: 9053267624117273383}
   UnderlayCanvasName: Canvas-Under
 --- !u!1 &8770142898625379271
 GameObject:

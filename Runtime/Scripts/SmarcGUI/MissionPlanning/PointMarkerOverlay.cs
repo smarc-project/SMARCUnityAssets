@@ -14,6 +14,7 @@ namespace SmarcGUI.MissionPlanning
         public RectTransform FloatingNameCanvas;
         public TMP_Text FloatingNameText;
         public TMP_Text FloatingDescriptionText;
+        public RectTransform FloatingNameBackgroundRT;
 
         public string UnderlayCanvasName = "Canvas-Under";
         Canvas underlayCanvas;

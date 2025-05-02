@@ -16,6 +16,10 @@ namespace SmarcGUI
         public bool ResizeParent = false;
 
 
+        [Tooltip("If set, the object will have its UpdateHeight method called after toggling")]
+        public GameObject ResizeParentObject;
+
+
         Vector2 objectSizeDelta;
         Button button;
 
@@ -42,6 +46,12 @@ namespace SmarcGUI
             if(ResizeParent)
             {
                 var parent = ToggledObject.transform.parent.GetComponent<IHeightUpdatable>();
+                parent?.UpdateHeight();
+            }
+
+            if(ResizeParentObject)
+            {
+                var parent = ResizeParentObject.GetComponent<IHeightUpdatable>();
                 parent?.UpdateHeight();
             }
         }
