@@ -5,10 +5,10 @@
   - [(Something)ForceModel](#somethingforcemodel)
 - [Water](#water)
   - [SimpleWaterQueryModel](#simplewaterquerymodel)
-  - [Currents and Winds](#currents-and-winds)
-    - [Static fields](#static-fields)
-    - [Propeller fields](#propeller-fields)
-    - [Field Visualization](#field-visualization)
+- [Currents and Winds (Force Fields)](#currents-and-winds-force-fields)
+  - [Static fields](#static-fields)
+  - [Propeller fields](#propeller-fields)
+  - [Field Visualization](#field-visualization)
 - [Vehicle Components](#vehicle-components)
     - [Update rates](#update-rates)
     - [LinkAttachment](#linkattachment)
@@ -161,8 +161,6 @@ Since Unity only provides a rigid body simulation, some physical modelling (like
 These "ForceModel" scripts do just that and are specific to the vehicle they model, such as SAM and BlueROV.
 
 
-
-
 # Water
 We do not simulate water as particles, but as vector fields and a surface.
 [ForcePoint](#forcepoint)s are used to apply the appropriate forces.
@@ -177,9 +175,9 @@ HDRP Water:
 
 ![Waves](Media/HDRPWaves.png)
 
-## Currents and Winds
+# Currents and Winds (Force Fields)
 
-### Static fields
+## Static fields
 A simple vector field within a volume that applies forces to any ForcePoints within it.
 Used to simulate currents or winds within that volume.
 
@@ -191,8 +189,15 @@ Used to simulate currents or winds within that volume.
 
 - **Only Underwater/Above Water:** If checked, the field will only apply on to ForcePoints that are under/above water.
 - **Include In Visualizer:** Check if you want tiny swarms of game-visible particles 
+- **Static Force Field**
+  - Force Vector: Used for "global vector" mode.
+  - Force Magnitude: Magnitude of the force at 0 distance.
+  - Mode:
+    - Global Vector: Force is applied in the direction of the Force Vector field.
+    - Central Attraction: A magnet. Pulls things to itself.
+    - Central Repulsion: Pushes things away.
 
-### Propeller fields
+## Propeller fields
 
 Propellers should be pushing things in front of them as much as they push the thing they are attached to.
 We use a conical mesh-collider to create this effect.
@@ -207,13 +212,16 @@ The `Cone Tip` acts as a simple repulsor with a variable magnitude.
 - Force Magnitude Cap: Upper-limit of how much force the field will apply. Some drones require lots of force to float that maybe you might not want to apply to things below.
 
 
-### Field Visualization
+## Field Visualization
 
 We use a pool of ForcePoints spawned within any field with a simple trail renderer to visualize the fields and their effect on any objects containing ForcePoints.
 
 ![FieldViz](Media/ForceFieldViz.png)
 
 ![VizConfig](Media/ForceFieldVizConfig.png)
+
+Simply create an empty object at the top level with this script in it.
+The position etc. of this object does not matter for visualization, the visualization points will be spawned inside individual force fields's affected volumes.
 
 - ParticlePrefab: The prefab particle to spawn. This should contain a ForcePoint object and possibly some nice visual additions.
 - Count, Lifetime: How many particles to keep around and for how long.

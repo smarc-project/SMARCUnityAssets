@@ -14,7 +14,6 @@ namespace SmarcGUI.KeyboardControllers
 
         Propeller frontrightProp, frontleftProp, backrightProp, backleftProp;
 
-        [Tooltip("RPM to add to props when pressing IJKL")]
         public float MotionRPM = 1500f;
 
         InputAction forwardAction, strafeAction, verticalAction, pitchAction, rollAction;

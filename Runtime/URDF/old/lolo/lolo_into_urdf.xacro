@@ -1,0 +1,7 @@
+<?xml version="1.0" ?>
+<robot name="lolo_auv" xmlns:xacro="http://ros.org/wiki/xacro">
+  <xacro:arg name="debug" default="0"/>
+  <xacro:arg name="robot_namespace" default="lolo_auv"/>
+  <xacro:include filename="rviz.xacro"/>
+  <!-- <xacro:lolo_auv robot_namespace="$(arg namespace)" debug="$(arg debug)"/> -->
+</robot>

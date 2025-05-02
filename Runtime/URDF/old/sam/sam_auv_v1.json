@@ -1,0 +1,1619 @@
+{
+    "urdfFilePath": "./sam_auv.urdf",
+    "forcePoints": [
+        {
+            "transformPath": "base_link/ForcePoints/ForcePoint",
+            "localRotation": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0,
+                "w": 1.0
+            },
+            "localPosition": {
+                "x": 0.054999999701976779,
+                "y": 0.0,
+                "z": 0.5699999928474426
+            },
+            "localScale": {
+                "x": 0.020145509392023088,
+                "y": 0.010145509615540505,
+                "z": 0.020145509392023088
+            },
+            "volumeObjectTransformPath": "base_link/Visuals/unnamed/SAM_HULL/Brep 3"
+        },
+        {
+            "transformPath": "base_link/ForcePoints/ForcePoint (5)",
+            "localRotation": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0,
+                "w": 1.0
+            },
+            "localPosition": {
+                "x": -0.054999999701976779,
+                "y": 0.0,
+                "z": 0.5699999928474426
+            },
+            "localScale": {
+                "x": 0.020145509392023088,
+                "y": 0.010145509615540505,
+                "z": 0.020145509392023088
+            },
+            "volumeObjectTransformPath": "base_link/Visuals/unnamed/SAM_HULL/Brep 3"
+        },
+        {
+            "transformPath": "base_link/ForcePoints/ForcePoint (1)",
+            "localRotation": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0,
+                "w": 1.0
+            },
+            "localPosition": {
+                "x": 0.054999999701976779,
+                "y": 0.0,
+                "z": 0.30000001192092898
+            },
+            "localScale": {
+                "x": 0.020145509392023088,
+                "y": 0.010145509615540505,
+                "z": 0.020145509392023088
+            },
+            "volumeObjectTransformPath": "base_link/Visuals/unnamed/SAM_HULL/Brep 3"
+        },
+        {
+            "transformPath": "base_link/ForcePoints/ForcePoint (6)",
+            "localRotation": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0,
+                "w": 1.0
+            },
+            "localPosition": {
+                "x": -0.054999999701976779,
+                "y": 0.0,
+                "z": 0.30000001192092898
+            },
+            "localScale": {
+                "x": 0.020145509392023088,
+                "y": 0.010145509615540505,
+                "z": 0.020145509392023088
+            },
+            "volumeObjectTransformPath": "base_link/Visuals/unnamed/SAM_HULL/Brep 3"
+        },
+        {
+            "transformPath": "base_link/ForcePoints/ForcePoint (2)",
+            "localRotation": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0,
+                "w": 1.0
+            },
+            "localPosition": {
+                "x": 0.054999999701976779,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "localScale": {
+                "x": 0.020145509392023088,
+                "y": 0.010145509615540505,
+                "z": 0.020145509392023088
+            },
+            "volumeObjectTransformPath": "base_link/Visuals/unnamed/SAM_HULL/Brep 3"
+        },
+        {
+            "transformPath": "base_link/ForcePoints/ForcePoint (7)",
+            "localRotation": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0,
+                "w": 1.0
+            },
+            "localPosition": {
+                "x": -0.054999999701976779,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "localScale": {
+                "x": 0.020145509392023088,
+                "y": 0.010145509615540505,
+                "z": 0.020145509392023088
+            },
+            "volumeObjectTransformPath": "base_link/Visuals/unnamed/SAM_HULL/Brep 3"
+        },
+        {
+            "transformPath": "base_link/ForcePoints/ForcePoint (3)",
+            "localRotation": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0,
+                "w": 1.0
+            },
+            "localPosition": {
+                "x": 0.054999999701976779,
+                "y": 0.0,
+                "z": -0.30000001192092898
+            },
+            "localScale": {
+                "x": 0.020145509392023088,
+                "y": 0.010145509615540505,
+                "z": 0.020145509392023088
+            },
+            "volumeObjectTransformPath": "base_link/Visuals/unnamed/SAM_HULL/Brep 3"
+        },
+        {
+            "transformPath": "base_link/ForcePoints/ForcePoint (8)",
+            "localRotation": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0,
+                "w": 1.0
+            },
+            "localPosition": {
+                "x": -0.054999999701976779,
+                "y": 0.0,
+                "z": -0.30000001192092898
+            },
+            "localScale": {
+                "x": 0.020145509392023088,
+                "y": 0.010145509615540505,
+                "z": 0.020145509392023088
+            },
+            "volumeObjectTransformPath": "base_link/Visuals/unnamed/SAM_HULL/Brep 3"
+        },
+        {
+            "transformPath": "base_link/ForcePoints/ForcePoint (4)",
+            "localRotation": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0,
+                "w": 1.0
+            },
+            "localPosition": {
+                "x": 0.054999999701976779,
+                "y": 0.0,
+                "z": -0.5699999928474426
+            },
+            "localScale": {
+                "x": 0.020145509392023088,
+                "y": 0.010145509615540505,
+                "z": 0.020145509392023088
+            },
+            "volumeObjectTransformPath": "base_link/Visuals/unnamed/SAM_HULL/Brep 3"
+        },
+        {
+            "transformPath": "base_link/ForcePoints/ForcePoint (9)",
+            "localRotation": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0,
+                "w": 1.0
+            },
+            "localPosition": {
+                "x": -0.054999999701976779,
+                "y": 0.0,
+                "z": -0.5699999928474426
+            },
+            "localScale": {
+                "x": 0.020145509392023088,
+                "y": 0.010145509615540505,
+                "z": 0.020145509392023088
+            },
+            "volumeObjectTransformPath": "base_link/Visuals/unnamed/SAM_HULL/Brep 3"
+        }
+    ],
+    "colliders": [
+        {
+            "transformPath": "base_link/Collisions",
+            "scale": {
+                "x": 1.0,
+                "y": 1.0,
+                "z": 1.0
+            },
+            "isTrigger": false,
+            "providesContacts": false,
+            "colliderType": 3,
+            "center": {
+                "x": 0.002963818609714508,
+                "y": 0.00341247022151947,
+                "z": -0.0013636350631713868
+            },
+            "size": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "radius": 0.06957317143678665,
+            "height": 1.3181341886520386,
+            "direction": 2,
+            "isConvex": false,
+            "mesh": "",
+            "material": ""
+        },
+        {
+            "transformPath": "base_link/ForcePoints/ForcePoint",
+            "scale": {
+                "x": 0.020145509392023088,
+                "y": 0.010145509615540505,
+                "z": 0.020145509392023088
+            },
+            "isTrigger": false,
+            "providesContacts": false,
+            "colliderType": 2,
+            "center": {
+                "x": -0.0000152587890625,
+                "y": -0.0000019073486328125,
+                "z": -0.0000152587890625
+            },
+            "size": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "radius": 0.5,
+            "height": 0.0,
+            "direction": 0,
+            "isConvex": false,
+            "mesh": "",
+            "material": ""
+        },
+        {
+            "transformPath": "base_link/ForcePoints/ForcePoint (5)",
+            "scale": {
+                "x": 0.020145509392023088,
+                "y": 0.010145509615540505,
+                "z": 0.020145509392023088
+            },
+            "isTrigger": false,
+            "providesContacts": false,
+            "colliderType": 2,
+            "center": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": -0.0000152587890625
+            },
+            "size": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "radius": 0.5,
+            "height": 0.0,
+            "direction": 0,
+            "isConvex": false,
+            "mesh": "",
+            "material": ""
+        },
+        {
+            "transformPath": "base_link/ForcePoints/ForcePoint (1)",
+            "scale": {
+                "x": 0.020145509392023088,
+                "y": 0.010145509615540505,
+                "z": 0.020145509392023088
+            },
+            "isTrigger": false,
+            "providesContacts": false,
+            "colliderType": 2,
+            "center": {
+                "x": -0.0000152587890625,
+                "y": 0.0,
+                "z": -0.000030517578125
+            },
+            "size": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "radius": 0.5,
+            "height": 0.0,
+            "direction": 0,
+            "isConvex": false,
+            "mesh": "",
+            "material": ""
+        },
+        {
+            "transformPath": "base_link/ForcePoints/ForcePoint (6)",
+            "scale": {
+                "x": 0.020145509392023088,
+                "y": 0.010145509615540505,
+                "z": 0.020145509392023088
+            },
+            "isTrigger": false,
+            "providesContacts": false,
+            "colliderType": 2,
+            "center": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": -0.000030517578125
+            },
+            "size": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "radius": 0.5,
+            "height": 0.0,
+            "direction": 0,
+            "isConvex": false,
+            "mesh": "",
+            "material": ""
+        },
+        {
+            "transformPath": "base_link/ForcePoints/ForcePoint (2)",
+            "scale": {
+                "x": 0.020145509392023088,
+                "y": 0.010145509615540505,
+                "z": 0.020145509392023088
+            },
+            "isTrigger": false,
+            "providesContacts": false,
+            "colliderType": 2,
+            "center": {
+                "x": -0.0000152587890625,
+                "y": 0.0,
+                "z": -0.0000152587890625
+            },
+            "size": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "radius": 0.5,
+            "height": 0.0,
+            "direction": 0,
+            "isConvex": false,
+            "mesh": "",
+            "material": ""
+        },
+        {
+            "transformPath": "base_link/ForcePoints/ForcePoint (7)",
+            "scale": {
+                "x": 0.020145509392023088,
+                "y": 0.010145509615540505,
+                "z": 0.020145509392023088
+            },
+            "isTrigger": false,
+            "providesContacts": false,
+            "colliderType": 2,
+            "center": {
+                "x": 0.00000762939453125,
+                "y": 0.0,
+                "z": -0.000030517578125
+            },
+            "size": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "radius": 0.5,
+            "height": 0.0,
+            "direction": 0,
+            "isConvex": false,
+            "mesh": "",
+            "material": ""
+        },
+        {
+            "transformPath": "base_link/ForcePoints/ForcePoint (3)",
+            "scale": {
+                "x": 0.020145509392023088,
+                "y": 0.010145509615540505,
+                "z": 0.020145509392023088
+            },
+            "isTrigger": false,
+            "providesContacts": false,
+            "colliderType": 2,
+            "center": {
+                "x": -0.00000762939453125,
+                "y": 0.0,
+                "z": -0.0000152587890625
+            },
+            "size": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "radius": 0.5,
+            "height": 0.0,
+            "direction": 0,
+            "isConvex": false,
+            "mesh": "",
+            "material": ""
+        },
+        {
+            "transformPath": "base_link/ForcePoints/ForcePoint (8)",
+            "scale": {
+                "x": 0.020145509392023088,
+                "y": 0.010145509615540505,
+                "z": 0.020145509392023088
+            },
+            "isTrigger": false,
+            "providesContacts": false,
+            "colliderType": 2,
+            "center": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": -0.0000152587890625
+            },
+            "size": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "radius": 0.5,
+            "height": 0.0,
+            "direction": 0,
+            "isConvex": false,
+            "mesh": "",
+            "material": ""
+        },
+        {
+            "transformPath": "base_link/ForcePoints/ForcePoint (4)",
+            "scale": {
+                "x": 0.020145509392023088,
+                "y": 0.010145509615540505,
+                "z": 0.020145509392023088
+            },
+            "isTrigger": false,
+            "providesContacts": false,
+            "colliderType": 2,
+            "center": {
+                "x": -0.00000762939453125,
+                "y": 0.0,
+                "z": -0.0000152587890625
+            },
+            "size": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "radius": 0.5,
+            "height": 0.0,
+            "direction": 0,
+            "isConvex": false,
+            "mesh": "",
+            "material": ""
+        },
+        {
+            "transformPath": "base_link/ForcePoints/ForcePoint (9)",
+            "scale": {
+                "x": 0.020145509392023088,
+                "y": 0.010145509615540505,
+                "z": 0.020145509392023088
+            },
+            "isTrigger": false,
+            "providesContacts": false,
+            "colliderType": 2,
+            "center": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": -0.000030517578125
+            },
+            "size": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "radius": 0.5,
+            "height": 0.0,
+            "direction": 0,
+            "isConvex": false,
+            "mesh": "",
+            "material": ""
+        }
+    ],
+    "articulationModels": [
+        {
+            "transformPath": "base_link",
+            "drives": [
+                {
+                    "damping": 0.0,
+                    "stiffness": 0.0,
+                    "forceLimit": 3.4028234663852887e38,
+                    "upperLimit": 0.0,
+                    "lowerLimit": 0.0,
+                    "driveType": 0,
+                    "axis": 0
+                },
+                {
+                    "damping": 0.0,
+                    "stiffness": 0.0,
+                    "forceLimit": 3.4028234663852887e38,
+                    "upperLimit": 0.0,
+                    "lowerLimit": 0.0,
+                    "driveType": 0,
+                    "axis": 1
+                },
+                {
+                    "damping": 0.0,
+                    "stiffness": 0.0,
+                    "forceLimit": 3.4028234663852887e38,
+                    "upperLimit": 0.0,
+                    "lowerLimit": 0.0,
+                    "driveType": 0,
+                    "axis": 2
+                }
+            ],
+            "linearDamping": 1.0199999809265137,
+            "angularDamping": 1.5,
+            "inertiaTensor": {
+                "x": 1.6201999187469483,
+                "y": 1.6201999187469483,
+                "z": 0.02930000051856041
+            },
+            "inertiaTensorRotation": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0,
+                "w": 1.0
+            },
+            "centerOfMass": {
+                "x": 0.0,
+                "y": -0.014999999664723874,
+                "z": -0.007499999832361937
+            },
+            "automaticInertiaTensor": false,
+            "automaticCenterOfMass": false,
+            "joinFriction": 0.05000000074505806
+        },
+        {
+            "transformPath": "base_link/rope_link",
+            "drives": [
+                {
+                    "damping": 0.0,
+                    "stiffness": 0.0,
+                    "forceLimit": 3.4028234663852887e38,
+                    "upperLimit": 0.0,
+                    "lowerLimit": 0.0,
+                    "driveType": 0,
+                    "axis": 0
+                },
+                {
+                    "damping": 0.0,
+                    "stiffness": 0.0,
+                    "forceLimit": 3.4028234663852887e38,
+                    "upperLimit": 0.0,
+                    "lowerLimit": 0.0,
+                    "driveType": 0,
+                    "axis": 1
+                },
+                {
+                    "damping": 0.0,
+                    "stiffness": 0.0,
+                    "forceLimit": 3.4028234663852887e38,
+                    "upperLimit": 0.0,
+                    "lowerLimit": 0.0,
+                    "driveType": 0,
+                    "axis": 2
+                }
+            ],
+            "linearDamping": 0.0,
+            "angularDamping": 0.0,
+            "inertiaTensor": {
+                "x": 9.999999974752428e-7,
+                "y": 9.999999974752428e-7,
+                "z": 9.999999974752428e-7
+            },
+            "inertiaTensorRotation": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0,
+                "w": 1.0
+            },
+            "centerOfMass": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "automaticInertiaTensor": false,
+            "automaticCenterOfMass": false,
+            "joinFriction": 0.0
+        },
+        {
+            "transformPath": "base_link/tcg2_link",
+            "drives": [
+                {
+                    "damping": 0.0,
+                    "stiffness": 0.0,
+                    "forceLimit": 1.0,
+                    "upperLimit": 91.67324829101563,
+                    "lowerLimit": -91.67324829101563,
+                    "driveType": 0,
+                    "axis": 0
+                },
+                {
+                    "damping": 0.0,
+                    "stiffness": 0.0,
+                    "forceLimit": 3.4028234663852887e38,
+                    "upperLimit": 0.0,
+                    "lowerLimit": 0.0,
+                    "driveType": 0,
+                    "axis": 1
+                },
+                {
+                    "damping": 0.0,
+                    "stiffness": 0.0,
+                    "forceLimit": 3.4028234663852887e38,
+                    "upperLimit": 0.0,
+                    "lowerLimit": 0.0,
+                    "driveType": 0,
+                    "axis": 2
+                }
+            ],
+            "linearDamping": 0.0,
+            "angularDamping": 0.0,
+            "inertiaTensor": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "inertiaTensorRotation": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0,
+                "w": 1.0
+            },
+            "centerOfMass": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "automaticInertiaTensor": false,
+            "automaticCenterOfMass": true,
+            "joinFriction": 0.0
+        },
+        {
+            "transformPath": "base_link/tcg1_link",
+            "drives": [
+                {
+                    "damping": 0.0,
+                    "stiffness": 0.0,
+                    "forceLimit": 1.0,
+                    "upperLimit": 91.67324829101563,
+                    "lowerLimit": -91.67324829101563,
+                    "driveType": 0,
+                    "axis": 0
+                },
+                {
+                    "damping": 0.0,
+                    "stiffness": 0.0,
+                    "forceLimit": 3.4028234663852887e38,
+                    "upperLimit": 0.0,
+                    "lowerLimit": 0.0,
+                    "driveType": 0,
+                    "axis": 1
+                },
+                {
+                    "damping": 0.0,
+                    "stiffness": 0.0,
+                    "forceLimit": 3.4028234663852887e38,
+                    "upperLimit": 0.0,
+                    "lowerLimit": 0.0,
+                    "driveType": 0,
+                    "axis": 2
+                }
+            ],
+            "linearDamping": 0.0,
+            "angularDamping": 0.0,
+            "inertiaTensor": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "inertiaTensorRotation": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0,
+                "w": 1.0
+            },
+            "centerOfMass": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "automaticInertiaTensor": false,
+            "automaticCenterOfMass": true,
+            "joinFriction": 0.0
+        },
+        {
+            "transformPath": "base_link/vbs_link",
+            "drives": [
+                {
+                    "damping": 6000.0,
+                    "stiffness": 2000.0,
+                    "forceLimit": 5.0,
+                    "upperLimit": 0.05000000074505806,
+                    "lowerLimit": 0.006000000052154064,
+                    "driveType": 0,
+                    "axis": 0
+                },
+                {
+                    "damping": 0.0,
+                    "stiffness": 0.0,
+                    "forceLimit": 3.4028234663852887e38,
+                    "upperLimit": 0.0,
+                    "lowerLimit": 0.0,
+                    "driveType": 0,
+                    "axis": 1
+                },
+                {
+                    "damping": 0.0,
+                    "stiffness": 0.0,
+                    "forceLimit": 3.4028234663852887e38,
+                    "upperLimit": 0.0,
+                    "lowerLimit": 0.0,
+                    "driveType": 0,
+                    "axis": 2
+                }
+            ],
+            "linearDamping": 0.0,
+            "angularDamping": 0.0,
+            "inertiaTensor": {
+                "x": 1.6201999187469483,
+                "y": 1.6201999187469483,
+                "z": 0.02930000051856041
+            },
+            "inertiaTensorRotation": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0,
+                "w": 1.0
+            },
+            "centerOfMass": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "automaticInertiaTensor": false,
+            "automaticCenterOfMass": false,
+            "joinFriction": 0.0
+        },
+        {
+            "transformPath": "base_link/battery_link",
+            "drives": [
+                {
+                    "damping": 500.0,
+                    "stiffness": 1000.0,
+                    "forceLimit": 10.0,
+                    "upperLimit": 0.0,
+                    "lowerLimit": -0.05700000002980232,
+                    "driveType": 0,
+                    "axis": 0
+                },
+                {
+                    "damping": 0.0,
+                    "stiffness": 0.0,
+                    "forceLimit": 3.4028234663852887e38,
+                    "upperLimit": 0.0,
+                    "lowerLimit": 0.0,
+                    "driveType": 0,
+                    "axis": 1
+                },
+                {
+                    "damping": 0.0,
+                    "stiffness": 0.0,
+                    "forceLimit": 3.4028234663852887e38,
+                    "upperLimit": 0.0,
+                    "lowerLimit": 0.0,
+                    "driveType": 0,
+                    "axis": 2
+                }
+            ],
+            "linearDamping": 0.0,
+            "angularDamping": 0.0,
+            "inertiaTensor": {
+                "x": 1.0,
+                "y": 1.0,
+                "z": 1.0
+            },
+            "inertiaTensorRotation": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0,
+                "w": 1.0
+            },
+            "centerOfMass": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.12115000188350678
+            },
+            "automaticInertiaTensor": false,
+            "automaticCenterOfMass": false,
+            "joinFriction": 0.0
+        },
+        {
+            "transformPath": "base_link/camera_front_right_link",
+            "drives": [
+                {
+                    "damping": 0.0,
+                    "stiffness": 0.0,
+                    "forceLimit": 3.4028234663852887e38,
+                    "upperLimit": 0.0,
+                    "lowerLimit": 0.0,
+                    "driveType": 0,
+                    "axis": 0
+                },
+                {
+                    "damping": 0.0,
+                    "stiffness": 0.0,
+                    "forceLimit": 3.4028234663852887e38,
+                    "upperLimit": 0.0,
+                    "lowerLimit": 0.0,
+                    "driveType": 0,
+                    "axis": 1
+                },
+                {
+                    "damping": 0.0,
+                    "stiffness": 0.0,
+                    "forceLimit": 3.4028234663852887e38,
+                    "upperLimit": 0.0,
+                    "lowerLimit": 0.0,
+                    "driveType": 0,
+                    "axis": 2
+                }
+            ],
+            "linearDamping": 0.0,
+            "angularDamping": 0.0,
+            "inertiaTensor": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "inertiaTensorRotation": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0,
+                "w": 1.0
+            },
+            "centerOfMass": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "automaticInertiaTensor": false,
+            "automaticCenterOfMass": false,
+            "joinFriction": 0.0
+        },
+        {
+            "transformPath": "base_link/camera_front_left_link",
+            "drives": [
+                {
+                    "damping": 0.0,
+                    "stiffness": 0.0,
+                    "forceLimit": 3.4028234663852887e38,
+                    "upperLimit": 0.0,
+                    "lowerLimit": 0.0,
+                    "driveType": 0,
+                    "axis": 0
+                },
+                {
+                    "damping": 0.0,
+                    "stiffness": 0.0,
+                    "forceLimit": 3.4028234663852887e38,
+                    "upperLimit": 0.0,
+                    "lowerLimit": 0.0,
+                    "driveType": 0,
+                    "axis": 1
+                },
+                {
+                    "damping": 0.0,
+                    "stiffness": 0.0,
+                    "forceLimit": 3.4028234663852887e38,
+                    "upperLimit": 0.0,
+                    "lowerLimit": 0.0,
+                    "driveType": 0,
+                    "axis": 2
+                }
+            ],
+            "linearDamping": 0.0,
+            "angularDamping": 0.0,
+            "inertiaTensor": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "inertiaTensorRotation": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0,
+                "w": 1.0
+            },
+            "centerOfMass": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "automaticInertiaTensor": false,
+            "automaticCenterOfMass": false,
+            "joinFriction": 0.0
+        },
+        {
+            "transformPath": "base_link/camera_down_link",
+            "drives": [
+                {
+                    "damping": 0.0,
+                    "stiffness": 0.0,
+                    "forceLimit": 3.4028234663852887e38,
+                    "upperLimit": 0.0,
+                    "lowerLimit": 0.0,
+                    "driveType": 0,
+                    "axis": 0
+                },
+                {
+                    "damping": 0.0,
+                    "stiffness": 0.0,
+                    "forceLimit": 3.4028234663852887e38,
+                    "upperLimit": 0.0,
+                    "lowerLimit": 0.0,
+                    "driveType": 0,
+                    "axis": 1
+                },
+                {
+                    "damping": 0.0,
+                    "stiffness": 0.0,
+                    "forceLimit": 3.4028234663852887e38,
+                    "upperLimit": 0.0,
+                    "lowerLimit": 0.0,
+                    "driveType": 0,
+                    "axis": 2
+                }
+            ],
+            "linearDamping": 0.0,
+            "angularDamping": 0.0,
+            "inertiaTensor": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "inertiaTensorRotation": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0,
+                "w": 1.0
+            },
+            "centerOfMass": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "automaticInertiaTensor": false,
+            "automaticCenterOfMass": false,
+            "joinFriction": 0.0
+        },
+        {
+            "transformPath": "base_link/camera_front_link",
+            "drives": [
+                {
+                    "damping": 0.0,
+                    "stiffness": 0.0,
+                    "forceLimit": 3.4028234663852887e38,
+                    "upperLimit": 0.0,
+                    "lowerLimit": 0.0,
+                    "driveType": 0,
+                    "axis": 0
+                },
+                {
+                    "damping": 0.0,
+                    "stiffness": 0.0,
+                    "forceLimit": 3.4028234663852887e38,
+                    "upperLimit": 0.0,
+                    "lowerLimit": 0.0,
+                    "driveType": 0,
+                    "axis": 1
+                },
+                {
+                    "damping": 0.0,
+                    "stiffness": 0.0,
+                    "forceLimit": 3.4028234663852887e38,
+                    "upperLimit": 0.0,
+                    "lowerLimit": 0.0,
+                    "driveType": 0,
+                    "axis": 2
+                }
+            ],
+            "linearDamping": 0.0,
+            "angularDamping": 0.0,
+            "inertiaTensor": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "inertiaTensorRotation": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0,
+                "w": 1.0
+            },
+            "centerOfMass": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "automaticInertiaTensor": false,
+            "automaticCenterOfMass": false,
+            "joinFriction": 0.0
+        },
+        {
+            "transformPath": "base_link/uw_gps_link",
+            "drives": [
+                {
+                    "damping": 0.0,
+                    "stiffness": 0.0,
+                    "forceLimit": 3.4028234663852887e38,
+                    "upperLimit": 0.0,
+                    "lowerLimit": 0.0,
+                    "driveType": 0,
+                    "axis": 0
+                },
+                {
+                    "damping": 0.0,
+                    "stiffness": 0.0,
+                    "forceLimit": 3.4028234663852887e38,
+                    "upperLimit": 0.0,
+                    "lowerLimit": 0.0,
+                    "driveType": 0,
+                    "axis": 1
+                },
+                {
+                    "damping": 0.0,
+                    "stiffness": 0.0,
+                    "forceLimit": 3.4028234663852887e38,
+                    "upperLimit": 0.0,
+                    "lowerLimit": 0.0,
+                    "driveType": 0,
+                    "axis": 2
+                }
+            ],
+            "linearDamping": 0.0,
+            "angularDamping": 0.0,
+            "inertiaTensor": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "inertiaTensorRotation": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0,
+                "w": 1.0
+            },
+            "centerOfMass": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "automaticInertiaTensor": false,
+            "automaticCenterOfMass": true,
+            "joinFriction": 0.0
+        },
+        {
+            "transformPath": "base_link/gps_link",
+            "drives": [
+                {
+                    "damping": 0.0,
+                    "stiffness": 0.0,
+                    "forceLimit": 3.4028234663852887e38,
+                    "upperLimit": 0.0,
+                    "lowerLimit": 0.0,
+                    "driveType": 0,
+                    "axis": 0
+                },
+                {
+                    "damping": 0.0,
+                    "stiffness": 0.0,
+                    "forceLimit": 3.4028234663852887e38,
+                    "upperLimit": 0.0,
+                    "lowerLimit": 0.0,
+                    "driveType": 0,
+                    "axis": 1
+                },
+                {
+                    "damping": 0.0,
+                    "stiffness": 0.0,
+                    "forceLimit": 3.4028234663852887e38,
+                    "upperLimit": 0.0,
+                    "lowerLimit": 0.0,
+                    "driveType": 0,
+                    "axis": 2
+                }
+            ],
+            "linearDamping": 0.0,
+            "angularDamping": 0.0,
+            "inertiaTensor": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "inertiaTensorRotation": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0,
+                "w": 1.0
+            },
+            "centerOfMass": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "automaticInertiaTensor": false,
+            "automaticCenterOfMass": true,
+            "joinFriction": 0.0
+        },
+        {
+            "transformPath": "base_link/sbg_link",
+            "drives": [
+                {
+                    "damping": 0.0,
+                    "stiffness": 0.0,
+                    "forceLimit": 3.4028234663852887e38,
+                    "upperLimit": 0.0,
+                    "lowerLimit": 0.0,
+                    "driveType": 0,
+                    "axis": 0
+                },
+                {
+                    "damping": 0.0,
+                    "stiffness": 0.0,
+                    "forceLimit": 3.4028234663852887e38,
+                    "upperLimit": 0.0,
+                    "lowerLimit": 0.0,
+                    "driveType": 0,
+                    "axis": 1
+                },
+                {
+                    "damping": 0.0,
+                    "stiffness": 0.0,
+                    "forceLimit": 3.4028234663852887e38,
+                    "upperLimit": 0.0,
+                    "lowerLimit": 0.0,
+                    "driveType": 0,
+                    "axis": 2
+                }
+            ],
+            "linearDamping": 0.0,
+            "angularDamping": 0.0,
+            "inertiaTensor": {
+                "x": 9.999999974752428e-7,
+                "y": 9.999999974752428e-7,
+                "z": 9.999999974752428e-7
+            },
+            "inertiaTensorRotation": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0,
+                "w": 1.0
+            },
+            "centerOfMass": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "automaticInertiaTensor": false,
+            "automaticCenterOfMass": true,
+            "joinFriction": 0.0
+        },
+        {
+            "transformPath": "base_link/imu_link",
+            "drives": [
+                {
+                    "damping": 0.0,
+                    "stiffness": 0.0,
+                    "forceLimit": 3.4028234663852887e38,
+                    "upperLimit": 0.0,
+                    "lowerLimit": 0.0,
+                    "driveType": 0,
+                    "axis": 0
+                },
+                {
+                    "damping": 0.0,
+                    "stiffness": 0.0,
+                    "forceLimit": 3.4028234663852887e38,
+                    "upperLimit": 0.0,
+                    "lowerLimit": 0.0,
+                    "driveType": 0,
+                    "axis": 1
+                },
+                {
+                    "damping": 0.0,
+                    "stiffness": 0.0,
+                    "forceLimit": 3.4028234663852887e38,
+                    "upperLimit": 0.0,
+                    "lowerLimit": 0.0,
+                    "driveType": 0,
+                    "axis": 2
+                }
+            ],
+            "linearDamping": 0.0,
+            "angularDamping": 0.0,
+            "inertiaTensor": {
+                "x": 9.999999974752428e-7,
+                "y": 9.999999974752428e-7,
+                "z": 9.999999974752428e-7
+            },
+            "inertiaTensorRotation": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0,
+                "w": 1.0
+            },
+            "centerOfMass": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "automaticInertiaTensor": false,
+            "automaticCenterOfMass": true,
+            "joinFriction": 0.0
+        },
+        {
+            "transformPath": "base_link/sidescan_link",
+            "drives": [
+                {
+                    "damping": 0.0,
+                    "stiffness": 0.0,
+                    "forceLimit": 3.4028234663852887e38,
+                    "upperLimit": 0.0,
+                    "lowerLimit": 0.0,
+                    "driveType": 0,
+                    "axis": 0
+                },
+                {
+                    "damping": 0.0,
+                    "stiffness": 0.0,
+                    "forceLimit": 3.4028234663852887e38,
+                    "upperLimit": 0.0,
+                    "lowerLimit": 0.0,
+                    "driveType": 0,
+                    "axis": 1
+                },
+                {
+                    "damping": 0.0,
+                    "stiffness": 0.0,
+                    "forceLimit": 3.4028234663852887e38,
+                    "upperLimit": 0.0,
+                    "lowerLimit": 0.0,
+                    "driveType": 0,
+                    "axis": 2
+                }
+            ],
+            "linearDamping": 0.0,
+            "angularDamping": 0.0,
+            "inertiaTensor": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "inertiaTensorRotation": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0,
+                "w": 1.0
+            },
+            "centerOfMass": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "automaticInertiaTensor": false,
+            "automaticCenterOfMass": true,
+            "joinFriction": 0.0
+        },
+        {
+            "transformPath": "base_link/dvl_link",
+            "drives": [
+                {
+                    "damping": 0.0,
+                    "stiffness": 0.0,
+                    "forceLimit": 3.4028234663852887e38,
+                    "upperLimit": 0.0,
+                    "lowerLimit": 0.0,
+                    "driveType": 0,
+                    "axis": 0
+                },
+                {
+                    "damping": 0.0,
+                    "stiffness": 0.0,
+                    "forceLimit": 3.4028234663852887e38,
+                    "upperLimit": 0.0,
+                    "lowerLimit": 0.0,
+                    "driveType": 0,
+                    "axis": 1
+                },
+                {
+                    "damping": 0.0,
+                    "stiffness": 0.0,
+                    "forceLimit": 3.4028234663852887e38,
+                    "upperLimit": 0.0,
+                    "lowerLimit": 0.0,
+                    "driveType": 0,
+                    "axis": 2
+                }
+            ],
+            "linearDamping": 0.0,
+            "angularDamping": 0.0,
+            "inertiaTensor": {
+                "x": 9.999999974752428e-7,
+                "y": 9.999999974752428e-7,
+                "z": 9.999999974752428e-7
+            },
+            "inertiaTensorRotation": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0,
+                "w": 1.0
+            },
+            "centerOfMass": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "automaticInertiaTensor": false,
+            "automaticCenterOfMass": true,
+            "joinFriction": 0.0
+        },
+        {
+            "transformPath": "base_link/pressure_link",
+            "drives": [
+                {
+                    "damping": 0.0,
+                    "stiffness": 0.0,
+                    "forceLimit": 3.4028234663852887e38,
+                    "upperLimit": 0.0,
+                    "lowerLimit": 0.0,
+                    "driveType": 0,
+                    "axis": 0
+                },
+                {
+                    "damping": 0.0,
+                    "stiffness": 0.0,
+                    "forceLimit": 3.4028234663852887e38,
+                    "upperLimit": 0.0,
+                    "lowerLimit": 0.0,
+                    "driveType": 0,
+                    "axis": 1
+                },
+                {
+                    "damping": 0.0,
+                    "stiffness": 0.0,
+                    "forceLimit": 3.4028234663852887e38,
+                    "upperLimit": 0.0,
+                    "lowerLimit": 0.0,
+                    "driveType": 0,
+                    "axis": 2
+                }
+            ],
+            "linearDamping": 0.0,
+            "angularDamping": 0.0,
+            "inertiaTensor": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "inertiaTensorRotation": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0,
+                "w": 1.0
+            },
+            "centerOfMass": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "automaticInertiaTensor": false,
+            "automaticCenterOfMass": true,
+            "joinFriction": 0.0
+        },
+        {
+            "transformPath": "base_link/thruster_yaw_link",
+            "drives": [
+                {
+                    "damping": 1000.0,
+                    "stiffness": 10000.0,
+                    "forceLimit": 100.0,
+                    "upperLimit": 7.0,
+                    "lowerLimit": -7.0,
+                    "driveType": 0,
+                    "axis": 0
+                },
+                {
+                    "damping": 0.0,
+                    "stiffness": 0.0,
+                    "forceLimit": 1000.0,
+                    "upperLimit": 0.0,
+                    "lowerLimit": 0.0,
+                    "driveType": 0,
+                    "axis": 1
+                },
+                {
+                    "damping": 0.0,
+                    "stiffness": 0.0,
+                    "forceLimit": 1000.0,
+                    "upperLimit": 0.0,
+                    "lowerLimit": 0.0,
+                    "driveType": 0,
+                    "axis": 2
+                }
+            ],
+            "linearDamping": 0.0,
+            "angularDamping": 0.0,
+            "inertiaTensor": {
+                "x": 9.999999974752428e-7,
+                "y": 9.999999974752428e-7,
+                "z": 9.999999974752428e-7
+            },
+            "inertiaTensorRotation": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0,
+                "w": 1.0
+            },
+            "centerOfMass": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "automaticInertiaTensor": false,
+            "automaticCenterOfMass": true,
+            "joinFriction": 0.0
+        },
+        {
+            "transformPath": "base_link/thruster_yaw_link/thruster_link",
+            "drives": [
+                {
+                    "damping": 1000.0,
+                    "stiffness": 10000.0,
+                    "forceLimit": 100.0,
+                    "upperLimit": 7.0,
+                    "lowerLimit": -7.0,
+                    "driveType": 0,
+                    "axis": 0
+                },
+                {
+                    "damping": 0.0,
+                    "stiffness": 0.0,
+                    "forceLimit": 3.4028234663852887e38,
+                    "upperLimit": 0.0,
+                    "lowerLimit": 0.0,
+                    "driveType": 0,
+                    "axis": 1
+                },
+                {
+                    "damping": 0.0,
+                    "stiffness": 0.0,
+                    "forceLimit": 3.4028234663852887e38,
+                    "upperLimit": 0.0,
+                    "lowerLimit": 0.0,
+                    "driveType": 0,
+                    "axis": 2
+                }
+            ],
+            "linearDamping": 0.0,
+            "angularDamping": 0.0,
+            "inertiaTensor": {
+                "x": 9.999999974752428e-7,
+                "y": 9.999999974752428e-7,
+                "z": 9.999999974752428e-7
+            },
+            "inertiaTensorRotation": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0,
+                "w": 1.0
+            },
+            "centerOfMass": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "automaticInertiaTensor": false,
+            "automaticCenterOfMass": true,
+            "joinFriction": 0.0
+        },
+        {
+            "transformPath": "base_link/thruster_yaw_link/thruster_link/back_prop_link",
+            "drives": [
+                {
+                    "damping": 0.0,
+                    "stiffness": 0.0,
+                    "forceLimit": 1000.0,
+                    "upperLimit": 0.0,
+                    "lowerLimit": 0.0,
+                    "driveType": 3,
+                    "axis": 0
+                },
+                {
+                    "damping": 0.0,
+                    "stiffness": 0.0,
+                    "forceLimit": 3.4028234663852887e38,
+                    "upperLimit": 0.0,
+                    "lowerLimit": 0.0,
+                    "driveType": 0,
+                    "axis": 1
+                },
+                {
+                    "damping": 0.0,
+                    "stiffness": 0.0,
+                    "forceLimit": 3.4028234663852887e38,
+                    "upperLimit": 0.0,
+                    "lowerLimit": 0.0,
+                    "driveType": 0,
+                    "axis": 2
+                }
+            ],
+            "linearDamping": 0.0,
+            "angularDamping": 0.0,
+            "inertiaTensor": {
+                "x": 9.999999974752428e-7,
+                "y": 9.999999974752428e-7,
+                "z": 9.999999974752428e-7
+            },
+            "inertiaTensorRotation": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0,
+                "w": 1.0
+            },
+            "centerOfMass": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "automaticInertiaTensor": false,
+            "automaticCenterOfMass": true,
+            "joinFriction": 0.0
+        },
+        {
+            "transformPath": "base_link/thruster_yaw_link/thruster_link/front_prop_link",
+            "drives": [
+                {
+                    "damping": 0.0,
+                    "stiffness": 0.0,
+                    "forceLimit": 1000.0,
+                    "upperLimit": 0.0,
+                    "lowerLimit": 0.0,
+                    "driveType": 3,
+                    "axis": 0
+                },
+                {
+                    "damping": 0.0,
+                    "stiffness": 0.0,
+                    "forceLimit": 3.4028234663852887e38,
+                    "upperLimit": 0.0,
+                    "lowerLimit": 0.0,
+                    "driveType": 0,
+                    "axis": 1
+                },
+                {
+                    "damping": 0.0,
+                    "stiffness": 0.0,
+                    "forceLimit": 3.4028234663852887e38,
+                    "upperLimit": 0.0,
+                    "lowerLimit": 0.0,
+                    "driveType": 0,
+                    "axis": 2
+                }
+            ],
+            "linearDamping": 0.0,
+            "angularDamping": 0.0,
+            "inertiaTensor": {
+                "x": 9.999999974752428e-7,
+                "y": 9.999999974752428e-7,
+                "z": 9.999999974752428e-7
+            },
+            "inertiaTensorRotation": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0,
+                "w": 1.0
+            },
+            "centerOfMass": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "automaticInertiaTensor": false,
+            "automaticCenterOfMass": true,
+            "joinFriction": 0.0
+        }
+    ]
+}
