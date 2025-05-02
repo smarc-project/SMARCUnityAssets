@@ -26,6 +26,7 @@ namespace SmarcGUI.MissionPlanning.Params
         {
             heading = 0;
             HeadingField.text = heading.ToString();
+            HeadingField.onEndEdit.AddListener(value => SetHeading(float.Parse(value)));
         }
 
         public float GetHeading()
