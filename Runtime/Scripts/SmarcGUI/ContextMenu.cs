@@ -1,3 +1,4 @@
+using SmarcGUI.MissionPlanning;
 using SmarcGUI.WorldSpace;
 using Unity.Robotics.UrdfImporter;
 using UnityEngine;
@@ -12,6 +13,7 @@ namespace SmarcGUI
         RectTransform rt;
         Canvas canvas;
         GUIState guiState;
+        MissionPlanStore missionPlanStore;
 
         [Tooltip("Generic ListItem")]
         IListItem listItem;
@@ -33,14 +35,22 @@ namespace SmarcGUI
         public Button LookAtButton;
         public Button FollowButton;
 
+        [Tooltip("World")]
+        public GameObject WorldSection;
+        public Button AddTaskButton;
+
+
         void Awake()
         {
             rt = GetComponent<RectTransform>();
             canvas = GameObject.Find("Canvas-Over").GetComponent<Canvas>();
             guiState = FindFirstObjectByType<GUIState>();
+            missionPlanStore = FindFirstObjectByType<MissionPlanStore>();
+            // Disable all sections by default
+            foreach(Transform child in transform) child.gameObject.SetActive(false);
         }
 
-        protected void SetOnTop(Vector2 position)
+        protected void SetOnTopResize(Vector2 position)
         {
             rt.SetParent(canvas.transform, false);
             rt.position = position;
@@ -67,7 +77,7 @@ namespace SmarcGUI
             MoveDownButton.onClick.AddListener(OnItemDown);
             ListItemSection.SetActive(true);
             listItem = item;
-            SetOnTop(position);
+            SetOnTopResize(position);
         }
         
 
@@ -95,7 +105,7 @@ namespace SmarcGUI
             PingButton.onClick.AddListener(OnPing);
             RobotSection.SetActive(true);
             robotItem = item;
-            SetOnTop(position);
+            SetOnTopResize(position);
         }
 
         void OnPing()
@@ -113,7 +123,7 @@ namespace SmarcGUI
             FollowButton.onClick.AddListener(OnFollow);
             WorldObjectSection.SetActive(true);
             cameraLookableItem = item;
-            SetOnTop(position);
+            SetOnTopResize(position);
         }
 
         void OnFollow()
@@ -136,6 +146,20 @@ namespace SmarcGUI
             Destroy(gameObject);
         }
         
+
+        // Empty world
+        public void SetItem(Vector2 position)
+        {
+            AddTaskButton.onClick.AddListener(OnAddTask);
+            WorldSection.SetActive(true);
+            SetOnTopResize(position);
+        }
+
+        void OnAddTask()
+        {
+            missionPlanStore.AddNewTask();
+            Destroy(gameObject);
+        }
 
     }
 }

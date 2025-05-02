@@ -168,8 +168,9 @@ namespace SmarcGUI.WorldSpace
             arrowYup.SetActive(paramY != null && draw3Dwidgets);
             arrowYdown.SetActive(paramY != null && draw3Dwidgets);
             var y = paramY != null ? paramY.GetY() : 0;
-            shadowMarker.gameObject.SetActive(Mathf.Abs(y) > 1 && draw3Dwidgets);
-            lineToShadow.enabled = Mathf.Abs(y) > 1  && draw3Dwidgets;
+            bool shadowEnabled = Mathf.Abs(y) > 1 && draw3Dwidgets;
+            shadowMarker.gameObject.SetActive(shadowEnabled);
+            lineToShadow.enabled = shadowEnabled;
 
             FloatingNameCanvas.gameObject.SetActive(draw3Dwidgets);
             FloatingNameCanvas.transform.rotation = guiState.CurrentCam.transform.rotation;
