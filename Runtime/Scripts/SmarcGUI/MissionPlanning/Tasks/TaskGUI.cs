@@ -153,7 +153,7 @@ namespace SmarcGUI.MissionPlanning.Tasks
                 newHeight += paramsHeight + BottomPadding;
             }
             rt.sizeDelta = new Vector2(rt.sizeDelta.x, newHeight);
-            }
+        }
 
 
         public void OnPointerClick(PointerEventData eventData)
