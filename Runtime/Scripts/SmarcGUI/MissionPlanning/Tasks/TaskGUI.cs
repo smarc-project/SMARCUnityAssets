@@ -31,8 +31,10 @@ namespace SmarcGUI.MissionPlanning.Tasks
         public TMP_InputField DescriptionField;
         public TMP_Text TaskName;
         public RectTransform HighlightRT;
+        public GameObject SelectedHighlightGO;
         public Button RunButton;
         public RectTransform WarningRT;
+        bool isSelected;
 
         [Header("Prefabs")]
         public GameObject PointMarkerPrefab;
@@ -165,16 +167,25 @@ namespace SmarcGUI.MissionPlanning.Tasks
                 contextMenu.SetItem(eventData.position, (ICameraLookable)this);
             }
 
+            if(eventData.button == PointerEventData.InputButton.Left)
+            {
+                isSelected = !isSelected;
+                if(SelectedHighlightGO != null) SelectedHighlightGO.SetActive(isSelected);
+                if(pointmarker != null) pointmarker.Selected(isSelected);
+            }
+
         }
 
         public void OnPointerExit(PointerEventData eventData)
         {
             HighlightRT.gameObject.SetActive(false);
+            if(pointmarker != null) pointmarker.Highlight(false);
         }
 
         public void OnPointerEnter(PointerEventData eventData)
         {
             HighlightRT.gameObject.SetActive(true);
+            if(pointmarker != null) pointmarker.Highlight(true);
         }
 
         public void OnRobotSelectionChange(RobotGUI SelectedRobotGUI)

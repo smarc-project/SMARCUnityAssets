@@ -18,11 +18,14 @@ namespace SmarcGUI.WorldSpace
         GameObject arrowYup, arrowYdown;
         public Transform headingCone;
         public Transform orientationModel;
+        public GameObject HighlightObject;
 
         LineRenderer lineToShadow;
         public Transform shadowMarker;
 
         GUIState guiState;
+        bool isSelected = false;    
+        bool isFar = false;
 
         [Header("2D visuals")]
         public float FarAwayDistance = 50;
@@ -52,7 +55,7 @@ namespace SmarcGUI.WorldSpace
             overlay = overlayGO.GetComponent<PointMarkerOverlay>();
             overlay.SetPointMarker(this);
 
-            UpdateWidgets(false);
+            UpdateWidgets();
         }
 
 
@@ -136,12 +139,14 @@ namespace SmarcGUI.WorldSpace
             return Vector3.zero;
         }
 
-        void UpdateWidgets(bool draw3Dwidgets)
+        void UpdateWidgets()
         {
+            var draw3Dwidgets = !isFar;
+
             if(paramXZ == null) draw3Dwidgets = false;
             overlay.gameObject.SetActive(!draw3Dwidgets);
 
-            dragArrows.SetActive(draw3Dwidgets);
+            dragArrows.SetActive(draw3Dwidgets && isSelected);
             headingCone.gameObject.SetActive(paramHeading != null && draw3Dwidgets);
             orientationModel.gameObject.SetActive(paramOrientation != null && draw3Dwidgets);
             
@@ -152,6 +157,18 @@ namespace SmarcGUI.WorldSpace
             lineToShadow.enabled = Mathf.Abs(y) > 1  && draw3Dwidgets;
         }
 
+        public void Highlight(bool on)
+        {
+            HighlightObject.SetActive(on && !isFar);
+            overlay.Highlight(on && isFar);
+        }
+
+        public void Selected(bool on)
+        {   
+            dragArrows.SetActive(on && !isFar);
+            isSelected = on;
+        }
+
         void LateUpdate()
         {
             // disable all 3D stuff if the camera is far away and replace them with screen-space 2D markers
@@ -159,8 +176,8 @@ namespace SmarcGUI.WorldSpace
             if(guiState.CurrentCam == null) return;
             if(guiState.MouseDragging) return; //also dont do anything if we are dragging something...
             var camDiff = transform.position - guiState.CurrentCam.transform.position;
-            bool closeEnoughNow = camDiff.sqrMagnitude < farAwayDistSq;
-            UpdateWidgets(closeEnoughNow);
+            isFar = camDiff.sqrMagnitude > farAwayDistSq;
+            UpdateWidgets();
         }
     }
 }

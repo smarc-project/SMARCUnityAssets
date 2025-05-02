@@ -22,12 +22,9 @@ namespace SmarcGUI.MissionPlanning.Params
         public string ParamName => $"{taskgui.name}_param_{ParamKey ?? ParamIndex.ToString()}";
 
         public RectTransform HighlightRT;
-        public RectTransform SelectedHighlightRT;
         
         protected MissionPlanStore missionPlanStore;
         protected GUIState guiState;
-
-        protected bool isSelected;
  
 
         void Awake()
@@ -93,13 +90,6 @@ namespace SmarcGUI.MissionPlanning.Params
             {
                 var contextMenu = guiState.CreateContextMenu();
                 contextMenu.SetItem(eventData.position, this);
-            }
-
-            if(eventData.button == PointerEventData.InputButton.Left)
-            {
-                isSelected = !isSelected;
-                if(SelectedHighlightRT != null) SelectedHighlightRT.gameObject.SetActive(isSelected);
-                OnSelectedChange();
             }
         }
 

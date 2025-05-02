@@ -9,6 +9,7 @@ namespace SmarcGUI.MissionPlanning
     {
         public RectTransform HeadingArrowRT;
         public Image PositionImg;
+        public Image HighlightImg;
 
         public string UnderlayCanvasName = "Canvas-Under";
         Canvas underlayCanvas;
@@ -33,6 +34,11 @@ namespace SmarcGUI.MissionPlanning
             pmTF = pointMarker.transform;
         }
 
+        public void Highlight(bool highlight)
+        {
+            HighlightImg.gameObject.SetActive(highlight && gameObject.activeSelf);
+        }
+
         void LateUpdate()
         {   
             // check if the marker position is in front of the camera
@@ -51,6 +57,7 @@ namespace SmarcGUI.MissionPlanning
             
             var screenPos = Utils.WorldToCanvasPosition(underlayCanvas, guiState.CurrentCam, pmTF.position);
             PositionImg.rectTransform.anchoredPosition = screenPos;
+            HighlightImg.rectTransform.anchoredPosition = screenPos;
 
             var worldHeadingVec = pointMarker.GetHeadingVec();
             if(worldHeadingVec == Vector3.zero)

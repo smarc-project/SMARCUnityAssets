@@ -444,7 +444,6 @@ MonoBehaviour:
   ExecutingTasksScrollContent: {fileID: 7024504074742447232}
   ExecTasksPanelRT: {fileID: 5433525304167608268}
   PingButton: {fileID: 6902164213454868138}
-  ContextMenuPrefab: {fileID: 6887179358533236570, guid: d0a976700cb536948812b70770096ce0, type: 3}
   ExecutingTaskPrefab: {fileID: 7063269331685360173, guid: d78e77b4af8542a40ada5afa61affa4f, type: 3}
   RobotGUIOverlayPrefab: {fileID: 999908645906117283, guid: 87917f9c7f773bb4d9d59f11ce469ba8, type: 3}
   GenericGhostPrefab: {fileID: 4101801440365519181, guid: 036e77a074ae0da478957710f1cfb689, type: 3}
@@ -1158,7 +1157,7 @@ RectTransform:
   m_Father: {fileID: 6464382990362068515}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 1, y: 1}
+  m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 20, y: 20}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -2295,7 +2294,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &6942377354139616004
 RectTransform:
   m_ObjectHideFlags: 0
@@ -2552,7 +2551,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 0.27843142, b: 0.3066552, a: 1}
+  m_Color: {r: 1, g: 1, b: 0, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
