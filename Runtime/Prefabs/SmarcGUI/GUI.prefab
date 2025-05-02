@@ -11565,7 +11565,7 @@ MonoBehaviour:
   DefaultCamera: {fileID: 3885939636452086765}
   DefaultCameraLookAtMin: 1
   DefaultCameraLookAtMax: 100
-  mouseTwoDelay: 0.1
+  mouseTwoDelay: 0.15
 --- !u!114 &680064708251144909
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -19292,6 +19292,10 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3279783181398222497, guid: a378f1281a5403444a5c35895023fbe6, type: 3}
+      propertyPath: ResizeObject
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3279783181398222497, guid: a378f1281a5403444a5c35895023fbe6, type: 3}
       propertyPath: ResizeParent
       value: 1
       objectReference: {fileID: 0}
@@ -19436,6 +19440,10 @@ PrefabInstance:
     - target: {fileID: 3279783181398222497, guid: a378f1281a5403444a5c35895023fbe6, type: 3}
       propertyPath: state
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3279783181398222497, guid: a378f1281a5403444a5c35895023fbe6, type: 3}
+      propertyPath: ResizeObject
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3279783181398222497, guid: a378f1281a5403444a5c35895023fbe6, type: 3}
       propertyPath: ToggledObject
@@ -20131,6 +20139,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3279783181398222497, guid: a378f1281a5403444a5c35895023fbe6, type: 3}
       propertyPath: state
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3279783181398222497, guid: a378f1281a5403444a5c35895023fbe6, type: 3}
+      propertyPath: ResizeObject
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3279783181398222497, guid: a378f1281a5403444a5c35895023fbe6, type: 3}
@@ -20971,6 +20983,10 @@ PrefabInstance:
     - target: {fileID: 3279783181398222497, guid: a378f1281a5403444a5c35895023fbe6, type: 3}
       propertyPath: state
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3279783181398222497, guid: a378f1281a5403444a5c35895023fbe6, type: 3}
+      propertyPath: ResizeObject
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3279783181398222497, guid: a378f1281a5403444a5c35895023fbe6, type: 3}
       propertyPath: ToggledObject

@@ -29,14 +29,11 @@ namespace SmarcGUI
             button = GetComponent<Button>();
             button.onClick.AddListener(OnClick);
             objectSizeDelta = ToggledObject.GetComponent<RectTransform>().sizeDelta;
+            Resize();
         }
 
-        public void OnClick()
+        void Resize()
         {
-            state = !state;
-            ToggledObject.SetActive(state);
-            ToggledObject.GetComponent<RectTransform>().sizeDelta = state? objectSizeDelta : new Vector2(0, 0);
-
             if(ResizeObject)
             {
                 var heightUpdatable = ToggledObject.GetComponent<IHeightUpdatable>();
@@ -54,6 +51,14 @@ namespace SmarcGUI
                 var parent = ResizeParentObject.GetComponent<IHeightUpdatable>();
                 parent?.UpdateHeight();
             }
+        }
+
+        public void OnClick()
+        {
+            state = !state;
+            ToggledObject.SetActive(state);
+            ToggledObject.GetComponent<RectTransform>().sizeDelta = state? objectSizeDelta : new Vector2(0, 0);
+            Resize();
         }
     }
 }

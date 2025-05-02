@@ -23,6 +23,7 @@ namespace SmarcGUI.WorldSpace
         public Canvas FloatingNameCanvas;
         public TMP_Text FloatingNameText;
         public TMP_Text FloatingDescriptionText;
+        public RectTransform FloatingNameBackgroundRT;
 
 
         LineRenderer lineToShadow;
@@ -89,10 +90,12 @@ namespace SmarcGUI.WorldSpace
             FloatingNameCanvas.gameObject.SetActive(!string.IsNullOrEmpty(name));
             FloatingNameText.text = name;
             FloatingDescriptionText.text = desc;
+            float maxWidth3d = Mathf.Max(FloatingNameText.preferredWidth, FloatingDescriptionText.preferredWidth);
+            FloatingNameBackgroundRT.sizeDelta = new Vector2(maxWidth3d, FloatingNameBackgroundRT.sizeDelta.y);
             overlay.FloatingNameText.text = name;
             overlay.FloatingDescriptionText.text = desc;
-            float maxWidth = Mathf.Max(overlay.FloatingNameText.preferredWidth, overlay.FloatingDescriptionText.preferredWidth);
-            overlay.FloatingNameBackgroundRT.sizeDelta = new Vector2(maxWidth, overlay.FloatingNameBackgroundRT.sizeDelta.y);
+            float maxWidth2d = Mathf.Max(overlay.FloatingNameText.preferredWidth, overlay.FloatingDescriptionText.preferredWidth);
+            overlay.FloatingNameBackgroundRT.sizeDelta = new Vector2(maxWidth2d, overlay.FloatingNameBackgroundRT.sizeDelta.y);
             overlay.FloatingNameCanvas.gameObject.SetActive(!string.IsNullOrEmpty(name));
         }
 
