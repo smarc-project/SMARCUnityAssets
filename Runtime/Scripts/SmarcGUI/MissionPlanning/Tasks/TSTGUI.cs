@@ -99,6 +99,8 @@ namespace SmarcGUI.MissionPlanning.Tasks
             var taskGO = Instantiate(missionPlanStore.TaskPrefab, missionPlanStore.TasksScrollContent);
             var taskGUI = taskGO.GetComponent<TaskGUI>();
             taskGUI.SetTask(task, this);
+            string childCount = tst.Children.Count.ToString();
+            taskGUI.SetDesc(childCount);
             taskGUIs.Add(taskGUI);
         }
 

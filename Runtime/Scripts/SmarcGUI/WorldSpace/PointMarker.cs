@@ -84,11 +84,14 @@ namespace SmarcGUI.WorldSpace
             
         }
 
-        public void SetName(string name, string desc)
+        public void SetNameDesc(string name, string desc)
         {
             FloatingNameCanvas.gameObject.SetActive(!string.IsNullOrEmpty(name));
             FloatingNameText.text = name;
             FloatingDescriptionText.text = desc;
+            overlay.FloatingNameText.text = name;
+            overlay.FloatingDescriptionText.text = desc;
+            overlay.FloatingNameCanvas.gameObject.SetActive(!string.IsNullOrEmpty(name));
         }
 
         public void SetXZParam(IParamHasXZ param)

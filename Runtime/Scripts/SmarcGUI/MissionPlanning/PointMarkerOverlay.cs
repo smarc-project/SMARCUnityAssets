@@ -2,6 +2,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using DefaultNamespace;
 using SmarcGUI.WorldSpace;
+using TMPro;
 
 namespace SmarcGUI.MissionPlanning
 {
@@ -10,6 +11,9 @@ namespace SmarcGUI.MissionPlanning
         public RectTransform HeadingArrowRT;
         public Image PositionImg;
         public Image HighlightImg;
+        public RectTransform FloatingNameCanvas;
+        public TMP_Text FloatingNameText;
+        public TMP_Text FloatingDescriptionText;
 
         public string UnderlayCanvasName = "Canvas-Under";
         Canvas underlayCanvas;
@@ -56,8 +60,7 @@ namespace SmarcGUI.MissionPlanning
             HeadingArrowRT.gameObject.SetActive(!camTooLow);
             
             var screenPos = Utils.WorldToCanvasPosition(underlayCanvas, guiState.CurrentCam, pmTF.position);
-            PositionImg.rectTransform.anchoredPosition = screenPos;
-            HighlightImg.rectTransform.anchoredPosition = screenPos;
+            rt.anchoredPosition = screenPos;
 
             var worldHeadingVec = pointMarker.GetHeadingVec();
             if(worldHeadingVec == Vector3.zero)
@@ -71,7 +74,6 @@ namespace SmarcGUI.MissionPlanning
             var arrowAngle = Vector2.SignedAngle(Vector2.up, screenHeadingTip - screenPos);
             // then, rotate the HeadingarrowRT by that angle
             HeadingArrowRT.rotation = Quaternion.Euler(0, 0, arrowAngle);
-            HeadingArrowRT.anchoredPosition = screenPos;
         }
     }
 

@@ -63,7 +63,7 @@ namespace SmarcGUI.MissionPlanning.Tasks
             baseHeight = rt.sizeDelta.y;
             missionPlanStore = FindFirstObjectByType<MissionPlanStore>();
             guiState = FindFirstObjectByType<GUIState>();
-            DescriptionField.onEndEdit.AddListener(OnDescChanged);
+            DescriptionField.onEndEdit.AddListener(SetDesc);
             RunButton.onClick.AddListener(OnRunTask);
             RunButtonImage = RunButton.GetComponent<Image>();
             RunButtonText = RunButton.GetComponentInChildren<TMP_Text>();
@@ -81,11 +81,12 @@ namespace SmarcGUI.MissionPlanning.Tasks
             robotgui.SendStartTaskCommand(task);
         }
 
-        void OnDescChanged(string desc)
+        public void SetDesc(string desc)
         {
             if(task == null) return;
             task.Description = desc;
-            if(pointmarker!=null) pointmarker.SetName(task.Name, task.Description);
+            DescriptionField.text = desc;
+            if(pointmarker!=null) pointmarker.SetNameDesc(task.Name, task.Description);
         }
 
         public void SetTask(Task task, TSTGUI tstGUI)
@@ -121,7 +122,7 @@ namespace SmarcGUI.MissionPlanning.Tasks
                     var markerGO = Instantiate(PointMarkerPrefab, WorldMarkersCollection);
                     pointmarker = markerGO.GetComponent<PointMarker>();
                     pointmarker.SetXZParam(paramXZ);
-                    pointmarker.SetName(task.Name, task.Description);
+                    pointmarker.SetNameDesc(task.Name, task.Description);
                 }
             }
 
