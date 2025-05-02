@@ -25,7 +25,7 @@ namespace SmarcGUI
     }
 
 
-    public class RobotGUI : MonoBehaviour, IPointerClickHandler, IPointerExitHandler, IPointerEnterHandler
+    public class RobotGUI : MonoBehaviour, IPointerClickHandler, IPointerExitHandler, IPointerEnterHandler, ICameraLookable
     {
         [Header("Params")]
         [Tooltip("Time in seconds before the robot is considered old")]
@@ -48,7 +48,6 @@ namespace SmarcGUI
         TMP_Text PingButtonText;
 
         [Header("Prefabs")]
-        public GameObject ContextMenuPrefab;
         public GameObject ExecutingTaskPrefab;
         public GameObject RobotGUIOverlayPrefab;
 
@@ -403,9 +402,9 @@ namespace SmarcGUI
         {
             if(eventData.button == PointerEventData.InputButton.Right)
             {
-                var contextMenuGO = Instantiate(ContextMenuPrefab);
-                var contextMenu = contextMenuGO.GetComponent<RobotContextMenu>();
+                var contextMenu = guiState.CreateContextMenu();
                 contextMenu.SetItem(eventData.position, this);
+                contextMenu.SetItem(eventData.position, (ICameraLookable)this);
             }
 
             if(eventData.button == PointerEventData.InputButton.Left)
@@ -425,61 +424,39 @@ namespace SmarcGUI
         {
             IsSelected = false;
             OnSelectedChange();
-            keyboardController?.Disable();
+            if(keyboardController != null) keyboardController.Disable();
         }
 
         void OnTaskAdded(int index)
         {
             var taskSpec = tasksAvailable[index];
-            missionPlanStore.SelectedTSTGUI?.OnTaskAdded(taskSpec);
+            if(missionPlanStore.SelectedTSTGUI != null) missionPlanStore.SelectedTSTGUI.OnTaskAdded(taskSpec);
         }
 
         public void OnPointerExit(PointerEventData eventData)
         {
-            HighlightRT?.gameObject.SetActive(false);
+            if(HighlightRT != null) HighlightRT.gameObject.SetActive(false);
         }
 
         public void OnPointerEnter(PointerEventData eventData)
         {
-            HighlightRT?.gameObject.SetActive(true);
+            if(HighlightRT != null) HighlightRT.gameObject.SetActive(true);
         }
 
-        public void LookAtRobot()
+        public Transform GetWorldTarget()
         {
             Transform tf;
             if(InfoSource != InfoSource.SIM)
             {
-                if(ghostTF == null) return;
-                tf = ghostTF;
-                
-            }
-            else
-            {
-                if(simRobotBaseLinkTF == null) return;
-                tf = simRobotBaseLinkTF;
-            }
-            guiState.SelectDefaultCamera();
-            var cam = guiState.CurrentCam;
-            cam.transform.position = tf.position + new Vector3(0, 10, 0);
-            cam.transform.LookAt(tf);
-        }
-
-        public void FollowRobot()
-        {
-            Transform tf;
-            if(InfoSource != InfoSource.SIM)
-            {
-                if(ghostTF == null) return;
+                if(ghostTF == null) return null;
                 tf = ghostTF;
             }
             else
             {
-                if(simRobotBaseLinkTF == null) return;
+                if(simRobotBaseLinkTF == null) return null;
                 tf = simRobotBaseLinkTF;
             }
-            guiState.SelectDefaultCamera();
-            var cam = guiState.CurrentCam;
-            cam.GetComponent<SmoothFollow>().target = tf;
+            return tf;
         }
 
 

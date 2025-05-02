@@ -11,7 +11,17 @@ using UnityEngine.UI;
 
 namespace SmarcGUI.MissionPlanning.Tasks
 {
-    public class TaskGUI : MonoBehaviour, IHeightUpdatable, IRobotSelectionChangeListener, IPointerClickHandler, IPointerExitHandler, IPointerEnterHandler, IListItem, IPathInWorld, IParamChangeListener
+    public class TaskGUI : 
+    MonoBehaviour, 
+    IHeightUpdatable, 
+    IRobotSelectionChangeListener, 
+    IPointerClickHandler, 
+    IPointerExitHandler, 
+    IPointerEnterHandler, 
+    IListItem, 
+    IPathInWorld, 
+    IParamChangeListener,
+    ICameraLookable
     {
         public float BottomPadding = 5;
         public Task task;
@@ -25,7 +35,6 @@ namespace SmarcGUI.MissionPlanning.Tasks
         public RectTransform WarningRT;
 
         [Header("Prefabs")]
-        public GameObject ContextMenuPrefab;
         public GameObject PointMarkerPrefab;
 
 
@@ -151,9 +160,9 @@ namespace SmarcGUI.MissionPlanning.Tasks
         {
             if(eventData.button == PointerEventData.InputButton.Right)
             {
-                var contextMenuGO = Instantiate(ContextMenuPrefab);
-                var contextMenu = contextMenuGO.GetComponent<ListItemContextMenu>();
-                contextMenu.SetItem(eventData.position, this);
+                var contextMenu = guiState.CreateContextMenu();
+                contextMenu.SetItem(eventData.position, (IListItem)this);
+                contextMenu.SetItem(eventData.position, (ICameraLookable)this);
             }
 
         }
@@ -256,6 +265,12 @@ namespace SmarcGUI.MissionPlanning.Tasks
             if(pointmarker != null) pointmarker.OnParamChanged();
             task.OnTaskModified();
             tstGUI.OnParamChanged();
+        }
+
+        public Transform GetWorldTarget()
+        {
+            if(pointmarker != null) return pointmarker.transform;
+            else return null;
         }
     }
 }

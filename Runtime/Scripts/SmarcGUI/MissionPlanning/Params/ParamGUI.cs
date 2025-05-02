@@ -24,8 +24,6 @@ namespace SmarcGUI.MissionPlanning.Params
         public RectTransform HighlightRT;
         public RectTransform SelectedHighlightRT;
         
-        public GameObject ContextMenuPrefab;
-
         protected MissionPlanStore missionPlanStore;
         protected GUIState guiState;
 
@@ -93,8 +91,7 @@ namespace SmarcGUI.MissionPlanning.Params
         {
             if(listParamGUI != null && eventData.button == PointerEventData.InputButton.Right)
             {
-                var contextMenuGO = Instantiate(ContextMenuPrefab);
-                var contextMenu = contextMenuGO.GetComponent<ListItemContextMenu>();
+                var contextMenu = guiState.CreateContextMenu();
                 contextMenu.SetItem(eventData.position, this);
             }
 

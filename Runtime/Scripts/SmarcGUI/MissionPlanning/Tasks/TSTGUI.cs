@@ -1,11 +1,9 @@
 using System.Collections.Generic;
 using SmarcGUI.Connections;
 using SmarcGUI.WorldSpace;
-using SmarcGUI.MissionPlanning.Params;
 using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
-using UnityEngine.UI;
 
 
 
@@ -19,7 +17,6 @@ namespace SmarcGUI.MissionPlanning.Tasks
         public TMP_InputField DescriptionField;
         public RectTransform HighlightRT;
         public RectTransform SelectedHighlightRT;
-        public GameObject ContextMenuPrefab;
         public LineRenderer PathLineRenderer;        
 
         bool isSelected = false;
@@ -67,8 +64,7 @@ namespace SmarcGUI.MissionPlanning.Tasks
         {
             if(eventData.button == PointerEventData.InputButton.Right)
             {
-                var contextMenuGO = Instantiate(ContextMenuPrefab);
-                var contextMenu = contextMenuGO.GetComponent<ListItemContextMenu>();
+                var contextMenu = guiState.CreateContextMenu();
                 contextMenu.SetItem(eventData.position, this);
             }
 

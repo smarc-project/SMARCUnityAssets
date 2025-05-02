@@ -1,5 +1,8 @@
+using SmarcGUI.WorldSpace;
+using Unity.Robotics.UrdfImporter;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.UI;
 
 
 namespace SmarcGUI
@@ -8,11 +11,33 @@ namespace SmarcGUI
     {
         RectTransform rt;
         Canvas canvas;
+        GUIState guiState;
+
+        [Tooltip("Generic ListItem")]
+        IListItem listItem;
+        public GameObject ListItemSection;
+        public Button DeleteButton;
+        public Button MoveUpButton;
+        public Button MoveDownButton;
+
+
+        [Tooltip("Robot")]
+        public GameObject RobotSection;
+        RobotGUI robotItem;
+        public Button PingButton;
+
+
+        [Tooltip("WorldObject")]
+        public GameObject WorldObjectSection;
+        ICameraLookable cameraLookableItem;
+        public Button LookAtButton;
+        public Button FollowButton;
 
         void Awake()
         {
             rt = GetComponent<RectTransform>();
             canvas = GameObject.Find("Canvas-Over").GetComponent<Canvas>();
+            guiState = FindFirstObjectByType<GUIState>();
         }
 
         protected void SetOnTop(Vector2 position)
@@ -20,12 +45,97 @@ namespace SmarcGUI
             rt.SetParent(canvas.transform, false);
             rt.position = position;
             rt.SetAsLastSibling();
+            
+            var selfHeight = 10f;
+            foreach(Transform child in transform)
+                if(child.gameObject.activeSelf)
+                    selfHeight += child.GetComponent<RectTransform>().sizeDelta.y;
+            rt.sizeDelta = new Vector2(rt.sizeDelta.x, selfHeight);
         }
 
         public void OnPointerExit(PointerEventData eventData)
         {
             Destroy(gameObject);
         }
+
+
+        // Generic ListItem
+        public void SetItem(Vector2 position, IListItem item)
+        {
+            DeleteButton.onClick.AddListener(OnItemDelete);
+            MoveUpButton.onClick.AddListener(OnItemUp);
+            MoveDownButton.onClick.AddListener(OnItemDown);
+            ListItemSection.SetActive(true);
+            listItem = item;
+            SetOnTop(position);
+        }
+        
+
+        void OnItemDelete()
+        {
+            listItem.OnListItemDelete();
+            Destroy(gameObject);
+        }
+
+        void OnItemUp()
+        {
+            listItem.OnListItemUp();
+            Destroy(gameObject);
+        }
+
+        void OnItemDown()
+        {
+            listItem.OnListItemDown();
+            Destroy(gameObject);
+        }
+
+        // Robot
+        public void SetItem(Vector2 position, RobotGUI item)
+        {
+            PingButton.onClick.AddListener(OnPing);
+            RobotSection.SetActive(true);
+            robotItem = item;
+            SetOnTop(position);
+        }
+
+        void OnPing()
+        {
+            robotItem.SendPing();
+            Destroy(gameObject);
+        }
+
+
+        
+        // WorldObject
+        public void SetItem(Vector2 position, ICameraLookable item)
+        {
+            LookAtButton.onClick.AddListener(OnLookAt);
+            FollowButton.onClick.AddListener(OnFollow);
+            WorldObjectSection.SetActive(true);
+            cameraLookableItem = item;
+            SetOnTop(position);
+        }
+
+        void OnFollow()
+        {
+            var tf = cameraLookableItem.GetWorldTarget();
+            guiState.SelectDefaultCamera();
+            var cam = guiState.CurrentCam;
+            cam.GetComponent<SmoothFollow>().target = tf;
+            Destroy(gameObject);
+        }
+
+        void OnLookAt()
+        {
+            var tf = cameraLookableItem.GetWorldTarget();
+            guiState.SelectDefaultCamera();
+            var cam = guiState.CurrentCam;
+            cam.GetComponent<SmoothFollow>().target = null;
+            cam.transform.position = tf.position + new Vector3(0, 10, 0);
+            cam.transform.LookAt(tf);
+            Destroy(gameObject);
+        }
+        
 
     }
 }

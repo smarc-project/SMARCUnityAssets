@@ -34,6 +34,7 @@ namespace SmarcGUI
 
         [Header("Prefabs")]
         public GameObject RobotGuiPrefab;
+        public GameObject ContextMenuPrefab;
 
 
 
@@ -120,6 +121,12 @@ namespace SmarcGUI
             RobotGuis[robotName] = robotGui;
             Log($"Created new RobotGUI for {robotName}");
             return robotGui;
+        }
+
+        public ContextMenu CreateContextMenu()
+        {
+            var contextMenu = Instantiate(ContextMenuPrefab);
+            return contextMenu.GetComponent<ContextMenu>();
         }
 
         public void RemoveRobotGUI(string robotName)
