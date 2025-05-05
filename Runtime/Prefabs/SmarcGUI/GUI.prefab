@@ -4452,7 +4452,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 6400344975927018746}
   m_Direction: 2
   m_Value: 0
-  m_Size: 0.98000026
+  m_Size: 1
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -4790,7 +4790,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 1078357864826203706}
   m_Direction: 2
   m_Value: 0
-  m_Size: 0.98
+  m_Size: 1
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -6536,7 +6536,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 5903471445646412489}
   m_Direction: 2
   m_Value: 0
-  m_Size: 0
+  m_Size: 1
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -7396,7 +7396,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5a5e5b9cadce2e04ab97c68a2f6e8775, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  StartHeight: 30
+  StartHeight: 100
 --- !u!114 &6939522007979732753
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -11277,7 +11277,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 4173510763464316767}
   m_Direction: 2
   m_Value: 0
-  m_Size: 0
+  m_Size: 1
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -11561,9 +11561,11 @@ MonoBehaviour:
   ToggleWaterRenderButton: {fileID: 1074318221206979966}
   ComapssText: {fileID: 4336456685959597164}
   RobotGuiPrefab: {fileID: 1169495340971740019, guid: 9a51820d2ac448d438db311fd1fff2dc, type: 3}
+  ContextMenuPrefab: {fileID: 5700513683117687523, guid: f572305ce6fd19640996140b10b21b8c, type: 3}
   DefaultCamera: {fileID: 3885939636452086765}
   DefaultCameraLookAtMin: 1
   DefaultCameraLookAtMax: 100
+  mouseTwoDelay: 0.15
 --- !u!114 &680064708251144909
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -11594,7 +11596,7 @@ MonoBehaviour:
   ListParamPrefab: {fileID: 4724736429469239046, guid: e5af100246a2b3d469d9e861d6259b83, type: 3}
   DepthParamPrefab: {fileID: 1497497768590733871, guid: e2c8e31f0cbea1b4aa7787d1c77c8cf1, type: 3}
   AltitudeParamPrefab: {fileID: 1497497768590733871, guid: 4e333bc0ea160424b9ff255978160b34, type: 3}
-  HeadingParamPrefab: {fileID: 0}
+  HeadingParamPrefab: {fileID: 1497497768590733871, guid: 0ee6819f2928b824486196b6391e3a8b, type: 3}
   SelectedTSTGUI: {fileID: 0}
 --- !u!114 &123414369969908222
 MonoBehaviour:
@@ -12560,6 +12562,7 @@ GameObject:
   - component: {fileID: 5930015777740933784}
   - component: {fileID: 6159126078882439185}
   - component: {fileID: 4992900435140258629}
+  - component: {fileID: 261579293964763759}
   m_Layer: 0
   m_Name: ColumnScroll
   m_TagString: Untagged
@@ -12656,6 +12659,19 @@ MonoBehaviour:
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &261579293964763759
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6050688546561081614}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dec0dcb6757bdf04485c26c7ca19ce20, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ParentObject: {fileID: 8167376637399298036}
 --- !u!1 &6053045025569892373
 GameObject:
   m_ObjectHideFlags: 0
@@ -12877,7 +12893,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 480, y: 980}
+  m_SizeDelta: {x: 480, y: 950}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &6591634240193691744
 CanvasRenderer:
@@ -12955,6 +12971,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dec0dcb6757bdf04485c26c7ca19ce20, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  ParentObject: {fileID: 0}
 --- !u!1 &6187969088165105674
 GameObject:
   m_ObjectHideFlags: 0
@@ -12967,6 +12984,7 @@ GameObject:
   - component: {fileID: 528319897799939397}
   - component: {fileID: 2625022358091474031}
   - component: {fileID: 2140729529935003684}
+  - component: {fileID: 509377094833398604}
   m_Layer: 0
   m_Name: ColumnScroll
   m_TagString: Untagged
@@ -13063,6 +13081,19 @@ MonoBehaviour:
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &509377094833398604
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6187969088165105674}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dec0dcb6757bdf04485c26c7ca19ce20, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ParentObject: {fileID: 3449908616601152062}
 --- !u!1 &6231568590630459795
 GameObject:
   m_ObjectHideFlags: 0
@@ -17729,7 +17760,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 4223305439323199840}
   m_Direction: 2
   m_Value: 0
-  m_Size: 0
+  m_Size: 1
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -17847,7 +17878,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 475, y: 720}
+  m_SizeDelta: {x: 475, y: 640}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &4838782175657184922
 CanvasRenderer:
@@ -18996,6 +19027,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: PointMarkerOverlayPrefab
       objectReference: {fileID: 0}
+    - target: {fileID: 7967736057898443118, guid: 163c225603251a13cbf7d87b87f8a660, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -19114,6 +19149,10 @@ PrefabInstance:
       propertyPath: ToggledObject
       value: 
       objectReference: {fileID: 2907898247185687716}
+    - target: {fileID: 3279783181398222497, guid: a378f1281a5403444a5c35895023fbe6, type: 3}
+      propertyPath: ResizeParentObject
+      value: 
+      objectReference: {fileID: 6187969088165105674}
     - target: {fileID: 4016172096343979831, guid: a378f1281a5403444a5c35895023fbe6, type: 3}
       propertyPath: m_Name
       value: CollapseController
@@ -19253,6 +19292,10 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3279783181398222497, guid: a378f1281a5403444a5c35895023fbe6, type: 3}
+      propertyPath: ResizeObject
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3279783181398222497, guid: a378f1281a5403444a5c35895023fbe6, type: 3}
       propertyPath: ResizeParent
       value: 1
       objectReference: {fileID: 0}
@@ -19260,6 +19303,10 @@ PrefabInstance:
       propertyPath: ToggledObject
       value: 
       objectReference: {fileID: 8814183152027494831}
+    - target: {fileID: 3279783181398222497, guid: a378f1281a5403444a5c35895023fbe6, type: 3}
+      propertyPath: ResizeParentObject
+      value: 
+      objectReference: {fileID: 6050688546561081614}
     - target: {fileID: 4016172096343979831, guid: a378f1281a5403444a5c35895023fbe6, type: 3}
       propertyPath: m_Name
       value: CollapseTasksBtn
@@ -19395,9 +19442,17 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3279783181398222497, guid: a378f1281a5403444a5c35895023fbe6, type: 3}
+      propertyPath: ResizeObject
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3279783181398222497, guid: a378f1281a5403444a5c35895023fbe6, type: 3}
       propertyPath: ToggledObject
       value: 
       objectReference: {fileID: 5662006293791806690}
+    - target: {fileID: 3279783181398222497, guid: a378f1281a5403444a5c35895023fbe6, type: 3}
+      propertyPath: ResizeParentObject
+      value: 
+      objectReference: {fileID: 6187969088165105674}
     - target: {fileID: 4016172096343979831, guid: a378f1281a5403444a5c35895023fbe6, type: 3}
       propertyPath: m_Name
       value: CollapseRobots
@@ -20087,6 +20142,10 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3279783181398222497, guid: a378f1281a5403444a5c35895023fbe6, type: 3}
+      propertyPath: ResizeObject
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3279783181398222497, guid: a378f1281a5403444a5c35895023fbe6, type: 3}
       propertyPath: ResizeParent
       value: 0
       objectReference: {fileID: 0}
@@ -20094,6 +20153,10 @@ PrefabInstance:
       propertyPath: ToggledObject
       value: 
       objectReference: {fileID: 6127286290271272451}
+    - target: {fileID: 3279783181398222497, guid: a378f1281a5403444a5c35895023fbe6, type: 3}
+      propertyPath: ResizeParentObject
+      value: 
+      objectReference: {fileID: 6050688546561081614}
     - target: {fileID: 4016172096343979831, guid: a378f1281a5403444a5c35895023fbe6, type: 3}
       propertyPath: m_Name
       value: CollapseMissionPlans
@@ -20922,9 +20985,17 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3279783181398222497, guid: a378f1281a5403444a5c35895023fbe6, type: 3}
+      propertyPath: ResizeObject
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3279783181398222497, guid: a378f1281a5403444a5c35895023fbe6, type: 3}
       propertyPath: ToggledObject
       value: 
       objectReference: {fileID: 1780189587196479449}
+    - target: {fileID: 3279783181398222497, guid: a378f1281a5403444a5c35895023fbe6, type: 3}
+      propertyPath: ResizeParentObject
+      value: 
+      objectReference: {fileID: 6187969088165105674}
     - target: {fileID: 4016172096343979831, guid: a378f1281a5403444a5c35895023fbe6, type: 3}
       propertyPath: m_Name
       value: CollapseConnections

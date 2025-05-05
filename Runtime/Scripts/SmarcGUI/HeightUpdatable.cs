@@ -4,6 +4,8 @@ namespace SmarcGUI
 {
     public class HeightUpdatable : MonoBehaviour, IHeightUpdatable
     {
+        [Tooltip("If set, instead of using the height of the children, the height will be set contain the children of this object")]
+        public Transform ParentObject;
         RectTransform rt;
 
         void Awake()
@@ -15,8 +17,13 @@ namespace SmarcGUI
         public void UpdateHeight()
         {
             float selfHeight = 5;
-            foreach(Transform child in transform)
-                selfHeight += child.GetComponent<RectTransform>().sizeDelta.y;
+            var parent = ParentObject != null ? ParentObject : transform;
+            foreach(Transform child in parent)
+            {
+                if(child.gameObject.activeSelf)
+                    selfHeight += child.GetComponent<RectTransform>().sizeDelta.y;
+            }
+            
             rt.sizeDelta = new Vector2(rt.sizeDelta.x, selfHeight);
         }
 

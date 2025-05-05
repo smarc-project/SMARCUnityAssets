@@ -7,7 +7,8 @@ using UnityEngine;
 namespace SmarcGUI.WorldSpace
 {
 	[RequireComponent( typeof(Camera) )]
-	public class FlyCamera : MonoBehaviour {
+	public class FlyCamera : MonoBehaviour
+	{
 		public float acceleration = 50; // how fast you accelerate
 		public float accSprintMultiplier = 4; // how much faster you go when "sprinting"
 		public float lookSensitivity = 1; // mouse look sensitivity
@@ -16,14 +17,11 @@ namespace SmarcGUI.WorldSpace
 
 		Vector3 velocity; // current velocity
 
-		Camera cam;
-
 		GUIState guiState;
 		SmoothFollow smoothFollow;
 
 		void Start()
 		{
-			cam = GetComponent<Camera>();
 			guiState = FindFirstObjectByType<GUIState>();
 			smoothFollow = GetComponent<SmoothFollow>();
 		}
@@ -42,6 +40,19 @@ namespace SmarcGUI.WorldSpace
 
 		void OnDisable() => Focused = false;
 
+		public void EnableMouseLook(bool enable)
+		{
+			if( enable )
+			{
+				Focused = true;
+				if(smoothFollow) smoothFollow.target = null;
+			}
+			else
+			{
+				Focused = false;
+			}
+		}
+
 		void Update() {
 			if(guiState.MouseDragging || guiState.MouseOnGUI)
 			{
@@ -50,13 +61,7 @@ namespace SmarcGUI.WorldSpace
 			}
 			
 			// Input
-			if( Focused )
-				UpdateInput();
-			else if(cam.enabled && Input.GetMouseButtonDown( 1 ) )
-			{
-				Focused = true;
-				if(smoothFollow) smoothFollow.target = null;
-			}
+			if(Focused) UpdateInput();
 
 			// Physics
 			velocity = Vector3.Lerp( velocity, Vector3.zero, dampingCoefficient * Time.deltaTime );

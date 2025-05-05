@@ -705,7 +705,6 @@ MonoBehaviour:
   DescriptionField: {fileID: 3720322492756557850}
   HighlightRT: {fileID: 1891068362990660485}
   SelectedHighlightRT: {fileID: 6753933476578001989}
-  ContextMenuPrefab: {fileID: 5700513683117687523, guid: dc50e97ebddcc6a47ac3dec88f9b8116, type: 3}
   PathLineRenderer: {fileID: 6388318613168989795}
 --- !u!1 &5364409095084628787
 GameObject:
@@ -983,7 +982,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 0.27843142, b: 0.3066552, a: 1}
+  m_Color: {r: 1, g: 1, b: 0, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1

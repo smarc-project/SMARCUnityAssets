@@ -7,22 +7,27 @@ using VehicleComponents.Sensors;
 using UnityEngine.EventSystems;
 using SmarcGUI.Water;
 using UnityEngine.UI;
+using SmarcGUI.WorldSpace;
 
 
 
 namespace SmarcGUI
 {
 
-    public class GUIState : MonoBehaviour, IPointerExitHandler, IPointerEnterHandler
+    public class GUIState : 
+    MonoBehaviour, 
+    IPointerExitHandler, 
+    IPointerEnterHandler
     {
         public string UUID{get; private set;}
         public bool MouseOnGUI{get; set;}
         public bool MouseDragging{get; set;}
 
         [Tooltip("Cursor position in normalized coordinates on the screen (0-1)")]
-        public Vector2 CursorInView => new(0.5f, 0.5f);
-        float cursorX => Screen.width*CursorInView.x;
-        float cursorY => Screen.height*CursorInView.y;
+        public Vector2 DefaultScreenPointer => new(0.5f, 0.5f);
+        float DefaultPointerX => Screen.width*DefaultScreenPointer.x;
+        float DefaultPointerY => Screen.height*DefaultScreenPointer.y;
+        Vector3 DefaultPointerPos => new(DefaultPointerX, DefaultPointerY, 0);
 
 
         [Header("GUI Elements")]
@@ -34,6 +39,7 @@ namespace SmarcGUI
 
         [Header("Prefabs")]
         public GameObject RobotGuiPrefab;
+        public GameObject ContextMenuPrefab;
 
 
 
@@ -59,6 +65,11 @@ namespace SmarcGUI
         List<IRobotSelectionChangeListener> robotSelectionChangeListeners = new();
 
 
+        float mouseTwoDownTime = 0f;
+        public float mouseTwoDelay = 0.15f;
+        ContextMenu WorldContextMenu;
+
+
         string CameraTextFromCamera(Camera c)
         {
             var robot = Utils.FindParentWithTag(c.gameObject, "robot", false);
@@ -82,11 +93,11 @@ namespace SmarcGUI
             foreach(Camera c in cams)
             {
                 // dont mess with sensor cameras
-                if(c.gameObject.TryGetComponent<Sensor>(out Sensor s)) continue;
+                if(c.gameObject.TryGetComponent(out Sensor s)) continue;
                 // disable all cams by default. we will enable one later.
                 c.enabled = false;
                 // disable all audiolisteners. we got no audio. we wont enable these.
-                if(c.gameObject.TryGetComponent<AudioListener>(out AudioListener al)) al.enabled=false;
+                if(c.gameObject.TryGetComponent(out AudioListener al)) al.enabled=false;
                 
                 string objectPath = Utils.GetGameObjectPath(c.gameObject);
                 string ddText = CameraTextFromCamera(c);
@@ -120,6 +131,12 @@ namespace SmarcGUI
             RobotGuis[robotName] = robotGui;
             Log($"Created new RobotGUI for {robotName}");
             return robotGui;
+        }
+
+        public ContextMenu CreateContextMenu()
+        {
+            var contextMenu = Instantiate(ContextMenuPrefab);
+            return contextMenu.GetComponent<ContextMenu>();
         }
 
         public void RemoveRobotGUI(string robotName)
@@ -208,9 +225,17 @@ namespace SmarcGUI
         }
 
 
-        public Vector3 GetCameraLookAtPoint()
+        public Vector3 GetLookAtPoint()
         {
-            Ray ray = CurrentCam.ScreenPointToRay(new Vector3(cursorX, cursorY, 0));
+            // if the context menu for the world is open, we assume someone has r-clicked the world
+            // and would rather use their pointer position than the camera position.
+            // this only works if the context menu doesnt destroy itself before we get here.
+            Vector3 targetPos = DefaultPointerPos;
+            if(WorldContextMenu != null && WorldContextMenu.gameObject != null)
+            {
+                targetPos = Input.mousePosition;
+            }
+            Ray ray = CurrentCam.ScreenPointToRay(targetPos);
             Plane zeroPlane = new(Vector3.up, Vector3.zero);
             var dist = 10f;
             bool hitWater = false;
@@ -258,7 +283,7 @@ namespace SmarcGUI
             MouseOnGUI = true;
         }
 
-        void LateUpdate()
+        void UpdateCompass()
         {
             // Update the compass text WRT the current camera
             if(CurrentCam == null) ComapssText.text = "NO CAM";
@@ -285,7 +310,45 @@ namespace SmarcGUI
             }
         }
 
+        void LateUpdate()
+        {
+            UpdateCompass();
 
+            // cant use the input system mouse events because we are after mouse-not-over-gui usage of the mouse!
+            // so we have to use the old input system for this.
+            if(!MouseOnGUI && Input.GetMouseButtonUp(1))
+            {
+                if(CurrentCam != null && CurrentCam.TryGetComponent(out FlyCamera flyCam))
+                {
+                    flyCam.EnableMouseLook(false);
+                }
+                if(mouseTwoDownTime < mouseTwoDelay)
+                {
+                    // normal right click.
+                    mouseTwoDownTime = 0f;
+                    // create a context menu at the mouse position.
+                    WorldContextMenu = CreateContextMenu();
+                    WorldContextMenu.SetItem(Input.mousePosition);
+                }
+            }
+            
+            if(!MouseOnGUI && Input.GetMouseButton(1))
+            {
+                mouseTwoDownTime += Time.deltaTime;
+                if(mouseTwoDownTime > mouseTwoDelay)
+                {
+                    // right click and hold.
+                    if(CurrentCam != null && CurrentCam.TryGetComponent(out FlyCamera flyCam))
+                    {
+                        // enable the camera mouse look.
+                        flyCam.EnableMouseLook(true);
+                    }
+                }
+            }
+            else mouseTwoDownTime = 0f;
+
+            
+        }
 
     }
 }

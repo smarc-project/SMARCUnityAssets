@@ -2,11 +2,10 @@ using System.Collections;
 using SmarcGUI.MissionPlanning.Tasks;
 using TMPro;
 using UnityEngine;
-using UnityEngine.EventSystems;
 
 namespace SmarcGUI.MissionPlanning.Params
 {
-    public class ParamGUI : MonoBehaviour, IPointerClickHandler, IPointerExitHandler, IPointerEnterHandler, IListItem
+    public class ParamGUI : MonoBehaviour, IListItem
     {
         [Header("ParamGUI")]
         public TMP_Text Label;
@@ -18,18 +17,9 @@ namespace SmarcGUI.MissionPlanning.Params
         protected IList paramsList;
         public int ParamIndex{get; protected set;}
         protected ListParamGUI listParamGUI;
-
-        public string ParamName => $"{taskgui.name}_param_{ParamKey ?? ParamIndex.ToString()}";
-
-        public RectTransform HighlightRT;
-        public RectTransform SelectedHighlightRT;
         
-        public GameObject ContextMenuPrefab;
-
         protected MissionPlanStore missionPlanStore;
         protected GUIState guiState;
-
-        protected bool isSelected;
  
 
         void Awake()
@@ -87,33 +77,6 @@ namespace SmarcGUI.MissionPlanning.Params
         {
             if(taskgui != null) taskgui.OnParamChanged();
             if(listParamGUI != null) listParamGUI.OnParamChanged();
-        }
-
-        public void OnPointerClick(PointerEventData eventData)
-        {
-            if(listParamGUI != null && eventData.button == PointerEventData.InputButton.Right)
-            {
-                var contextMenuGO = Instantiate(ContextMenuPrefab);
-                var contextMenu = contextMenuGO.GetComponent<ListItemContextMenu>();
-                contextMenu.SetItem(eventData.position, this);
-            }
-
-            if(eventData.button == PointerEventData.InputButton.Left)
-            {
-                isSelected = !isSelected;
-                if(SelectedHighlightRT != null) SelectedHighlightRT.gameObject.SetActive(isSelected);
-                OnSelectedChange();
-            }
-        }
-
-        public void OnPointerExit(PointerEventData eventData)
-        {
-            if(HighlightRT != null) HighlightRT.gameObject.SetActive(false);
-        }
-
-        public void OnPointerEnter(PointerEventData eventData)
-        {
-            if(HighlightRT != null) HighlightRT.gameObject.SetActive(true);
         }
 
         protected virtual void OnSelectedChange()

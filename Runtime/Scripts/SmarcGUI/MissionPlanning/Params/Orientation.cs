@@ -5,6 +5,8 @@ namespace SmarcGUI.MissionPlanning.Params
     [JsonObject(NamingStrategyType = typeof(Newtonsoft.Json.Serialization.KebabCaseNamingStrategy))]
     public struct Orientation
     {
+        // A quaternion that corresponds to the X-forward Y-left Z-up coordinate system
+        // used in ROS!
         public float w{get; set;}
         public float x{get; set;}
         public float y{get; set;}
