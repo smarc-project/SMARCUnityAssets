@@ -3,11 +3,14 @@ using UnityEngine.UI;
 using DefaultNamespace;
 using SmarcGUI.WorldSpace;
 using TMPro;
+using UnityEngine.EventSystems;
 
 namespace SmarcGUI.MissionPlanning
 {
-    public class PointMarkerOverlay : MonoBehaviour
+
+    public class PointMarkerOverlay : MonoBehaviour, IDragHandler, IEndDragHandler
     {
+        [Header("Components")]
         public RectTransform HeadingArrowRT;
         public Image PositionImg;
         public Image HighlightImg;
@@ -16,13 +19,20 @@ namespace SmarcGUI.MissionPlanning
         public TMP_Text FloatingDescriptionText;
         public RectTransform FloatingNameBackgroundRT;
 
+        [Tooltip("Where this marker will be drawn on")]
         public string UnderlayCanvasName = "Canvas-Under";
         Canvas underlayCanvas;
+
+        [Header("Drag Settings")]
+        [Tooltip("The button to use for dragging")]
+        public PointerEventData.InputButton Button = PointerEventData.InputButton.Left;
+
 
         PointMarker pointMarker;
         Transform pmTF;
         GUIState guiState;
         RectTransform rt;
+        bool dragging = false;
 
         void Awake()
         {
@@ -46,6 +56,8 @@ namespace SmarcGUI.MissionPlanning
 
         void LateUpdate()
         {   
+            if(dragging) return;
+
             // check if the marker position is in front of the camera
             Vector3 toMarker = pmTF.position - guiState.CurrentCam.transform.position;
             var dot = Vector3.Dot(guiState.CurrentCam.transform.forward, toMarker);
@@ -76,6 +88,33 @@ namespace SmarcGUI.MissionPlanning
             // then, rotate the HeadingarrowRT by that angle
             HeadingArrowRT.rotation = Quaternion.Euler(0, 0, arrowAngle);
         }
+
+        public void OnDrag(PointerEventData eventData)
+        {
+            if (eventData.button != Button) return;
+            if (guiState.CurrentCam == null) return;
+
+            dragging = true;
+            guiState.MouseDragging = true;
+            rt.anchoredPosition += eventData.delta;
+        }
+
+
+        public void OnEndDrag(PointerEventData eventData)
+        {
+            // project the screen position of the overlay object back to world space
+            // so we can set the point marker position to that world position
+            Ray camRay = guiState.CurrentCam.ScreenPointToRay(rt.position);
+            Plane plane = new(pmTF.up, pmTF.position);
+            plane.Raycast(camRay, out float camPlaneDist);
+            Vector3 newPos = camRay.origin + camRay.direction * camPlaneDist;
+            pointMarker.transform.position = newPos;
+            pointMarker.OnWorldDragEnd(DragConstraint.XZ); // only move along XZ!
+
+            dragging = false;
+            guiState.MouseDragging = false;
+        }
+
     }
 
 }

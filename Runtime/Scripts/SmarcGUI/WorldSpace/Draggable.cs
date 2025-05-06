@@ -20,7 +20,8 @@ namespace SmarcGUI.WorldSpace
         [Tooltip("The button to use for dragging")]
         public PointerEventData.InputButton Button = PointerEventData.InputButton.Left;
         public DragConstraint DragConstraint = DragConstraint.XZ;
-        public Transform DraggedObject;
+        public GameObject DraggedObject;
+        IWorldDraggable WorldDraggable;
 
         Vector3 motion;
 
@@ -29,6 +30,11 @@ namespace SmarcGUI.WorldSpace
         void Awake()
         {
             guiState = FindFirstObjectByType<GUIState>();
+            if (DraggedObject != null)
+            {
+                WorldDraggable = DraggedObject.GetComponent<IWorldDraggable>();
+                if (WorldDraggable == null) Debug.LogError("DraggedObject does not implement IWorldDraggable interface.");
+            }
         }
 
         public void OnDrag(PointerEventData eventData)
@@ -75,22 +81,15 @@ namespace SmarcGUI.WorldSpace
 
             motion = newPos - transform.position;
 
-            if (DraggedObject != null)
-            {
-                DraggedObject.GetComponent<IWorldDraggable>()?.OnWorldDrag(motion);
-                // transform.position = newPos;
-            }
-            else
-            {
-                transform.position += motion;
-            }
+            if(WorldDraggable != null) WorldDraggable.OnWorldDrag(motion);
+            else transform.position += motion;
             
             motion = Vector3.zero;
         }
 
         public void OnEndDrag(PointerEventData eventData)
         {
-            if(DraggedObject != null) DraggedObject.GetComponent<IWorldDraggable>()?.OnWorldDragEnd(DragConstraint);
+            WorldDraggable?.OnWorldDragEnd(DragConstraint);
             guiState.MouseDragging = false;
         }
 
