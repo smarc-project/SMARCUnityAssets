@@ -48,8 +48,6 @@ namespace SmarcGUI.Connections
         public Button ConnectButton;
         public TMP_Text ConnectButtonText;
 
-        string SettingsStoragePath;
-
         // mostly a wrapper for: https://github.com/dotnet/MQTTnet/blob/release/4.x.x/Samples/Client/Client_Connection_Samples.cs
         // Notice we use the 4.x branch because dotnet of unity (:
 
@@ -75,9 +73,9 @@ namespace SmarcGUI.Connections
 
         void Start()
         {
-            SettingsStoragePath = Path.Combine(GUIState.GetStoragePath(), "Settings");
-            Directory.CreateDirectory(SettingsStoragePath);
-            string settingsFile = Path.Combine(SettingsStoragePath, "MQTTSettings.yaml");
+            string settingsStoragePath = Path.Combine(GUIState.GetStoragePath(), "Settings");
+            Directory.CreateDirectory(settingsStoragePath);
+            string settingsFile = Path.Combine(settingsStoragePath, "MQTTSettings.yaml");
             if(File.Exists(settingsFile))
             {
                 var settings = File.ReadAllText(settingsFile);
@@ -109,7 +107,7 @@ namespace SmarcGUI.Connections
                 var serializer = new Unity.VisualScripting.YamlDotNet.Serialization.Serializer();
                 var settingsYaml = serializer.Serialize(settingsDict);
                 File.WriteAllText(settingsFile, settingsYaml);
-                guiState.Log($"No settings file found. Created default settings file at {settingsFile}");
+                guiState.Log($"No MQTT settings file found. Created default settings file at {settingsFile}");
                 ServerAddressInput.text = "localhost";
                 PortInput.text = "1889";
                 ContextInput.text = "smarcsim";
