@@ -209,5 +209,10 @@ namespace SmarcGUI.WorldSpace
         {
             overlay.gameObject.SetActive(false);
         }
+
+        void OnEnable()
+        {
+            UpdateWidgets();
+        }
     }
 }

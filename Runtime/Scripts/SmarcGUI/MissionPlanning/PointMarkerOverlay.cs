@@ -54,18 +54,6 @@ namespace SmarcGUI.MissionPlanning
             HighlightImg.gameObject.SetActive(highlight && gameObject.activeSelf);
         }
 
-        public void Selected(bool on)
-        {
-            // if (on)
-            // {
-            //     HighlightImg.gameObject.SetActive(true);
-            // }
-            // else
-            // {
-            //     HighlightImg.gameObject.SetActive(false);
-            // }
-        }
-
         void LateUpdate()
         {   
             if(dragging) return;

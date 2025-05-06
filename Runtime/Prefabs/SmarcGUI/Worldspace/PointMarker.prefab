@@ -820,7 +820,7 @@ MonoBehaviour:
   FloatingDescriptionText: {fileID: 328033006577698656}
   FloatingNameBackgroundRT: {fileID: 472274653448283743}
   shadowMarker: {fileID: 8566289295520018864}
-  FarAwayDistance: 15
+  FarAwayDistance: 30
   PointMarkerOverlayPrefab: {fileID: 7967736057898443118, guid: 163c225603251a13cbf7d87b87f8a660, type: 3}
 --- !u!1 &7211647826865169324
 GameObject:
