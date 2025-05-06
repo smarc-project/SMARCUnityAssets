@@ -204,5 +204,10 @@ namespace SmarcGUI.WorldSpace
             isFar = camDiff.sqrMagnitude > farAwayDistSq;
             UpdateWidgets();
         }
+
+        void OnDisable()
+        {
+            overlay.gameObject.SetActive(false);
+        }
     }
 }
