@@ -107,7 +107,7 @@ namespace SmarcGUI.MissionPlanning
         void Start()
         {
             // Documents on win, user home on linux/mac
-            MissionStoragePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Personal), Path.Combine("SMaRCUnity", "MissionPlans"));
+            MissionStoragePath = Path.Combine(GUIState.GetStoragePath(), "MissionPlans");
             Directory.CreateDirectory(MissionStoragePath);
         }
 

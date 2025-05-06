@@ -8,6 +8,8 @@ using UnityEngine.EventSystems;
 using SmarcGUI.Water;
 using UnityEngine.UI;
 using SmarcGUI.WorldSpace;
+using System;
+using System.IO;
 
 
 
@@ -346,8 +348,11 @@ namespace SmarcGUI
                 }
             }
             else mouseTwoDownTime = 0f;
+        }
 
-            
+        public static string GetStoragePath()
+        {
+            return Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Personal), "SMaRCUnity");
         }
 
     }

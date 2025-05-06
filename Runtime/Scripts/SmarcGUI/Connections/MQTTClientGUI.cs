@@ -12,6 +12,7 @@ using UnityEngine.UI;
 using System.Collections.Generic;
 using SmarcGUI.MissionPlanning.Params;
 using System.Security.Authentication;
+using System.IO;
 
 namespace SmarcGUI.Connections
 {
@@ -47,6 +48,8 @@ namespace SmarcGUI.Connections
         public Button ConnectButton;
         public TMP_Text ConnectButtonText;
 
+        string SettingsStoragePath;
+
         // mostly a wrapper for: https://github.com/dotnet/MQTTnet/blob/release/4.x.x/Samples/Client/Client_Connection_Samples.cs
         // Notice we use the 4.x branch because dotnet of unity (:
 
@@ -72,8 +75,51 @@ namespace SmarcGUI.Connections
 
         void Start()
         {
-            ServerAddressInput.text = "20.240.40.232";
-            PortInput.text = "1884";
+            SettingsStoragePath = Path.Combine(GUIState.GetStoragePath(), "Settings");
+            Directory.CreateDirectory(SettingsStoragePath);
+            string settingsFile = Path.Combine(SettingsStoragePath, "MQTTSettings.yaml");
+            if(File.Exists(settingsFile))
+            {
+                var settings = File.ReadAllText(settingsFile);
+                var deserializer = new Unity.VisualScripting.YamlDotNet.Serialization.Deserializer();
+                var settingsDict = deserializer.Deserialize<Dictionary<string, string>>(settings);
+                if(settingsDict.ContainsKey("BrokerAddress")) ServerAddressInput.text = settingsDict["BrokerAddress"];
+                if(settingsDict.ContainsKey("BrokerPort")) PortInput.text = settingsDict["BrokerPort"];
+                if(settingsDict.ContainsKey("Context")) ContextInput.text = settingsDict["Context"];
+                if(settingsDict.ContainsKey("SubToReal")) SubToRealToggle.isOn = bool.Parse(settingsDict["SubToReal"]);
+                if(settingsDict.ContainsKey("SubToSim")) SubToSimToggle.isOn = bool.Parse(settingsDict["SubToSim"]);
+                if(settingsDict.ContainsKey("TLS")) TLSToggle.isOn = bool.Parse(settingsDict["TLS"]);
+                if(settingsDict.ContainsKey("Username")) UserNameInput.text = settingsDict["Username"];
+                if(settingsDict.ContainsKey("Password")) PasswordInput.text = settingsDict["Password"];
+            }
+            else
+            {
+                // Default settings if no settings file exists
+                var settingsDict = new Dictionary<string, string>
+                {
+                    { "BrokerAddress", "localhost" },
+                    { "BrokerPort", "1889" },
+                    { "Context", "smarcsim" },
+                    { "SubToReal", "true" },
+                    { "SubToSim", "true" },
+                    { "TLS", "false" },
+                    { "Username", "" },
+                    { "Password", "" }
+                };
+                var serializer = new Unity.VisualScripting.YamlDotNet.Serialization.Serializer();
+                var settingsYaml = serializer.Serialize(settingsDict);
+                File.WriteAllText(settingsFile, settingsYaml);
+                guiState.Log($"No settings file found. Created default settings file at {settingsFile}");
+                ServerAddressInput.text = "localhost";
+                PortInput.text = "1889";
+                ContextInput.text = "smarcsim";
+                SubToRealToggle.isOn = true;
+                SubToSimToggle.isOn = true;
+                TLSToggle.isOn = false;
+                UserNameInput.text = "";
+                PasswordInput.text = "";
+            }
+
             ConnectButton.onClick.AddListener(ToggleConnection);
             ConnectionInputsInteractable(true);
         }
