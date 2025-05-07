@@ -7,21 +7,15 @@ using UnityEngine.UI;
 
 namespace SmarcGUI.MissionPlanning.Params
 {
-    public class ListParamGUI : ParamGUI, IPathInWorld, IParamChangeListener //, IHeightUpdatable, 
+    public class ListParamGUI : ParamGUI, IPathInWorld, IParamChangeListener 
     {
         [Header("ListParamGUI")]
-        // RectTransform rt;
-
         public RectTransform content;
         public Button AddButton;
 
         IList paramList => (IList)paramValue;
 
-        // void Awake()
-        // {
-        //     rt = GetComponent<RectTransform>();
-        // }
-
+        public List<ParamGUI> ParamGUIs => new(content.GetComponentsInChildren<ParamGUI>());
 
         protected override void SetupFields()
         {            
@@ -57,9 +51,12 @@ namespace SmarcGUI.MissionPlanning.Params
             if(missionPlanStore == null) missionPlanStore = FindFirstObjectByType<MissionPlanStore>();
             GameObject paramPrefab = missionPlanStore.GetParamPrefab(newParam);
             GameObject paramGO = Instantiate(paramPrefab, content);
-            paramGO.GetComponent<ParamGUI>().SetParam(paramList, math.max(0, paramList.Count - 1), this);
+            var paramgui = paramGO.GetComponent<ParamGUI>();
+            paramgui.SetParam(paramList, math.max(0, paramList.Count - 1), this);
 
             UpdateHeight();
+
+            taskgui.AddPointMarker(paramgui);
         }
 
         public void MoveParamUp(ParamGUI paramgui)
@@ -97,24 +94,24 @@ namespace SmarcGUI.MissionPlanning.Params
         }
 
 
-        // public void UpdateHeight()
-        // {
-        //     float contentHeight = 5;
-        //     foreach(Transform child in content)
-        //         contentHeight += child.GetComponent<RectTransform>().sizeDelta.y;
-        //     content.sizeDelta = new Vector2(content.sizeDelta.x, contentHeight);
+        public new void UpdateHeight()
+        {
+            float contentHeight = 5;
+            foreach(Transform child in content)
+                contentHeight += child.GetComponent<RectTransform>().sizeDelta.y;
+            content.sizeDelta = new Vector2(content.sizeDelta.x, contentHeight);
             
-        //     float selfHeight = 5;
-        //     foreach(Transform child in transform)
-        //         selfHeight += child.GetComponent<RectTransform>().sizeDelta.y;
+            float selfHeight = 5;
+            foreach(Transform child in transform)
+                selfHeight += child.GetComponent<RectTransform>().sizeDelta.y;
             
-        //     // can happen if someone (like load missions) calls this before awake lol.
-        //     if(rt == null) rt = GetComponent<RectTransform>();
+            // can happen if someone (like load missions) calls this before awake lol.
+            if(rt == null) rt = GetComponent<RectTransform>();
 
-        //     rt.sizeDelta = new Vector2(rt.sizeDelta.x, selfHeight);
+            rt.sizeDelta = new Vector2(rt.sizeDelta.x, selfHeight);
 
-        //     transform.parent.GetComponentInParent<IHeightUpdatable>()?.UpdateHeight();
-        // }
+            transform.parent.GetComponentInParent<IHeightUpdatable>()?.UpdateHeight();
+        }
 
         void OnDisable()
         {
@@ -139,6 +136,19 @@ namespace SmarcGUI.MissionPlanning.Params
             foreach(Transform child in content)
             {
                 if(child.TryGetComponent<IPathInWorld>(out var paramGUI)) path.AddRange(paramGUI.GetWorldPath());
+                if(child.TryGetComponent<IParamHasXZ>(out var paramXZ))
+                {
+                    var (x,z) = paramXZ.GetXZ();
+                    if(child.TryGetComponent<IParamHasY>(out var paramY))
+                    {
+                        var y = paramY.GetY();
+                        path.Add(new Vector3(x, y, z));
+                    }
+                    else
+                    {
+                        path.Add(new Vector3(x, 0, z));
+                    }
+                }
             }
             return path;
         }

@@ -23,7 +23,7 @@ namespace SmarcGUI.MissionPlanning.Params
         protected MissionPlanStore missionPlanStore;
         protected GUIState guiState;
 
-        RectTransform rt;
+        protected RectTransform rt;
 
         protected List<TMP_InputField> fields = new();
  
@@ -132,7 +132,7 @@ namespace SmarcGUI.MissionPlanning.Params
             var fieldsRT = fieldsParent.AddComponent<RectTransform>();
             var fieldsLayout = fieldsParent.AddComponent<HorizontalLayoutGroup>();
             fieldsLayout.childControlHeight = false;
-            fieldsLayout.childControlWidth = true;
+            fieldsLayout.childControlWidth = false;
             fieldsLayout.childForceExpandHeight = false;
             fieldsLayout.childForceExpandWidth = false;
             fieldsLayout.childScaleHeight = false;

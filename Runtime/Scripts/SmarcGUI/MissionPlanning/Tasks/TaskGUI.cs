@@ -9,6 +9,7 @@ using SmarcGUI.MissionPlanning.Params;
 using UnityEngine.UI;
 
 
+
 namespace SmarcGUI.MissionPlanning.Tasks
 {
     public class TaskGUI : 
@@ -44,7 +45,7 @@ namespace SmarcGUI.MissionPlanning.Tasks
         [Header("Worldspace")]
         public string WorldMarkersCollectionName = "WorldMarkers";
         Transform WorldMarkersCollection;
-        PointMarker pointmarker = null;
+        List<PointMarker> pointmarkers = new();
 
 
         MissionPlanStore missionPlanStore;
@@ -86,7 +87,23 @@ namespace SmarcGUI.MissionPlanning.Tasks
             if(task == null) return;
             task.Description = desc;
             DescriptionField.text = desc;
-            if(pointmarker!=null) pointmarker.SetNameDesc(task.Name, task.Description);
+            foreach(var p in pointmarkers) p.SetNameDesc(task.Name, task.Description);
+        }
+
+        public void AddPointMarker(ParamGUI paramgui)
+        {
+            if(paramgui is IParamHasXZ paramXZ)
+            {
+                var markerGO = Instantiate(PointMarkerPrefab, WorldMarkersCollection);
+                PointMarker pointmarker = markerGO.GetComponent<PointMarker>();
+                pointmarker.SetXZParam(paramXZ);
+                pointmarker.SetNameDesc(task.Name, task.Description);
+
+                if(paramgui is IParamHasY paramY) pointmarker.SetYParam(paramY);
+                if(paramgui is IParamHasHeading paramH) pointmarker.SetHeadingParam(paramH);
+                if(paramgui is IParamHasOrientation paramO) pointmarker.SetOrientationParam(paramO);
+                pointmarkers.Add(pointmarker);
+            }
         }
 
         public void SetTask(Task task, TSTGUI tstGUI)
@@ -109,36 +126,13 @@ namespace SmarcGUI.MissionPlanning.Tasks
             for(int i=0; i<task.Params.Count; i++)
             {
                 var paramgui = InstantiateParamGui(Params.transform, task.Params, task.Params.Keys.ElementAt(i));
-                if(paramgui is IParamHasXZ paramXZ)
+                if(paramgui is ListParamGUI listParamGUI)
                 {
-                    if(pointmarker != null)
-                    {
-                        // this task already has a marker?!
-                        // so it defines _multiple_ horizontal points... individually.
-                        // I am not going to handle this case! Make that a new interface!
-                        Debug.LogError("Task has multiple parameters that implement IParamHasXZ, this is not supported!");
-                        return;
-                    }
-                    var markerGO = Instantiate(PointMarkerPrefab, WorldMarkersCollection);
-                    pointmarker = markerGO.GetComponent<PointMarker>();
-                    pointmarker.SetXZParam(paramXZ);
-                    pointmarker.SetNameDesc(task.Name, task.Description);
+                    foreach(var p in listParamGUI.ParamGUIs) AddPointMarker(paramgui);
                 }
+                else AddPointMarker(paramgui);
             }
-
             UpdateHeight();
-
-            // no marker, meaning we can not know where this task is in the world, so the rest of the params
-            // wont be visualized in the world.
-            if(pointmarker == null) return; 
-            foreach(ParamGUI paramgui in Params.GetComponentsInChildren<ParamGUI>())
-            {
-                if(paramgui is IParamHasY paramY) pointmarker.SetYParam(paramY);
-                if(paramgui is IParamHasHeading paramH) pointmarker.SetHeadingParam(paramH);
-                if(paramgui is IParamHasOrientation paramO) pointmarker.SetOrientationParam(paramO);
-            }
-            
-    
         }
 
         ParamGUI InstantiateParamGui(Transform parent, Dictionary<string, object> taskParams, string paramKey)
@@ -182,7 +176,7 @@ namespace SmarcGUI.MissionPlanning.Tasks
             {
                 isSelected = !isSelected;
                 if(SelectedHighlightGO != null) SelectedHighlightGO.SetActive(isSelected);
-                if(pointmarker != null) pointmarker.Selected(isSelected);
+                foreach(var p in pointmarkers) p.Selected(isSelected);
             }
 
         }
@@ -190,13 +184,13 @@ namespace SmarcGUI.MissionPlanning.Tasks
         public void OnPointerExit(PointerEventData eventData)
         {
             HighlightRT.gameObject.SetActive(false);
-            if(pointmarker != null) pointmarker.Highlight(false);
+            foreach(var p in pointmarkers) p.Highlight(false);
         }
 
         public void OnPointerEnter(PointerEventData eventData)
         {
             HighlightRT.gameObject.SetActive(true);
-            if(pointmarker != null) pointmarker.Highlight(true);
+            foreach(var p in pointmarkers) p.Highlight(true);
         }
 
         public void OnRobotSelectionChange(RobotGUI SelectedRobotGUI)
@@ -241,7 +235,7 @@ namespace SmarcGUI.MissionPlanning.Tasks
             }
             UpdateHeight();
             guiState.RegisterRobotSelectionChangedListener(this);
-            if(pointmarker != null) pointmarker.gameObject.SetActive(true);
+            foreach(var p in pointmarkers) p.gameObject.SetActive(true);
         }
 
         void OnDisable()
@@ -251,7 +245,7 @@ namespace SmarcGUI.MissionPlanning.Tasks
                 child.gameObject.SetActive(false);
             }
             guiState.UnregisterRobotSelectionChangedListener(this);
-            if(pointmarker != null) pointmarker.gameObject.SetActive(false);
+            foreach(var p in pointmarkers) p.gameObject.SetActive(false);
 
         }
 
@@ -269,30 +263,26 @@ namespace SmarcGUI.MissionPlanning.Tasks
         {
             guiState.UnregisterRobotSelectionChangedListener(this);
             tstGUI.DeleteTask(this);
-            if(pointmarker != null) Destroy(pointmarker.gameObject);
+            foreach(var p in pointmarkers) Destroy(p.gameObject);
         }
 
         public List<Vector3> GetWorldPath()
         {
             var path = new List<Vector3>();
-            foreach(Transform child in Params.transform)
-            {
-                if(child.TryGetComponent<IPathInWorld>(out var paramGUI)) path.AddRange(paramGUI.GetWorldPath());
-            }
-            if(pointmarker != null) path.AddRange(pointmarker.GetWorldPath());
+            foreach(var p in pointmarkers) path.AddRange(p.GetWorldPath());
             return path;
         }
 
         public void OnParamChanged()
         {
-            if(pointmarker != null) pointmarker.OnParamChanged();
+           foreach(var p in pointmarkers) p.OnParamChanged();
             task.OnTaskModified();
             tstGUI.OnParamChanged();
         }
 
         public Transform GetWorldTarget()
         {
-            if(pointmarker != null) return pointmarker.transform;
+            if(pointmarkers.Count > 1) return pointmarkers[0].transform;
             else return null;
         }
     }
