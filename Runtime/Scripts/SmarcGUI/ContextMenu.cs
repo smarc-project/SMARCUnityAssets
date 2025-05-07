@@ -151,7 +151,7 @@ namespace SmarcGUI
         public void SetItem(Vector2 position)
         {
             AddTaskButton.onClick.AddListener(OnAddTask);
-            WorldSection.SetActive(true);
+            WorldSection.SetActive(missionPlanStore.SelectedTSTGUI != null);
             SetOnTopResize(position);
         }
 

@@ -320,12 +320,8 @@ namespace SmarcGUI.Connections
 
         public async void SubToTopic(string topic)
         {
+            if(subscribedTopics.Contains(topic)) return;
             Debug.Log($"Subscribing to topic: {topic} ...");
-            if(subscribedTopics.Contains(topic))
-            {
-                Debug.Log($"Already subscribed to topic: {topic}");
-                return;
-            }
 
             var mqttFactory = new MqttFactory();
             var mqttSubscribeOptions = mqttFactory.CreateSubscribeOptionsBuilder()
