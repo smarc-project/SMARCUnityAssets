@@ -138,7 +138,7 @@ namespace SmarcGUI.MissionPlanning.Params
             List<Vector3> path = new();
             foreach(Transform child in content)
             {
-                path.AddRange(child.GetComponent<IPathInWorld>().GetWorldPath());
+                if(child.TryGetComponent<IPathInWorld>(out var paramGUI)) path.AddRange(paramGUI.GetWorldPath());
             }
             return path;
         }
