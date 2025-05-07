@@ -7,20 +7,20 @@ using UnityEngine.UI;
 
 namespace SmarcGUI.MissionPlanning.Params
 {
-    public class ListParamGUI : ParamGUI, IHeightUpdatable, IPathInWorld, IParamChangeListener
+    public class ListParamGUI : ParamGUI, IPathInWorld, IParamChangeListener //, IHeightUpdatable, 
     {
         [Header("ListParamGUI")]
-        RectTransform rt;
+        // RectTransform rt;
 
         public RectTransform content;
         public Button AddButton;
 
         IList paramList => (IList)paramValue;
 
-        void Awake()
-        {
-            rt = GetComponent<RectTransform>();
-        }
+        // void Awake()
+        // {
+        //     rt = GetComponent<RectTransform>();
+        // }
 
 
         protected override void SetupFields()
@@ -97,24 +97,24 @@ namespace SmarcGUI.MissionPlanning.Params
         }
 
 
-        public void UpdateHeight()
-        {
-            float contentHeight = 5;
-            foreach(Transform child in content)
-                contentHeight += child.GetComponent<RectTransform>().sizeDelta.y;
-            content.sizeDelta = new Vector2(content.sizeDelta.x, contentHeight);
+        // public void UpdateHeight()
+        // {
+        //     float contentHeight = 5;
+        //     foreach(Transform child in content)
+        //         contentHeight += child.GetComponent<RectTransform>().sizeDelta.y;
+        //     content.sizeDelta = new Vector2(content.sizeDelta.x, contentHeight);
             
-            float selfHeight = 5;
-            foreach(Transform child in transform)
-                selfHeight += child.GetComponent<RectTransform>().sizeDelta.y;
+        //     float selfHeight = 5;
+        //     foreach(Transform child in transform)
+        //         selfHeight += child.GetComponent<RectTransform>().sizeDelta.y;
             
-            // can happen if someone (like load missions) calls this before awake lol.
-            if(rt == null) rt = GetComponent<RectTransform>();
+        //     // can happen if someone (like load missions) calls this before awake lol.
+        //     if(rt == null) rt = GetComponent<RectTransform>();
 
-            rt.sizeDelta = new Vector2(rt.sizeDelta.x, selfHeight);
+        //     rt.sizeDelta = new Vector2(rt.sizeDelta.x, selfHeight);
 
-            transform.parent.GetComponentInParent<IHeightUpdatable>()?.UpdateHeight();
-        }
+        //     transform.parent.GetComponentInParent<IHeightUpdatable>()?.UpdateHeight();
+        // }
 
         void OnDisable()
         {
