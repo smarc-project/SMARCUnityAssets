@@ -34,6 +34,11 @@ namespace SmarcGUI.MissionPlanning.Params
             return altitude;
         }
 
+        public float GetYReference()
+        {
+            return 0;
+        }
+
         public void SetY(float y)
         {
             altitude = y;

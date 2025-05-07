@@ -83,6 +83,7 @@ namespace SmarcGUI.MissionPlanning.Params
         public void DeleteParam(ParamGUI paramgui)
         {
             if(paramList == null) return;
+            taskgui.RemovePointMarker(paramgui);
             var originalIndex = paramgui.ParamIndex;
             paramList.RemoveAt(paramgui.ParamIndex);
             Destroy(paramgui.gameObject);

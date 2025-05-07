@@ -11597,6 +11597,8 @@ MonoBehaviour:
   DepthParamPrefab: {fileID: 1497497768590733871, guid: e2c8e31f0cbea1b4aa7787d1c77c8cf1, type: 3}
   AltitudeParamPrefab: {fileID: 1497497768590733871, guid: 4e333bc0ea160424b9ff255978160b34, type: 3}
   HeadingParamPrefab: {fileID: 1497497768590733871, guid: 0ee6819f2928b824486196b6391e3a8b, type: 3}
+  AuvDepthPointParamPrefab: {fileID: 5193145669377553919, guid: 2e8dfe0dfe7abdb4bbe331ddc070dc2b, type: 3}
+  AuvAltitudePointParamPrefab: {fileID: 5193145669377553919, guid: 67646c5346a06924393652990cd96ad8, type: 3}
   SelectedTSTGUI: {fileID: 0}
 --- !u!114 &123414369969908222
 MonoBehaviour:

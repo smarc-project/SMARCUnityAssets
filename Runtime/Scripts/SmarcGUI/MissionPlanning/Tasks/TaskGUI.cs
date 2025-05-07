@@ -106,6 +106,14 @@ namespace SmarcGUI.MissionPlanning.Tasks
             }
         }
 
+        public void RemovePointMarker(ParamGUI paramgui)
+        {
+            foreach(var p in pointmarkers)
+            {
+                if(p == paramgui) Destroy(p.gameObject);
+            }
+        }
+
         public void SetTask(Task task, TSTGUI tstGUI)
         {
             this.task = task;

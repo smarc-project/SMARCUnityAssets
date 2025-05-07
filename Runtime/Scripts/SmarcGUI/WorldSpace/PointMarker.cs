@@ -105,12 +105,6 @@ namespace SmarcGUI.WorldSpace
             paramXZ = param;
             var (x, z) = param.GetXZ();
             transform.position = new Vector3(x, transform.position.y, z);
-            if(shadowMarker != null)
-            {
-                shadowMarker.position = new Vector3(transform.position.x, 0, transform.position.z);
-                lineToShadow.SetPosition(0, transform.position);
-                lineToShadow.SetPosition(1, shadowMarker.position);
-            }
         }
 
         public void SetYParam(IParamHasY param)
@@ -118,7 +112,7 @@ namespace SmarcGUI.WorldSpace
             if(param == null) return;
             paramY = param;
             var y = param.GetY();
-            transform.position = new Vector3(transform.position.x, y, transform.position.z);
+            transform.position = new Vector3(transform.position.x, y, transform.position.z);   
         }
 
         public void SetHeadingParam(IParamHasHeading param)
@@ -143,6 +137,12 @@ namespace SmarcGUI.WorldSpace
             SetXZParam(paramXZ);
             SetHeadingParam(paramHeading);
             SetOrientationParam(paramOrientation);
+            if(shadowMarker != null)
+            {
+                shadowMarker.position = new Vector3(transform.position.x,  paramY.GetYReference(), transform.position.z);
+                lineToShadow.SetPosition(0, transform.position);
+                lineToShadow.SetPosition(1, shadowMarker.position);
+            }
         }
 
         public List<Vector3> GetWorldPath()
@@ -173,10 +173,8 @@ namespace SmarcGUI.WorldSpace
             
             arrowYup.SetActive(paramY != null && draw3Dwidgets);
             arrowYdown.SetActive(paramY != null && draw3Dwidgets);
-            var y = paramY != null ? paramY.GetY() : 0;
-            bool shadowEnabled = Mathf.Abs(y) > 1 && draw3Dwidgets;
-            shadowMarker.gameObject.SetActive(shadowEnabled);
-            lineToShadow.enabled = shadowEnabled;
+            shadowMarker.gameObject.SetActive(draw3Dwidgets);
+            lineToShadow.enabled = draw3Dwidgets;
 
             FloatingNameCanvas.gameObject.SetActive(draw3Dwidgets);
             FloatingNameCanvas.transform.rotation = guiState.CurrentCam.transform.rotation;

@@ -986,7 +986,7 @@ GameObject:
   - component: {fileID: 1309586723845222836}
   - component: {fileID: 7200316454244156284}
   m_Layer: 0
-  m_Name: Alt Input
+  m_Name: Depth Input
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1339,7 +1339,7 @@ GameObject:
   m_Component:
   - component: {fileID: 948555937045285144}
   m_Layer: 0
-  m_Name: MinAlt
+  m_Name: MaxDepth
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1962,7 +1962,7 @@ GameObject:
   - component: {fileID: 2690874708565803079}
   - component: {fileID: 2624071415871969676}
   m_Layer: 0
-  m_Name: Depth Input
+  m_Name: Alt Input
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2503,7 +2503,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: TargetDepth
+  m_text: TargetAltitude
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -2530,8 +2530,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 14
-  m_fontSizeBase: 14
+  m_fontSize: 12
+  m_fontSizeBase: 12
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 10
@@ -2674,9 +2674,9 @@ GameObject:
   - component: {fileID: 1641955731807848098}
   - component: {fileID: 5675629765310258330}
   - component: {fileID: 7569311709302734055}
-  - component: {fileID: 7262416815974902965}
+  - component: {fileID: 6187014706131514642}
   m_Layer: 0
-  m_Name: AuvDepthPointParam
+  m_Name: AuvAltitudePointParam
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2743,7 +2743,7 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
---- !u!114 &7262416815974902965
+--- !u!114 &6187014706131514642
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -2752,14 +2752,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 5193145669377553919}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7f306e636eebf694d8411bc0f50e3006, type: 3}
+  m_Script: {fileID: 11500000, guid: 1f04442dfc5f2fd47bf6bd9fd163cfb5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   Label: {fileID: 954035344788294035}
   LatField: {fileID: 5860177524517708484}
   LonField: {fileID: 5151769899253396062}
-  TargetDepthField: {fileID: 2624071415871969676}
-  MinAltitudeField: {fileID: 7200316454244156284}
+  TargetAltitudeField: {fileID: 2624071415871969676}
+  MaxDepthField: {fileID: 7200316454244156284}
   RpmField: {fileID: 7578671162651827226}
   TimeoutField: {fileID: 1800798093667412258}
 --- !u!1 &5457266654323350676
@@ -3484,7 +3484,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: MinAltitude
+  m_text: Max Depth
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -4224,7 +4224,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8501316938760720930}
   m_Layer: 0
-  m_Name: TatgetDepth
+  m_Name: TatgetAlt
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

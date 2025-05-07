@@ -34,6 +34,11 @@ namespace SmarcGUI.MissionPlanning.Params
             return -depth;
         }
 
+        public float GetYReference()
+        {
+            return 0;
+        }
+
         public void SetY(float y)
         {
             depth = -y;
