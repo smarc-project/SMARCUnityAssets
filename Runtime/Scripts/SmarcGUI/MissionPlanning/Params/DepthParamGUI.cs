@@ -27,6 +27,7 @@ namespace SmarcGUI.MissionPlanning.Params
             depth = -1;
             DepthField.text = depth.ToString();
             DepthField.onEndEdit.AddListener(value => SetY(-float.Parse(value)));
+            fields.Add(DepthField);
         }
 
         public float GetY()
