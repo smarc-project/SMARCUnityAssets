@@ -43,6 +43,8 @@ namespace SmarcGUI.MissionPlanning.Tasks
         }
     }
 
+// FIXME THE MATH IN Orientation.cs IS NOT CORRECT
+// RPY -> ORI -> RPY DOES NOT PRODUCE THE SAME RPY !!
     // public class AuvHydrobaticMoveTo : Task
     // {
     //     public override void SetParams()
@@ -56,42 +58,42 @@ namespace SmarcGUI.MissionPlanning.Tasks
     //     }
     // }
 
-    // public class CruiseDepthAtHeading : Task
-    // {
-    //     public override void SetParams()
-    //     {
-    //         Name = "cruise-depth-at-heading";
-    //         Description = "Cruise at a depth and heading";
-    //         Params.Add("target_depth", new Depth());
-    //         Params.Add("target_heading", new Heading());
-    //         Params.Add("min_altitude", 0);
-    //         Params.Add("rpm", 0);
-    //         Params.Add("timeout", 0);
-    //     }
-    // }
+    public class CruiseDepthAtHeading : Task
+    {
+        public override void SetParams()
+        {
+            Name = "cruise-depth-at-heading";
+            Description = "Cruise at a depth and heading";
+            Params.Add("target_depth", new Depth());
+            Params.Add("target_heading", new Heading());
+            Params.Add("min_altitude", 0);
+            Params.Add("rpm", 0);
+            Params.Add("timeout", 0);
+        }
+    }
 
-    // public class CruiseAltitudeAtHeading : Task
-    // {
-    //     public override void SetParams()
-    //     {
-    //         Name = "cruise-depth-at-heading";
-    //         Description = "Cruise at a depth and heading";
-    //         Params.Add("target_altitude", 5);
-    //         Params.Add("target_heading", new Heading());
-    //         Params.Add("max_depth", 0);
-    //         Params.Add("rpm", 0);
-    //         Params.Add("timeout", 0);
-    //     }
-    // }
+    public class CruiseAltitudeAtHeading : Task
+    {
+        public override void SetParams()
+        {
+            Name = "cruise-depth-at-heading";
+            Description = "Cruise at a depth and heading";
+            Params.Add("target_altitude", 5);
+            Params.Add("target_heading", new Heading());
+            Params.Add("max_depth", 0);
+            Params.Add("rpm", 0);
+            Params.Add("timeout", 0);
+        }
+    }
 
-    // public class Loiter : Task
-    // {
-    //     public override void SetParams()
-    //     {
-    //         Name = "loiter";
-    //         Description = "Loiter at current position";
-    //         Params.Add("timeout", 0);
-    //     }
-    // }
+    public class Loiter : Task
+    {
+        public override void SetParams()
+        {
+            Name = "loiter";
+            Description = "Loiter at current position";
+            Params.Add("timeout", 0);
+        }
+    }
 
 }

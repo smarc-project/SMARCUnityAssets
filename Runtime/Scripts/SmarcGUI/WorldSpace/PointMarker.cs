@@ -137,7 +137,7 @@ namespace SmarcGUI.WorldSpace
             SetXZParam(paramXZ);
             SetHeadingParam(paramHeading);
             SetOrientationParam(paramOrientation);
-            if(shadowMarker != null)
+            if(shadowMarker != null && paramY != null)
             {
                 shadowMarker.position = new Vector3(transform.position.x,  paramY.GetYReference(), transform.position.z);
                 lineToShadow.SetPosition(0, transform.position);
