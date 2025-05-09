@@ -139,12 +139,12 @@ namespace SmarcGUI.MissionPlanning.Params
             RpmField.onEndEdit.AddListener(OnRpmChanged);
             TimeoutField.onEndEdit.AddListener(OnTimeoutChanged);
 
-            fields.Add(LatField);
-            fields.Add(LonField);
-            fields.Add(TargetDepthField);
-            fields.Add(MinAltitudeField);
-            fields.Add(RpmField);
-            fields.Add(TimeoutField);
+            fields.Add(LatField.GetComponent<RectTransform>());
+            fields.Add(LonField.GetComponent<RectTransform>());
+            fields.Add(TargetDepthField.GetComponent<RectTransform>());
+            fields.Add(MinAltitudeField.GetComponent<RectTransform>());
+            fields.Add(RpmField.GetComponent<RectTransform>());
+            fields.Add(TimeoutField.GetComponent<RectTransform>());
 
             OnSelectedChange();
         }

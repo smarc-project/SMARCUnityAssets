@@ -144,9 +144,9 @@ namespace SmarcGUI.MissionPlanning.Params
             eyField.onEndEdit.AddListener(OnEulerYChanged);
             ezField.onEndEdit.AddListener(OnEulerZChanged);
 
-            fields.Add(exField);
-            fields.Add(eyField);
-            fields.Add(ezField);
+            fields.Add(exField.GetComponent<RectTransform>());
+            fields.Add(eyField.GetComponent<RectTransform>());
+            fields.Add(ezField.GetComponent<RectTransform>());
 
             OnSelectedChange();
         }

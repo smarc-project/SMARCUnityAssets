@@ -27,7 +27,7 @@ namespace SmarcGUI.MissionPlanning.Params
             altitude = 10;
             AltitudeField.text = altitude.ToString();
             AltitudeField.onEndEdit.AddListener(value => SetY(float.Parse(value)));
-            fields.Add(AltitudeField);
+            fields.Add(AltitudeField.GetComponent<RectTransform>());
         }
 
         public float GetY()

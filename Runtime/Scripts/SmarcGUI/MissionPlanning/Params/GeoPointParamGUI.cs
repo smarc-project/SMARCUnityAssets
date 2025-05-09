@@ -84,9 +84,9 @@ namespace SmarcGUI.MissionPlanning.Params
             LonField.onEndEdit.AddListener(OnLonChanged);
             AltField.onEndEdit.AddListener(OnAltChanged);
 
-            fields.Add(LatField);
-            fields.Add(LonField);
-            fields.Add(AltField);
+            fields.Add(LatField.GetComponent<RectTransform>());
+            fields.Add(LonField.GetComponent<RectTransform>());
+            fields.Add(AltField.GetComponent<RectTransform>());
 
             OnSelectedChange();
         }

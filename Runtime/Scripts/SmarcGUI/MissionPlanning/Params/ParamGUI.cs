@@ -25,7 +25,7 @@ namespace SmarcGUI.MissionPlanning.Params
 
         protected RectTransform rt;
 
-        protected List<TMP_InputField> fields = new();
+        protected List<RectTransform> fields = new();
  
 
         void Awake()
@@ -147,10 +147,9 @@ namespace SmarcGUI.MissionPlanning.Params
             foreach(var field in fields)
             {
                 field.transform.SetParent(fieldsParent.transform);
-                var rt = field.GetComponent<RectTransform>();
-                totalChildrenWidth += rt.sizeDelta.x;
-                if(rt.sizeDelta.y > maxChildHeight)
-                    maxChildHeight = rt.sizeDelta.y;
+                totalChildrenWidth += field.sizeDelta.x;
+                if(field.sizeDelta.y > maxChildHeight)
+                    maxChildHeight = field.sizeDelta.y;
             }
             // set the size of the new parent to be the sum of all the children widths, and the max height of the children
             fieldsRT.sizeDelta = new Vector2(totalChildrenWidth, maxChildHeight);
