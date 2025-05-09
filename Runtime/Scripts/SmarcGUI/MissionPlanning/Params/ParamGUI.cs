@@ -151,10 +151,21 @@ namespace SmarcGUI.MissionPlanning.Params
                 if(field.sizeDelta.y > maxChildHeight)
                     maxChildHeight = field.sizeDelta.y;
             }
+            
+            if(rt == null) rt = GetComponent<RectTransform>();
+            rt.sizeDelta = new Vector2(rt.sizeDelta.x, maxChildHeight);
+            if(totalChildrenWidth > rt.sizeDelta.x)
+            {
+                var diff = totalChildrenWidth - rt.sizeDelta.x;
+                var per = diff / fields.Count;
+                foreach(var field in fields)
+                {
+                    field.sizeDelta = new Vector2(field.sizeDelta.x - per, field.sizeDelta.y);
+                }
+                totalChildrenWidth -= diff;
+            }
             // set the size of the new parent to be the sum of all the children widths, and the max height of the children
             fieldsRT.sizeDelta = new Vector2(totalChildrenWidth, maxChildHeight);
-            if(rt == null) rt = GetComponent<RectTransform>();
-            rt.sizeDelta = fieldsRT.sizeDelta;
             fieldsRT.anchoredPosition = Vector2.zero;
 
             // disable all other children of this object

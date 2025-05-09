@@ -53,6 +53,16 @@ namespace SmarcGUI.MissionPlanning.Tasks
         }
     }
 
+    public class AuvHydrobaticMovePath : Task
+    {
+        public override void SetParams()
+        {
+            Name = "auv-hydrobatic-move-to";
+            Description = "Move to a position, depth and orientation";
+            Params.Add("waypoints", new List<AuvHydrobaticPoint>());
+        }
+    }
+
     // public class CruiseDepthAtHeading : Task
     // {
     //     public override void SetParams()

@@ -133,6 +133,8 @@ namespace SmarcGUI.MissionPlanning.Params
             eyField.text = euler.y.ToString();
             ezField.text = euler.z.ToString();
 
+            OnEulerXChanged("0"); // just trigger a change to set the orientation of the widget?
+
             LatField.onEndEdit.AddListener(OnLatChanged);
             LonField.onEndEdit.AddListener(OnLonChanged);
             TargetDepthField.onEndEdit.AddListener(OnDepthChanged);
@@ -161,6 +163,7 @@ namespace SmarcGUI.MissionPlanning.Params
                 OnEulerXChanged("0");
                 return;
             }
+            NotifyPathChange();
         }
 
         void OnEulerYChanged(string s)
@@ -172,6 +175,7 @@ namespace SmarcGUI.MissionPlanning.Params
                 OnEulerYChanged("0");
                 return;
             }
+            NotifyPathChange();
         }
 
         void OnEulerZChanged(string s)
@@ -183,6 +187,7 @@ namespace SmarcGUI.MissionPlanning.Params
                 OnEulerZChanged("0");
                 return;
             }
+            NotifyPathChange();
         }
 
 
