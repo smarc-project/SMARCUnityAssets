@@ -2,8 +2,7 @@ using Newtonsoft.Json;
 using UnityEngine;
 using System;
 
-// FIXME THE MATH HERE IS NOT CORRECT
-// RPY -> ORI -> RPY DOES NOT PRODUCE THE SAME RPY !!
+
 namespace SmarcGUI.MissionPlanning.Params
 {
     [JsonObject(NamingStrategyType = typeof(Newtonsoft.Json.Serialization.KebabCaseNamingStrategy))]
@@ -11,10 +10,13 @@ namespace SmarcGUI.MissionPlanning.Params
     {
         // A quaternion that corresponds to the X-forward Y-left Z-up coordinate system
         // used in ROS!
-        public float w{get; set;}
-        public float x{get; set;}
-        public float y{get; set;}
-        public float z{get; set;}
+        public double w{get; set;}
+        public double x{get; set;}
+        public double y{get; set;}
+        public double z{get; set;}
+
+        static double Deg2Rad = Math.PI / 180.0;
+        static double Rad2Deg = 180.0 / Math.PI;
 
 
         public string ToJson()
@@ -47,22 +49,21 @@ namespace SmarcGUI.MissionPlanning.Params
             // roll = around x
             // pitch = around y
             // yaw = around z
-            float exRad = Mathf.Deg2Rad * ex;
-            float eyRad = Mathf.Deg2Rad * ey;
-            float ezRad = Mathf.Deg2Rad * ez;
+            double exRad = Deg2Rad * ex;
+            double eyRad = Deg2Rad * ey;
+            double ezRad = Deg2Rad * ez;
 
-            float cy = Mathf.Cos(ezRad * 0.5f);
-            float sy = Mathf.Sin(ezRad * 0.5f);
-            float cp = Mathf.Cos(eyRad * 0.5f);
-            float sp = Mathf.Sin(eyRad * 0.5f);
-            float cr = Mathf.Cos(exRad * 0.5f);
-            float sr = Mathf.Sin(exRad * 0.5f);
+            double cy = Math.Cos(ezRad * 0.5f);
+            double sy = Math.Sin(ezRad * 0.5f);
+            double cp = Math.Cos(eyRad * 0.5f);
+            double sp = Math.Sin(eyRad * 0.5f);
+            double cr = Math.Cos(exRad * 0.5f);
+            double sr = Math.Sin(exRad * 0.5f);
 
             w = cr * cp * cy + sr * sp * sy;
             x = sr * cp * cy - cr * sp * sy;
             y = cr * sp * cy + sr * cp * sy;
             z = cr * cp * sy - sr * sp * cy;
-            Debug.Log($"RPY {ex}, {ey}, {ez} -> Ori {w}, {x}, {y}, {z}");
         }
 
         private static double CopySign(double magnitude, double sign)
@@ -72,30 +73,32 @@ namespace SmarcGUI.MissionPlanning.Params
 
         public Vector3 ToRPY()
         {
-            var angles = new Vector3();
+            
+            double ex, ey, ez;
 
             // roll (x-axis rotation)
             double sinr_cosp = 2 * (w * x + y * z);
             double cosr_cosp = 1 - 2 * (x * x + y * y);
-            angles.x = (float)Math.Atan2(sinr_cosp, cosr_cosp);
+            ex = Math.Atan2(sinr_cosp, cosr_cosp)* Rad2Deg;
 
             // pitch (y-axis rotation)
             double sinp = 2 * (w * y - z * x);
             if (Math.Abs(sinp) >= 1)
             {
-                angles.y = (float)CopySign(Math.PI / 2, sinp);
+                ey = CopySign(Math.PI / 2, sinp)* Rad2Deg;
             }
             else
             {
-                angles.y = (float)Math.Asin(sinp);
+                ey = Math.Asin(sinp)* Rad2Deg;
             }
 
             // yaw (z-axis rotation)
             double siny_cosp = 2 * (w * z + x * y);
             double cosy_cosp = 1 - 2 * (y * y + z * z);
-            angles.z = (float)Math.Atan2(siny_cosp, cosy_cosp);
+            ez = Math.Atan2(siny_cosp, cosy_cosp)* Rad2Deg;
 
-            Debug.Log($"Ori {w}, {x}, {y}, {z} -> RPY {angles.x}, {angles.y}, {angles.z}");
+            var angles = new Vector3((float)ex, (float)ey, (float)ez);
+
             return angles;
         }
     }
