@@ -1,6 +1,7 @@
 using SmarcGUI.WorldSpace;
 using TMPro;
 using UnityEngine;
+using System.Collections.Generic;
 
 namespace SmarcGUI.MissionPlanning.Params
 {
@@ -28,6 +29,11 @@ namespace SmarcGUI.MissionPlanning.Params
             DepthField.text = depth.ToString();
             DepthField.onEndEdit.AddListener(value => SetY(-float.Parse(value)));
             fields.Add(DepthField.GetComponent<RectTransform>());
+        }
+
+        public override List<string> GetFieldLabels()
+        {
+            return new List<string> { "Depth" };
         }
 
         public float GetY()

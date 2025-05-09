@@ -27,14 +27,6 @@ namespace SmarcGUI.MissionPlanning.Params
 
         protected List<RectTransform> fields = new();
  
-
-        void Awake()
-        {
-            missionPlanStore = FindFirstObjectByType<MissionPlanStore>();
-            guiState = FindFirstObjectByType<GUIState>();
-            rt = GetComponent<RectTransform>();
-        }
-
         public object paramValue
         {
             get => paramsDict!=null? paramsDict[ParamKey] : paramsList[ParamIndex];
@@ -45,6 +37,13 @@ namespace SmarcGUI.MissionPlanning.Params
                 else
                     paramsList[ParamIndex] = value;
             }
+        }
+
+        void Awake()
+        {
+            missionPlanStore = FindFirstObjectByType<MissionPlanStore>();
+            guiState = FindFirstObjectByType<GUIState>();
+            rt = GetComponent<RectTransform>();
         }
 
         public void SetParam(IDictionary paramsDict, string paramKey, TaskGUI taskgui)
@@ -78,6 +77,16 @@ namespace SmarcGUI.MissionPlanning.Params
         }
 
         protected virtual void SetupFields()
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public List<RectTransform> GetFields()
+        {
+            return fields;
+        }
+
+        public virtual List<string> GetFieldLabels()
         {
             throw new System.NotImplementedException();
         }

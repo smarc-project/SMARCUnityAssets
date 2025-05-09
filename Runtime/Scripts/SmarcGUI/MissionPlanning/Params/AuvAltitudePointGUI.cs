@@ -2,6 +2,7 @@ using GeoRef;
 using SmarcGUI.WorldSpace;
 using TMPro;
 using UnityEngine;
+using System.Collections.Generic;
 
 
 namespace SmarcGUI.MissionPlanning.Params
@@ -147,6 +148,12 @@ namespace SmarcGUI.MissionPlanning.Params
 
             OnSelectedChange();
         }
+
+        public override List<string> GetFieldLabels()
+        {
+            return new List<string> { "Lat", "Lon", "T.Alt", "MaxDepth", "RPM", "T/O" };
+        }
+
 
 
         void OnLatChanged(string s)

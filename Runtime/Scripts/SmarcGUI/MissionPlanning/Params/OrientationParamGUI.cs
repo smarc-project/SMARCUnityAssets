@@ -2,7 +2,7 @@ using SmarcGUI.WorldSpace;
 using TMPro;
 using UnityEngine;
 using System;
-
+using System.Collections.Generic;
 using Unity.Robotics.ROSTCPConnector.ROSGeometry;
 
 
@@ -77,6 +77,11 @@ namespace SmarcGUI.MissionPlanning.Params
             fields.Add(ezField.GetComponent<RectTransform>());
 
             OnSelectedChange();
+        }
+
+        public override List<string> GetFieldLabels()
+        {
+            return new List<string> { "Roll", "Pitch", "Yaw" };
         }
 
 

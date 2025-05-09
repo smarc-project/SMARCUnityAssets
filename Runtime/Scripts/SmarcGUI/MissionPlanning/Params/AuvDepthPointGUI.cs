@@ -2,7 +2,7 @@ using GeoRef;
 using SmarcGUI.WorldSpace;
 using TMPro;
 using UnityEngine;
-
+using System.Collections.Generic;
 
 namespace SmarcGUI.MissionPlanning.Params
 {
@@ -147,6 +147,11 @@ namespace SmarcGUI.MissionPlanning.Params
             fields.Add(TimeoutField.GetComponent<RectTransform>());
 
             OnSelectedChange();
+        }
+
+        public override List<string> GetFieldLabels()
+        {
+            return new List<string> { "Lat", "Lon", "T.Depth", "MinAlt", "RPM", "T/O" };
         }
 
 

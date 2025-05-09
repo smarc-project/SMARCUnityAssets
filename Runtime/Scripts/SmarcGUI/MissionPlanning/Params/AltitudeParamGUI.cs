@@ -1,6 +1,7 @@
 using SmarcGUI.WorldSpace;
 using TMPro;
 using UnityEngine;
+using System.Collections.Generic;
 
 namespace SmarcGUI.MissionPlanning.Params
 {
@@ -28,6 +29,11 @@ namespace SmarcGUI.MissionPlanning.Params
             AltitudeField.text = altitude.ToString();
             AltitudeField.onEndEdit.AddListener(value => SetY(float.Parse(value)));
             fields.Add(AltitudeField.GetComponent<RectTransform>());
+        }
+
+        public override List<string> GetFieldLabels()
+        {
+            return new List<string> { "Altitude" };
         }
 
         public float GetY()

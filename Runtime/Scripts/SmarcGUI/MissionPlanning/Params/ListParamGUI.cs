@@ -4,6 +4,7 @@ using SmarcGUI.WorldSpace;
 using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 namespace SmarcGUI.MissionPlanning.Params
 {
@@ -12,6 +13,7 @@ namespace SmarcGUI.MissionPlanning.Params
         [Header("ListParamGUI")]
         public RectTransform content;
         public Button AddButton;
+        public RectTransform ParamLabels;
 
         IList paramList => (IList)paramValue;
 
@@ -25,7 +27,8 @@ namespace SmarcGUI.MissionPlanning.Params
                 GameObject paramGO;
                 GameObject paramPrefab = missionPlanStore.GetParamPrefab(((IList)paramValue)[i]);
                 paramGO = Instantiate(paramPrefab, content);
-                paramGO.GetComponent<ParamGUI>().SetParam((IList)paramValue, i, this);
+                var paramgui = paramGO.GetComponent<ParamGUI>();
+                paramgui.SetParam((IList)paramValue, i, this);
             }
 
             AddButton.onClick.AddListener(AddParamToList);
@@ -57,6 +60,34 @@ namespace SmarcGUI.MissionPlanning.Params
             UpdateHeight();
 
             taskgui.AddPointMarker(paramgui);
+
+            if(ParamLabels.childCount < 1)
+            {
+                var labels = paramgui.GetFieldLabels();
+                var fieldRTs = paramgui.GetFields();
+                for(int i = 0; i < labels.Count; i++)
+                {
+                    var label = labels[i];
+                    var fieldRT = fieldRTs[i];
+
+                    var labelGO = new GameObject();
+                    labelGO.transform.SetParent(ParamLabels);
+                    labelGO.gameObject.SetActive(true);
+                    labelGO.AddComponent<TextMeshProUGUI>();
+                    
+                    var labelRT = labelGO.GetComponent<RectTransform>();
+                    labelRT.sizeDelta = fieldRT.sizeDelta;
+                    labelRT.pivot = fieldRT.pivot;
+                    labelRT.anchorMin = fieldRT.anchorMin;
+                    labelRT.anchorMax = fieldRT.anchorMax;
+
+                    var labelText = labelGO.GetComponent<TMP_Text>();
+                    labelText.text = label;
+                    labelText.enableAutoSizing = true;
+                    labelText.fontSizeMin = 5;
+                    labelText.alignment = TextAlignmentOptions.Center;
+                }
+            }
         }
 
         public void MoveParamUp(ParamGUI paramgui)

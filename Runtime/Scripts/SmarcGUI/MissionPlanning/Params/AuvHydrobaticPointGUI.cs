@@ -2,7 +2,7 @@ using GeoRef;
 using SmarcGUI.WorldSpace;
 using TMPro;
 using UnityEngine;
-
+using System.Collections.Generic;
 using Unity.Robotics.ROSTCPConnector.ROSGeometry;
 
 
@@ -152,6 +152,11 @@ namespace SmarcGUI.MissionPlanning.Params
             fields.Add(ezField.GetComponent<RectTransform>());
 
             OnSelectedChange();
+        }
+
+        public override List<string> GetFieldLabels()
+        {
+            return new List<string> { "Lat", "Lon", "T.Depth", "T/O", "Roll", "Pitch", "Yaw" };
         }
 
         void OnEulerXChanged(string s)
