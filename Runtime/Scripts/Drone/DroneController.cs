@@ -111,6 +111,12 @@ namespace DroneController
 
         [Header("Control Mode")] [Tooltip("Currently only implemented controller is TrackingControl")]
         public DroneControllerState controllerState = DroneControllerState.TrackingControlNormalizedXYZ;
+        [Tooltip("Distance error cap for tracking control when using normalized tracking. Smaller=less aggressive")]
+        double DistanceErrorCapNormalized = 2;
+        [Tooltip("Distance error cap for tracking control when using non-normalized tracking. Smaller=less aggressive")]
+        double DistanceErrorCapFree = 10;
+
+
 
         ////////////////// SYSTEM SPECIFIC //////////////////
         double massQuadrotor;
@@ -322,23 +328,18 @@ namespace DroneController
                         endIndex = errorTrackingPosition.Count - 1;
                     }
 
-                    // Normalized error is better here
-                    double distanceErrorCap = 2;
-
                     Vector<double> errorTrackingPositionSubVec =
                         errorTrackingPosition.SubVector(0, endIndex);
                     errorTrackingPositionSubVec =
-                        Math.Min(distanceErrorCap, errorTrackingPositionSubVec.Norm(2)) *
+                        Math.Min(DistanceErrorCapNormalized, errorTrackingPositionSubVec.Norm(2)) *
                         errorTrackingPositionSubVec.Normalize(2);
                     errorTrackingPosition.SetSubVector(0, endIndex, errorTrackingPositionSubVec);
                 }
                 else
                 {
                     // Handles DroneControllerState.TrackingControl
-                    // FIXME: Hardcoded Error cap on distance. May need fixing in the future
-                    double distanceErrorCap = 10;
                     errorTrackingPosition = (dronePosition - targetPosition) *
-                                            Math.Min(distanceErrorCap / (dronePosition - targetPosition).Norm(2),
+                                            Math.Min(DistanceErrorCapFree / (dronePosition - targetPosition).Norm(2),
                                                 1);
                 }
             }
