@@ -759,8 +759,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Label: {fileID: 2200619598894638758}
   HighlightRT: {fileID: 5045650628620100579}
-  SelectedHighlightRT: {fileID: 908099660051769136}
-  ContextMenuPrefab: {fileID: 5700513683117687523, guid: dc50e97ebddcc6a47ac3dec88f9b8116, type: 3}
   InputField: {fileID: 7784104882960377999}
   ChoiceDropdown: {fileID: 5991603220377178498}
 --- !u!222 &7680672855215141864
@@ -785,7 +783,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
   m_Color: {r: 0, g: 0, b: 1, a: 0.02745098}
-  m_RaycastTarget: 1
+  m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:

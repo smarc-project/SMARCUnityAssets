@@ -1,8 +1,8 @@
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
 
 using SmarcGUI.MissionPlanning;
+using TMPro;
 
 namespace SmarcGUI.WorldSpace
 {
@@ -14,15 +14,24 @@ namespace SmarcGUI.WorldSpace
         IParamHasOrientation paramOrientation;
 
         [Header("3D visuals")]
+        public Transform pointModel;
         public GameObject dragArrows;
         GameObject arrowYup, arrowYdown;
         public Transform headingCone;
         public Transform orientationModel;
+        public GameObject HighlightObject;
+        public Canvas FloatingNameCanvas;
+        public TMP_Text FloatingNameText;
+        public TMP_Text FloatingDescriptionText;
+        public RectTransform FloatingNameBackgroundRT;
+
 
         LineRenderer lineToShadow;
         public Transform shadowMarker;
 
         GUIState guiState;
+        bool isSelected = false;    
+        bool isFar = false;
 
         [Header("2D visuals")]
         public float FarAwayDistance = 50;
@@ -52,7 +61,7 @@ namespace SmarcGUI.WorldSpace
             overlay = overlayGO.GetComponent<PointMarkerOverlay>();
             overlay.SetPointMarker(this);
 
-            UpdateWidgets(false);
+            UpdateWidgets();
         }
 
 
@@ -74,6 +83,20 @@ namespace SmarcGUI.WorldSpace
                 paramY?.SetY(transform.position.y);
             }
             
+        }
+
+        public void SetNameDesc(string name, string desc)
+        {
+            FloatingNameCanvas.gameObject.SetActive(!string.IsNullOrEmpty(name));
+            FloatingNameText.text = name;
+            FloatingDescriptionText.text = desc;
+            float maxWidth3d = Mathf.Max(FloatingNameText.preferredWidth, FloatingDescriptionText.preferredWidth);
+            FloatingNameBackgroundRT.sizeDelta = new Vector2(maxWidth3d, FloatingNameBackgroundRT.sizeDelta.y);
+            overlay.FloatingNameText.text = name;
+            overlay.FloatingDescriptionText.text = desc;
+            float maxWidth2d = Mathf.Max(overlay.FloatingNameText.preferredWidth, overlay.FloatingDescriptionText.preferredWidth);
+            overlay.FloatingNameBackgroundRT.sizeDelta = new Vector2(maxWidth2d, overlay.FloatingNameBackgroundRT.sizeDelta.y);
+            overlay.FloatingNameCanvas.gameObject.SetActive(!string.IsNullOrEmpty(name));
         }
 
         public void SetXZParam(IParamHasXZ param)
@@ -109,8 +132,7 @@ namespace SmarcGUI.WorldSpace
         {
             if(param == null) return;
             paramOrientation = param;
-            var o = param.GetOrientation();
-            var q = new Quaternion(o.x, o.y, o.z, o.w);
+            var q = param.GetUnityQuaternion();
             orientationModel.localRotation = q;
             orientationModel.gameObject.SetActive(paramXZ != null);
         }
@@ -137,20 +159,39 @@ namespace SmarcGUI.WorldSpace
             return Vector3.zero;
         }
 
-        void UpdateWidgets(bool draw3Dwidgets)
+        void UpdateWidgets()
         {
+            var draw3Dwidgets = !isFar;
+
             if(paramXZ == null) draw3Dwidgets = false;
             overlay.gameObject.SetActive(!draw3Dwidgets);
 
-            dragArrows.SetActive(draw3Dwidgets);
+            pointModel.gameObject.SetActive(paramOrientation == null && paramXZ != null && draw3Dwidgets);
+            dragArrows.SetActive(draw3Dwidgets && isSelected);
             headingCone.gameObject.SetActive(paramHeading != null && draw3Dwidgets);
             orientationModel.gameObject.SetActive(paramOrientation != null && draw3Dwidgets);
             
             arrowYup.SetActive(paramY != null && draw3Dwidgets);
             arrowYdown.SetActive(paramY != null && draw3Dwidgets);
             var y = paramY != null ? paramY.GetY() : 0;
-            shadowMarker.gameObject.SetActive(Mathf.Abs(y) > 1 && draw3Dwidgets);
-            lineToShadow.enabled = Mathf.Abs(y) > 1  && draw3Dwidgets;
+            bool shadowEnabled = Mathf.Abs(y) > 1 && draw3Dwidgets;
+            shadowMarker.gameObject.SetActive(shadowEnabled);
+            lineToShadow.enabled = shadowEnabled;
+
+            FloatingNameCanvas.gameObject.SetActive(draw3Dwidgets);
+            FloatingNameCanvas.transform.rotation = guiState.CurrentCam.transform.rotation;
+        }
+
+        public void Highlight(bool on)
+        {
+            HighlightObject.SetActive(on && !isFar);
+            overlay.Highlight(on && isFar);
+        }
+
+        public void Selected(bool on)
+        {   
+            dragArrows.SetActive(on && !isFar);
+            isSelected = on;
         }
 
         void LateUpdate()
@@ -160,8 +201,18 @@ namespace SmarcGUI.WorldSpace
             if(guiState.CurrentCam == null) return;
             if(guiState.MouseDragging) return; //also dont do anything if we are dragging something...
             var camDiff = transform.position - guiState.CurrentCam.transform.position;
-            bool closeEnoughNow = camDiff.sqrMagnitude < farAwayDistSq;
-            UpdateWidgets(closeEnoughNow);
+            isFar = camDiff.sqrMagnitude > farAwayDistSq;
+            UpdateWidgets();
+        }
+
+        void OnDisable()
+        {
+            overlay.gameObject.SetActive(false);
+        }
+
+        void OnEnable()
+        {
+            UpdateWidgets();
         }
     }
 }

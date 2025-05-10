@@ -64,19 +64,39 @@ namespace VehicleComponents
 
             transform.SetParent(attachedLink.transform);
             
-            ArticulationBody ab = GetComponent<ArticulationBody>();
-            Rigidbody rb = GetComponent<Rigidbody>();
 
-            mixedBody = new MixedBody(ab, rb);
+            GetMixedBody();
 
-            ArticulationBody parentAB = attachedLink.GetComponent<ArticulationBody>();
-            Rigidbody parentRB = attachedLink.GetComponent<Rigidbody>();
+            // ArticulationBody ab = GetComponent<ArticulationBody>();
+            // Rigidbody rb = GetComponent<Rigidbody>();
+            // mixedBody = new MixedBody(ab, rb);
 
-            parentMixedBody = new MixedBody(parentAB, parentRB);
+            // ArticulationBody parentAB = attachedLink.GetComponent<ArticulationBody>();
+            // Rigidbody parentRB = attachedLink.GetComponent<Rigidbody>();
 
-            if (!mixedBody.isValid) mixedBody = parentMixedBody;
+            // parentMixedBody = new MixedBody(parentAB, parentRB);
+
+            // if (!mixedBody.isValid) mixedBody = parentMixedBody;
         }
 
+
+        public MixedBody GetMixedBody()
+        {
+            if(mixedBody == null)
+            {
+                ArticulationBody ab = GetComponent<ArticulationBody>();
+                Rigidbody rb = GetComponent<Rigidbody>();
+                mixedBody = new MixedBody(ab, rb);
+
+                ArticulationBody parentAB = attachedLink.GetComponent<ArticulationBody>();
+                Rigidbody parentRB = attachedLink.GetComponent<Rigidbody>();
+
+                parentMixedBody = new MixedBody(parentAB, parentRB);
+
+                if (!mixedBody.isValid) mixedBody = parentMixedBody;
+            }
+            return mixedBody;
+        }
 
 
         void FixedUpdate()

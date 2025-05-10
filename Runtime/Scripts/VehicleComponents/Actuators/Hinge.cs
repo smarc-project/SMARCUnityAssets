@@ -12,6 +12,13 @@ namespace VehicleComponents.Actuators
         public float AngleMax = 0.2f;
         public bool reverse = false;
 
+
+        void OnValidate()
+        {
+            if (angle > AngleMax) angle = AngleMax;
+            if (angle < -AngleMax) angle = -AngleMax;
+        }
+
         public void SetAngle(float a)
         {
             angle = Mathf.Clamp(a, -AngleMax, AngleMax);
@@ -23,6 +30,5 @@ namespace VehicleComponents.Actuators
             parentMixedBody.SetDriveTarget(ArticulationDriveAxis.X, direction * angle * Mathf.Rad2Deg);
         }
         
-        //TODO:  //TODO: Ensure feedback in radians
     }
 }

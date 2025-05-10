@@ -67,7 +67,7 @@ namespace SmarcGUI.MissionPlanning
             LoadMissionsButton.onClick.AddListener(LoadMissionPlans);
             SaveMissionsButton.onClick.AddListener(SaveMissionPlans);
             RunMissionButton.onClick.AddListener(() => guiState.SelectedRobotGUI.SendStartTSTCommand(SelectedTSTGUI.tst));
-            AddTaskButton.onClick.AddListener(() => SelectedTSTGUI.OnTaskAdded(new TaskSpec(TaskTypeDropdown.options[TaskTypeDropdown.value].text, null)));
+            AddTaskButton.onClick.AddListener(AddNewTask);
 
             // this finds all task types in the assembly through reflection.
             TaskTypes ??= Task.GetAllKnownTaskTypes();
@@ -82,6 +82,10 @@ namespace SmarcGUI.MissionPlanning
             return char.ToUpper(camelized[0]) + camelized.Substring(1);
         }
 
+        public void AddNewTask()
+        {
+            SelectedTSTGUI.OnTaskAdded(new TaskSpec(TaskTypeDropdown.options[TaskTypeDropdown.value].text, null));
+        }
 
         public Task CreateTask(string taskName)
         {
@@ -103,9 +107,10 @@ namespace SmarcGUI.MissionPlanning
         void Start()
         {
             // Documents on win, user home on linux/mac
-            MissionStoragePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Personal), Path.Combine("SMaRCUnity", "MissionPlans"));
+            MissionStoragePath = Path.Combine(GUIState.GetStoragePath(), "MissionPlans");
             Directory.CreateDirectory(MissionStoragePath);
         }
+
 
         void LateUpdate()
         {

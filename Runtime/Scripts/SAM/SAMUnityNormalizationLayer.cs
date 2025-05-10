@@ -15,12 +15,12 @@ namespace Force
 
         public void SetRpm1(double rpm)
         {
-            propeller1Control.SetRpm(rpm * propeller1Control.RPMMax);
+            propeller1Control.SetRpm((float)rpm * propeller1Control.RPMMax);
         }
 
         public void SetRpm2(double rpm)
         {
-            propeller2Control.SetRpm(rpm * propeller2Control.RPMMax);
+            propeller2Control.SetRpm((float)rpm * propeller2Control.RPMMax);
         }
 
         public void SetRpm(double rpm1, double rpm2)

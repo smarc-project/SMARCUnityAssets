@@ -1,4 +1,5 @@
 using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 
 namespace SmarcGUI.MissionPlanning.Tasks
@@ -20,12 +21,13 @@ namespace SmarcGUI.MissionPlanning.Tasks
 
         public TaskSpecTree()
         {
+            Description = $"NONAME - {DateTime.Now:yyyyMMdd-HHmmss}";
             OnTSTModified();
         }
 
         public void OnTSTModified()
         {
-            TSTUuid = System.Guid.NewGuid().ToString();
+            TSTUuid = Guid.NewGuid().ToString();
         }
 
         public void RecoverFromJson()

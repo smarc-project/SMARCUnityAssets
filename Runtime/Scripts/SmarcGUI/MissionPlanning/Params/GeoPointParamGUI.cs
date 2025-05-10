@@ -69,7 +69,7 @@ namespace SmarcGUI.MissionPlanning.Params
                 // if there is no previous geo point, set it to where the camera is looking at
                 else
                 {
-                    var point = guiState.GetCameraLookAtPoint();
+                    var point = guiState.GetLookAtPoint();
                     var (lat, lon) = globalReferencePoint.GetLatLonFromUnityXZ(point.x, point.z);
                     latitude = lat;
                     longitude = lon;

@@ -1,0 +1,1 @@
+xacro sam_auv_into_urdf.xacro > sam_auv.urdf

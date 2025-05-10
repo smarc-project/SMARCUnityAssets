@@ -11,7 +11,17 @@ using UnityEngine.UI;
 
 namespace SmarcGUI.MissionPlanning.Tasks
 {
-    public class TaskGUI : MonoBehaviour, IHeightUpdatable, IRobotSelectionChangeListener, IPointerClickHandler, IPointerExitHandler, IPointerEnterHandler, IListItem, IPathInWorld, IParamChangeListener
+    public class TaskGUI : 
+    MonoBehaviour, 
+    IHeightUpdatable, 
+    IRobotSelectionChangeListener, 
+    IPointerClickHandler, 
+    IPointerExitHandler, 
+    IPointerEnterHandler, 
+    IListItem, 
+    IPathInWorld, 
+    IParamChangeListener,
+    ICameraLookable
     {
         public float BottomPadding = 5;
         public Task task;
@@ -21,11 +31,12 @@ namespace SmarcGUI.MissionPlanning.Tasks
         public TMP_InputField DescriptionField;
         public TMP_Text TaskName;
         public RectTransform HighlightRT;
+        public GameObject SelectedHighlightGO;
         public Button RunButton;
         public RectTransform WarningRT;
+        bool isSelected;
 
         [Header("Prefabs")]
-        public GameObject ContextMenuPrefab;
         public GameObject PointMarkerPrefab;
 
 
@@ -52,19 +63,30 @@ namespace SmarcGUI.MissionPlanning.Tasks
             baseHeight = rt.sizeDelta.y;
             missionPlanStore = FindFirstObjectByType<MissionPlanStore>();
             guiState = FindFirstObjectByType<GUIState>();
-            DescriptionField.onEndEdit.AddListener(desc => task.Description = desc);
+            DescriptionField.onEndEdit.AddListener(SetDesc);
             RunButton.onClick.AddListener(OnRunTask);
             RunButtonImage = RunButton.GetComponent<Image>();
             RunButtonText = RunButton.GetComponentInChildren<TMP_Text>();
             RunButtonOriginalColor = RunButtonImage.color;
 
             WorldMarkersCollection = GameObject.Find(WorldMarkersCollectionName).transform;
+
+            OnRobotSelectionChange(guiState.SelectedRobotGUI);
         }
         
         void OnRunTask()
         {
             var robotgui = guiState.SelectedRobotGUI;
+            if(robotgui == null) return;
             robotgui.SendStartTaskCommand(task);
+        }
+
+        public void SetDesc(string desc)
+        {
+            if(task == null) return;
+            task.Description = desc;
+            DescriptionField.text = desc;
+            if(pointmarker!=null) pointmarker.SetNameDesc(task.Name, task.Description);
         }
 
         public void SetTask(Task task, TSTGUI tstGUI)
@@ -98,9 +120,9 @@ namespace SmarcGUI.MissionPlanning.Tasks
                         return;
                     }
                     var markerGO = Instantiate(PointMarkerPrefab, WorldMarkersCollection);
-                    markerGO.name = $"{task.Name}_param_{i}";
                     pointmarker = markerGO.GetComponent<PointMarker>();
                     pointmarker.SetXZParam(paramXZ);
+                    pointmarker.SetNameDesc(task.Name, task.Description);
                 }
             }
 
@@ -144,16 +166,23 @@ namespace SmarcGUI.MissionPlanning.Tasks
                 newHeight += paramsHeight + BottomPadding;
             }
             rt.sizeDelta = new Vector2(rt.sizeDelta.x, newHeight);
-            }
+        }
 
 
         public void OnPointerClick(PointerEventData eventData)
         {
             if(eventData.button == PointerEventData.InputButton.Right)
             {
-                var contextMenuGO = Instantiate(ContextMenuPrefab);
-                var contextMenu = contextMenuGO.GetComponent<ListItemContextMenu>();
-                contextMenu.SetItem(eventData.position, this);
+                var contextMenu = guiState.CreateContextMenu();
+                contextMenu.SetItem(eventData.position, (IListItem)this);
+                contextMenu.SetItem(eventData.position, (ICameraLookable)this);
+            }
+
+            if(eventData.button == PointerEventData.InputButton.Left)
+            {
+                isSelected = !isSelected;
+                if(SelectedHighlightGO != null) SelectedHighlightGO.SetActive(isSelected);
+                if(pointmarker != null) pointmarker.Selected(isSelected);
             }
 
         }
@@ -161,11 +190,13 @@ namespace SmarcGUI.MissionPlanning.Tasks
         public void OnPointerExit(PointerEventData eventData)
         {
             HighlightRT.gameObject.SetActive(false);
+            if(pointmarker != null) pointmarker.Highlight(false);
         }
 
         public void OnPointerEnter(PointerEventData eventData)
         {
             HighlightRT.gameObject.SetActive(true);
+            if(pointmarker != null) pointmarker.Highlight(true);
         }
 
         public void OnRobotSelectionChange(RobotGUI SelectedRobotGUI)
@@ -174,14 +205,15 @@ namespace SmarcGUI.MissionPlanning.Tasks
             if(SelectedRobotGUI == null)
             {
                 WarningRT.gameObject.SetActive(false);
-                RunButtonImage.color = RunButtonOriginalColor;
-                RunButtonText.text = "Run";
+                RunButtonImage.color = Color.gray;
+                RunButtonText.text = "NoRobot";
             }
             else
             {
                 // warning highlight if the selected robot does not have this task available
                 if(SelectedRobotGUI.InfoSource == InfoSource.SIM) WarningRT.gameObject.SetActive(false);
-                else WarningRT.gameObject.SetActive(!SelectedRobotGUI.TasksAvailableNames.Contains(task.Name));
+                else if(SelectedRobotGUI.TasksAvailableNames == null || !SelectedRobotGUI.TasksAvailableNames.Contains(task.Name))
+                    WarningRT.gameObject.SetActive(true);
 
                 // make the RUN button green if it is already running this task
                 // use the task uuid to check this, since many tasks of the same type can be running
@@ -256,6 +288,12 @@ namespace SmarcGUI.MissionPlanning.Tasks
             if(pointmarker != null) pointmarker.OnParamChanged();
             task.OnTaskModified();
             tstGUI.OnParamChanged();
+        }
+
+        public Transform GetWorldTarget()
+        {
+            if(pointmarker != null) return pointmarker.transform;
+            else return null;
         }
     }
 }

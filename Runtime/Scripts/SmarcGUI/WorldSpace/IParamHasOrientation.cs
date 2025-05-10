@@ -1,10 +1,13 @@
 using SmarcGUI.MissionPlanning.Params;
+using UnityEngine;
 
 namespace SmarcGUI.WorldSpace
 {
     public interface IParamHasOrientation
     {
-        public Orientation GetOrientation();
-        public void SetOrientation(Orientation orientation);
+        public Orientation GetROSOrientation();
+        public Quaternion GetUnityQuaternion();
+        public void SetROSOrientation(Orientation o);
+        public void SetUnityQuaternion(Quaternion q);
     }
 }
