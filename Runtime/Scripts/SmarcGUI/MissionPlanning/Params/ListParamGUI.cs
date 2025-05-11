@@ -16,6 +16,7 @@ namespace SmarcGUI.MissionPlanning.Params
         public RectTransform ParamLabels;
 
         IList paramList => (IList)paramValue;
+        List<PointMarker> pointMarkers = new();
 
         public List<ParamGUI> ParamGUIs => new(content.GetComponentsInChildren<ParamGUI>());
 
@@ -59,7 +60,8 @@ namespace SmarcGUI.MissionPlanning.Params
 
             UpdateHeight();
 
-            taskgui.AddPointMarker(paramgui);
+            PointMarker pointmarker = taskgui.AddPointMarker(paramgui);
+            if(pointmarker != null) pointMarkers.Add(pointmarker);
 
             if(ParamLabels.childCount < 1)
             {
@@ -98,7 +100,6 @@ namespace SmarcGUI.MissionPlanning.Params
             paramgui.transform.SetSiblingIndex(paramgui.ParamIndex - 1);
             paramgui.UpdateIndex(paramgui.ParamIndex - 1);
             paramgui.transform.parent.GetChild(paramgui.ParamIndex+1).GetComponent<ParamGUI>().UpdateIndex(paramgui.ParamIndex+1);
-            Debug.Log("Moving param up");
         }
         
 
@@ -109,9 +110,7 @@ namespace SmarcGUI.MissionPlanning.Params
             (paramList[paramgui.ParamIndex+1], paramList[paramgui.ParamIndex]) = (paramList[paramgui.ParamIndex], paramList[paramgui.ParamIndex+1]);
             paramgui.transform.SetSiblingIndex(paramgui.ParamIndex + 1);
             paramgui.UpdateIndex(paramgui.ParamIndex + 1);
-            paramgui.transform.parent.GetChild(paramgui.ParamIndex-1).GetComponent<ParamGUI>().UpdateIndex(paramgui.ParamIndex-1);
-            Debug.Log("Moving param down");
-            
+            paramgui.transform.parent.GetChild(paramgui.ParamIndex-1).GetComponent<ParamGUI>().UpdateIndex(paramgui.ParamIndex-1);            
         }
 
         public void DeleteParam(ParamGUI paramgui)
@@ -126,7 +125,6 @@ namespace SmarcGUI.MissionPlanning.Params
                 paramgui.transform.parent.GetChild(i).GetComponent<ParamGUI>().UpdateIndex(i-1);
             UpdateHeight();
             transform.parent.GetComponentInParent<IHeightUpdatable>()?.UpdateHeight();
-            Debug.Log("Deleting param");
         }
 
 
@@ -171,9 +169,8 @@ namespace SmarcGUI.MissionPlanning.Params
             List<Vector3> path = new();
             foreach(Transform child in content)
             {
-                Debug.Log(child.GetComponent<ParamGUI>().GetFields()[2].ToString());
                 if(child.TryGetComponent<IPathInWorld>(out var paramGUI)) path.AddRange(paramGUI.GetWorldPath());
-                if(child.TryGetComponent<IParamHasXZ>(out var paramXZ))
+                else if(child.TryGetComponent<IParamHasXZ>(out var paramXZ))
                 {
                     var (x,z) = paramXZ.GetXZ();
                     if(child.TryGetComponent<IParamHasY>(out var paramY))
@@ -187,7 +184,6 @@ namespace SmarcGUI.MissionPlanning.Params
                     }
                 }
             }
-
             return path;
         }
 

@@ -90,7 +90,7 @@ namespace SmarcGUI.MissionPlanning.Tasks
             foreach(var p in pointmarkers) p.SetNameDesc(task.Name, task.Description);
         }
 
-        public void AddPointMarker(ParamGUI paramgui)
+        public PointMarker AddPointMarker(ParamGUI paramgui)
         {
             if(paramgui is IParamHasXZ paramXZ)
             {
@@ -103,7 +103,9 @@ namespace SmarcGUI.MissionPlanning.Tasks
                 if(paramgui is IParamHasHeading paramH) pointmarker.SetHeadingParam(paramH);
                 if(paramgui is IParamHasOrientation paramO) pointmarker.SetOrientationParam(paramO);
                 pointmarkers.Add(pointmarker);
+                return pointmarker;
             }
+            return null;
         }
 
         public void RemovePointMarker(ParamGUI paramgui)
@@ -277,13 +279,33 @@ namespace SmarcGUI.MissionPlanning.Tasks
         public List<Vector3> GetWorldPath()
         {
             var path = new List<Vector3>();
-            foreach(var p in pointmarkers) path.AddRange(p.GetWorldPath());
+            foreach(Transform paramguiTF in Params.transform)
+            {
+                if(!paramguiTF.TryGetComponent<ParamGUI>(out var paramgui)) continue;
+                if(paramgui is IPathInWorld pathInWorld)
+                {
+                    path.AddRange(pathInWorld.GetWorldPath());
+                }
+                else if(paramgui is IParamHasXZ paramXZ)
+                {
+                    var (x,z) = paramXZ.GetXZ();
+                    if(paramgui is IParamHasY paramY)
+                    {
+                        var y = paramY.GetY();
+                        path.Add(new Vector3(x, y, z));
+                    }
+                    else
+                    {
+                        path.Add(new Vector3(x, 0, z));
+                    }
+                }
+            }
             return path;
         }
 
         public void OnParamChanged()
         {
-           foreach(var p in pointmarkers) p.OnParamChanged();
+            foreach(var p in pointmarkers) p.OnParamChanged();
             task.OnTaskModified();
             tstGUI.OnParamChanged();
         }
