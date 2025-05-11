@@ -3,14 +3,22 @@ using System.Collections.Generic;
 using SmarcGUI.MissionPlanning.Tasks;
 using TMPro;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 namespace SmarcGUI.MissionPlanning.Params
 {
-    public class ParamGUI : MonoBehaviour, IListItem, IHeightUpdatable
+    public class ParamGUI : 
+    MonoBehaviour, 
+    IListItem, 
+    IHeightUpdatable,
+    IPointerClickHandler,
+    IPointerExitHandler, 
+    IPointerEnterHandler
     {
         [Header("ParamGUI")]
         public TMP_Text Label;
+        public RectTransform HighlightRT;
         
         protected IDictionary paramsDict;
         public string ParamKey{get; protected set;}
@@ -44,6 +52,15 @@ namespace SmarcGUI.MissionPlanning.Params
             missionPlanStore = FindFirstObjectByType<MissionPlanStore>();
             guiState = FindFirstObjectByType<GUIState>();
             rt = GetComponent<RectTransform>();
+            if(HighlightRT == null)
+            {
+                HighlightRT = transform.Find("Highlight").GetComponent<RectTransform>();
+                HighlightRT.gameObject.SetActive(false);
+            }
+            if(HighlightRT == null)
+            {
+                Debug.LogError("HighlightRT is null in ParamGUI and could not be found");
+            }
         }
 
         public void SetParam(IDictionary paramsDict, string paramKey, TaskGUI taskgui)
@@ -105,16 +122,19 @@ namespace SmarcGUI.MissionPlanning.Params
         public void OnListItemUp()
         {
             listParamGUI.MoveParamUp(this);
+            NotifyPathChange();
         }
 
         public void OnListItemDown()
         {
             listParamGUI.MoveParamDown(this);
+            NotifyPathChange();
         }
 
         public void OnListItemDelete()
         {
             listParamGUI.DeleteParam(this);
+            NotifyPathChange();
         }
 
         public void UpdateHeight()
@@ -147,8 +167,8 @@ namespace SmarcGUI.MissionPlanning.Params
             fieldsLayout.childScaleHeight = false;
             fieldsLayout.childScaleWidth = false;
             fieldsLayout.childAlignment = TextAnchor.MiddleLeft;
-            fieldsLayout.spacing = 2;
-            fieldsLayout.padding = new RectOffset(2, 2, 0, 0);
+            fieldsLayout.spacing = 0;
+            fieldsLayout.padding = new RectOffset(0, 0, 0, 0);
 
             // then, move all the fields to this new parent
             float totalChildrenWidth = 0;
@@ -160,12 +180,29 @@ namespace SmarcGUI.MissionPlanning.Params
                 if(field.sizeDelta.y > maxChildHeight)
                     maxChildHeight = field.sizeDelta.y;
             }
-            
+
+            // also add a new label to the left-hand side of the fields
+            var label = new GameObject("Label");
+            label.transform.SetParent(fieldsParent.transform);
+            label.transform.SetAsFirstSibling();
+            var labelRT = label.AddComponent<RectTransform>();
+            var labelWidth = 10;
+            labelRT.sizeDelta = new Vector2(labelWidth, maxChildHeight);
+            label.AddComponent<TextMeshProUGUI>();
+            var labelText = label.GetComponent<TMP_Text>();
+            labelText.text = ParamIndex.ToString();
+            labelText.enableAutoSizing = true;
+            Label = labelText; // change the label of the param to this one
+
             if(rt == null) rt = GetComponent<RectTransform>();
+            var widthRemainingAfterLabel = rt.sizeDelta.x - labelWidth;
+            
             rt.sizeDelta = new Vector2(rt.sizeDelta.x, maxChildHeight);
-            if(totalChildrenWidth > rt.sizeDelta.x)
+            // if the total width of the children is greater than the width of the parent, we need to resize them
+            // so that they fit in the parent
+            if(totalChildrenWidth > widthRemainingAfterLabel)
             {
-                var diff = totalChildrenWidth - rt.sizeDelta.x;
+                var diff = totalChildrenWidth - widthRemainingAfterLabel;
                 var per = diff / fields.Count;
                 foreach(var field in fields)
                 {
@@ -174,8 +211,11 @@ namespace SmarcGUI.MissionPlanning.Params
                 totalChildrenWidth -= diff;
             }
             // set the size of the new parent to be the sum of all the children widths, and the max height of the children
-            fieldsRT.sizeDelta = new Vector2(totalChildrenWidth, maxChildHeight);
+            fieldsRT.sizeDelta = new Vector2(totalChildrenWidth+labelWidth, maxChildHeight);
             fieldsRT.anchoredPosition = Vector2.zero;
+            fieldsRT.pivot = new Vector2(0, 0.5f);
+            fieldsRT.anchorMin = new Vector2(0, 0.5f);
+            fieldsRT.anchorMax = new Vector2(0, 0.5f);
 
             // disable all other children of this object
             foreach(Transform child in transform)
@@ -184,6 +224,25 @@ namespace SmarcGUI.MissionPlanning.Params
                     child.gameObject.SetActive(false);
             }
 
+        }
+
+        public void OnPointerClick(PointerEventData eventData)
+        {
+            if(eventData.button == PointerEventData.InputButton.Right)
+            {
+                var contextMenu = guiState.CreateContextMenu();
+                contextMenu.SetItem(eventData.position, (IListItem)this);
+            }
+        }
+
+        public void OnPointerEnter(PointerEventData eventData)
+        {
+            if(HighlightRT != null) HighlightRT.gameObject.SetActive(true);
+        }
+
+        public void OnPointerExit(PointerEventData eventData)
+        {
+            if(HighlightRT != null) HighlightRT.gameObject.SetActive(false);
         }
     }
 }

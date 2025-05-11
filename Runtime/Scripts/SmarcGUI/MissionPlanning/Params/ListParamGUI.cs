@@ -72,7 +72,7 @@ namespace SmarcGUI.MissionPlanning.Params
 
                     var labelGO = new GameObject();
                     labelGO.transform.SetParent(ParamLabels);
-                    labelGO.gameObject.SetActive(true);
+                    labelGO.SetActive(true);
                     labelGO.AddComponent<TextMeshProUGUI>();
                     
                     var labelRT = labelGO.GetComponent<RectTransform>();
@@ -98,6 +98,7 @@ namespace SmarcGUI.MissionPlanning.Params
             paramgui.transform.SetSiblingIndex(paramgui.ParamIndex - 1);
             paramgui.UpdateIndex(paramgui.ParamIndex - 1);
             paramgui.transform.parent.GetChild(paramgui.ParamIndex+1).GetComponent<ParamGUI>().UpdateIndex(paramgui.ParamIndex+1);
+            Debug.Log("Moving param up");
         }
         
 
@@ -109,6 +110,8 @@ namespace SmarcGUI.MissionPlanning.Params
             paramgui.transform.SetSiblingIndex(paramgui.ParamIndex + 1);
             paramgui.UpdateIndex(paramgui.ParamIndex + 1);
             paramgui.transform.parent.GetChild(paramgui.ParamIndex-1).GetComponent<ParamGUI>().UpdateIndex(paramgui.ParamIndex-1);
+            Debug.Log("Moving param down");
+            
         }
 
         public void DeleteParam(ParamGUI paramgui)
@@ -123,6 +126,7 @@ namespace SmarcGUI.MissionPlanning.Params
                 paramgui.transform.parent.GetChild(i).GetComponent<ParamGUI>().UpdateIndex(i-1);
             UpdateHeight();
             transform.parent.GetComponentInParent<IHeightUpdatable>()?.UpdateHeight();
+            Debug.Log("Deleting param");
         }
 
 
@@ -167,6 +171,7 @@ namespace SmarcGUI.MissionPlanning.Params
             List<Vector3> path = new();
             foreach(Transform child in content)
             {
+                Debug.Log(child.GetComponent<ParamGUI>().GetFields()[2].ToString());
                 if(child.TryGetComponent<IPathInWorld>(out var paramGUI)) path.AddRange(paramGUI.GetWorldPath());
                 if(child.TryGetComponent<IParamHasXZ>(out var paramXZ))
                 {
@@ -182,6 +187,7 @@ namespace SmarcGUI.MissionPlanning.Params
                     }
                 }
             }
+
             return path;
         }
 

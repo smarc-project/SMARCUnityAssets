@@ -989,10 +989,10 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 6462421783140976080}
+  - {fileID: 6279876883339760572}
   - {fileID: 2065955339825476912}
   - {fileID: 189566930503538127}
   - {fileID: 3534447650103191913}
-  - {fileID: 6279876883339760572}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
@@ -1013,6 +1013,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Label: {fileID: 4302279444427772950}
+  HighlightRT: {fileID: 6279876883339760572}
   LatField: {fileID: 5860177524517708484}
   LonField: {fileID: 5151769899253396062}
   AltField: {fileID: 7133159887186779746}

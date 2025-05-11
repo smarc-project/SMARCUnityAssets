@@ -169,11 +169,11 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 7611344114422879426}
+  - {fileID: 1738855234795724007}
   - {fileID: 8175934563937598661}
   - {fileID: 7311449045984559877}
   - {fileID: 5053223329182269072}
   - {fileID: 3797777508976918743}
-  - {fileID: 1738855234795724007}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
@@ -220,6 +220,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Label: {fileID: 5698395585727424811}
+  HighlightRT: {fileID: 1738855234795724007}
   content: {fileID: 5053223329182269072}
   AddButton: {fileID: 2473697380082421635}
   ParamLabels: {fileID: 7311449045984559877}
@@ -759,8 +760,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Padding:
-    m_Left: 5
-    m_Right: 5
+    m_Left: 0
+    m_Right: 0
     m_Top: 2
     m_Bottom: 2
   m_ChildAlignment: 0
