@@ -166,7 +166,7 @@ namespace SmarcGUI.WorldSpace
             if(paramXZ == null) draw3Dwidgets = false;
             overlay.gameObject.SetActive(!draw3Dwidgets);
 
-            pointModel.gameObject.SetActive(paramOrientation == null && paramXZ != null && draw3Dwidgets);
+            pointModel.gameObject.SetActive(paramXZ != null && draw3Dwidgets);
             dragArrows.SetActive(draw3Dwidgets && isSelected);
             headingCone.gameObject.SetActive(paramHeading != null && draw3Dwidgets);
             orientationModel.gameObject.SetActive(paramOrientation != null && draw3Dwidgets);

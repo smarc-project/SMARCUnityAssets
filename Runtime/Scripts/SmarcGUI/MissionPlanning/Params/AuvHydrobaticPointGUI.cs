@@ -75,8 +75,8 @@ namespace SmarcGUI.MissionPlanning.Params
                 paramValue = oriParam;
                 var euler = value.ToRPY();
                 exField.text = (Mathf.Abs(euler.x) < 0.0001f ? 0 : euler.x).ToString();
-                eyField.text = (Mathf.Abs(euler.y) < 0.0001f ? 0 : euler.x).ToString();
-                ezField.text = (Mathf.Abs(euler.z) < 0.0001f ? 0 : euler.x).ToString();
+                eyField.text = (Mathf.Abs(euler.y) < 0.0001f ? 0 : euler.y).ToString();
+                ezField.text = (Mathf.Abs(euler.z) < 0.0001f ? 0 : euler.z).ToString();
                 NotifyPathChange();
             }
         }
