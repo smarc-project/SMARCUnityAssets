@@ -138,7 +138,7 @@ namespace SmarcGUI.MissionPlanning.Tasks
                 var paramgui = InstantiateParamGui(Params.transform, task.Params, task.Params.Keys.ElementAt(i));
                 if(paramgui is ListParamGUI listParamGUI)
                 {
-                    foreach(var p in listParamGUI.ParamGUIs) AddPointMarker(paramgui);
+                    foreach(var p in listParamGUI.ParamGUIs) AddPointMarker(p);
                 }
                 else AddPointMarker(paramgui);
             }
