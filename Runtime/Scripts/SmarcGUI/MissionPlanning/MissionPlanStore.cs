@@ -54,6 +54,9 @@ namespace SmarcGUI.MissionPlanning
         public GameObject DepthParamPrefab;
         public GameObject AltitudeParamPrefab;
         public GameObject HeadingParamPrefab;
+        public GameObject AuvDepthPointParamPrefab;
+        public GameObject AuvAltitudePointParamPrefab;
+        public GameObject AuvHydrobaticPointParamPrefab;
 
         [Header("State of mission planning GUI")]
         public TSTGUI SelectedTSTGUI;
@@ -245,6 +248,9 @@ namespace SmarcGUI.MissionPlanning
                 Depth => DepthParamPrefab,
                 Altitude => AltitudeParamPrefab,
                 Heading => HeadingParamPrefab,
+                AuvDepthPoint => AuvDepthPointParamPrefab,
+                AuvAltitudePoint => AuvAltitudePointParamPrefab,
+                AuvHydrobaticPoint => AuvHydrobaticPointParamPrefab,
                 _ => PrimitiveParamPrefab,
             };
         }

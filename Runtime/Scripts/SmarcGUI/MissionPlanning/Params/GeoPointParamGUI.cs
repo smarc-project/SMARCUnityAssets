@@ -2,7 +2,7 @@ using GeoRef;
 using SmarcGUI.WorldSpace;
 using TMPro;
 using UnityEngine;
-
+using System.Collections.Generic;
 
 namespace SmarcGUI.MissionPlanning.Params
 {
@@ -84,7 +84,16 @@ namespace SmarcGUI.MissionPlanning.Params
             LonField.onEndEdit.AddListener(OnLonChanged);
             AltField.onEndEdit.AddListener(OnAltChanged);
 
+            fields.Add(LatField.GetComponent<RectTransform>());
+            fields.Add(LonField.GetComponent<RectTransform>());
+            fields.Add(AltField.GetComponent<RectTransform>());
+
             OnSelectedChange();
+        }
+
+        public override List<string> GetFieldLabels()
+        {
+            return new List<string> { "Lat", "Lon", "Alt" };
         }
 
         void UpdateTexts()
@@ -148,6 +157,11 @@ namespace SmarcGUI.MissionPlanning.Params
         public float GetY()
         {
             return altitude;
+        }
+
+        public float GetYReference()
+        {
+            return 0;
         }
 
         public void SetY(float y)

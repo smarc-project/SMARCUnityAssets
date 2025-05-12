@@ -4,24 +4,21 @@ using SmarcGUI.WorldSpace;
 using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 namespace SmarcGUI.MissionPlanning.Params
 {
-    public class ListParamGUI : ParamGUI, IHeightUpdatable, IPathInWorld, IParamChangeListener
+    public class ListParamGUI : ParamGUI, IPathInWorld, IParamChangeListener 
     {
         [Header("ListParamGUI")]
-        RectTransform rt;
-
         public RectTransform content;
         public Button AddButton;
+        public RectTransform ParamLabels;
 
         IList paramList => (IList)paramValue;
+        List<PointMarker> pointMarkers = new();
 
-        void Awake()
-        {
-            rt = GetComponent<RectTransform>();
-        }
-
+        public List<ParamGUI> ParamGUIs => new(content.GetComponentsInChildren<ParamGUI>());
 
         protected override void SetupFields()
         {            
@@ -31,7 +28,8 @@ namespace SmarcGUI.MissionPlanning.Params
                 GameObject paramGO;
                 GameObject paramPrefab = missionPlanStore.GetParamPrefab(((IList)paramValue)[i]);
                 paramGO = Instantiate(paramPrefab, content);
-                paramGO.GetComponent<ParamGUI>().SetParam((IList)paramValue, i, this);
+                var paramgui = paramGO.GetComponent<ParamGUI>();
+                paramgui.SetParam((IList)paramValue, i, this);
             }
 
             AddButton.onClick.AddListener(AddParamToList);
@@ -57,9 +55,41 @@ namespace SmarcGUI.MissionPlanning.Params
             if(missionPlanStore == null) missionPlanStore = FindFirstObjectByType<MissionPlanStore>();
             GameObject paramPrefab = missionPlanStore.GetParamPrefab(newParam);
             GameObject paramGO = Instantiate(paramPrefab, content);
-            paramGO.GetComponent<ParamGUI>().SetParam(paramList, math.max(0, paramList.Count - 1), this);
+            var paramgui = paramGO.GetComponent<ParamGUI>();
+            paramgui.SetParam(paramList, math.max(0, paramList.Count - 1), this);
 
             UpdateHeight();
+
+            PointMarker pointmarker = taskgui.AddPointMarker(paramgui);
+            if(pointmarker != null) pointMarkers.Add(pointmarker);
+
+            if(ParamLabels.childCount < 1)
+            {
+                var labels = paramgui.GetFieldLabels();
+                var fieldRTs = paramgui.GetFields();
+                for(int i = 0; i < labels.Count; i++)
+                {
+                    var label = labels[i];
+                    var fieldRT = fieldRTs[i];
+
+                    var labelGO = new GameObject();
+                    labelGO.transform.SetParent(ParamLabels);
+                    labelGO.SetActive(true);
+                    labelGO.AddComponent<TextMeshProUGUI>();
+                    
+                    var labelRT = labelGO.GetComponent<RectTransform>();
+                    labelRT.sizeDelta = fieldRT.sizeDelta;
+                    labelRT.pivot = fieldRT.pivot;
+                    labelRT.anchorMin = fieldRT.anchorMin;
+                    labelRT.anchorMax = fieldRT.anchorMax;
+
+                    var labelText = labelGO.GetComponent<TMP_Text>();
+                    labelText.text = label;
+                    labelText.enableAutoSizing = true;
+                    labelText.fontSizeMin = 5;
+                    labelText.alignment = TextAlignmentOptions.Center;
+                }
+            }
         }
 
         public void MoveParamUp(ParamGUI paramgui)
@@ -80,12 +110,13 @@ namespace SmarcGUI.MissionPlanning.Params
             (paramList[paramgui.ParamIndex+1], paramList[paramgui.ParamIndex]) = (paramList[paramgui.ParamIndex], paramList[paramgui.ParamIndex+1]);
             paramgui.transform.SetSiblingIndex(paramgui.ParamIndex + 1);
             paramgui.UpdateIndex(paramgui.ParamIndex + 1);
-            paramgui.transform.parent.GetChild(paramgui.ParamIndex-1).GetComponent<ParamGUI>().UpdateIndex(paramgui.ParamIndex-1);
+            paramgui.transform.parent.GetChild(paramgui.ParamIndex-1).GetComponent<ParamGUI>().UpdateIndex(paramgui.ParamIndex-1);            
         }
 
         public void DeleteParam(ParamGUI paramgui)
         {
             if(paramList == null) return;
+            taskgui.RemovePointMarker(paramgui);
             var originalIndex = paramgui.ParamIndex;
             paramList.RemoveAt(paramgui.ParamIndex);
             Destroy(paramgui.gameObject);
@@ -97,7 +128,7 @@ namespace SmarcGUI.MissionPlanning.Params
         }
 
 
-        public void UpdateHeight()
+        public new void UpdateHeight()
         {
             float contentHeight = 5;
             foreach(Transform child in content)
@@ -139,6 +170,19 @@ namespace SmarcGUI.MissionPlanning.Params
             foreach(Transform child in content)
             {
                 if(child.TryGetComponent<IPathInWorld>(out var paramGUI)) path.AddRange(paramGUI.GetWorldPath());
+                else if(child.TryGetComponent<IParamHasXZ>(out var paramXZ))
+                {
+                    var (x,z) = paramXZ.GetXZ();
+                    if(child.TryGetComponent<IParamHasY>(out var paramY))
+                    {
+                        var y = paramY.GetY();
+                        path.Add(new Vector3(x, y, z));
+                    }
+                    else
+                    {
+                        path.Add(new Vector3(x, 0, z));
+                    }
+                }
             }
             return path;
         }
