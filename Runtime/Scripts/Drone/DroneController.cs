@@ -112,9 +112,9 @@ namespace DroneController
         [Header("Control Mode")] [Tooltip("Currently only implemented controller is TrackingControl")]
         public DroneControllerState controllerState = DroneControllerState.TrackingControlNormalizedXYZ;
         [Tooltip("Distance error cap for tracking control when using normalized tracking. Smaller=less aggressive")]
-        double DistanceErrorCapNormalized = 2;
+        public double DistanceErrorCapNormalized = 2;
         [Tooltip("Distance error cap for tracking control when using non-normalized tracking. Smaller=less aggressive")]
-        double DistanceErrorCapFree = 10;
+        public double DistanceErrorCapFree = 10;
 
 
 

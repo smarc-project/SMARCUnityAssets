@@ -1,6 +1,7 @@
 using SmarcGUI.WorldSpace;
 using TMPro;
 using UnityEngine;
+using System.Collections.Generic;
 
 namespace SmarcGUI.MissionPlanning.Params
 {
@@ -27,6 +28,12 @@ namespace SmarcGUI.MissionPlanning.Params
             heading = 0;
             HeadingField.text = heading.ToString();
             HeadingField.onEndEdit.AddListener(value => SetHeading(float.Parse(value)));
+            fields.Add(HeadingField.GetComponent<RectTransform>());
+        }
+
+        public override List<string> GetFieldLabels()
+        {
+            return new List<string> { "Heading" };
         }
 
         public float GetHeading()

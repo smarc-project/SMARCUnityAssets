@@ -49,6 +49,15 @@ namespace SmarcGUI.MissionPlanning.Params
                     InputField.interactable = false;
                     break;
             }
+            if(paramValue is bool)
+                fields.Add(ChoiceDropdown.GetComponent<RectTransform>());
+            else
+                fields.Add(InputField.GetComponent<RectTransform>());
+        }
+
+        public override List<string> GetFieldLabels()
+        {
+            return new List<string> { "Primitive" };
         }
 
         void OnInputFieldChanged(string value)
