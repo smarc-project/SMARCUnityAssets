@@ -62,36 +62,52 @@ namespace SmarcGUI.MissionPlanning.Tasks
             foreach (var param in Params)
             {
                 var paramValue = param.Value;
-                if(Name == "move-to" && param.Key == "waypoint")
+                Type paramType = null;
+                if(param.Key == "waypoint")
                 {
-                    var geoPoint = JsonConvert.DeserializeObject<GeoPoint>(paramValue.ToString());
-                    paramUpdates.Add(param.Key, geoPoint);
+                    switch(Name)
+                    {
+                        case "move-to":
+                            paramType = typeof(GeoPoint);
+                            break;
+                        case "auv-depth-move-to":
+                            paramType = typeof(AuvDepthPoint);
+                            break;
+                        case "auv-altitude-move-to":
+                            paramType = typeof(AuvAltitudePoint);
+                            break;
+                        case "auv-hydrobatic-move-to":
+                            paramType = typeof(AuvHydrobaticPoint);
+                            break;
+                        default:
+                            break;
+                    }
                 }
-                else if(Name == "move-path" && param.Key == "waypoints")
+                else if(param.Key == "waypoints")
                 {
-                    var geoPoints = JsonConvert.DeserializeObject<List<GeoPoint>>(paramValue.ToString());
-                    paramUpdates.Add(param.Key, geoPoints);
+                    switch(Name)
+                    {
+                        case "move-path":
+                            paramType = typeof(List<GeoPoint>);
+                            break;
+                        case "auv-depth-move-path":
+                            paramType = typeof(List<AuvDepthPoint>);
+                            break;
+                        case "auv-altitude-move-path":
+                            paramType = typeof(List<AuvAltitudePoint>);
+                            break;
+                        case "auv-hydrobatic-move-path":
+                            paramType = typeof(List<AuvHydrobaticPoint>);
+                            break;
+                        default:
+                            break;
+                    }
                 }
-                // AUVTasks
-                else if(param.Key == "latlon")
+
+                if(paramType != null)
                 {
-                    var latlon = JsonConvert.DeserializeObject<LatLon>(paramValue.ToString());
-                    paramUpdates.Add(param.Key, latlon);
-                }
-                else if(param.Key == "target_depth")
-                {
-                    var depth = JsonConvert.DeserializeObject<Depth>(paramValue.ToString());
-                    paramUpdates.Add(param.Key, depth);
-                }
-                else if(param.Key == "target_heading")
-                {
-                    var heading = JsonConvert.DeserializeObject<Heading>(paramValue.ToString());
-                    paramUpdates.Add(param.Key, heading);
-                }
-                else if(param.Key == "orientation")
-                {
-                    var orientation = JsonConvert.DeserializeObject<Orientation>(paramValue.ToString());
-                    paramUpdates.Add(param.Key, orientation);
+                    var deserializedParam = JsonConvert.DeserializeObject(paramValue.ToString(), paramType);
+                    paramUpdates.Add(param.Key, deserializedParam);
                 }
                 else
                 {

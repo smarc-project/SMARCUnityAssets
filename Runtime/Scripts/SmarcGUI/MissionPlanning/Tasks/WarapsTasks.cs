@@ -21,15 +21,14 @@ namespace SmarcGUI.MissionPlanning.Tasks
         }
     }
 
-    // TODO: Needs to be re-implemented when "list of tasks" is implemented in the GUI proper.
-    // public class MovePath : Task
-    // {
-    //     public override void SetParams()
-    //     {
-    //         Name = "move-path";
-    //         Description = "Move through a list of WGS84 points at speed";
-    //         Params.Add("speed", MoveSpeed.STANDARD);
-    //         Params.Add("waypoints", new List<GeoPoint>());
-    //     }
-    // }
+    public class MovePath : Task
+    {
+        public override void SetParams()
+        {
+            Name = "move-path";
+            Description = "Move through a list of WGS84 points at speed";
+            Params.Add("speed", MoveSpeed.STANDARD);
+            Params.Add("waypoints", new List<GeoPoint>());
+        }
+    }
 }
