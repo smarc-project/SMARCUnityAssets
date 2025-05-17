@@ -10,7 +10,7 @@ namespace GeoRef
         UTM
     }
 
-    public class GlobalReferencePoint: MonoBehaviour
+    public class GlobalReferencePoint : MonoBehaviour
     {
         [Tooltip("Use Lat/Lon or UTM as the origin and set the other values accordingly")]
         public OriginMode OriginMode = OriginMode.LatLon;
@@ -26,11 +26,12 @@ namespace GeoRef
         public double UTMNorthing;
 
         EagerLoad el;
+        EagerLoad elWeb;
 
 
         void OnValidate()
         {
-            if(OriginMode == OriginMode.LatLon)
+            if (OriginMode == OriginMode.LatLon)
             {
                 var latlon = new Coordinate(Lat, Lon);
                 UTMEasting = latlon.UTM.Easting;
@@ -53,7 +54,7 @@ namespace GeoRef
             el = new(EagerLoadType.UTM_MGRS);
 
             var refpoints = FindObjectsByType<GlobalReferencePoint>(FindObjectsSortMode.None);
-            if(refpoints.Length > 1)
+            if (refpoints.Length > 1)
             {
                 Debug.LogWarning("Found too many GlobalReferencePoint in the scene, there should only be one!");
             }
@@ -125,6 +126,14 @@ namespace GeoRef
             var utm_northing = UTMNorthing + northingDiff;
             (var lat, var lon) = GetLatLonFromUTM(utm_easting, utm_northing);
             return (lat, lon);
+        }
+
+        public (double easting, double northing) GetWebMercatorFromLatLon(double lat, double lon)
+        {
+            elWeb ??= new(EagerLoadType.WebMercator);
+            var latlon = new Coordinate(lat, lon, elWeb);
+            var webmerc = latlon.WebMercator;
+            return (webmerc.Easting, webmerc.Northing);
         }
     }
     
