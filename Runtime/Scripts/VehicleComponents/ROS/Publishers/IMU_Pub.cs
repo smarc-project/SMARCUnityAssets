@@ -2,6 +2,7 @@ using UnityEngine;
 using RosMessageTypes.Sensor;
 using Unity.Robotics.Core; //Clock
 using Unity.Robotics.ROSTCPConnector.ROSGeometry;
+using Utils = DefaultNamespace.Utils;
 
 using SensorIMU = VehicleComponents.Sensors.IMU;
 using VehicleComponents.ROS.Core;
@@ -14,9 +15,12 @@ namespace VehicleComponents.ROS.Publishers
     { 
         [Tooltip("If false, orientation is in ENU in ROS.")]
         public bool useNED = false;
+
         protected override void InitPublisher()
         {
-            ROSMsg.header.frame_id = sensor.linkName;
+            var robotGO = Utils.FindParentWithTag(gameObject, "robot", false);
+            string prefix = robotGO.name;
+            ROSMsg.header.frame_id = $"{prefix}/{sensor.linkName}";
         }
 
         protected override void UpdateMessage()
