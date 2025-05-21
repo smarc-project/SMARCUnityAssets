@@ -15,7 +15,7 @@ namespace VehicleComponents.ROS.Publishers
     { 
         protected override void InitPublisher()
         {
-            ROSMsg.header.frame_id = sensor.linkName;
+            ROSMsg.header.frame_id = $"{frame_id_prefix}/{sensor.linkName}";
             ROSMsg.port_channel = new byte[sensor.NumBucketsPerBeam];
             ROSMsg.starboard_channel = new byte[sensor.NumBucketsPerBeam];
             ROSMsg.port_channel_angle_high = new byte[sensor.NumBucketsPerBeam];

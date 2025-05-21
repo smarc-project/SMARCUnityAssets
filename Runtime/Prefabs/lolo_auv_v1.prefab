@@ -707,7 +707,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 10a8919bb6be9cfc88e08395412d871b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  topic: core/thruster_port_fb
+  topic: actuators/thruster_port_fb
   frequency: 10
   ignoreSensorState: 0
 --- !u!114 &5378080136670906774
@@ -722,7 +722,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c429a099bc8d99179a44603b0781227c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  topic: core/thruster_port_cmd
+  topic: actuators/thruster_port_cmd
   expectedFrequency: 2
   resetting: 1
   receivedFrequency: 0
@@ -892,7 +892,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 10a8919bb6be9cfc88e08395412d871b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  topic: core/thruster_stbd_fb
+  topic: actuators/thruster_strb_fb
   frequency: 10
   ignoreSensorState: 0
 --- !u!114 &6309090320770876276
@@ -907,7 +907,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c429a099bc8d99179a44603b0781227c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  topic: core/thruster_stbd_cmd
+  topic: actuators/thruster_strb_cmd
   expectedFrequency: 2
   resetting: 1
   receivedFrequency: 0
@@ -1160,7 +1160,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6c1407c79a8032a329313e14db655bcb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  topic: dr/lat_lon
+  topic: smarc/latlon
   frequency: 10
   ignoreSensorState: 1
 --- !u!114 &2186974322604431293
@@ -1417,7 +1417,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 10a8919bb6be9cfc88e08395412d871b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  topic: core/vert_thruster_front_port_fb
+  topic: actuators/vertical_thruster_front_port_fb
   frequency: 10
   ignoreSensorState: 0
 --- !u!114 &3360185221928561318
@@ -1432,7 +1432,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c429a099bc8d99179a44603b0781227c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  topic: core/vert_thruster_front_port_cmd
+  topic: actuators/vertical_thruster_front_port_cmd
   expectedFrequency: 2
   resetting: 1
   receivedFrequency: 0
@@ -1504,7 +1504,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 771d0adfb2667593a8c266a12060997f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  topic: core/elevon_stbd_cmd
+  topic: actuators/elevon_strb_cmd
   expectedFrequency: -1
   resetting: 1
   receivedFrequency: 0
@@ -1601,7 +1601,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 10a8919bb6be9cfc88e08395412d871b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  topic: core/vert_thruster_front_stbd_fb
+  topic: actuators/vertical_thruster_front_strb_fb
   frequency: 10
   ignoreSensorState: 0
 --- !u!114 &1286021298945174430
@@ -1616,7 +1616,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c429a099bc8d99179a44603b0781227c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  topic: core/vert_thruster_front_stbd_cmd
+  topic: actuators/vertical_thruster_front_strb_cmd
   expectedFrequency: 2
   resetting: 1
   receivedFrequency: 0
@@ -1873,7 +1873,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 10a8919bb6be9cfc88e08395412d871b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  topic: core/vert_thruster_back_stbd_fb
+  topic: actuators/vertical_thruster_back_strb_fb
   frequency: 10
   ignoreSensorState: 0
 --- !u!114 &3274884573070327101
@@ -1888,7 +1888,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c429a099bc8d99179a44603b0781227c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  topic: core/vert_thruster_back_stbd_cmd
+  topic: actuators/vertical_thruster_back_strb_cmd
   expectedFrequency: 2
   resetting: 1
   receivedFrequency: 0
@@ -2008,7 +2008,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b53b4caa09486ed69afd7310efb6dbaf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  topic: core/battery
+  topic: smarc/battery_percent
   frequency: 10
   ignoreSensorState: 0
 --- !u!1 &2736854850070752478
@@ -2674,7 +2674,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 771d0adfb2667593a8c266a12060997f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  topic: core/elevon_port_cmd
+  topic: actuators/elevon_port_cmd
   expectedFrequency: -1
   resetting: 1
   receivedFrequency: 0
@@ -3088,7 +3088,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 10a8919bb6be9cfc88e08395412d871b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  topic: core/vert_thruster_back_port_fb
+  topic: actuators/vertical_thruster_back_port_fb
   frequency: 10
   ignoreSensorState: 0
 --- !u!114 &6894557112106137073
@@ -3103,7 +3103,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c429a099bc8d99179a44603b0781227c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  topic: core/vert_thruster_back_port_cmd
+  topic: actuators/vertical_thruster_back_port_cmd
   expectedFrequency: 2
   resetting: 1
   receivedFrequency: 0
@@ -3511,7 +3511,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0488af2a38628407dba8adb3eb1a253b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  topic: core/odom_gt
+  topic: smarc/odom
   frequency: 10
   ignoreSensorState: 0
   useNED: 0
@@ -4118,7 +4118,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 771d0adfb2667593a8c266a12060997f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  topic: core/rudder_stbd_cmd
+  topic: actuators/rudder_cmd
   expectedFrequency: -1
   resetting: 1
   receivedFrequency: 0
@@ -6759,7 +6759,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 771d0adfb2667593a8c266a12060997f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  topic: core/rudder_port_cmd
+  topic: actuators/rudder_cmd
   expectedFrequency: -1
   resetting: 1
   receivedFrequency: 0
@@ -6847,7 +6847,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 771d0adfb2667593a8c266a12060997f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  topic: core/elevator_cmd
+  topic: actuators/elevator_cmd
   expectedFrequency: -1
   resetting: 1
   receivedFrequency: 0

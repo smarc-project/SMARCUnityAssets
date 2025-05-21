@@ -35,7 +35,7 @@ namespace VehicleComponents.ROS.Publishers
             ROSMsg.P = new double[12];
             ROSMsg.height = (uint) sensor.textureHeight;
             ROSMsg.width = (uint) sensor.textureWidth;
-            ROSMsg.header.frame_id = sensor.linkName;
+            ROSMsg.header.frame_id = $"{frame_id_prefix}/{sensor.linkName}";
             cam = GetComponent<Camera>();
         }
 
