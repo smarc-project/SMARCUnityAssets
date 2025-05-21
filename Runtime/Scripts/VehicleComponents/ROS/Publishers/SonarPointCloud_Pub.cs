@@ -15,7 +15,7 @@ namespace VehicleComponents.ROS.Publishers
         public string frame_id="map_gt";
         protected override void InitPublisher()
         {
-            ROSMsg.header.frame_id = frame_id;
+            ROSMsg.header.frame_id = $"{frame_id_prefix}/{sensor.linkName}";
 
             ROSMsg.height = 1; // just one long list of points
             ROSMsg.width = (uint)sensor.TotalRayCount;

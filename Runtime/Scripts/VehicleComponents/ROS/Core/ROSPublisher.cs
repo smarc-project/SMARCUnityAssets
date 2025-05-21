@@ -1,6 +1,7 @@
 using UnityEngine;
 using ROSMessage = Unity.Robotics.ROSTCPConnector.MessageGeneration.Message;
 using Unity.Robotics.Core;
+using Utils = DefaultNamespace.Utils;
 
 
 namespace VehicleComponents.ROS.Core
@@ -21,6 +22,8 @@ namespace VehicleComponents.ROS.Core
         protected PublishableType sensor;
         protected RosMsgType ROSMsg;
 
+        protected string frame_id_prefix = "";
+
         bool registered = false;
 
         
@@ -36,6 +39,8 @@ namespace VehicleComponents.ROS.Core
                 rosCon.RegisterPublisher<RosMsgType>(topic);
                 registered = true;
             }
+            var robotGO = Utils.FindParentWithTag(gameObject, "robot", false);
+            frame_id_prefix = robotGO.name;
             InitPublisher();
         }
 

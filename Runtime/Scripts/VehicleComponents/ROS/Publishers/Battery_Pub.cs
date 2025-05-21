@@ -10,6 +10,11 @@ namespace VehicleComponents.ROS.Publishers
     [RequireComponent(typeof(SensorBattery))]
     class Battery_Pub: ROSPublisher<BatteryStateMsg, SensorBattery>
     {
+        protected override void InitPublisher()
+        {
+            ROSMsg.header.frame_id = $"{frame_id_prefix}/{sensor.linkName}";
+        }
+
         protected override void UpdateMessage()
         {
             ROSMsg.voltage = sensor.currentVoltage;
