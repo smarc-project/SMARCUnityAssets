@@ -6551,7 +6551,13 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 6784644159264955759, guid: 291054a015d1f5af39631330ea79023b, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 5975581384421109364}
+    - targetCorrespondingSourceObject: {fileID: 6492752199017079265, guid: 291054a015d1f5af39631330ea79023b, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 8423936744277782986}
   m_SourcePrefab: {fileID: 100100000, guid: 291054a015d1f5af39631330ea79023b, type: 3}
 --- !u!1 &76338378229991087 stripped
 GameObject:
@@ -6583,11 +6589,41 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 6784644159264955759, guid: 291054a015d1f5af39631330ea79023b, type: 3}
   m_PrefabInstance: {fileID: 2808937576513340765}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &5975581384421109364
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8709042751690872882}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ba2274c9a2cfbb209949c7493a84c250, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  topic: core/thrust_vector_yaw_fb
+  frequency: 10
+  ignoreSensorState: 0
 --- !u!1 &8998678514108441788 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 6492752199017079265, guid: 291054a015d1f5af39631330ea79023b, type: 3}
   m_PrefabInstance: {fileID: 2808937576513340765}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &8423936744277782986
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8998678514108441788}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ba2274c9a2cfbb209949c7493a84c250, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  topic: core/thrust_vector_pitch_fb
+  frequency: 10
+  ignoreSensorState: 0
 --- !u!1001 &2841809645452090941
 PrefabInstance:
   m_ObjectHideFlags: 0
