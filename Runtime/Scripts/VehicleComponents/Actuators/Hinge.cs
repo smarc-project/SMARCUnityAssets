@@ -1,11 +1,9 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using Utils = DefaultNamespace.Utils;
+using VehicleComponents.ROS.Core;
 
 namespace VehicleComponents.Actuators
 {
-    public class Hinge: LinkAttachment
+    public class Hinge: LinkAttachment, IROSPublishable
     {
         [Header("Hinge")]
         public float angle;
@@ -29,6 +27,10 @@ namespace VehicleComponents.Actuators
             int direction = reverse? -1 : 1;
             parentMixedBody.SetDriveTarget(ArticulationDriveAxis.X, direction * angle * Mathf.Rad2Deg);
         }
-        
+
+        public bool HasNewData()
+        {
+            return true;
+        }
     }
 }

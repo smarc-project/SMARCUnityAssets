@@ -1449,6 +1449,7 @@ GameObject:
   - component: {fileID: 5484218348474997294}
   - component: {fileID: 7941678749477173086}
   - component: {fileID: 5362321045208250545}
+  - component: {fileID: 3538794161214738261}
   m_Layer: 0
   m_Name: ElevonStbd
   m_TagString: Untagged
@@ -1525,6 +1526,21 @@ MonoBehaviour:
   LiftForceMultiplier: 500
   DragForceMultiplier: 50
   Orientation: 1
+--- !u!114 &3538794161214738261
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1851872486568332449}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ba2274c9a2cfbb209949c7493a84c250, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  topic: actuators/elevon_port_fb
+  frequency: 10
+  ignoreSensorState: 0
 --- !u!1 &1990175017669939580
 GameObject:
   m_ObjectHideFlags: 0
@@ -2619,6 +2635,7 @@ GameObject:
   - component: {fileID: 5509758317750954899}
   - component: {fileID: 5656115355840583319}
   - component: {fileID: 2475123470653226916}
+  - component: {fileID: 8948703872086008529}
   m_Layer: 0
   m_Name: ElevonPort
   m_TagString: Untagged
@@ -2695,6 +2712,21 @@ MonoBehaviour:
   LiftForceMultiplier: 500
   DragForceMultiplier: 50
   Orientation: 1
+--- !u!114 &8948703872086008529
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3088666195858771038}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ba2274c9a2cfbb209949c7493a84c250, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  topic: actuators/elevon_port_fb
+  frequency: 10
+  ignoreSensorState: 0
 --- !u!1 &3112749638478343169
 GameObject:
   m_ObjectHideFlags: 0
@@ -4063,6 +4095,7 @@ GameObject:
   - component: {fileID: 3677734391477021078}
   - component: {fileID: 6893560062159568582}
   - component: {fileID: 4266979242169438577}
+  - component: {fileID: 3219888531968145508}
   m_Layer: 0
   m_Name: RudderStbd
   m_TagString: Untagged
@@ -4118,7 +4151,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 771d0adfb2667593a8c266a12060997f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  topic: actuators/rudder_cmd
+  topic: actuators/rudder_stbd_cmd
   expectedFrequency: -1
   resetting: 1
   receivedFrequency: 0
@@ -4139,6 +4172,21 @@ MonoBehaviour:
   LiftForceMultiplier: 200
   DragForceMultiplier: 50
   Orientation: 0
+--- !u!114 &3219888531968145508
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4986870767559087563}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ba2274c9a2cfbb209949c7493a84c250, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  topic: actuators/rudder_stbd_fb
+  frequency: 10
+  ignoreSensorState: 0
 --- !u!1 &5061089593730785023
 GameObject:
   m_ObjectHideFlags: 0
@@ -6704,6 +6752,7 @@ GameObject:
   - component: {fileID: 8622398935020907109}
   - component: {fileID: 1142930201475144146}
   - component: {fileID: 3128894399437828345}
+  - component: {fileID: 5218003246215299508}
   m_Layer: 0
   m_Name: RudderPort
   m_TagString: Untagged
@@ -6759,7 +6808,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 771d0adfb2667593a8c266a12060997f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  topic: actuators/rudder_cmd
+  topic: actuators/rudder_port_cmd
   expectedFrequency: -1
   resetting: 1
   receivedFrequency: 0
@@ -6780,6 +6829,21 @@ MonoBehaviour:
   LiftForceMultiplier: 200
   DragForceMultiplier: 50
   Orientation: 0
+--- !u!114 &5218003246215299508
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8929270944956807269}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ba2274c9a2cfbb209949c7493a84c250, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  topic: actuators/rudder_port_fb
+  frequency: 10
+  ignoreSensorState: 0
 --- !u!1 &8939564543920937555
 GameObject:
   m_ObjectHideFlags: 0
@@ -6792,6 +6856,7 @@ GameObject:
   - component: {fileID: 6705580153912414063}
   - component: {fileID: 5609090389659058721}
   - component: {fileID: 1923256330921035209}
+  - component: {fileID: 3266584881478901045}
   m_Layer: 0
   m_Name: Elevator
   m_TagString: Untagged
@@ -6868,6 +6933,21 @@ MonoBehaviour:
   LiftForceMultiplier: 1000
   DragForceMultiplier: 100
   Orientation: 1
+--- !u!114 &3266584881478901045
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8939564543920937555}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ba2274c9a2cfbb209949c7493a84c250, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  topic: actuators/elevator_fb
+  frequency: 10
+  ignoreSensorState: 0
 --- !u!1001 &472361327994526713
 PrefabInstance:
   m_ObjectHideFlags: 0
