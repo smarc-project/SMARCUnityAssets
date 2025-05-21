@@ -4151,7 +4151,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 771d0adfb2667593a8c266a12060997f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  topic: actuators/rudder_stbd_cmd
+  topic: actuators/rudder_cmd
   expectedFrequency: -1
   resetting: 1
   receivedFrequency: 0
@@ -6808,7 +6808,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 771d0adfb2667593a8c266a12060997f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  topic: actuators/rudder_port_cmd
+  topic: actuators/rudder_cmd
   expectedFrequency: -1
   resetting: 1
   receivedFrequency: 0
