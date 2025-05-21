@@ -2,7 +2,6 @@ using UnityEngine;
 using Unity.Robotics.Core; //Clock
 using Unity.Robotics.ROSTCPConnector.ROSGeometry;
 using RosMessageTypes.Smarc;
-using Utils = DefaultNamespace.Utils;
 
 using SensorDVL = VehicleComponents.Sensors.DVL;
 using VehicleComponents.ROS.Core;
@@ -18,9 +17,7 @@ namespace VehicleComponents.ROS.Publishers
 
         protected override void InitPublisher()
         {
-            var robotGO = Utils.FindParentWithTag(gameObject, "robot", false);
-            string prefix = robotGO.name;
-            ROSMsg.header.frame_id = $"{prefix}/{sensor.linkName}";
+            ROSMsg.header.frame_id = $"{frame_id_prefix}/{sensor.linkName}";
             beamMsgs = new DVLBeamMsg[sensor.numBeams];
             for(int i=0; i < sensor.numBeams; i++)
             {

@@ -2,7 +2,6 @@ using UnityEngine;
 using RosMessageTypes.Nav;
 using Unity.Robotics.Core; //Clock
 using Unity.Robotics.ROSTCPConnector.ROSGeometry;
-using Utils = DefaultNamespace.Utils;
 
 using SensorIMU = VehicleComponents.Sensors.IMU;
 using VehicleComponents.ROS.Core;
@@ -25,10 +24,8 @@ namespace VehicleComponents.ROS.Publishers
         }
         protected override void InitPublisher()
         {
-            var robotGO = Utils.FindParentWithTag(gameObject, "robot", false);
-            string prefix = robotGO.name;
             ROSMsg.header.frame_id = "map_gt";
-            ROSMsg.child_frame_id = $"{prefix}/{sensor.linkName}";
+            ROSMsg.child_frame_id = $"{frame_id_prefix}/{sensor.linkName}";
             ROSPosition = Vector3.zero;
         }
 

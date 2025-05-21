@@ -1,7 +1,6 @@
 using UnityEngine;
 using RosMessageTypes.Sensor;
 using Unity.Robotics.Core; //Clock
-using Utils = DefaultNamespace.Utils;
 
 using SensorGPS = VehicleComponents.Sensors.GPS;
 using VehicleComponents.ROS.Core;
@@ -14,9 +13,7 @@ namespace VehicleComponents.ROS.Publishers
     { 
         protected override void InitPublisher()
         {
-            var robotGO = Utils.FindParentWithTag(gameObject, "robot", false);
-            string prefix = robotGO.name;
-            ROSMsg.header.frame_id = $"{prefix}/{sensor.linkName}";
+            ROSMsg.header.frame_id = $"{frame_id_prefix}/{sensor.linkName}";
         }
         
         protected override void UpdateMessage()
