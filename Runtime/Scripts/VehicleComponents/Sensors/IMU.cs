@@ -1,8 +1,5 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using Utils = DefaultNamespace.Utils;
-using Force;  // Assuming MixedBody is in the Force namespace
+
 
 namespace VehicleComponents.Sensors
 {
