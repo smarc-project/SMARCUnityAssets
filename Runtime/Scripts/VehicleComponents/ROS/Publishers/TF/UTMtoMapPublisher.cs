@@ -52,10 +52,8 @@ namespace VehicleComponents.ROS.Publishers
             // why origin? so that we can tell all other tf publishers
             // in the scene to publish a "global" frame that is map_gt
             // and they wont need to do any origin shenanigans that way
-            transform.position = Vector3.zero;
-            transform.rotation = Quaternion.identity;
-
-            if(!registered)
+            transform.SetPositionAndRotation(Vector3.zero, Quaternion.identity);
+            if (!registered)
             {
                 rosCon.RegisterPublisher<TFMessageMsg>(topic);
                 registered = true;

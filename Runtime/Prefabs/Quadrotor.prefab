@@ -108,6 +108,7 @@ GameObject:
   - component: {fileID: 4800906380731054}
   - component: {fileID: 8030836169684092610}
   - component: {fileID: 8902112791058481484}
+  - component: {fileID: 3090075413570263992}
   m_Layer: 0
   m_Name: Quadrotor
   m_TagString: robot
@@ -128,7 +129,8 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 8597457138550415401}
+  - {fileID: 135919806119038934}
+  - {fileID: 6110627571383574328}
   - {fileID: 6650294322077738963}
   - {fileID: 3051417882854025666}
   - {fileID: 6552006552880646174}
@@ -174,6 +176,22 @@ MonoBehaviour:
   DistanceErrorCapFree: 10
   debugLoggingController: 0
   TargetVelocity: {x: 0, y: 0, z: 0}
+--- !u!114 &3090075413570263992
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1469583607899678}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 78564e3e0c2d8c65cb6601a38bee530d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  topic: /tf
+  Suffix: _gt
+  BaseLinkName: base_link
+  Frequency: 10
 --- !u!1 &1648915923807604
 GameObject:
   m_ObjectHideFlags: 0
@@ -1138,7 +1156,6 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 8536244724804241659}
   - {fileID: 4791118420013144}
   - {fileID: 9196475552479073047}
   - {fileID: 3449743509925043727}
@@ -1423,56 +1440,6 @@ MonoBehaviour:
   topic: core/range
   frequency: 10
   ignoreSensorState: 0
---- !u!1 &1375616254144021247
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 8536244724804241659}
-  - component: {fileID: 7607660689778852157}
-  m_Layer: 0
-  m_Name: ROS TF
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &8536244724804241659
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1375616254144021247}
-  serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -1.551053, y: -8.363358, z: 8.30544}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 3051417882854025666}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &7607660689778852157
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1375616254144021247}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 78564e3e0c2d8c65cb6601a38bee530d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  topic: /tf
-  m_GlobalFrameIds:
-  - map
-  Suffix: _gt
-  TransformTreeRootName: odom
-  Frequency: 10
 --- !u!1 &1421537895179305450
 GameObject:
   m_ObjectHideFlags: 0
@@ -1798,39 +1765,6 @@ MonoBehaviour:
   ignoreSensorState: 1
   useNED: 0
   ROSPosition: {x: 0, y: 0, z: 0}
---- !u!1 &1914096618894252363
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 8597457138550415401}
-  m_Layer: 0
-  m_Name: odom
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &8597457138550415401
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1914096618894252363}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 135919806119038934}
-  - {fileID: 6110627571383574328}
-  m_Father: {fileID: 4800906380731054}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1962916537185346603
 GameObject:
   m_ObjectHideFlags: 0
@@ -2556,7 +2490,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3939394929759449381}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -2575,7 +2509,7 @@ Transform:
   - {fileID: 4341721425934453784}
   - {fileID: 8330574136197435935}
   - {fileID: 8872135822220167116}
-  m_Father: {fileID: 8597457138550415401}
+  m_Father: {fileID: 4800906380731054}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &4844363478455440381
 MonoBehaviour:
@@ -3015,11 +2949,11 @@ Transform:
   m_GameObject: {fileID: 4818855960593909349}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0.38272214, z: -0, w: 0.92386353}
-  m_LocalPosition: {x: 0, y: 0.78, z: 0}
+  m_LocalPosition: {x: 0, y: 0.77999973, z: 0}
   m_LocalScale: {x: 0.3, y: 0.3, z: 0.3}
   m_ConstrainProportionsScale: 1
   m_Children: []
-  m_Father: {fileID: 8597457138550415401}
+  m_Father: {fileID: 4800906380731054}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &8826866181995455972
 MonoBehaviour:

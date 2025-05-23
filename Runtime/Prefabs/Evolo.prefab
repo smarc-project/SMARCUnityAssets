@@ -189,8 +189,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 32ccbfb20e694c726875aa7c68c0bca7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  frequency: 50
   topic: Lidar/imu
+  frequency: 50
   ignoreSensorState: 0
   useNED: 0
 --- !u!1 &563416717710840695
@@ -232,7 +232,7 @@ Transform:
   - {fileID: 6057045251702436358}
   - {fileID: 7930417288810016589}
   - {fileID: 3784376702739148248}
-  m_Father: {fileID: 2466823344739537690}
+  m_Father: {fileID: 8664524225559225572}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!54 &7526506965281460263
 Rigidbody:
@@ -375,6 +375,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8664524225559225572}
   - component: {fileID: 9041442465036777823}
+  - component: {fileID: 7905821354947278096}
   m_Layer: 0
   m_Name: Evolo
   m_TagString: robot
@@ -395,7 +396,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 2466823344739537690}
+  - {fileID: 8843746628753723261}
   - {fileID: 8702555618869335524}
   - {fileID: 9181612218238451591}
   m_Father: {fileID: 0}
@@ -420,6 +421,22 @@ MonoBehaviour:
   maxRollAceleration: 25
   heightCorrection: 0.4
   speedMetersPerSecond: 0
+--- !u!114 &7905821354947278096
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1050158393429087721}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 78564e3e0c2d8c65cb6601a38bee530d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  topic: /tf
+  Suffix: _gt
+  BaseLinkName: base_link
+  Frequency: 10
 --- !u!1 &1357718168921322021
 GameObject:
   m_ObjectHideFlags: 0
@@ -547,8 +564,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4fb87cf5579908965bd1e8fd9984c1f9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  frequency: 10
   topic: cam_overhead/image_raw/compressed
+  frequency: 10
   ignoreSensorState: 0
   quality: 75
 --- !u!114 &8884937981894317977
@@ -563,8 +580,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5b6639050ad5a83f6a4f0de5e9d7e935, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  frequency: 10
   topic: cam_overhead/image_raw
+  frequency: 10
   ignoreSensorState: 0
 --- !u!114 &4744985148428767159
 MonoBehaviour:
@@ -578,8 +595,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 99998e432c125662d8991183cac37e9d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  frequency: 10
   topic: cam_overhead/camera_info
+  frequency: 10
   ignoreSensorState: 0
   k1: 1
   k2: 1
@@ -908,8 +925,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0488af2a38628407dba8adb3eb1a253b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  frequency: 30
   topic: odom
+  frequency: 30
   ignoreSensorState: 0
   useNED: 0
   ROSPosition: {x: 0, y: 0, z: 0}
@@ -1195,38 +1212,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 46398bc5d6905ad429a6d2d973afe002, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!1 &4432408558322206985
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 2466823344739537690}
-  m_Layer: 0
-  m_Name: odom
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &2466823344739537690
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4432408558322206985}
-  serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 8843746628753723261}
-  m_Father: {fileID: 8664524225559225572}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &4486301878068086775
 GameObject:
   m_ObjectHideFlags: 0
@@ -1473,11 +1458,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6c1407c79a8032a329313e14db655bcb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  frequency: 10
   topic: dr/lat_lon
+  frequency: 10
   ignoreSensorState: 1
-  lat: 0
-  lon: 0
 --- !u!114 &8137893716370307562
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1490,64 +1473,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eee95b5d1413e86d4bed3e951d06a085, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  frequency: 8
   topic: Lidar/gps
+  frequency: 8
   ignoreSensorState: 0
---- !u!1 &5939089060938445646
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 2694897194378912978}
-  - component: {fileID: 6111444463996866827}
-  m_Layer: 0
-  m_Name: ROS_TF
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &2694897194378912978
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5939089060938445646}
-  serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 8702555618869335524}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &6111444463996866827
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5939089060938445646}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 78564e3e0c2d8c65cb6601a38bee530d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  linkName: odom
-  retryUntilSuccess: 1
-  rotateForROSCamera: 0
-  roll: 0
-  pitch: 0
-  yaw: 0
-  m_GlobalFrameIds:
-  - map
-  suffix: _gt
-  frequency: 10
-  ErrorOnPublish: 0
 --- !u!1 &5997850985728794168
 GameObject:
   m_ObjectHideFlags: 0
@@ -1722,8 +1650,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4fb87cf5579908965bd1e8fd9984c1f9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  frequency: 10
   topic: cam_onboard/image_raw/compressed
+  frequency: 10
   ignoreSensorState: 0
   quality: 75
 --- !u!114 &4400415194231580137
@@ -1738,8 +1666,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5b6639050ad5a83f6a4f0de5e9d7e935, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  frequency: 10
   topic: cam_onboard/image_raw
+  frequency: 10
   ignoreSensorState: 0
 --- !u!114 &7424111938258520251
 MonoBehaviour:
@@ -1753,8 +1681,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 99998e432c125662d8991183cac37e9d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  frequency: 10
   topic: cam_onboard/camera_info
+  frequency: 10
   ignoreSensorState: 0
   k1: 1
   k2: 1
@@ -1987,7 +1915,6 @@ Transform:
   m_Children:
   - {fileID: 6155193091040721597}
   - {fileID: 2127787486066732226}
-  - {fileID: 2694897194378912978}
   - {fileID: 1923418577117845141}
   - {fileID: 6703514752036057966}
   - {fileID: 6590584513099853624}
