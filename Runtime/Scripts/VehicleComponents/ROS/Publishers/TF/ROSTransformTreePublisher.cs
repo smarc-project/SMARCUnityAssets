@@ -107,6 +107,7 @@ namespace VehicleComponents.ROS.Publishers
             var mapToOdomMsg = new TransformMsg
             {
                 translation = OdomLinkGO.transform.To<ENU>().translation
+                // ignore orientation, so that odom and map are aligned always.
             };
             var mapToOdom = new TransformStampedMsg(
                 new HeaderMsg(new TimeStamp(Clock.time), $"map"),
@@ -119,33 +120,6 @@ namespace VehicleComponents.ROS.Publishers
                 $"{prefix}/{BaseLinkTreeNode.name}",
                 BaseLinkTreeNode.Transform.To<ENU>());
             tfMessageList.Add(odomToBaseLink);
-
-
-
-            // if (m_GlobalFrameIds.Count > 0)
-            // {
-            //     var tfRootToGlobal = new TransformStampedMsg(
-            //         new HeaderMsg(new TimeStamp(Clock.time), m_GlobalFrameIds.Last()),
-            //         $"{prefix}/{BaseLinkTreeNode.name}",
-            //         BaseLinkTreeNode.Transform.To<ENU>());
-            //     tfMessageList.Add(tfRootToGlobal);
-            // }
-            // else
-            // {
-            //     Debug.LogWarning($"No {m_GlobalFrameIds} specified, transform tree will be entirely local coordinates.");
-            // }
-
-            // // In case there are multiple "global" transforms that are effectively the same coordinate frame, 
-            // // treat this as an ordered list, first entry is the "true" global
-            // for (var i = 1; i < m_GlobalFrameIds.Count; ++i)
-            // {
-            //     var tfGlobalToGlobal = new TransformStampedMsg(
-            //         new HeaderMsg(new TimeStamp(Clock.time), m_GlobalFrameIds[i - 1]),
-            //         m_GlobalFrameIds[i],
-            //         // Initializes to identity transform
-            //         new TransformMsg());
-            //     tfMessageList.Add(tfGlobalToGlobal);
-            // }
         }
 
         void PopulateMessage()
