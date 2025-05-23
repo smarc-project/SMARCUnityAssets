@@ -11,7 +11,7 @@ public static class TransformExtensions
     {
         return new TransformMsg(
             // Using vector/quaternion To<>() because Transform.To<>() doesn't use localPosition/localRotation
-            tfUnity.localPosition.To<FLU>(),
+            tfUnity.localPosition.To<ENU>(),
             tfUnity.localRotation.To<FLU>());
     }
 
