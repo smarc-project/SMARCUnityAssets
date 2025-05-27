@@ -55,10 +55,10 @@ namespace VehicleComponents.ROS.Publishers
                 },
                 buttons = new int[] 
                 {
-                    south.ReadValue<int>(),
-                    east.ReadValue<int>(),
-                    west.ReadValue<int>(),
-                    north.ReadValue<int>(),
+                    south.IsPressed()? 1 : 0,
+                    east.IsPressed()? 1 : 0,
+                    west.IsPressed()? 1 : 0,
+                    north.IsPressed()? 1 : 0,
                     0, // BACK(SELECT)
                     0, // GUIDE (Xbox button?)
                     0, // START

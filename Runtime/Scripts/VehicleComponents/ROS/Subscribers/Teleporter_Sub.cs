@@ -5,10 +5,18 @@ using DefaultNamespace; // ResetArticulationBody() extension
 using RosMessageTypes.Geometry;
 using Unity.Robotics.ROSTCPConnector.ROSGeometry; 
 using VehicleComponents.ROS.Core;
+using RosMessageTypes.Std;
 
 
 namespace VehicleComponents.ROS.Subscribers
 {
+    
+    public enum TeleportFrame
+    {
+        Odom,
+        Map
+    }
+
     public class Teleporter_Sub : ROSBehaviour
     {
         [Header("Teleporter")]
@@ -20,8 +28,8 @@ namespace VehicleComponents.ROS.Subscribers
 
         int immovableStage = 2;
 
-        [Tooltip("Choose whether to teleport object in local transform versus global transform")]
-        public bool TeleportLocal = false;
+        [Tooltip("Choose whether to teleport object in local transform(odom) versus global transform(map)")]
+        public TeleportFrame TeleportFrame = TeleportFrame.Odom;
 
 
         [Header("Debug")]
@@ -36,15 +44,15 @@ namespace VehicleComponents.ROS.Subscribers
             RBparts = Target.gameObject.GetComponentsInChildren<Rigidbody>();
             ROSCoordInput = ENU.ConvertFromRUF(Target.position);
 
-            rosCon.Subscribe<PoseMsg>(topic, UpdateMessage);
+            rosCon.Subscribe<PoseStampedMsg>(topic, UpdateMessage);
         }
 
 
-        void UpdateMessage(PoseMsg pose)
+        void UpdateMessage(PoseStampedMsg poseStamped)
         {
-            if(Target.TryGetComponent(out ArticulationBody targetAb))
+            if (Target.TryGetComponent(out ArticulationBody targetAb))
             {
-                if(!targetAb.isRoot)
+                if (!targetAb.isRoot)
                 {
                     Debug.LogWarning($"[{transform.name}] Assigned target object is an Arti. body, but it is not the root. Non-root articulation bodies can not be teleported! Disabling.");
                     enabled = false;
@@ -52,6 +60,29 @@ namespace VehicleComponents.ROS.Subscribers
                     return;
                 }
             }
+
+            // check the stamp for any mention of maps or odoms
+            var frameId = poseStamped.header.frame_id;
+            if (!(frameId.Contains("map") || frameId.Contains("odom")))
+            {
+                Debug.LogWarning($"[{transform.name}] Received a pose with frame_id {frameId} which is not supported for teleportation. Only ENU frames in odom or map frames are supported. Ignoring!");
+                return;
+            }
+
+            if (frameId.Contains("map") && TeleportFrame == TeleportFrame.Odom)
+            {
+                Debug.LogWarning($"[{transform.name}] Received a pose with frame_id {frameId} which is in map(global) frame, but teleporter is set to local space!. Ignoring!");
+                return;
+            }
+
+            if (frameId.Contains("odom") && TeleportFrame == TeleportFrame.Map)
+            {
+                Debug.LogWarning($"[{transform.name}] Received a pose with frame_id {frameId} which is in odom frame, but teleporter is set to global(map) space!. Ignoring!");
+                return;
+            }
+
+
+            var pose = poseStamped.pose;
 
             // if its an articulation body, we need to use a specific method
             // otherwise just setting local position/rotation is enough.
@@ -78,7 +109,7 @@ namespace VehicleComponents.ROS.Subscribers
             }
             else
             {
-                if (!TeleportLocal) Target.SetPositionAndRotation(unityPosi, unityOri);
+                if (TeleportFrame == TeleportFrame.Map) Target.SetPositionAndRotation(unityPosi, unityOri);
                 else Target.SetLocalPositionAndRotation(unityPosi, unityOri);
             }
 
@@ -90,7 +121,7 @@ namespace VehicleComponents.ROS.Subscribers
                 ab.ResetArticulationBody();
             }
 
-            foreach(var rb in RBparts)
+            foreach (var rb in RBparts)
             {
                 rb.linearVelocity = Vector3.zero;
                 rb.angularVelocity = Vector3.zero;
@@ -99,36 +130,43 @@ namespace VehicleComponents.ROS.Subscribers
 
         void FixedUpdate()
         {
-            if(UseDebugInput && immovableStage >= 2)
+            if (UseDebugInput && immovableStage >= 2)
             {
-                UpdateMessage(new PoseMsg
+                UpdateMessage(new PoseStampedMsg
                 {
-                    position = new PointMsg
+                    pose = new PoseMsg
                     {
-                        x = ROSCoordInput.x,
-                        y = ROSCoordInput.y,
-                        z = ROSCoordInput.z
+                        position = new PointMsg
+                        {
+                            x = ROSCoordInput.x,
+                            y = ROSCoordInput.y,
+                            z = ROSCoordInput.z
+                        },
+                        orientation = new QuaternionMsg
+                        {
+                            x = 0,
+                            y = 0,
+                            z = 0,
+                            w = 1
+                        }
                     },
-                    orientation = new QuaternionMsg
+                    header = new HeaderMsg
                     {
-                        x = 0,
-                        y = 0,
-                        z = 0,
-                        w = 1
+                        frame_id = TeleportFrame == TeleportFrame.Odom ? "odom" : "map"
                     }
                 });
-                if(ResetDebugInput) UseDebugInput = false;
+                if (ResetDebugInput) UseDebugInput = false;
             }
 
-            switch(immovableStage)
+            switch (immovableStage)
             {
                 case 0:
                     immovableStage = 1;
                     break;
                 case 1:
-                    if(Target.TryGetComponent(out ArticulationBody targetAb))
+                    if (Target.TryGetComponent(out ArticulationBody targetAb))
                     {
-                        if(!targetAb.isRoot) return;
+                        if (!targetAb.isRoot) return;
                         targetAb.immovable = false;
                     }
                     immovableStage = 2;
