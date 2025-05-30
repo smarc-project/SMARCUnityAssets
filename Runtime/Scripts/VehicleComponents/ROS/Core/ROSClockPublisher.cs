@@ -4,10 +4,11 @@ using Unity.Robotics.ROSTCPConnector;
 using RosMessageTypes.BuiltinInterfaces;
 using RosMessageTypes.Rosgraph;
 using Unity.Robotics.Core;
+using VehicleComponents.ROS.Core;
 
 namespace Unity.Robotics.Core
 {
-    public class ROSClockPublisher : MonoBehaviour
+    public class ROSClockPublisher : ROSBehaviour
     {
         [SerializeField]
         Clock.ClockMode m_ClockMode;
@@ -20,11 +21,13 @@ namespace Unity.Robotics.Core
 
         double m_LastPublishTimeSeconds;
 
-        ROSConnection m_ROS;
+        TimeMsg clockMsg;
 
         double PublishPeriodSeconds => 1.0f / m_PublishRateHz;
 
         bool ShouldPublishMessage => Clock.FrameStartTimeInSeconds - PublishPeriodSeconds > m_LastPublishTimeSeconds;
+
+        bool registered = false;
 
         void OnValidate()
         {
@@ -50,32 +53,28 @@ namespace Unity.Robotics.Core
             m_LastSetClockMode = mode;
         }
 
-        // Start is called before the first frame update
-        void Start()
+
+        protected override void StartROS()
         {
             SetClockMode(m_ClockMode);
-            m_ROS = ROSConnection.GetOrCreateInstance();
-            m_ROS.RegisterPublisher<ClockMsg>("clock");
+            if (!registered)
+            {
+                rosCon.RegisterPublisher<ClockMsg>("/clock");
+                registered = true;
+            }
+            clockMsg = new TimeMsg();
         }
 
-        void PublishMessage()
-        {
-            var publishTime = Clock.time;
-            var clockMsg = new TimeMsg
-            {
-                sec = (int)publishTime,
-                nanosec = (uint)((publishTime - Math.Floor(publishTime)) * Clock.k_NanoSecondsInSeconds)
-            };
-            m_LastPublishTimeSeconds = publishTime;
-            m_ROS.Publish("clock", clockMsg);
-        }
 
         void Update()
         {
-            if (ShouldPublishMessage)
-            {
-                PublishMessage();
-            }
+            if (!ShouldPublishMessage) return;
+
+            var publishTime = Clock.time;
+            clockMsg.sec = (int)publishTime;
+            clockMsg.nanosec = (uint)((publishTime - Math.Floor(publishTime)) * Clock.k_NanoSecondsInSeconds);
+            m_LastPublishTimeSeconds = publishTime;
+            rosCon.Publish("/clock", clockMsg);
         }
     }
 }

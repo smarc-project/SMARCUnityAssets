@@ -1,12 +1,10 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 using RosMessageTypes.SmarcMission; // GotoWaypointMsg
-using VehicleComponents.Sensors; // GPSRef
+using GeoRef; // GPSRef
 
-using Unity.Robotics.ROSTCPConnector.ROSGeometry; 
-using Unity.Robotics.ROSTCPConnector;
+using VehicleComponents.ROS.Core;
+
 
 namespace VehicleComponents.ROS.Subscribers
 {
@@ -17,13 +15,9 @@ namespace VehicleComponents.ROS.Subscribers
         LineRenderer
     }
 
-    public class CurrentWP_Sub : MonoBehaviour
+    public class CurrentWP_Sub : ROSBehaviour
     {
-
-        [Tooltip("The topic will be namespaced under the root objects name if the given topic does not start with '/'.")]
-        public string topic;
-        ROSConnection ros;
-        GPSReferencePoint gpsRef;
+        GlobalReferencePoint globalRef;
 
         [Tooltip("Position: Teleport this object itself to where the WP is. LineRenderer: Draw some lines to represent the WP, fancier.")]
         public PointingType pointingType;
@@ -31,32 +25,22 @@ namespace VehicleComponents.ROS.Subscribers
         LineRenderer surfacePointer, circle;
 
 
-        void Start()
+        protected override void StartROS()
         {
-            if(topic == null) return;
-            if(topic[0] != '/') topic = $"/{transform.root.name}/{topic}";
-
-            ros = ROSConnection.GetOrCreateInstance();
-            ros.Subscribe<GotoWaypointMsg>(topic, UpdateMessage);
-
-            var gpsRefs = FindObjectsByType<GPSReferencePoint>(FindObjectsSortMode.None);
-            if(gpsRefs.Length < 1)
-            {
-                Debug.Log("[CurrentWP_Sub] No GPS Reference found in the scene. Not gonna work!");
-            }
-            else gpsRef = gpsRefs[0];
-
+            globalRef = FindFirstObjectByType<GlobalReferencePoint>();
             if(pointingType == PointingType.LineRenderer)
             {
                 surfacePointer = transform.Find("SurfacePointer").GetComponent<LineRenderer>();
                 circle = transform.Find("Circle").GetComponent<LineRenderer>();
             }
+
+            rosCon.Subscribe<GotoWaypointMsg>(topic, UpdateMessage);
         }
 
         void UpdatePosition(GotoWaypointMsg msg)
         {
             var position = new Vector3(0,0,0);
-            (position.x, position.z) = gpsRef.GetUnityXZFromLatLon(msg.lat, msg.lon);
+            (position.x, position.z) = globalRef.GetUnityXZFromLatLon(msg.lat, msg.lon);
             position.y = (float) -msg.travel_depth;
 
             transform.position = position;
@@ -65,7 +49,7 @@ namespace VehicleComponents.ROS.Subscribers
         void UpdateLines(GotoWaypointMsg msg)
         {
             var center = new Vector3(0,0,0);
-            (center.x, center.z) = gpsRef.GetUnityXZFromLatLon(msg.lat, msg.lon);
+            (center.x, center.z) = globalRef.GetUnityXZFromLatLon(msg.lat, msg.lon);
             center.y = (float) -msg.travel_depth;
 
             int numPts = 50;
@@ -96,7 +80,13 @@ namespace VehicleComponents.ROS.Subscribers
             // lat lon is probably easier to handle in unity than utm
             // since we have a gps reference point that does the lat/lon -> unity world
             // conversion already
-            if(gpsRef == null) return;
+            if(globalRef == null)
+            {
+                Debug.Log($"[{transform.name}] No GlobalReferencePoint found! Disabling.");
+                enabled = false;
+                rosCon.Unsubscribe(topic);
+                return;
+            }
 
             switch(pointingType)
             {

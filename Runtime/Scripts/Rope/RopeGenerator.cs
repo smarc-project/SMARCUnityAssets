@@ -1,9 +1,5 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEditor.EditorTools;
 using UnityEngine;
 using Utils = DefaultNamespace.Utils;
-using TFPub = VehicleComponents.ROS.Publishers.ROSTransformTreePublisher;
 
 namespace Rope
 {
@@ -107,11 +103,10 @@ namespace Rope
         {
             var lastLink = RopeContainer.transform.GetChild(NumSegments-1);
             var lastLinkRL = lastLink.GetComponent<RopeLink>();
-            var (lastLinkFront, lastLinkBack) = lastLinkRL.SpherePositions();
+            var (lastLinkFront, _) = lastLinkRL.SpherePositions();
             var buoy = Instantiate(BuoyPrefab);
             buoy.transform.SetParent(RopeContainer.transform);
-            buoy.transform.position = lastLink.position + lastLinkFront;
-            buoy.transform.rotation = lastLink.rotation;
+            buoy.transform.SetPositionAndRotation(lastLink.position + lastLinkFront, lastLink.rotation);
             buoy.name = "Buoy";
             var buoyRB = buoy.GetComponent<Rigidbody>();
             buoyRB.mass = BuoyGrams * 0.001f;
@@ -124,16 +119,21 @@ namespace Rope
 
         public void SpawnRope()
         {
-            VehicleRopeLink = Utils.FindDeepChildWithName(transform.root.gameObject, VehicleRopeLinkName);
-            VehicleBaseLink = Utils.FindDeepChildWithName(transform.root.gameObject, VehicleBaseLinkName);
+            if(!gameObject.CompareTag("robot"))
+            {
+                Debug.LogError("RopeGenerator: No vehicle found. Make sure this is a child of a vehicle tagged 'robot'.");
+                return;
+            }
             
-            RopeContainer = Utils.FindDeepChildWithName(transform.root.gameObject, containerName);
+            VehicleRopeLink = Utils.FindDeepChildWithName(gameObject, VehicleRopeLinkName);
+            VehicleBaseLink = Utils.FindDeepChildWithName(gameObject, VehicleBaseLinkName);
+            
+            RopeContainer = Utils.FindDeepChildWithName(gameObject, containerName);
             if(RopeContainer == null)
             {
                 RopeContainer = new GameObject(containerName);
-                RopeContainer.transform.SetParent(transform.root);
-                RopeContainer.transform.position = VehicleRopeLink.transform.position;
-                RopeContainer.transform.rotation = VehicleRopeLink.transform.rotation;
+                RopeContainer.transform.SetParent(gameObject.transform);
+                RopeContainer.transform.SetPositionAndRotation(VehicleRopeLink.transform.position, VehicleRopeLink.transform.rotation);
             }
 
             InstantiateAllLinks();
@@ -151,8 +151,18 @@ namespace Rope
 
         public void DestroyRope(bool keepBuoy = false)
         {
-            RopeContainer = Utils.FindDeepChildWithName(transform.root.gameObject, containerName);
-            if(RopeContainer == null) return;
+            if(!gameObject.CompareTag("robot"))
+            {
+                Debug.LogError("RopeGenerator: No vehicle found. Make sure this is a child of a vehicle tagged 'robot'.");
+                return;
+            }
+
+            RopeContainer = Utils.FindDeepChildWithName(gameObject, containerName);
+            if(RopeContainer == null)
+            {
+                Debug.LogError("RopeGenerator: No rope found, cannot destroy rope.");
+                return;
+            }
 
             if(!keepBuoy) DestroyEitherWay(RopeContainer);
             else 
@@ -169,9 +179,14 @@ namespace Rope
 
         void Awake()
         {
-            if(RopeContainer == null) RopeContainer = Utils.FindDeepChildWithName(transform.root.gameObject, containerName);
-            if(VehicleRopeLink == null) VehicleRopeLink = Utils.FindDeepChildWithName(transform.root.gameObject, VehicleRopeLinkName);
-            if(VehicleBaseLink == null) VehicleBaseLink = Utils.FindDeepChildWithName(transform.root.gameObject, VehicleBaseLinkName);
+            if(!gameObject.CompareTag("robot"))
+            {
+                Debug.LogError("RopeGenerator: No vehicle found. Make sure this is a child of a vehicle tagged 'robot'.");
+                return;
+            }
+            if(RopeContainer == null) RopeContainer = Utils.FindDeepChildWithName(gameObject, containerName);
+            if(VehicleRopeLink == null) VehicleRopeLink = Utils.FindDeepChildWithName(gameObject, VehicleRopeLinkName);
+            if(VehicleBaseLink == null) VehicleBaseLink = Utils.FindDeepChildWithName(gameObject, VehicleBaseLinkName);
             if(RopeContainer != null && ropeLineRenderer == null) ropeLineRenderer = RopeContainer.GetComponent<LineRenderer>();
         }
 
@@ -182,12 +197,12 @@ namespace Rope
             var ropeLinks = RopeContainer.GetComponentsInChildren<RopeLink>();
             ropeLineRenderer.positionCount = ropeLinks.Length+1;
             foreach(var rl in ropeLinks)
-            for(int i=0; i<ropeLinks.Length; i++)
-            {
-                ropeLineRenderer.SetPosition(i, ropeLinks[i].transform.position);
-            }
+                for(int i=0; i<ropeLinks.Length; i++)
+                {
+                    ropeLineRenderer.SetPosition(i, ropeLinks[i].transform.position);
+                }
 
-            var lastChild = ropeLinks[ropeLinks.Length-1].transform;
+            var lastChild = ropeLinks[^1].transform;
             ropeLineRenderer.SetPosition(NumSegments, lastChild.position+lastChild.forward*SegmentLength);
         }
 

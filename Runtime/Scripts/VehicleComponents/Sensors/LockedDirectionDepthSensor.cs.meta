@@ -1,19 +1,2 @@
 fileFormatVersion: 2
-<<<<<<< HEAD
 guid: 47b4542a2d5624ed58e0950e9bfc4db6
-=======
-<<<<<<<< HEAD:Runtime/Scripts/SimpleGizmo.cs.meta
-guid: f52038e41d415ae1cbf5477d532d3314
-========
-guid: 47b4542a2d5624ed58e0950e9bfc4db6
->>>>>>>> ba3d2fd (name of sensor changed, now direction of sensing is an input, radme updated accordingly):Runtime/Scripts/VehicleComponents/Sensors/LockedDirectionDepthSensor.cs.meta
->>>>>>> master
-MonoImporter:
-  externalObjects: {}
-  serializedVersion: 2
-  defaultReferences: []
-  executionOrder: 0
-  icon: {instanceID: 0}
-  userData: 
-  assetBundleName: 
-  assetBundleVariant: 

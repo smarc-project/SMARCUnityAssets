@@ -10,7 +10,8 @@ GameObject:
   m_Component:
   - component: {fileID: 2970021653359921310}
   - component: {fileID: 1662493632097492073}
-  - component: {fileID: 3062139818935489222}
+  - component: {fileID: 261061624273665792}
+  - component: {fileID: 1049777862564182728}
   m_Layer: 0
   m_Name: ROSSingletons
   m_TagString: Untagged
@@ -45,10 +46,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: aef787a990b1312bd91c7fb5eda8f458, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  topic: /clock
   m_ClockMode: 0
   m_LastSetClockMode: 0
   m_PublishRateHz: 100
---- !u!114 &3062139818935489222
+--- !u!114 &261061624273665792
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -60,4 +62,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ee81888241533583a9d98e158a029d69, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  topic: /tf
   frequency: 1
+--- !u!114 &1049777862564182728
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6357952754565123669}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 72e340880f8dbff49a22db0cce1570b4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  topic: /joy

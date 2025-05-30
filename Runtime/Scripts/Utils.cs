@@ -1,10 +1,8 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using MathNet.Numerics.LinearAlgebra;
 using MathNet.Numerics.LinearAlgebra.Double;
 using UnityEngine;
-using UnityEngine.UI;
 using Random = UnityEngine.Random;
 
 namespace DefaultNamespace
@@ -294,16 +292,13 @@ namespace DefaultNamespace
             Transform parent_tf = self.transform.parent;
             if(parent_tf == null)
             {
-                Debug.Log("parent tf is null:"+ self.name);
                 if(returnTopLevel) return self;
                 else return null;
             }
             if(parent_tf.CompareTag(tag))
             {
-                Debug.Log("Found tagged parent");
                 return parent_tf.gameObject;
             }
-            Debug.Log("Going up a level");
             return FindParentWithTag(parent_tf.gameObject, tag, returnTopLevel);
         }
 

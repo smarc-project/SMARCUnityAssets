@@ -5,6 +5,9 @@ using UnityEngine;
 using Unity.Robotics.Core; //Clock
 using DefaultNamespace.Water; // WaterQueryModel
 using Icosphere = DefaultNamespace.IcoSphere;
+using VehicleComponents.ROS.Core;
+using SmarcGUI;
+using DefaultNamespace;
 
 namespace VehicleComponents.Acoustics
 {
@@ -29,7 +32,7 @@ namespace VehicleComponents.Acoustics
 
 
     [RequireComponent(typeof(MeshFilter))]
-    public class Transceiver : MonoBehaviour, ISoundVelocityUser
+    public class Transceiver : MonoBehaviour, ISoundVelocityUser, IROSPublishable
     {   
         [Tooltip("Speed of sound underwater, defaults to 1500m/s.")]
         public float SoundVelocity = 1500f;
@@ -39,6 +42,10 @@ namespace VehicleComponents.Acoustics
         
         [Tooltip("Min radius of the unoccupied channel. Think of a tube between transceivers free of obstacles. How big should it be to transmit?")]
         public float MinChannelRadius = 0.2f;
+        [Tooltip("If checked, transmission will work regardless of occlusions.")]
+        public bool IgnoreOcclusions = false;
+        [Tooltip("If checked, transmission will work even if the source/target is not in water.")]
+        public bool WorkInAir = false;
 
 
         [Tooltip("Should there be secondary messages received depending on the channel shape?")]
@@ -71,12 +78,17 @@ namespace VehicleComponents.Acoustics
         Vector3[] entireSphereVecs;
         Vector3[] bottomFiringVectors;
 
+
+        [Header("Debug")]
         [Tooltip("Draw debug lines to visualize paths of the signal.")]
         public bool DrawSignalLines = true;
+        [Tooltip("Set to true to broadcast a test message once.")]
+        public bool testBroadcast = false;
 
 
         WaterQueryModel waterModel;
         Transceiver[] allTransceivers;
+        public GameObject SelfRobotGO {get; private set;}
 
 
         // cant send/receive a million things
@@ -94,12 +106,12 @@ namespace VehicleComponents.Acoustics
 
         void Awake()
         {
-            allTransceivers = GameObject.FindObjectsByType<Transceiver>(FindObjectsSortMode.None);
-            waterModel = FindObjectsByType<WaterQueryModel>(FindObjectsSortMode.None)[0];
+            allTransceivers = FindObjectsByType<Transceiver>(FindObjectsSortMode.None);
+            waterModel = FindFirstObjectByType<WaterQueryModel>();
             if(TerrainGO == null)
             {
                 Debug.LogWarning("Terrain game object not set, trying to find one myself...");
-                TerrainGO = FindObjectsByType<Terrain>(FindObjectsSortMode.None)[0].gameObject;
+                TerrainGO = FindFirstObjectByType<Terrain>().gameObject;
             }
             terrainColliderID = TerrainGO.GetComponent<Collider>().GetInstanceID();
             if(terrainColliderID == 0)
@@ -114,6 +126,8 @@ namespace VehicleComponents.Acoustics
 
             sendQueue = new Queue<string>();
             receiveQueue = new Queue<StringStamped>();
+
+            SelfRobotGO = Utils.FindParentWithTag(gameObject, "robot", false);
         }
 
         void OnValidate()
@@ -121,6 +135,15 @@ namespace VehicleComponents.Acoustics
             // so you can play with the opening angle live without doing this every update
             FilterCompleteSphere(); 
         }
+
+        bool HitTargetTx(RaycastHit hit, Transceiver tx)
+        {
+            var hitRobotGO = Utils.FindParentWithTag(hit.transform.gameObject, "robot", false);
+            if(hitRobotGO == null) return false; // not a robot
+            if(hitRobotGO == tx.SelfRobotGO) return true; // hit something that belongs to the target tx
+            return false; // hit another robot lol
+        }
+
 
         void FilterCompleteSphere()
         {
@@ -147,6 +170,11 @@ namespace VehicleComponents.Acoustics
 
         bool FrontSphereCast(Vector3 from, Vector3 to, out RaycastHit hit, float maxDist = Mathf.Infinity)
         {
+            if(IgnoreOcclusions){
+                hit = new RaycastHit();
+                return false;
+            }
+
             // SphereCast puts the center of the sphere at the start position
             // but want it to start/end a channel-radius away to avoid hitting things
             // that are behind the source/target
@@ -165,7 +193,7 @@ namespace VehicleComponents.Acoustics
             if(FrontSphereCast(transform.position, tx.transform.position, out hit))
             {
                 // ignore the body that ONLY the target tx is attached to
-                if(hit.transform.root.name != tx.transform.root.name)
+                if(!HitTargetTx(hit, tx))
                 {
                     // There is no open corridor of given radius between objects.
                     if(DrawSignalLines) Debug.DrawLine(transform.position, hit.point, Color.red, 1);
@@ -271,7 +299,7 @@ namespace VehicleComponents.Acoustics
             if(FrontSphereCast(echoPoint, tx.transform.position, out surfaceToTargetHit, remainingRangeAfterEcho))
             {
                 // ignore the body that ONLY the target tx is attached to
-                if(surfaceToTargetHit.transform.root.name != tx.transform.root.name)
+                if(!HitTargetTx(surfaceToTargetHit, tx))
                 {
                     // there is a hit, no echo
                     if(DrawSignalLines) Debug.DrawLine(echoPoint, surfaceToTargetHit.point, Color.red, 0.1f);
@@ -343,7 +371,7 @@ namespace VehicleComponents.Acoustics
                 if(Physics.SphereCast(groundHit.point, MinChannelRadius, echoDirection, out occlusionHit, remainingRangeAfterEcho))
                 {
                     // hit something that isnt the target, abort
-                    if(occlusionHit.transform.root.name != tx.transform.root.name) continue;
+                    if(!HitTargetTx(occlusionHit, tx)) continue;
                     // hit the target tx
                     targetHitPoint = occlusionHit.point; // if the small one hit the target, we can skip the large spherecast :D
                     hitTarget = true;
@@ -405,10 +433,13 @@ namespace VehicleComponents.Acoustics
         
         void Broadcast(string data)
         {
-            // Doesnt work out of water :(
-            float selfWaterSurfaceLevel = waterModel.GetWaterLevelAt(transform.position);
-            float selfDepth = selfWaterSurfaceLevel - transform.position.y;
-            if(selfDepth < 0) return;
+            if(!WorkInAir)
+            {
+                // Doesnt work out of water :(
+                float selfWaterSurfaceLevel = waterModel.GetWaterLevelAt(transform.position);
+                float selfDepth = selfWaterSurfaceLevel - transform.position.y;
+                if(selfDepth < 0) return; // not in water
+            }
 
             // TODO this could be parallelized
             foreach(Transceiver tx in allTransceivers)
@@ -419,9 +450,12 @@ namespace VehicleComponents.Acoustics
                 var dist = Vector3.Distance(transform.position, tx.transform.position);
                 if(dist > MaxRange) continue; // skip too far
 
-                float txWaterSurfaceLevel = waterModel.GetWaterLevelAt(tx.transform.position);
-                float txDepth = txWaterSurfaceLevel - tx.transform.position.y;
-                if(txDepth < 0) continue; // skip not-in-water
+                if(!tx.WorkInAir)
+                {
+                    float txWaterSurfaceLevel = waterModel.GetWaterLevelAt(tx.transform.position);
+                    float txDepth = txWaterSurfaceLevel - tx.transform.position.y;
+                    if(txDepth < 0) continue; // skip not-in-water
+                }
 
 
                 TransmitDirectPath(data, tx);
@@ -480,6 +514,11 @@ namespace VehicleComponents.Acoustics
 
         void FixedUpdate()
         {
+            if(testBroadcast)
+            {
+                Write("Test broadcast from " + name);
+                testBroadcast = false;
+            }
             // TODO tie this to some frequency as well.
             // modems usually have a limit, as a function of
             // data size
@@ -502,5 +541,9 @@ namespace VehicleComponents.Acoustics
             sendQueue.Enqueue(data);
         }
 
+        public bool HasNewData()
+        {
+            return receiveQueue.Count > 0;
+        }
     }
 }

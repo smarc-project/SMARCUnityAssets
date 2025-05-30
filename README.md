@@ -1,6 +1,7 @@
 # SMARC Unity Assets
 This is a package containing all of the SMARC Unity assets and scripts including vehicles, dynamics, sensors and more. 
 
+## Quick start
 If you:
 - Are new to Unity
 - Want to avoid installation
@@ -14,7 +15,12 @@ I suggest starting with one of the pre-configured projects:
   - Lesser graphical fidelity, but runs easier.
   - Does not have Unity Water Simulation (water is a plane).
 
-You can find more detailed instructions on using these projects [here](./Documentation/Index.md).
+You can find more detailed instructions on using all available vehicles, sensors, connections, UIs etc. [here](./Documentation/README.md).
+
+## Help!
+If at any point, you needed help, got the help, and the help was not about using Unity (Good example:"How do I make my vehicle buoyant?". Bad example: "How do I move this object in the editor?"), please [open an issue in github](https://github.com/smarc-project/SMARCUnityAssets/issues) (and tag it with "Documentation" if you can). 
+That way, we can identify gaps in our documentation and hopefully add them in for the next person.
+
 
 ## Installation for non-SMaRC projects
 

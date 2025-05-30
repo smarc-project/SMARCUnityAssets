@@ -24,7 +24,9 @@ namespace VehicleComponents.Sensors
 
         void Start()
         {
-            _waterModel = FindObjectsByType<WaterQueryModel>(FindObjectsSortMode.None)[0];
+            var waterModels = FindObjectsByType<WaterQueryModel>(FindObjectsSortMode.None);
+            if(waterModels.Length > 0) _waterModel = waterModels[0];
+            
             depth = 0f;
             noiseGenerator = new NormalDistribution(noiseMean, noiseSigma);
         }
@@ -44,6 +46,7 @@ namespace VehicleComponents.Sensors
             else
             {
                 // If no hit, fall back to water level calculation
+                if(_waterModel == null) return false;
                 float waterSurfaceLevel = _waterModel.GetWaterLevelAt(transform.position);
                 // Debug.Log("y: " + transform.position.y);
                 depth = -(waterSurfaceLevel - transform.position.y);

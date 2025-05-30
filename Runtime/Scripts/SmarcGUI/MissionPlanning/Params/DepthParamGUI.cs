@@ -1,0 +1,54 @@
+using SmarcGUI.WorldSpace;
+using TMPro;
+using UnityEngine;
+using System.Collections.Generic;
+
+namespace SmarcGUI.MissionPlanning.Params
+{
+    public class DepthParamGUI : ParamGUI, IParamHasY
+    {
+        [Header("DepthParamGUI")]
+        public TMP_InputField DepthField;
+
+        public float depth
+        {
+            get { return ((Depth)paramValue).depth; }
+            set
+            {
+                var d = (Depth)paramValue;
+                d.depth = value;
+                paramValue = d;
+                DepthField.text = value.ToString();
+                NotifyPathChange();
+            }
+        }
+
+        protected override void SetupFields()
+        {
+            depth = -1;
+            DepthField.text = depth.ToString();
+            DepthField.onEndEdit.AddListener(value => SetY(-float.Parse(value)));
+            fields.Add(DepthField.GetComponent<RectTransform>());
+        }
+
+        public override List<string> GetFieldLabels()
+        {
+            return new List<string> { "Depth" };
+        }
+
+        public float GetY()
+        {
+            return -depth;
+        }
+
+        public float GetYReference()
+        {
+            return 0;
+        }
+
+        public void SetY(float y)
+        {
+            depth = -y;
+        }
+    }
+}

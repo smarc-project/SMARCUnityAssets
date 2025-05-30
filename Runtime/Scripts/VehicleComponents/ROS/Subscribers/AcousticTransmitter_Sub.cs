@@ -1,45 +1,33 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using Utils = DefaultNamespace.Utils;
 
-using Unity.Robotics.ROSTCPConnector;
 using RosMessageTypes.Smarc; // StringStampedMsg
 
 using TX = VehicleComponents.Acoustics.Transceiver;
+using VehicleComponents.ROS.Core;
 
 namespace VehicleComponents.ROS.Subscribers
 {
 
     [RequireComponent(typeof(TX))]
-    public class AcousticTransmitter_Sub : MonoBehaviour
+    public class AcousticTransmitter_Sub : ROSBehaviour
     {       
-        ROSConnection ros;
-        [Header("ROS Subscriber")]
-        [Tooltip("The topic will be namespaced under the root objects name if the given topic does not start with '/'.")]
-        public string topic;
-
         TX tx;
-        StringStampedMsg ROSMsg;
         
-        void Start()
+        protected override void StartROS()
         {
-            if(topic[0] != '/') topic = $"/{transform.root.name}/{topic}";
-            ros = ROSConnection.GetOrCreateInstance();
-            ros.Subscribe<StringStampedMsg>(topic, UpdateMessage);
-
-            ROSMsg = new StringStampedMsg();
-
             tx = GetComponent<TX>();
-            if(tx == null)
-            {
-                Debug.Log("No transceiver found!");
-                return;
-            }
+            rosCon.Subscribe<StringStampedMsg>(topic, UpdateMessage);
         }
 
         void UpdateMessage(StringStampedMsg msg)
         {
+            if(tx == null)
+            {
+                Debug.Log($"[{transform.name}] No transceiver found! Disabling.");
+                enabled = false;
+                rosCon.Unsubscribe(topic);
+                return;
+            }
             tx.Write(msg.data);
         }
 

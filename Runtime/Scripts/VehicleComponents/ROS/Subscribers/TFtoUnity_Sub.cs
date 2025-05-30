@@ -1,59 +1,55 @@
-using System;
+
 using System.Collections.Generic;
 using UnityEngine;
-using Unity.Robotics.ROSTCPConnector;
 using RosMessageTypes.Geometry;
-using RosMessageTypes.Std;
 using RosMessageTypes.Tf2;
-using Unity.Robotics.Core;
 // All the ENU etc conversion come from this:
 using Unity.Robotics.ROSTCPConnector.ROSGeometry; 
 
 using Utils = DefaultNamespace.Utils;
-using GPSReferencePoint = VehicleComponents.Sensors.GPSReferencePoint;
+using GlobalReferencePoint = GeoRef.GlobalReferencePoint;
+using VehicleComponents.ROS.Core;
 
 
 namespace VehicleComponents.ROS.Subscribers
 {
 
-    public class TFtoUnity_Sub: MonoBehaviour
+    public class TFtoUnity_Sub: ROSBehaviour
     {
+        [Header("ROS TF to Unity Sub")]
         public bool drawLines = true;
         public bool createArrows = true;
         public GameObject arrowsPrefab;
-        string topic = "/tf";
-        ROSConnection ros;
-        TFMessageMsg tfMsg;
 
 
         // easting,northing wrt unity-origin.
         public double[] unity_origin_in_utm;
-        GPSReferencePoint gpsRef;
+        GlobalReferencePoint globalRef;
         HashSet<string> initialized_utm_map_frames;
 
 
-        void Start()
+        protected override void StartROS()
         {
-            ros = ROSConnection.GetOrCreateInstance();
-            ros.Subscribe<TFMessageMsg>(topic, UpdateMessage);
             unity_origin_in_utm = new double[2];
 
             // UTM stuff needs speical handling due to their large numbers
             // and Unity's float representation in transforms.
             transform.position = Vector3.zero;
-            var gpsRefs = FindObjectsByType<GPSReferencePoint>(FindObjectsSortMode.None);
-            if(gpsRefs.Length < 1)
+            globalRef = FindFirstObjectByType<GlobalReferencePoint>();
+            if(globalRef == null)
             {
-                Debug.Log("No GPS Reference found in the scene. UTM-related functions will not work!");
+                Debug.LogError($"[{transform.name}] No GlobalReferencePoint found! Disabling.");
+                enabled = false;
                 return;
             }
-            gpsRef = gpsRefs[0];
             double easting, northing, lat, lon;
-            (easting, northing, lat, lon) = gpsRef.GetUTMLatLonOfObject(gameObject);
+            (easting, northing, lat, lon) = globalRef.GetUTMLatLonOfObject(gameObject);
             unity_origin_in_utm[0] = easting;
             unity_origin_in_utm[1] = northing;
 
             initialized_utm_map_frames = new HashSet<string>();
+
+            rosCon.Subscribe<TFMessageMsg>(topic, UpdateMessage);
         }
 
         Transform GetOrCreate(string id)
@@ -74,7 +70,14 @@ namespace VehicleComponents.ROS.Subscribers
 
         void UpdateMessage(TFMessageMsg tfMsg)
         {
-            this.tfMsg = tfMsg;
+            if(globalRef == null)
+            {
+                Debug.LogError($"[{transform.name}] No GlobalReferencePoint found! Disabling.");
+                enabled = false;
+                rosCon.Unsubscribe(topic);
+                return;
+            }
+            
             foreach(TransformStampedMsg tfStamped in tfMsg.transforms)
             {
                 string parent_id = tfStamped.header.frame_id;                
@@ -103,7 +106,7 @@ namespace VehicleComponents.ROS.Subscribers
                 
                 if(parent_id.Contains("utm"))
                 {
-                    if(gpsRef == null) continue;
+                    if(globalRef == null) continue;
 
                     // ENU -> EUN, globally positioned such that
                     // unity's origin ends up at 0,0
@@ -163,18 +166,17 @@ namespace VehicleComponents.ROS.Subscribers
                     // then put the child frame under this
                     child_tf.SetParent(parent_tf);
                     // and position it
-                    child_tf.localPosition = FLU.ConvertToRUF(
+                    
+                    child_tf.SetLocalPositionAndRotation(FLU.ConvertToRUF(
                         new Vector3(
                             (float)ros_tf.translation.x,
                             (float)ros_tf.translation.y,
-                            (float)ros_tf.translation.z));
-
-                    child_tf.localRotation = FLU.ConvertToRUF(
+                            (float)ros_tf.translation.z)), FLU.ConvertToRUF(
                         new Quaternion(
                             (float)ros_tf.rotation.x,
                             (float)ros_tf.rotation.y,
                             (float)ros_tf.rotation.z,
-                            (float)ros_tf.rotation.w));
+                            (float)ros_tf.rotation.w)));
                 }
             }
         }

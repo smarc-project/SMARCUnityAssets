@@ -1,11 +1,7 @@
 using System;
-using System.Linq;
-using System.Collections;
 using System.Collections.Generic;
-using DefaultNamespace.Water;
 using UnityEngine;
-using UnityEngine.Serialization;
-using UnityEditor.EditorTools;
+
 
 namespace Force
 {
@@ -71,25 +67,65 @@ namespace Force
                 else rb.mass = value;
             }
         }
+        public ArticulationDrive xDrive
+        {
+            get{if (ab != null){return ab.xDrive;}
+                else { throw new InvalidOperationException("The 'ab' part of MixedBody is null. Cannot get 'xDrive'.");}
+            }
+            set{if (ab != null){ab.xDrive = value;
+                } else { throw new InvalidOperationException("The 'ab' part of MixedBody is null. Cannot set 'xDrive'.");}
+            }
+        }
+
+        public ArticulationReducedSpace jointPosition
+        {
+            get 
+            { 
+                if (ab != null) { return ab.jointPosition; } 
+                else { throw new InvalidOperationException("The 'ab' part of MixedBody is null. 'jointPosition' is only valid for ArticulationBody."); } 
+            }
+            set 
+            { 
+                if (ab != null) { ab.jointPosition = value; } 
+                else { throw new InvalidOperationException("The 'ab' part of MixedBody is null. 'jointPosition' is only valid for ArticulationBody."); } 
+            }
+        }
+
 
         public float drag
         {
-            get {return ab ? ab.linearDamping : rb.drag; }
+            get {return ab ? ab.linearDamping : rb.linearDamping; }
             set {
                 if(ab != null) ab.linearDamping = value;
-                else rb.drag = value;
+                else rb.linearDamping = value;
             }
         }
 
         public float angularDrag
         {
-            get {return ab ? ab.angularDamping : rb.angularDrag; }
+            get {return ab ? ab.angularDamping : rb.angularDamping; }
             set {
                 if(ab != null) ab.angularDamping = value;
-                else rb.angularDrag = value;
+                else rb.angularDamping = value;
             }
         }
-
+        public Vector3 angularVelocity
+        {
+            get {return ab ? ab.angularVelocity : rb.angularVelocity; }
+            set {
+                if(ab != null) ab.angularVelocity = value;
+                else rb.angularVelocity = value;
+            }
+        } 
+        public Vector3 velocity
+        {
+            get {return ab ? ab.linearVelocity : rb.linearVelocity; }
+            set {
+                if(ab != null) ab.linearVelocity = value;
+                else rb.linearVelocity = value;
+            }
+        }
+        
         public Vector3 position
         {
             get {return ab ? ab.transform.position : rb.transform.position; }
@@ -107,6 +143,13 @@ namespace Force
             else
                 rb.AddForceAtPosition(force, position, mode);
         }
+        public void AddTorque(Vector3 torque, ForceMode mode = ForceMode.Force)
+        {
+            if (ab != null)
+                ab.AddTorque(torque, mode);
+            else 
+                rb.AddTorque(torque, mode);
+        } 
 
         public void ConnectToJoint(Joint j)
         {
@@ -153,5 +196,30 @@ namespace Force
             return totalMass;
 
         }
+        
+    
+        public void SetDriveTarget(ArticulationDriveAxis axis, float target)
+        {
+            if (ab != null)
+            {
+                ab.SetDriveTarget(axis, target);
+            }
+            else
+            {
+                throw new InvalidOperationException("The 'ab' part of MixedBody is null. 'SetDriveTarget' is only valid for ArticulationBody.");
+            }
+        }    
+        public void SetDriveTargetVelocity(ArticulationDriveAxis axis, float velocity)
+        {
+            if (ab != null)
+            {
+                ab.SetDriveTargetVelocity(axis, velocity);
+            }
+            else
+            {
+                throw new InvalidOperationException("The 'ab' part of MixedBody is null. 'SetDriveTargetVelocity' is only valid for ArticulationBody.");
+            }
+        }
+
     }
 }

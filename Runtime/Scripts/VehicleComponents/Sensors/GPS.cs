@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Utils = DefaultNamespace.Utils;
+using GeoRef;
 
 using DefaultNamespace.Water;
 
@@ -17,12 +18,12 @@ namespace VehicleComponents.Sensors
         public double alt;
         public bool fix;
 
-        private GPSReferencePoint _gpsRef;
+        private GlobalReferencePoint _gpsRef;
         private WaterQueryModel _waterModel;
 
         void Start()
         {
-            var gpsRefs = FindObjectsByType<GPSReferencePoint>(FindObjectsSortMode.None);
+            var gpsRefs = FindObjectsByType<GlobalReferencePoint>(FindObjectsSortMode.None);
             if(gpsRefs.Length < 1)
             {
                 Debug.Log("No GPS Reference found in the scene. Setting values to 0");

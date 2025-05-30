@@ -1,8 +1,4 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using Utils = DefaultNamespace.Utils;
-
 using VehicleComponents.ROS.Core;
 
 namespace VehicleComponents.Sensors

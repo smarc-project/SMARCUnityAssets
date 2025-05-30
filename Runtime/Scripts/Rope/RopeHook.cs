@@ -1,8 +1,6 @@
-using System.Collections;
-using System.Collections.Generic;
+using DefaultNamespace;
 using UnityEngine;
 
-using Utils = DefaultNamespace.Utils;
 
 namespace Rope
 {
@@ -20,12 +18,29 @@ namespace Rope
         [Header("Debug")]
         public bool DrawForces = false;
 
+        [Tooltip("If true, the hook will attach to the base_link of the given buoy on start.")]
+        public bool AttachToRopeLinkAfterStart = false;
+        public RopeLinkBuoy RopeLinkBuoy;
+
+        void FixedUpdate()
+        {
+            if(AttachToRopeLinkAfterStart && RopeLinkBuoy != null)
+            {
+                var theRobot = Utils.FindParentWithTag(RopeLinkBuoy.OtherSideOfTheRope.gameObject, "robot", false);
+                var theRope = theRobot.transform.Find("Rope");
+                AttachDroneToRopeLink(RopeLinkBuoy);
+                // clean up.
+                Destroy(theRope.gameObject);
+                Destroy(PulleyGO);
+                Destroy(gameObject);
+            }
+        }
+
         
 
         bool TestRopeGrab(Collision collision)
         {
-            RopeLink rl;
-            if(collision.gameObject.TryGetComponent(out rl))
+            if (collision.gameObject.TryGetComponent(out RopeLink rl))
             {
                 // we want to ignore collisions with the rope depending on the "up" direction of the
                 // hook and the velocity of the collision
@@ -36,7 +51,7 @@ namespace Rope
                 Vector3 hookUp = transform.up;
                 Vector3 forceDirection = collision.impulse.normalized;
 
-                if(DrawForces)
+                if (DrawForces)
                 {
                     Debug.DrawRay(collision.contacts[0].point, forceDirection, Color.red, 1.0f);
                     Debug.DrawRay(collision.contacts[0].point, hookUp, Color.green, 1.0f);
@@ -49,6 +64,23 @@ namespace Rope
                 }
             }
             return false;
+        }
+
+        void AttachDroneToRopeLink(RopeLinkBuoy rlb)
+        {
+            // if we collide with the buoy, that means the pulley is tight
+            // for sim stability, we will destroy the pulley, the buoy and the hook
+            // and attach the "OtherSideOfTheRope" to the winch directly.
+            var winch = WinchGO.GetComponent<Winch>();
+            winch.UnSetup();
+            // this could be generalized to RBs and such... but for now, we'll just do the ArticulationBody
+            winch.LoadAB = rlb.OtherSideOfTheRope;
+            winch.CurrentRopeSpeed = 0;
+            winch.WinchSpeed = 0;
+            var dist = Vector3.Distance(rlb.OtherSideOfTheRope.transform.position, winch.transform.position);
+            winch.TargetLength = dist;
+            winch.CurrentLength = dist;
+            winch.Setup();
         }
 
         void OnCollisionStay(Collision collision)
@@ -73,27 +105,14 @@ namespace Rope
                 return; // only grab things one at a time...
             }
 
-            RopeLinkBuoy rlb;
-            if(collision.gameObject.TryGetComponent(out rlb))
+            if (collision.gameObject.TryGetComponent(out RopeLinkBuoy rlb))
             {
-                // if we collide with the buoy, that means the pulley is tight
-                // for sim stability, we will destroy the pulley, the buoy and the hook
-                // and attach the "OtherSideOfTheRope" to the winch directly.
-                var winch = WinchGO.GetComponent<Winch>();
-                winch.UnSetup();
-                // this could be generalized to RBs and such... but for now, we'll just do the ArticulationBody
-                winch.LoadAB = rlb.OtherSideOfTheRope;
-                winch.CurrentRopeSpeed = 0;
-                winch.WinchSpeed = 0;
-                var dist = Vector3.Distance(rlb.OtherSideOfTheRope.transform.position, winch.transform.position);
-                winch.TargetLength = dist;
-                winch.CurrentLength = dist;
-                winch.Setup();
-
+                AttachDroneToRopeLink(rlb);
+                // hopefully we are doing this after a pulley has been attached to the hook
+                // so we can destroy the pulley and the buoy
                 var pulley = PulleyGO.GetComponent<Pulley>();
                 pulley.UnSetup();
                 Destroy(PulleyGO);
-
                 Destroy(rlb.gameObject);
                 Destroy(gameObject);
             }

@@ -1,20 +1,14 @@
-using UnityEngine;
-using Unity.Robotics.ROSTCPConnector;
 using RosMessageTypes.Std;
 using System;
+using VehicleComponents.ROS.Core;
 
-public class TestPublisher : MonoBehaviour
+public class TestPublisher : ROSBehaviour
 {
-    ROSConnection ros;
-    public string topicName = "/timer";
-
-    void Start()
+    protected override void StartROS()
     {
-        ros = ROSConnection.GetOrCreateInstance();
-        ros.RegisterPublisher<Float64Msg>(topicName);
+        rosCon.RegisterPublisher<Float64Msg>(topic);
         InvokeRepeating("PublishTestMessage", 0.02f, 0.02f);
     }
-
 
     void PublishTestMessage()
     {
@@ -22,6 +16,6 @@ public class TestPublisher : MonoBehaviour
         {
             data = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds()/1000.0
         };
-        ros.Publish(topicName, testMsg);
+        rosCon.Publish(topic, testMsg);
     }
 }
