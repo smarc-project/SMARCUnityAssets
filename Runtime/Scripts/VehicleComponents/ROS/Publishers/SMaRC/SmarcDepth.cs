@@ -51,8 +51,8 @@ namespace VehicleComponents.ROS.Publishers
         {
             if (Clock.Now - lastUpdate < period) return;
             lastUpdate = Clock.Now;
-            var waterSurfaceLevel = waterQueryModel.GetWaterLevelAt(transform.position);
-            float depth = waterSurfaceLevel - transform.position.y;
+            var waterSurfaceLevel = waterQueryModel.GetWaterLevelAt(base_link.position);
+            float depth = waterSurfaceLevel - base_link.position.y;
             msg.data = depth;
             rosCon.Publish(topic, msg);
         }
