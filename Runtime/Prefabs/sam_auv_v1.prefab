@@ -1009,7 +1009,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   topic: teleport
   Target: {fileID: 3567068247855063146}
-  TeleportLocal: 0
+  TeleportFrame: 0
   UseDebugInput: 0
   ResetDebugInput: 0
   ROSCoordInput: {x: 0, y: 0, z: 0}
@@ -6295,6 +6295,7 @@ PrefabInstance:
     m_RemovedGameObjects:
     - {fileID: 7228304869328427846, guid: eed1d2ed1b093f5a6ab21512c8cefe12, type: 3}
     - {fileID: 6843956064454985405, guid: eed1d2ed1b093f5a6ab21512c8cefe12, type: 3}
+    - {fileID: 2602205173958415465, guid: eed1d2ed1b093f5a6ab21512c8cefe12, type: 3}
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: eed1d2ed1b093f5a6ab21512c8cefe12, type: 3}

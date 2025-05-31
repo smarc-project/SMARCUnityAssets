@@ -66,9 +66,9 @@ namespace VehicleComponents.ROS.Publishers
             msg.pose.pose.orientation = body.rotation.To<ENU>();
 
             var vel = body.transform.InverseTransformVector(body.velocity);
-            msg.twist.twist.linear = vel.To<ENU>();
+            msg.twist.twist.linear = vel.To<FLU>();
             var anvel = body.transform.InverseTransformVector(body.angularVelocity);
-            msg.twist.twist.angular = anvel.To<ENU>();
+            msg.twist.twist.angular = -anvel.To<FLU>();
             
             rosCon.Publish(topic, msg);
         }

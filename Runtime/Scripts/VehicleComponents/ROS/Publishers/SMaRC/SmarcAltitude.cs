@@ -52,15 +52,15 @@ namespace VehicleComponents.ROS.Publishers
         {
             if (Clock.Now - lastUpdate < period) return;
             lastUpdate = Clock.Now;
-            var waterSurfaceLevel = waterQueryModel.GetWaterLevelAt(transform.position);
-            float depth = waterSurfaceLevel - transform.position.y;
-            float altitude = transform.position.y;
+            var waterSurfaceLevel = waterQueryModel.GetWaterLevelAt(base_link.position);
+            float depth = waterSurfaceLevel - base_link.position.y;
+            float altitude = base_link.position.y;
             // if we are underwater, we need a raycast down to get altitude from the ground
             // if there is no hit, that means we are underwater, but there is no ground...
             // so infinite altitude?
             if (depth > 0)
             {
-                if (Physics.Raycast(transform.position, Vector3.down, out RaycastHit hit))
+                if (Physics.Raycast(base_link.position, Vector3.down, out RaycastHit hit))
                 {
                     altitude = hit.distance;
                 }
