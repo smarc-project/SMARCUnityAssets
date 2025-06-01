@@ -1,12 +1,12 @@
 using UnityEngine;
 
-using RosMessageTypes.Smarc; // ThrusterRPM
+using RosMessageTypes.Std;
 using Propeller = VehicleComponents.Actuators.Propeller;
 
 namespace VehicleComponents.ROS.Subscribers
 {
     [RequireComponent(typeof(Propeller))]
-    public class PropellerCommand_Sub : Actuator_Sub<ThrusterRPMMsg>
+    public class PropellerCommand_Sub : Actuator_Sub<Float32Msg>
     {        
         Propeller prop;
         
@@ -31,7 +31,7 @@ namespace VehicleComponents.ROS.Subscribers
                 return;
             }
 
-            prop.SetRpm(ROSMsg.rpm);
+            prop.SetRpm(ROSMsg.data);
         }
     }
 }
