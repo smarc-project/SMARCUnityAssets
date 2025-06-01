@@ -116,7 +116,9 @@ namespace VehicleComponents.ROS.Publishers
                 translation = OdomLinkGO.transform.To<ENU>().translation,
             };
             var mapToOdom = new TransformStampedMsg(
-                new HeaderMsg(new TimeStamp(Clock.time), $"map"),
+            	// FIXME (aldoteran): hardcoding _gt to the map frame so it can be removed from
+            	// the rest of the robot's links without messing shit up.
+                new HeaderMsg(new TimeStamp(Clock.time), $"map_gt"),
                 $"{prefix}/odom",
                 mapToOdomMsg);
             tfMessageList.Add(mapToOdom);

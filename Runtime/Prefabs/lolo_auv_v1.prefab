@@ -5431,7 +5431,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   topic: /tf
-  Suffix: _gt
+  Suffix: 
   BaseLinkName: base_link
   Frequency: 10
 --- !u!1 &7181258836340888077
