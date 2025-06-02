@@ -305,6 +305,7 @@ namespace SmarcGUI
                 // hardcoded strings coming from waraps api.
                 var task = newTasks.Find(t => t["task-uuid"] == taskUuid);
                 var taskName = task["task-name"];
+                string taskDesc = task.ContainsKey("description") ? task["description"] : "No description";
                 var execTaskGO = Instantiate(ExecutingTaskPrefab, ExecutingTasksScrollContent);
                 var execTaskGUI = execTaskGO.GetComponent<ExecutingTaskGUI>();
                 var taskSpec = msg.TasksAvailable.Find(t => t.Name == taskName);
@@ -317,7 +318,7 @@ namespace SmarcGUI
                     guiState.Log($"No signals available for robot::task: {RobotName}::{taskName}, adding $abort as a fallback!");
                     signals.Add("$abort");
                 }
-                execTaskGUI.SetExecTask(this, taskName, taskUuid, signals);
+                execTaskGUI.SetExecTask(this, taskName, taskDesc, taskUuid, signals);
             }
 
             TasksExecutingUuids = newUuids;

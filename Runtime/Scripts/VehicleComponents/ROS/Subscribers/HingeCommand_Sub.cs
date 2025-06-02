@@ -40,7 +40,6 @@ namespace VehicleComponents.ROS.Subscribers
                 hinge.SetAngle(0);
                 return;
             }
-            var angle=0f;
             hinge.SetAngle(ROSMsg.data);
         }
     }
