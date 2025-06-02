@@ -46,6 +46,7 @@ namespace SmarcGUI
         public RectTransform ExecTasksPanelRT;
         public Button PingButton;
         TMP_Text PingButtonText;
+        public Button AbortButton;
 
         [Header("Prefabs")]
         public GameObject ExecutingTaskPrefab;
@@ -90,6 +91,9 @@ namespace SmarcGUI
         bool isOld = false;
         GameObject robotOverlayGO;
         KeyboardControllerBase keyboardController;
+        const int MaxAbortCount = 5;
+        int abortCount = MaxAbortCount;
+        float lastAbortClick = 0;
 
         void Awake()
         {
@@ -100,6 +104,7 @@ namespace SmarcGUI
             globalReferencePoint = FindFirstObjectByType<GlobalReferencePoint>();
             AddTaskButton.onClick.AddListener(() => OnTaskAdded(TasksAvailableDropdown.value));
             PingButton.onClick.AddListener(SendPing);
+            AbortButton.onClick.AddListener(SendAbort);
             rt = GetComponent<RectTransform>();
             minHeight = rt.sizeDelta.y;
             AvailTasksPanelRT.gameObject.SetActive(false);
@@ -188,22 +193,45 @@ namespace SmarcGUI
             }
         }
 
+        public void SendAbort()
+        {
+            abortCount--;
+            AbortButton.GetComponentInChildren<TMP_Text>().text = $"ABORT ({abortCount})";
+            lastAbortClick = Time.time;
+            if (abortCount <= 0)
+            {
+                abortCount = MaxAbortCount;
+                switch (InfoSource)
+                {
+                    case InfoSource.SIM:
+                        guiState.Log($"ABORT! -> {RobotName} in SIM");
+                        break;
+                    case InfoSource.MQTT:
+                        mqttClient.Publish(robotNamespace + "abort", "{}");
+                        break;
+                    case InfoSource.ROS:
+                        guiState.Log($"ABORT! -> {RobotName} in ROS");
+                        break;
+                }
+            }
+        }
+
 
         public void SendSignalCommand(string taskUuid, string signal)
         {
-            var signalCommand = new SigntalTaskCommand(taskUuid:taskUuid, signal:signal);
-            switch(InfoSource)
+            var signalCommand = new SigntalTaskCommand(taskUuid: taskUuid, signal: signal);
+            switch (InfoSource)
             {
                 case InfoSource.SIM:
                     guiState.Log($"Sending signal {signal} to {RobotName} in SIM");
                     break;
                 case InfoSource.MQTT:
-                    mqttClient.Publish(robotNamespace+"exec/command", signalCommand.ToJson());
+                    mqttClient.Publish(robotNamespace + "exec/command", signalCommand.ToJson());
                     break;
                 case InfoSource.ROS:
                     guiState.Log($"Sending signal {signal} to {RobotName} in ROS");
                     break;
-            }   
+            }
         }
 
         public StartTaskCommand SendStartTaskCommand(Task task)
@@ -305,6 +333,7 @@ namespace SmarcGUI
                 // hardcoded strings coming from waraps api.
                 var task = newTasks.Find(t => t["task-uuid"] == taskUuid);
                 var taskName = task["task-name"];
+                string taskDesc = task.ContainsKey("description") ? task["description"] : "No description";
                 var execTaskGO = Instantiate(ExecutingTaskPrefab, ExecutingTasksScrollContent);
                 var execTaskGUI = execTaskGO.GetComponent<ExecutingTaskGUI>();
                 var taskSpec = msg.TasksAvailable.Find(t => t.Name == taskName);
@@ -317,7 +346,7 @@ namespace SmarcGUI
                     guiState.Log($"No signals available for robot::task: {RobotName}::{taskName}, adding $abort as a fallback!");
                     signals.Add("$abort");
                 }
-                execTaskGUI.SetExecTask(this, taskName, taskUuid, signals);
+                execTaskGUI.SetExecTask(this, taskName, taskDesc, taskUuid, signals);
             }
 
             TasksExecutingUuids = newUuids;
@@ -463,10 +492,10 @@ namespace SmarcGUI
         void LateUpdate()
         {
             AddTaskButton.interactable = missionPlanStore.SelectedTSTGUI != null;
-            if(keyboardController != null) keyboardController.enabled = UserInputToggle.isOn && InfoSource == InfoSource.SIM;
+            if (keyboardController != null) keyboardController.enabled = UserInputToggle.isOn && InfoSource == InfoSource.SIM;
 
-            
-            if(InfoSource != InfoSource.SIM && lastHeartbeatTime > 0)
+
+            if (InfoSource != InfoSource.SIM && lastHeartbeatTime > 0)
             {
                 HeartRT.localScale = Vector3.Lerp(HeartRT.localScale, Vector3.one, Time.deltaTime * 10);
                 isOld = Time.time - lastHeartbeatTime > OldnessTime;
@@ -475,10 +504,16 @@ namespace SmarcGUI
                 BGImage.color = isOld ? Color.yellow : originalColor;
             }
 
-            if(isOld)
+            if (isOld)
             {
                 TSTExecInfoReceived = false;
                 ghost.Freeze();
+            }
+            
+            if(Time.time - lastAbortClick > 2)
+            {
+                AbortButton.GetComponentInChildren<TMP_Text>().text = "ABORT";
+                abortCount = MaxAbortCount;
             }
         }
 

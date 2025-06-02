@@ -12,6 +12,7 @@ namespace SmarcGUI.Connections
     {
         [Header("UI Elements")]
         public TMP_Text TaskName;
+        public TMP_Text TaskDescription;
         public TMP_Dropdown TaskSignalsDropdown;
         public Button SignalButton;
         public RectTransform HighlightRT;
@@ -19,13 +20,14 @@ namespace SmarcGUI.Connections
         RobotGUI robotgui;
         string taskUuid;
 
-        public void SetExecTask(RobotGUI robotgui, string taskName, string taskUuid, List<string> signals)
+        public void SetExecTask(RobotGUI robotgui, string taskName, string taskDesc, string taskUuid, List<string> signals)
         {
             this.robotgui = robotgui;
             TaskName.text = taskName;
             this.taskUuid = taskUuid;
+            TaskDescription.text = taskDesc;
 
-            if(signals.Count > 0)
+            if (signals.Count > 0)
             {
                 TaskSignalsDropdown.ClearOptions();
                 TaskSignalsDropdown.AddOptions(signals);
