@@ -278,7 +278,7 @@ namespace SmarcGUI
                     guiState.Log($"Sending StartTSTCommand {tst} to {RobotName} in SIM");
                     break;
                 case InfoSource.MQTT:
-                    mqttClient.Publish(robotNamespace + "exec/command", startTSTCommand.ToJson());
+                    mqttClient.Publish(robotNamespace+"tst/command", startTSTCommand.ToJson());
                     break;
                 case InfoSource.ROS:
                     guiState.Log($"Sending StartTSTCommand {tst} to {RobotName} in ROS");
