@@ -361,7 +361,7 @@ namespace SmarcGUI
                 if(signals.Count == 0)
                 {
                     guiState.Log($"No signals available for robot::task: {RobotName}::{taskName}, adding $abort as a fallback!");
-                    signals.Add("$abort");
+                    signals.Add(WaspSignals.ABORT);
                 }
                 execTaskGUI.SetExecTask(this, taskName, taskDesc, taskUuid, signals);
             }
