@@ -42,7 +42,7 @@ namespace SmarcGUI.Connections
 
         void OnSignalButton()
         {
-            robotgui.SendSignalCommand(taskUuid, TaskSignalsDropdown.options[TaskSignalsDropdown.value].text);
+            robotgui.SendSignalTaskCommand(taskUuid, TaskSignalsDropdown.options[TaskSignalsDropdown.value].text);
         }
 
         public void OnPointerExit(PointerEventData eventData)

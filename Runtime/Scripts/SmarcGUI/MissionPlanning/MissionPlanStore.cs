@@ -35,6 +35,8 @@ namespace SmarcGUI.MissionPlanning
 
         [Header("Mission Control Elements")]
         public Button RunMissionButton;
+        public TMP_Dropdown MissionSignalsDropdown;
+        public Button MissionSignalButton;
 
 
         [Header("Tasks GUI Elements")]
@@ -70,6 +72,16 @@ namespace SmarcGUI.MissionPlanning
             LoadMissionsButton.onClick.AddListener(LoadMissionPlans);
             SaveMissionsButton.onClick.AddListener(SaveMissionPlans);
             RunMissionButton.onClick.AddListener(() => guiState.SelectedRobotGUI.SendStartTSTCommand(SelectedTSTGUI.tst));
+            MissionSignalsDropdown.ClearOptions();
+            MissionSignalsDropdown.AddOptions(new List<string>
+            {
+                WaspSignals.ENOUGH,
+                WaspSignals.CONTINUE,
+                WaspSignals.PAUSE,
+                WaspSignals.ABORT,
+                SmarcSignals.CANCEL_ABORT
+            });
+            MissionSignalButton.onClick.AddListener(() => guiState.SelectedRobotGUI.SendSignalTSTUnitCommand(MissionSignalsDropdown.options[MissionSignalsDropdown.value].text));
             AddTaskButton.onClick.AddListener(AddNewTask);
 
             // this finds all task types in the assembly through reflection.
@@ -117,9 +129,14 @@ namespace SmarcGUI.MissionPlanning
 
         void LateUpdate()
         {
-            RunMissionButton.interactable = SelectedTSTGUI != null &&
+            var missionInteraction = SelectedTSTGUI != null &&
                                             guiState.SelectedRobotGUI != null &&
                                             guiState.SelectedRobotGUI.TSTExecInfoReceived;
+                                            
+            RunMissionButton.interactable = missionInteraction;
+            MissionSignalsDropdown.interactable = missionInteraction;
+            MissionSignalButton.interactable = missionInteraction;
+
             AddTaskButton.interactable = SelectedTSTGUI != null;
         }
 

@@ -207,7 +207,7 @@ namespace SmarcGUI
                         guiState.Log($"ABORT! -> {RobotName} in SIM");
                         break;
                     case InfoSource.MQTT:
-                        mqttClient.Publish(robotNamespace + "abort", "{}");
+                        SendSignalTSTUnitCommand(WaspSignals.ABORT);
                         break;
                     case InfoSource.ROS:
                         guiState.Log($"ABORT! -> {RobotName} in ROS");
@@ -217,7 +217,7 @@ namespace SmarcGUI
         }
 
 
-        public void SendSignalCommand(string taskUuid, string signal)
+        public void SendSignalTaskCommand(string taskUuid, string signal)
         {
             var signalCommand = new SigntalTaskCommand(taskUuid: taskUuid, signal: signal);
             switch (InfoSource)
@@ -251,11 +251,28 @@ namespace SmarcGUI
             }   
             return startTaskCommand;
         }
+        
+        public void SendSignalTSTUnitCommand(string signal)
+        {
+            var signalTSTCommand = new SignalTSTUnit(signal, RobotName);
+            switch (InfoSource)
+            {
+                case InfoSource.SIM:
+                    guiState.Log($"Sending SignalTSTCommand {signal} to {RobotName} in SIM");
+                    break;
+                case InfoSource.MQTT:
+                    mqttClient.Publish(robotNamespace + "tst/command", signalTSTCommand.ToJson());
+                    break;
+                case InfoSource.ROS:
+                    guiState.Log($"Sending SignalTSTCommand {signal} to {RobotName} in ROS");
+                    break;
+            }
+        }
 
         public StartTSTCommand SendStartTSTCommand(TaskSpecTree tst)
         {
             var startTSTCommand = new StartTSTCommand(tst, RobotName);
-            switch(InfoSource)
+            switch (InfoSource)
             {
                 case InfoSource.SIM:
                     guiState.Log($"Sending StartTSTCommand {tst} to {RobotName} in SIM");
@@ -266,7 +283,7 @@ namespace SmarcGUI
                 case InfoSource.ROS:
                     guiState.Log($"Sending StartTSTCommand {tst} to {RobotName} in ROS");
                     break;
-            }   
+            }
             return startTSTCommand;
         }
 
@@ -344,7 +361,7 @@ namespace SmarcGUI
                 if(signals.Count == 0)
                 {
                     guiState.Log($"No signals available for robot::task: {RobotName}::{taskName}, adding $abort as a fallback!");
-                    signals.Add("$abort");
+                    signals.Add(WaspSignals.ABORT);
                 }
                 execTaskGUI.SetExecTask(this, taskName, taskDesc, taskUuid, signals);
             }
