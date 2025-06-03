@@ -1,7 +1,8 @@
 using UnityEngine;
 
 using Force;
-
+using Unity.Robotics.ROSTCPConnector;
+using StdMessages = RosMessageTypes.Std;
 namespace Rope
 {
     public class Winch : RopeSystemBase
@@ -27,6 +28,25 @@ namespace Rope
         [Header("Debug")]
         public float ActualDistance;
 
+        ROSConnection ros;
+
+        
+        void WinchControlTestCallback(StdMessages.Float32MultiArrayMsg msg)
+        {
+            if (msg.data.Length >= 2)
+            {
+                float testTargetLength = msg.data[0];
+                float testWinchSpeed = msg.data[1];
+                Debug.Log($"Received test Float32MultiArray: target_length={testTargetLength}, winch_speed={testWinchSpeed}");
+
+                TargetLength = Mathf.Clamp(testTargetLength, MinLength, RopeLength);
+                WinchSpeed = testWinchSpeed;
+            }
+            else
+            {
+                Debug.LogWarning("Received Float32MultiArray with insufficient data.");
+            }
+        }
         
 
         
@@ -56,6 +76,11 @@ namespace Rope
         
         void Awake()
         {
+            ros = ROSConnection.GetOrCreateInstance();
+            Debug.Log("Subscribing to /winch_control_test");
+            ros.Subscribe<StdMessages.Float32MultiArrayMsg>("/winch_control_test", WinchControlTestCallback);
+
+
             if(loadBody == null) loadBody = new MixedBody(LoadAB, LoadRB);
         }
 
