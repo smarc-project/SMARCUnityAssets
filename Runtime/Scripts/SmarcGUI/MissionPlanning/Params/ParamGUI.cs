@@ -149,7 +149,7 @@ namespace SmarcGUI.MissionPlanning.Params
             rt.sizeDelta = new Vector2(rt.sizeDelta.x, selfHeight);
         }
 
-        void ReArrangeForList()
+        public void ReArrangeForList()
         {
             if(listParamGUI == null) return;
             // we want to re-arrange all the fields in of this param
@@ -165,7 +165,7 @@ namespace SmarcGUI.MissionPlanning.Params
             fieldsLayout.childForceExpandHeight = false;
             fieldsLayout.childForceExpandWidth = false;
             fieldsLayout.childScaleHeight = false;
-            fieldsLayout.childScaleWidth = false;
+            fieldsLayout.childScaleWidth = true;
             fieldsLayout.childAlignment = TextAnchor.MiddleLeft;
             fieldsLayout.spacing = 0;
             fieldsLayout.padding = new RectOffset(0, 0, 0, 0);

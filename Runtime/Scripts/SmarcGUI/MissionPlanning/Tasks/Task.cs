@@ -121,7 +121,9 @@ namespace SmarcGUI.MissionPlanning.Tasks
             }
 
             foreach (var update in paramUpdates)
+            {
                 Params[update.Key] = update.Value;
+            }
         }
        
     }
