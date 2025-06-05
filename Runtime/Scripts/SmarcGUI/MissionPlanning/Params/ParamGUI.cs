@@ -165,7 +165,7 @@ namespace SmarcGUI.MissionPlanning.Params
             fieldsLayout.childForceExpandHeight = false;
             fieldsLayout.childForceExpandWidth = false;
             fieldsLayout.childScaleHeight = false;
-            fieldsLayout.childScaleWidth = false;
+            fieldsLayout.childScaleWidth = true;
             fieldsLayout.childAlignment = TextAnchor.MiddleLeft;
             fieldsLayout.spacing = 0;
             fieldsLayout.padding = new RectOffset(0, 0, 0, 0);
