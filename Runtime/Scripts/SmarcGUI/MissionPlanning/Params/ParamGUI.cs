@@ -185,6 +185,7 @@ namespace SmarcGUI.MissionPlanning.Params
             var label = new GameObject("Label");
             label.transform.SetParent(fieldsParent.transform);
             label.transform.SetAsFirstSibling();
+            label.transform.localScale = fields[0].transform.localScale; // match the scale of the first field
             var labelRT = label.AddComponent<RectTransform>();
             var labelWidth = 10;
             labelRT.sizeDelta = new Vector2(labelWidth, maxChildHeight);
