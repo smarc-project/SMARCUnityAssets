@@ -52,6 +52,7 @@ namespace SmarcGUI.MissionPlanning.Params
 
                 var labelGO = new GameObject();
                 labelGO.transform.SetParent(ParamLabels);
+                labelGO.transform.localScale = Vector3.one;
                 labelGO.SetActive(true);
                 labelGO.AddComponent<TextMeshProUGUI>();
                 
