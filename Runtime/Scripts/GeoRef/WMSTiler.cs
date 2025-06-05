@@ -101,7 +101,7 @@ namespace GeoRef
         IEnumerator RequestAndSetTile(GameObject quadObj, double eastingMin, double northingMin, double eastingMax, double northingMax)
         {
             string url = MakeGetMapURL(eastingMin, northingMin, eastingMax, northingMax);
-            Debug.Log($"Requesting WMS tile from URL: {url}");
+            //Debug.Log($"Requesting WMS tile from URL: {url}");
 
             using UnityWebRequest webRequest = UnityWebRequestTexture.GetTexture(url);
             // Send the request and wait for a response
