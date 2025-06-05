@@ -37,7 +37,7 @@ namespace SmarcGUI.MissionPlanning.Tasks
     {
         public override void SetParams()
         {
-            Name = "auv-altitude-move-to";
+            Name = "auv-altitude-move-path";
             Description = "Move through positions at altitudes";
             Params.Add("waypoints", new List<AuvAltitudePoint>());
         }
@@ -57,8 +57,8 @@ namespace SmarcGUI.MissionPlanning.Tasks
     {
         public override void SetParams()
         {
-            Name = "auv-hydrobatic-move-to";
-            Description = "Move to a position, depth and orientation";
+            Name = "auv-hydrobatic-move-path";
+            Description = "Move through positions with depths and orientations";
             Params.Add("waypoints", new List<AuvHydrobaticPoint>());
         }
     }
