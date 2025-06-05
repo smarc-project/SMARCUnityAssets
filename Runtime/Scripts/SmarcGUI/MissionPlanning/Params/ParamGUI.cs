@@ -149,7 +149,7 @@ namespace SmarcGUI.MissionPlanning.Params
             rt.sizeDelta = new Vector2(rt.sizeDelta.x, selfHeight);
         }
 
-        void ReArrangeForList()
+        public void ReArrangeForList()
         {
             if(listParamGUI == null) return;
             // we want to re-arrange all the fields in of this param
