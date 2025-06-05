@@ -171,8 +171,8 @@ MonoBehaviour:
   propFL: {fileID: 4614207949718832}
   propBR: {fileID: 4529089676032114}
   propBL: {fileID: 4662283196533844}
-  controllerState: 4
-  DistanceErrorCapNormalized: 2
+  controllerState: 3
+  DistanceErrorCapNormalized: 1
   DistanceErrorCapFree: 10
   debugLoggingController: 0
   TargetVelocity: {x: 0, y: 0, z: 0}
