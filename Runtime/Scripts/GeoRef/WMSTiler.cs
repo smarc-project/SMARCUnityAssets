@@ -4,6 +4,7 @@ using System.IO;
 using SmarcGUI;
 using UnityEngine;
 using UnityEngine.Networking;
+using YamlDotNet;
 
 namespace GeoRef
 {
@@ -40,7 +41,7 @@ namespace GeoRef
             if (File.Exists(settingsFile))
             {
                 var settings = File.ReadAllText(settingsFile);
-                var deserializer = new Unity.VisualScripting.YamlDotNet.Serialization.Deserializer();
+                var deserializer = new YamlDotNet.Serialization.Deserializer();
                 var settingsDict = deserializer.Deserialize<Dictionary<string, string>>(settings);
                 if (settingsDict.ContainsKey("WMSUrl"))
                 {
@@ -56,7 +57,7 @@ namespace GeoRef
                     { "WMSUrl", "" },
                     { "LayerName", "" }
                 };
-                var serializer = new Unity.VisualScripting.YamlDotNet.Serialization.Serializer();
+                var serializer = new YamlDotNet.Serialization.Serializer();
                 var settingsYaml = serializer.Serialize(settingsDict);
                 File.WriteAllText(settingsFile, settingsYaml);
                 return;

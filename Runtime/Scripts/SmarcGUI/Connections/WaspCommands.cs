@@ -1,5 +1,4 @@
 using System;
-using Codice.Client.Commands;
 using Newtonsoft.Json;
 using SmarcGUI.MissionPlanning.Tasks;
 
