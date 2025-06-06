@@ -69,9 +69,9 @@ namespace SmarcGUI.MissionPlanning.Tasks
         {
             Name = "cruise-depth-at-heading";
             Description = "Cruise at a depth and heading";
-            Params.Add("target_depth", new Depth());
-            Params.Add("target_heading", new Heading());
-            Params.Add("min_altitude", new Altitude());
+            Params.Add("target_depth", 0);
+            Params.Add("target_heading", 0);
+            Params.Add("min_altitude", 0);
             Params.Add("rpm", 0);
             Params.Add("timeout", 0);
         }
@@ -83,9 +83,9 @@ namespace SmarcGUI.MissionPlanning.Tasks
         {
             Name = "cruise-altitude-at-heading";
             Description = "Cruise at an altitude and heading";
-            Params.Add("target_altitude", new Altitude());
-            Params.Add("target_heading", new Heading());
-            Params.Add("max_depth", new Depth());
+            Params.Add("target_altitude", 0);
+            Params.Add("target_heading", 0);
+            Params.Add("max_depth", 0);
             Params.Add("rpm", 0);
             Params.Add("timeout", 0);
         }
