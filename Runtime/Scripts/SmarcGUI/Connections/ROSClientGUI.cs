@@ -6,7 +6,7 @@ using VehicleComponents.ROS.Publishers;
 using VehicleComponents.ROS.Core;
 using System.IO;
 using System.Collections.Generic;
-
+using YamlDotNet;
 
 namespace SmarcGUI.Connections
 {
@@ -63,7 +63,7 @@ namespace SmarcGUI.Connections
             if(File.Exists(settingsFile))
             {
                 var settings = File.ReadAllText(settingsFile);
-                var deserializer = new Unity.VisualScripting.YamlDotNet.Serialization.Deserializer();
+                var deserializer = new YamlDotNet.Serialization.Deserializer();
                 var settingsDict = deserializer.Deserialize<Dictionary<string, string>>(settings);
                 if(settingsDict.ContainsKey("ROS_TCP_ConnectorIP")) ServerAddressInput.text = settingsDict["ROS_TCP_ConnectorIP"];
                 if(settingsDict.ContainsKey("ROS_TCP_ConnectorPort")) PortInput.text = settingsDict["ROS_TCP_ConnectorPort"];
@@ -75,7 +75,7 @@ namespace SmarcGUI.Connections
                     { "ROS_TCP_ConnectorIP", rosCon.RosIPAddress.ToString() },
                     { "ROS_TCP_ConnectorPort", rosCon.RosPort.ToString() }
                 };
-                var serializer = new Unity.VisualScripting.YamlDotNet.Serialization.Serializer();
+                var serializer = new YamlDotNet.Serialization.Serializer();
                 var settingsYaml = serializer.Serialize(settingsDict);
                 File.WriteAllText(settingsFile, settingsYaml);
                 guiState.Log($"No ROS settings file found. Created default settings file at {settingsFile}");

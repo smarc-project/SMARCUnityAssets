@@ -56,6 +56,7 @@ namespace SmarcGUI
         public GameObject GenericGhostPrefab;
         public GameObject SAMGhostPrefab;
         public GameObject EvoloGhostPrefab;
+        public GameObject LoloGhostPrefab;
 
 
         Transform worldMarkersTF;
@@ -153,6 +154,7 @@ namespace SmarcGUI
             {
                 if(robotname.Contains("sam", StringComparison.InvariantCultureIgnoreCase)) ghostTF = Instantiate(SAMGhostPrefab).transform;
                 else if(robotname.Contains("evolo", StringComparison.InvariantCultureIgnoreCase)) ghostTF = Instantiate(EvoloGhostPrefab).transform;
+                else if(robotname.Contains("lolo", StringComparison.InvariantCultureIgnoreCase)) ghostTF = Instantiate(LoloGhostPrefab).transform;
                 else
                 {
                     guiState.Log($"No specific ghost prefab for {robotname}, using generic arrow.");
