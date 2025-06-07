@@ -54,12 +54,12 @@ namespace SmarcGUI.WorldSpace
 
         public void UpdatePitch(float pitch)
         {
-            ModelTF.transform.rotation = Quaternion.Euler(pitch, transform.rotation.eulerAngles.y, transform.rotation.eulerAngles.z);
+            ModelTF.transform.rotation = Quaternion.Euler(pitch, ModelTF.transform.rotation.eulerAngles.y, ModelTF.transform.rotation.eulerAngles.z);
         }
 
         public void UpdateRoll(float roll)
         {
-            ModelTF.transform.rotation = Quaternion.Euler(transform.rotation.eulerAngles.x, transform.rotation.eulerAngles.y, roll);
+            ModelTF.transform.rotation = Quaternion.Euler(ModelTF.transform.rotation.eulerAngles.x, ModelTF.transform.rotation.eulerAngles.y, roll);
         }
 
         public void UpdateCourse(float course)
