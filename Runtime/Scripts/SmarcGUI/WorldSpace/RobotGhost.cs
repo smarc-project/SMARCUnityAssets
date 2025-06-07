@@ -54,22 +54,22 @@ namespace SmarcGUI.WorldSpace
 
         public void UpdatePitch(float pitch)
         {
-            transform.rotation = Quaternion.Euler(pitch, transform.rotation.eulerAngles.y, transform.rotation.eulerAngles.z);
+            ModelTF.transform.rotation = Quaternion.Euler(pitch, transform.rotation.eulerAngles.y, transform.rotation.eulerAngles.z);
         }
 
         public void UpdateRoll(float roll)
         {
-            transform.rotation = Quaternion.Euler(transform.rotation.eulerAngles.x, transform.rotation.eulerAngles.y, roll);
+            ModelTF.transform.rotation = Quaternion.Euler(transform.rotation.eulerAngles.x, transform.rotation.eulerAngles.y, roll);
         }
 
         public void UpdateCourse(float course)
         {
-            transform.rotation = Quaternion.Euler(transform.rotation.eulerAngles.x, course, transform.rotation.eulerAngles.z);
+            velocity = Quaternion.Euler(0, course, 0) * Vector3.forward * velocity.magnitude;
         }
 
         public void UpdateSpeed(float speed)
         {
-            velocity = transform.forward * speed;
+            velocity = velocity.normalized * speed;
         }
     }
 }
