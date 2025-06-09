@@ -79,11 +79,11 @@ namespace SmarcGUI.Connections
             };
             var tasksExecuting = new List<Dictionary<string, string>>
             {
-                new(){ {"task-name", "move-to"}, {"task-uuid", "123"} }, // for testing UI functions
-                new(){ {"task-name", "move-to"}, {"task-uuid", Guid.NewGuid().ToString()} },
-                new(){ {"task-name", "chilling"}, {"task-uuid", Guid.NewGuid().ToString()} },
-                new(){ {"task-name", "not-available-task"}, {"task-uuid", Guid.NewGuid().ToString()} },
-                new(){ {"task-name", "not-available-task2"}, {"task-uuid", Guid.NewGuid().ToString()} }
+                new(){ {"task-name", "move-to"}, {"task-uuid", "123"}, {"description", "one"}}, // for testing UI functions
+                new(){ {"task-name", "move-to"}, {"task-uuid", Guid.NewGuid().ToString()}, {"description", "two"} },
+                new(){ {"task-name", "chilling"}, {"task-uuid", Guid.NewGuid().ToString()} , {"description", "three"}},
+                new(){ {"task-name", "not-available-task"}, {"task-uuid", Guid.NewGuid().ToString()}, {"description", "four"} },
+                new(){ {"task-name", "not-available-task2"}, {"task-uuid", Guid.NewGuid().ToString()}, {"description", "five"} }
             };
             msg = new(
                 name: waspHeartbeat.AgentName,

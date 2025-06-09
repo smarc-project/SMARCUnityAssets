@@ -19,8 +19,6 @@ namespace VehicleComponents.ROS.Publishers
 
         
         [Header("TF Tree")]
-        [Tooltip("Suffix to add to all published TF links.")]
-        public string Suffix = "_gt";
         public string BaseLinkName = "base_link";
         GameObject BaseLinkGO;
         GameObject OdomLinkGO;
@@ -72,7 +70,7 @@ namespace VehicleComponents.ROS.Publishers
             BaseLinkGO = Utils.FindDeepChildWithName(OdomLinkGO, BaseLinkName);
             if(BaseLinkGO == null)
             {
-                Debug.LogError($"No base_link found under {OdomLinkGO.name}! Disabling.");
+                Debug.LogError($"No {BaseLinkName} found under {OdomLinkGO.name}! Disabling.");
                 enabled = false;
                 return;
             }
@@ -116,7 +114,7 @@ namespace VehicleComponents.ROS.Publishers
                 translation = OdomLinkGO.transform.To<ENU>().translation,
             };
             var mapToOdom = new TransformStampedMsg(
-                new HeaderMsg(new TimeStamp(Clock.time), $"map"),
+                new HeaderMsg(new TimeStamp(Clock.time), $"map_gt"),
                 $"{prefix}/odom",
                 mapToOdomMsg);
             tfMessageList.Add(mapToOdom);
@@ -166,13 +164,6 @@ namespace VehicleComponents.ROS.Publishers
 
             // populate the global frames last, dont wanna prefix those.
             PopulateGlobalFrames(tfMessageList);
-
-            // and finally, suffix _everything_
-            foreach(TransformStampedMsg msg in tfMessageList)
-            {
-                msg.header.frame_id = $"{msg.header.frame_id}{Suffix}";
-                msg.child_frame_id = $"{msg.child_frame_id}{Suffix}";
-            }
 
             finalMsg = new TFMessageMsg(tfMessageList.ToArray());
         }

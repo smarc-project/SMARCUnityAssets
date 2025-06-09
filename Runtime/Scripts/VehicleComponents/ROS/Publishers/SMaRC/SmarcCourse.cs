@@ -1,15 +1,14 @@
 using UnityEngine;
 using Unity.Robotics.Core;
 using VehicleComponents.ROS.Core;
+using RosMessageTypes.Std;
 using Force;
-using RosMessageTypes.Nav;
 using DefaultNamespace;
-using Unity.Robotics.ROSTCPConnector.ROSGeometry;
 
 
 namespace VehicleComponents.ROS.Publishers
 {
-    class SmarcOdom : ROSBehaviour
+    class SmarcCourse : ROSBehaviour
     {
         [Header("ROS Publisher")]
         public float frequency = 10f;
@@ -17,20 +16,20 @@ namespace VehicleComponents.ROS.Publishers
         double lastUpdate = 0f;
         bool registered = false;
 
+        Float32Msg msg;
 
-        OdometryMsg msg;
         MixedBody body;
 
 
         protected override void StartROS()
         {
-            msg = new OdometryMsg();
+            msg = new Float32Msg();
 
             var robot = Utils.FindParentWithTag(gameObject, "robot", false);
             var base_link = Utils.FindDeepChildWithName(robot, "base_link").transform;
             if( base_link == null)
             {
-                Debug.LogError("base_link not found for smarc odom.");
+                Debug.LogError("base_link not found for smarc course.");
                 enabled = false;
                 return;
             }
@@ -47,29 +46,19 @@ namespace VehicleComponents.ROS.Publishers
             
             if (!registered)
             {
-                rosCon.RegisterPublisher<OdometryMsg>(topic);
+                rosCon.RegisterPublisher<Float32Msg>(topic);
                 registered = true;
             }
-
-            msg.header.frame_id = "map_gt";
-            var robotName = Utils.FindParentWithTag(gameObject, "robot", false).name;
-            msg.child_frame_id = $"{robotName}/base_link";
         }
 
         void FixedUpdate()
         {
             if (Clock.Now - lastUpdate < period) return;
             lastUpdate = Clock.Now;
-
-            msg.header.stamp = new TimeStamp(Clock.time);
-            msg.pose.pose.position = body.position.To<ENU>();
-            msg.pose.pose.orientation = body.rotation.To<ENU>();
-
-            var vel = body.transform.InverseTransformVector(body.velocity);
-            msg.twist.twist.linear = vel.To<FLU>();
-            var anvel = body.transform.InverseTransformVector(body.angularVelocity);
-            msg.twist.twist.angular = -anvel.To<FLU>();
-            
+            var course = Vector3.SignedAngle(Vector3.forward, body.velocity, Vector3.up);
+            course = (course + 360) % 360;
+            msg.data = course;
+            // Publish the message
             rosCon.Publish(topic, msg);
         }
     }

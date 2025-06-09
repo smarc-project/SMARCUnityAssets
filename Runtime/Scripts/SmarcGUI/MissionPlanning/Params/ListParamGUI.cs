@@ -37,6 +37,39 @@ namespace SmarcGUI.MissionPlanning.Params
             UpdateHeight();
         }
 
+        public void SetListLabels()
+        {
+            if(ParamLabels.childCount > 0) return; // already set
+            if(ParamGUIs.Count < 1) return; // no params to set labels for
+            
+            var paramgui = ParamGUIs[0];
+            var labels = paramgui.GetFieldLabels();
+            var fieldRTs = paramgui.GetFields();
+            for(int i = 0; i < labels.Count; i++)
+            {
+                var label = labels[i];
+                var fieldRT = fieldRTs[i];
+
+                var labelGO = new GameObject();
+                labelGO.transform.SetParent(ParamLabels);
+                labelGO.transform.localScale = Vector3.one;
+                labelGO.SetActive(true);
+                labelGO.AddComponent<TextMeshProUGUI>();
+                
+                var labelRT = labelGO.GetComponent<RectTransform>();
+                labelRT.sizeDelta = fieldRT.sizeDelta;
+                labelRT.pivot = fieldRT.pivot;
+                labelRT.anchorMin = fieldRT.anchorMin;
+                labelRT.anchorMax = fieldRT.anchorMax;
+
+                var labelText = labelGO.GetComponent<TMP_Text>();
+                labelText.text = label;
+                labelText.enableAutoSizing = true;
+                labelText.fontSizeMin = 5;
+                labelText.alignment = TextAlignmentOptions.Center;
+            }
+        }
+
         void AddParamToList()
         {
             if (paramList is null)
@@ -65,30 +98,7 @@ namespace SmarcGUI.MissionPlanning.Params
 
             if(ParamLabels.childCount < 1)
             {
-                var labels = paramgui.GetFieldLabels();
-                var fieldRTs = paramgui.GetFields();
-                for(int i = 0; i < labels.Count; i++)
-                {
-                    var label = labels[i];
-                    var fieldRT = fieldRTs[i];
-
-                    var labelGO = new GameObject();
-                    labelGO.transform.SetParent(ParamLabels);
-                    labelGO.SetActive(true);
-                    labelGO.AddComponent<TextMeshProUGUI>();
-                    
-                    var labelRT = labelGO.GetComponent<RectTransform>();
-                    labelRT.sizeDelta = fieldRT.sizeDelta;
-                    labelRT.pivot = fieldRT.pivot;
-                    labelRT.anchorMin = fieldRT.anchorMin;
-                    labelRT.anchorMax = fieldRT.anchorMax;
-
-                    var labelText = labelGO.GetComponent<TMP_Text>();
-                    labelText.text = label;
-                    labelText.enableAutoSizing = true;
-                    labelText.fontSizeMin = 5;
-                    labelText.alignment = TextAlignmentOptions.Center;
-                }
+                SetListLabels();
             }
         }
 

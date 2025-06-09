@@ -25,6 +25,11 @@ namespace GeoRef
         public int TileSizePx = 256;
         public int TileSizeMeters = 50;
 
+        [Tooltip("Move all tiles north by this amount (in meters) to align satelite images with a reference point")]
+        public float TileOffsetNorth = 0f;
+        [Tooltip("Move all tiles east by this amount (in meters) to align satelite images with a reference point")]
+        public float TileOffsetEast = 0f;
+
         GlobalReferencePoint refPt;
 
         void Awake()
@@ -40,7 +45,7 @@ namespace GeoRef
             if (File.Exists(settingsFile))
             {
                 var settings = File.ReadAllText(settingsFile);
-                var deserializer = new Unity.VisualScripting.YamlDotNet.Serialization.Deserializer();
+                var deserializer = new YamlDotNet.Serialization.Deserializer();
                 var settingsDict = deserializer.Deserialize<Dictionary<string, string>>(settings);
                 if (settingsDict.ContainsKey("WMSUrl"))
                 {
@@ -56,7 +61,7 @@ namespace GeoRef
                     { "WMSUrl", "" },
                     { "LayerName", "" }
                 };
-                var serializer = new Unity.VisualScripting.YamlDotNet.Serialization.Serializer();
+                var serializer = new YamlDotNet.Serialization.Serializer();
                 var settingsYaml = serializer.Serialize(settingsDict);
                 File.WriteAllText(settingsFile, settingsYaml);
                 return;
@@ -100,7 +105,7 @@ namespace GeoRef
         IEnumerator RequestAndSetTile(GameObject quadObj, double eastingMin, double northingMin, double eastingMax, double northingMax)
         {
             string url = MakeGetMapURL(eastingMin, northingMin, eastingMax, northingMax);
-            Debug.Log($"Requesting WMS tile from URL: {url}");
+            //Debug.Log($"Requesting WMS tile from URL: {url}");
 
             using UnityWebRequest webRequest = UnityWebRequestTexture.GetTexture(url);
             // Send the request and wait for a response
@@ -142,6 +147,9 @@ namespace GeoRef
             // Get the WebMercator coordinates of the reference point
             if (refPt == null) refPt = GetComponent<GlobalReferencePoint>();
             var (refEasting, refNorthing) = refPt.GetWebMercatorFromLatLon(refPt.Lat, refPt.Lon);
+            // Adjust the reference point by the tile offsets
+            refEasting += TileOffsetEast;
+            refNorthing += TileOffsetNorth;
 
             for (int x = 0; x < numTiles; x++)
             {
@@ -156,10 +164,10 @@ namespace GeoRef
                     var tileNorthing = refNorthing + tileZ;
                     // Calculate the min and max coordinates of the tile
                     // in WebMercator coordinates
-                    var eastingMin = tileEasting - TileSizeMeters/2;
-                    var northingMin = tileNorthing - TileSizeMeters/2;
-                    var eastingMax = tileEasting + TileSizeMeters/2;
-                    var northingMax = tileNorthing + TileSizeMeters/2;
+                    var eastingMin = tileEasting - TileSizeMeters / 2;
+                    var northingMin = tileNorthing - TileSizeMeters / 2;
+                    var eastingMax = tileEasting + TileSizeMeters / 2;
+                    var northingMax = tileNorthing + TileSizeMeters / 2;
 
                     // Create a new GameObject for the tile
                     var tileName = $"Tile_{x}_{z}";

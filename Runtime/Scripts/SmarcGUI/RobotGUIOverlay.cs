@@ -221,7 +221,12 @@ namespace SmarcGUI
             this.robotTF = robotTF;
             if(robotTF.gameObject.TryGetComponent(out Rigidbody rb)) robotRB = rb;
             if(robotTF.gameObject.TryGetComponent(out ArticulationBody ab)) robotAB = ab;
-            if(robotTF.gameObject.TryGetComponent(out RobotGhost rGhost)) robotGhost = rGhost;
+            if (robotTF.gameObject.TryGetComponent(out RobotGhost rGhost))
+            {
+                robotGhost = rGhost;
+                this.robotTF = rGhost.ModelTF; // use the model transform for the overlay
+            }
+
 
             robotRenderers = robotTF.GetComponentsInChildren<Renderer>();
             switch (infoSource)

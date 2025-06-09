@@ -16,6 +16,7 @@ GameObject:
   - component: {fileID: 3020341602287187801}
   - component: {fileID: 644645384763547802}
   - component: {fileID: 2754097101119962265}
+  - component: {fileID: 3755496771326177145}
   m_Layer: 0
   m_Name: SmarcROS
   m_TagString: Untagged
@@ -135,4 +136,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   topic: smarc/altitude
+  frequency: 10
+--- !u!114 &3755496771326177145
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 628326655526641662}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cc7e7c8c1f5c640418f19164249b3bb3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  topic: smarc/course
   frequency: 10
