@@ -25,6 +25,10 @@ namespace GeoRef
         public double UTMEasting;
         public double UTMNorthing;
 
+        [Header("Web Mercator properties")]
+        public double WebMercatorEasting;
+        public double WebMercatorNorthing;
+
         EagerLoad el;
         EagerLoad elWeb;
 
@@ -43,6 +47,12 @@ namespace GeoRef
             {
                 (Lat, Lon) = GetLatLonFromUTM(UTMEasting, UTMNorthing);
             }
+
+            var ll = new Coordinate(Lat, Lon);
+            elWeb ??= new(EagerLoadType.WebMercator);
+            var webmerc = ll.WebMercator;
+            WebMercatorEasting = webmerc.Easting;
+            WebMercatorNorthing = webmerc.Northing;
         }
 
         void Awake()
@@ -107,15 +117,29 @@ namespace GeoRef
             return (obj_easting, obj_northing, obj_lat, obj_lon);
         }
 
-        public (float x, float z) GetUnityXZFromLatLon(double lat, double lon)
+        public (float x, float z) GetUnityXZFromLatLon(double lat, double lon, bool useWebMercator = false)
         {
-            el ??= new(EagerLoadType.UTM_MGRS);
-            var latlon = new Coordinate(lat, lon, el);
-            var eastingDiff = latlon.UTM.Easting - UTMEasting;
-            var northingDiff = latlon.UTM.Northing - UTMNorthing;
-            var unityX = transform.position.x + eastingDiff;
-            var unityZ = transform.position.z + northingDiff;
-            return ((float)unityX, (float)unityZ);
+            if (useWebMercator)
+            {
+                elWeb ??= new(EagerLoadType.WebMercator);
+                var latlon = new Coordinate(lat, lon, elWeb);
+                var webmerc = latlon.WebMercator;
+                var eastingDiff = webmerc.Easting - WebMercatorEasting;
+                var northingDiff = webmerc.Northing - WebMercatorNorthing;
+                var unityX = transform.position.x + eastingDiff;
+                var unityZ = transform.position.z + northingDiff;
+                return ((float)unityX, (float)unityZ);
+            }
+            else
+            {
+                el ??= new(EagerLoadType.UTM_MGRS);
+                var latlon = new Coordinate(lat, lon, el);
+                var eastingDiff = latlon.UTM.Easting - UTMEasting;
+                var northingDiff = latlon.UTM.Northing - UTMNorthing;
+                var unityX = transform.position.x + eastingDiff;
+                var unityZ = transform.position.z + northingDiff;
+                return ((float)unityX, (float)unityZ);
+            }
         }
 
         public (double lat, double lon) GetLatLonFromUnityXZ(float x, float z)
