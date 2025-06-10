@@ -10,7 +10,7 @@ namespace SmarcGUI.MissionPlanning.Params
     {
         [Header("AuvHydrobaticPointGUI")]
         public TMP_InputField LatField;
-        public TMP_InputField LonField, TargetDepthField, TimeoutField;        
+        public TMP_InputField LonField, TargetDepthField, TimeoutField, ToleranceField;        
         public TMP_InputField exField, eyField, ezField;
 
         public double latitude
@@ -78,6 +78,19 @@ namespace SmarcGUI.MissionPlanning.Params
             }
         }
 
+        public float tolerance
+        {
+            get { return ((AuvHydrobaticPoint)paramValue).tolerance; }
+            set
+            {
+                var d = (AuvHydrobaticPoint)paramValue;
+                d.tolerance = value;
+                paramValue = d;
+                ToleranceField.text = value.ToString();
+                NotifyPathChange();
+            }
+        }
+
         void UpdateOrientationFromEuler()
         {
             var ex = exField.text != "" ? float.Parse(exField.text) : 0;
@@ -102,6 +115,7 @@ namespace SmarcGUI.MissionPlanning.Params
                     target_depth = previousGp.target_depth;
                     timeout = previousGp.timeout;
                     orientation = previousGp.orientation;
+                    tolerance = previousGp.tolerance;
                     guiState.Log("New LatLon set to previous.");
                 }
                 // if there is no previous geo point, set it to where the camera is looking at
@@ -121,6 +135,7 @@ namespace SmarcGUI.MissionPlanning.Params
             LonField.text = longitude.ToString();
             TargetDepthField.text = target_depth.ToString();
             TimeoutField.text = timeout.ToString();
+            ToleranceField.text = tolerance.ToString();
             var euler = orientation.ToRPY();
             exField.text = euler.x.ToString();
             eyField.text = euler.y.ToString();
@@ -132,9 +147,11 @@ namespace SmarcGUI.MissionPlanning.Params
             LonField.onEndEdit.AddListener(OnLonChanged);
             TargetDepthField.onEndEdit.AddListener(OnDepthChanged);
             TimeoutField.onEndEdit.AddListener(OnTimeoutChanged);
+            ToleranceField.onEndEdit.AddListener(OnToleranceChanged);
             exField.onEndEdit.AddListener(OnEulerXChanged);
             eyField.onEndEdit.AddListener(OnEulerYChanged);
             ezField.onEndEdit.AddListener(OnEulerZChanged);
+            
 
             fields.Add(LatField.GetComponent<RectTransform>());
             fields.Add(LonField.GetComponent<RectTransform>());
@@ -143,6 +160,7 @@ namespace SmarcGUI.MissionPlanning.Params
             fields.Add(exField.GetComponent<RectTransform>());
             fields.Add(eyField.GetComponent<RectTransform>());
             fields.Add(ezField.GetComponent<RectTransform>());
+            fields.Add(ToleranceField.GetComponent<RectTransform>());
 
             OnSelectedChange();
         }
@@ -150,6 +168,18 @@ namespace SmarcGUI.MissionPlanning.Params
         public override List<string> GetFieldLabels()
         {
             return new List<string> { "Lat", "Lon", "T.Depth", "T/O", "Roll", "Pitch", "Yaw" };
+        }
+
+        void OnToleranceChanged(string s)
+        {
+            try {tolerance = float.Parse(s);}
+            catch
+            {
+                guiState.Log("Invalid tolerance value");
+                OnToleranceChanged(tolerance.ToString());
+                return;
+            }
+            NotifyPathChange();
         }
 
         void OnEulerXChanged(string s)

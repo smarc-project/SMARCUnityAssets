@@ -8,7 +8,7 @@ namespace SmarcGUI.MissionPlanning.Params
     public class GeoPointParamGUI : ParamGUI, IParamHasXZ, IParamHasY
     {
         [Header("GeoPointParamGUI")]
-        public TMP_InputField LatField, LonField, AltField;
+        public TMP_InputField LatField, LonField, AltField, ToleranceField;
 
         public float altitude
         {
@@ -43,11 +43,24 @@ namespace SmarcGUI.MissionPlanning.Params
                 NotifyPathChange();
             }
         }
+        
+        public float tolerance
+        {
+            get { return ((GeoPoint)paramValue).tolerance; }
+            set
+            {
+                var gp = (GeoPoint)paramValue;
+                gp.tolerance = value;
+                paramValue = gp;
+                ToleranceField.text = value.ToString();
+                NotifyPathChange();
+            }
+        }
 
 
         protected override void SetupFields()
         {
-            if(altitude == 0 && latitude == 0 && longitude == 0)
+            if (altitude == 0 && latitude == 0 && longitude == 0)
             {
                 // set this to be the same as the previous geo point
                 if (ParamIndex > 0)
@@ -56,6 +69,7 @@ namespace SmarcGUI.MissionPlanning.Params
                     latitude = previousGp.latitude;
                     longitude = previousGp.longitude;
                     altitude = previousGp.altitude;
+                    tolerance = previousGp.tolerance;
                     guiState.Log("New GeoPoint set to previous.");
                 }
                 // if there is no previous geo point, set it to where the camera is looking at
@@ -75,10 +89,13 @@ namespace SmarcGUI.MissionPlanning.Params
             LatField.onEndEdit.AddListener(OnLatChanged);
             LonField.onEndEdit.AddListener(OnLonChanged);
             AltField.onEndEdit.AddListener(OnAltChanged);
+            ToleranceField.onEndEdit.AddListener(OnToleranceChanged);
+            
 
             fields.Add(LatField.GetComponent<RectTransform>());
             fields.Add(LonField.GetComponent<RectTransform>());
             fields.Add(AltField.GetComponent<RectTransform>());
+            fields.Add(ToleranceField.GetComponent<RectTransform>());
 
             OnSelectedChange();
         }
@@ -93,6 +110,18 @@ namespace SmarcGUI.MissionPlanning.Params
             LatField.text = latitude.ToString();
             LonField.text = longitude.ToString();
             AltField.text = altitude.ToString();
+        }
+
+        void OnToleranceChanged(string s)
+        {
+            try {tolerance = float.Parse(s);}
+            catch
+            {
+                guiState.Log("Invalid tolerance value");
+                OnToleranceChanged(tolerance.ToString());
+                return;
+            }
+            NotifyPathChange();
         }
 
         void OnLatChanged(string s)

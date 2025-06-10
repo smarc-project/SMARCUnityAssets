@@ -10,7 +10,7 @@ namespace SmarcGUI.MissionPlanning.Params
     {
         [Header("AuvAltitudePointGUI")]
         public TMP_InputField LatField;
-        public TMP_InputField LonField, TargetAltitudeField, MaxDepthField, RpmField, TimeoutField;
+        public TMP_InputField LonField, TargetAltitudeField, MaxDepthField, RpmField, TimeoutField, ToleranceField;
 
         public double latitude
         {
@@ -86,11 +86,24 @@ namespace SmarcGUI.MissionPlanning.Params
                 NotifyPathChange();
             }
         }
+        
+        public float tolerance
+        {
+            get { return ((AuvAltitudePoint)paramValue).tolerance; }
+            set
+            {
+                var d = (AuvAltitudePoint)paramValue;
+                d.tolerance = value;
+                paramValue = d;
+                ToleranceField.text = value.ToString();
+                NotifyPathChange();
+            }
+        }
 
 
         protected override void SetupFields()
         {
-            if(latitude == 0 && longitude == 0)
+            if (latitude == 0 && longitude == 0)
             {
                 // set this to be the same as the previous geo point
                 if (ParamIndex > 0)
@@ -102,6 +115,7 @@ namespace SmarcGUI.MissionPlanning.Params
                     max_depth = previousGp.max_depth;
                     rpm = previousGp.rpm;
                     timeout = previousGp.timeout;
+                    tolerance = previousGp.tolerance;
                     guiState.Log("New LatLon set to previous.");
                 }
                 // if there is no previous geo point, set it to where the camera is looking at
@@ -115,7 +129,7 @@ namespace SmarcGUI.MissionPlanning.Params
                 }
             }
 
-            if(target_altitude == 0) target_altitude = 1;
+            if (target_altitude == 0) target_altitude = 1;
 
             LatField.text = latitude.ToString();
             LonField.text = longitude.ToString();
@@ -123,6 +137,7 @@ namespace SmarcGUI.MissionPlanning.Params
             MaxDepthField.text = max_depth.ToString();
             RpmField.text = rpm.ToString();
             TimeoutField.text = timeout.ToString();
+            ToleranceField.text = tolerance.ToString();
 
             LatField.onEndEdit.AddListener(OnLatChanged);
             LonField.onEndEdit.AddListener(OnLonChanged);
@@ -130,6 +145,7 @@ namespace SmarcGUI.MissionPlanning.Params
             MaxDepthField.onEndEdit.AddListener(OnMaxDepthChanged);
             RpmField.onEndEdit.AddListener(OnRpmChanged);
             TimeoutField.onEndEdit.AddListener(OnTimeoutChanged);
+            ToleranceField.onEndEdit.AddListener(OnToleranceChanged);
 
             fields.Add(LatField.GetComponent<RectTransform>());
             fields.Add(LonField.GetComponent<RectTransform>());
@@ -137,6 +153,7 @@ namespace SmarcGUI.MissionPlanning.Params
             fields.Add(MaxDepthField.GetComponent<RectTransform>());
             fields.Add(RpmField.GetComponent<RectTransform>());
             fields.Add(TimeoutField.GetComponent<RectTransform>());
+            fields.Add(ToleranceField.GetComponent<RectTransform>());
 
             OnSelectedChange();
         }
@@ -219,12 +236,24 @@ namespace SmarcGUI.MissionPlanning.Params
             }
             NotifyPathChange();
         }
+        
+        void OnToleranceChanged(string s)
+        {
+            try {tolerance = float.Parse(s);}
+            catch
+            {
+                guiState.Log("Invalid tolerance value");
+                OnToleranceChanged(tolerance.ToString());
+                return;
+            }
+            NotifyPathChange();
+        }
 
         
 
         public (float, float) GetXZ()
         {
-            var (tx,tz) = GetUnityXZFromLatLon(latitude, longitude);
+            var (tx, tz) = GetUnityXZFromLatLon(latitude, longitude);
             return ((float)tx, (float)tz);
         }
 

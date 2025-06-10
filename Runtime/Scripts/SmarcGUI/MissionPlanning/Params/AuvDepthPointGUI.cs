@@ -9,7 +9,7 @@ namespace SmarcGUI.MissionPlanning.Params
     {
         [Header("AuvDepthPointGUI")]
         public TMP_InputField LatField;
-        public TMP_InputField LonField, TargetDepthField, MinAltitudeField, RpmField, TimeoutField;
+        public TMP_InputField LonField, TargetDepthField, MinAltitudeField, RpmField, TimeoutField, ToleranceField;
 
         public double latitude
         {
@@ -85,6 +85,19 @@ namespace SmarcGUI.MissionPlanning.Params
                 NotifyPathChange();
             }
         }
+
+        public float tolerance
+        {
+            get { return ((AuvDepthPoint)paramValue).tolerance; }
+            set
+            {
+                var d = (AuvDepthPoint)paramValue;
+                d.tolerance = value;
+                paramValue = d;
+                ToleranceField.text = value.ToString();
+                NotifyPathChange();
+            }
+        }
         
 
         protected override void SetupFields()
@@ -101,6 +114,7 @@ namespace SmarcGUI.MissionPlanning.Params
                     min_altitude = previousGp.min_altitude;
                     rpm = previousGp.rpm;
                     timeout = previousGp.timeout;
+                    tolerance = previousGp.tolerance;
                     guiState.Log("New LatLon set to previous.");
                 }
                 // if there is no previous geo point, set it to where the camera is looking at
@@ -123,6 +137,7 @@ namespace SmarcGUI.MissionPlanning.Params
             MinAltitudeField.text = min_altitude.ToString();
             RpmField.text = rpm.ToString();
             TimeoutField.text = timeout.ToString();
+            ToleranceField.text = tolerance.ToString();
 
             LatField.onEndEdit.AddListener(OnLatChanged);
             LonField.onEndEdit.AddListener(OnLonChanged);
@@ -130,6 +145,7 @@ namespace SmarcGUI.MissionPlanning.Params
             MinAltitudeField.onEndEdit.AddListener(OnMinAltitudeChanged);
             RpmField.onEndEdit.AddListener(OnRpmChanged);
             TimeoutField.onEndEdit.AddListener(OnTimeoutChanged);
+            ToleranceField.onEndEdit.AddListener(OnToleranceChanged);
 
             fields.Add(LatField.GetComponent<RectTransform>());
             fields.Add(LonField.GetComponent<RectTransform>());
@@ -137,6 +153,7 @@ namespace SmarcGUI.MissionPlanning.Params
             fields.Add(MinAltitudeField.GetComponent<RectTransform>());
             fields.Add(RpmField.GetComponent<RectTransform>());
             fields.Add(TimeoutField.GetComponent<RectTransform>());
+            fields.Add(ToleranceField.GetComponent<RectTransform>());
 
             OnSelectedChange();
         }
@@ -146,6 +163,18 @@ namespace SmarcGUI.MissionPlanning.Params
             return new List<string> { "Lat", "Lon", "T.Depth", "MinAlt", "RPM", "T/O" };
         }
 
+
+        void OnToleranceChanged(string s)
+        {
+            try {tolerance = float.Parse(s);}
+            catch
+            {
+                guiState.Log("Invalid tolerance value");
+                OnToleranceChanged(tolerance.ToString());
+                return;
+            }
+            NotifyPathChange();
+        }
 
         void OnLatChanged(string s)
         {
