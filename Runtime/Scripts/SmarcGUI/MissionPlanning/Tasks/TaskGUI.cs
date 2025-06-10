@@ -50,7 +50,7 @@ namespace SmarcGUI.MissionPlanning.Tasks
 
         MissionPlanStore missionPlanStore;
         GUIState guiState;
-        TSTGUI tstGUI;
+        public TSTGUI tstGUI{ get; private set; }
         RectTransform rt;
         float baseHeight;
         Image RunButtonImage;

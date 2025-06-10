@@ -1,4 +1,3 @@
-using GeoRef;
 using SmarcGUI.WorldSpace;
 using TMPro;
 using UnityEngine;
@@ -11,8 +10,6 @@ namespace SmarcGUI.MissionPlanning.Params
         [Header("AuvDepthPointGUI")]
         public TMP_InputField LatField;
         public TMP_InputField LonField, TargetDepthField, MinAltitudeField, RpmField, TimeoutField;
-
-        GlobalReferencePoint globalReferencePoint;
 
         public double latitude
         {
@@ -88,16 +85,11 @@ namespace SmarcGUI.MissionPlanning.Params
                 NotifyPathChange();
             }
         }
-
-        void Awake()
-        {
-            globalReferencePoint = FindFirstObjectByType<GlobalReferencePoint>();
-            guiState = FindFirstObjectByType<GUIState>();
-        }
+        
 
         protected override void SetupFields()
         {
-            if(latitude == 0 && longitude == 0)
+            if (latitude == 0 && longitude == 0)
             {
                 // set this to be the same as the previous geo point
                 if (ParamIndex > 0)
@@ -115,15 +107,15 @@ namespace SmarcGUI.MissionPlanning.Params
                 else
                 {
                     var point = guiState.GetLookAtPoint();
-                    var (lat, lon) = globalReferencePoint.GetLatLonFromUnityXZ(point.x, point.z);
+                    var (lat, lon) = GetLatLonFromUnityXZ(point.x, point.z);
                     latitude = lat;
                     longitude = lon;
                     guiState.Log("New LatLon set to where the camera is looking at.");
                 }
             }
 
-            if(target_depth == 0) target_depth = -1;
-            if(min_altitude == 0) min_altitude = 1;
+            if (target_depth == 0) target_depth = -1;
+            if (min_altitude == 0) min_altitude = 1;
 
             LatField.text = latitude.ToString();
             LonField.text = longitude.ToString();
@@ -231,13 +223,13 @@ namespace SmarcGUI.MissionPlanning.Params
 
         public (float, float) GetXZ()
         {
-            var (tx,tz) = globalReferencePoint.GetUnityXZFromLatLon(latitude, longitude);
+            var (tx,tz) = GetUnityXZFromLatLon(latitude, longitude);
             return ((float)tx, (float)tz);
         }
 
         public void SetXZ(float x, float z)
         {
-            var (lat, lon) = globalReferencePoint.GetLatLonFromUnityXZ(x, z);
+            var (lat, lon) = GetLatLonFromUnityXZ(x, z);
             latitude = lat;
             longitude = lon;
         }

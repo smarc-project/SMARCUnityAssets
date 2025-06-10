@@ -1,4 +1,3 @@
-using GeoRef;
 using SmarcGUI.WorldSpace;
 using TMPro;
 using UnityEngine;
@@ -12,8 +11,6 @@ namespace SmarcGUI.MissionPlanning.Params
         [Header("AuvAltitudePointGUI")]
         public TMP_InputField LatField;
         public TMP_InputField LonField, TargetAltitudeField, MaxDepthField, RpmField, TimeoutField;
-
-        GlobalReferencePoint globalReferencePoint;
 
         public double latitude
         {
@@ -90,11 +87,6 @@ namespace SmarcGUI.MissionPlanning.Params
             }
         }
 
-        void Awake()
-        {
-            globalReferencePoint = FindFirstObjectByType<GlobalReferencePoint>();
-            guiState = FindFirstObjectByType<GUIState>();
-        }
 
         protected override void SetupFields()
         {
@@ -116,7 +108,7 @@ namespace SmarcGUI.MissionPlanning.Params
                 else
                 {
                     var point = guiState.GetLookAtPoint();
-                    var (lat, lon) = globalReferencePoint.GetLatLonFromUnityXZ(point.x, point.z);
+                    var (lat, lon) = GetLatLonFromUnityXZ(point.x, point.z);
                     latitude = lat;
                     longitude = lon;
                     guiState.Log("New LatLon set to where the camera is looking at.");
@@ -232,13 +224,13 @@ namespace SmarcGUI.MissionPlanning.Params
 
         public (float, float) GetXZ()
         {
-            var (tx,tz) = globalReferencePoint.GetUnityXZFromLatLon(latitude, longitude);
+            var (tx,tz) = GetUnityXZFromLatLon(latitude, longitude);
             return ((float)tx, (float)tz);
         }
 
         public void SetXZ(float x, float z)
         {
-            var (lat, lon) = globalReferencePoint.GetLatLonFromUnityXZ(x, z);
+            var (lat, lon) = GetLatLonFromUnityXZ(x, z);
             latitude = lat;
             longitude = lon;
         }
