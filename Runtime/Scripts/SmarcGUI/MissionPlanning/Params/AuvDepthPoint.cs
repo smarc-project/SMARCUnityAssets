@@ -11,6 +11,7 @@ namespace SmarcGUI.MissionPlanning.Params
         public float min_altitude{get; set;}
         public float rpm{get; set;}
         public float timeout{get; set;}
+        public float tolerance { get; set; }
 
         public string ToJson()
         {
@@ -26,6 +27,7 @@ namespace SmarcGUI.MissionPlanning.Params
             min_altitude = ll.min_altitude;
             rpm = ll.rpm;
             timeout = ll.timeout;
+            tolerance = ll.tolerance;
         }
     }
 }

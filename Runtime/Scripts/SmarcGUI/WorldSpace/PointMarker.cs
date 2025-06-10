@@ -12,6 +12,7 @@ namespace SmarcGUI.WorldSpace
         IParamHasY paramY;
         IParamHasHeading paramHeading;
         IParamHasOrientation paramOrientation;
+        IParamHasTolerance paramTolerance;
 
         [Header("3D visuals")]
         public Transform pointModel;
@@ -28,6 +29,8 @@ namespace SmarcGUI.WorldSpace
 
         LineRenderer lineToShadow;
         public Transform shadowMarker;
+        LineRenderer toleranceCircleRenderer;
+        public Transform toleranceMarker;
 
         GUIState guiState;
         bool isSelected = false;    
@@ -56,6 +59,14 @@ namespace SmarcGUI.WorldSpace
             lineToShadow.startColor = Color.yellow;
             lineToShadow.endColor = Color.yellow;
             lineToShadow.positionCount = 2;
+
+            toleranceCircleRenderer = toleranceMarker.GetComponent<LineRenderer>();
+            toleranceCircleRenderer.startWidth = 0.1f;
+            toleranceCircleRenderer.endWidth = 0.1f;
+            toleranceCircleRenderer.startColor = Color.yellow;
+            toleranceCircleRenderer.endColor = Color.yellow;
+            toleranceCircleRenderer.positionCount = 50;
+
 
             var overlayGO = Instantiate(PointMarkerOverlayPrefab);
             overlay = overlayGO.GetComponent<PointMarkerOverlay>();
@@ -130,6 +141,13 @@ namespace SmarcGUI.WorldSpace
             orientationModel.localRotation = q;
             orientationModel.gameObject.SetActive(paramXZ != null);
         }
+        
+        public void SetToleranceParam(IParamHasTolerance param)
+        {
+            if(param == null) return;
+            paramTolerance = param;
+            
+        }
 
         public void OnParamChanged()
         {
@@ -137,11 +155,24 @@ namespace SmarcGUI.WorldSpace
             SetXZParam(paramXZ);
             SetHeadingParam(paramHeading);
             SetOrientationParam(paramOrientation);
-            if(shadowMarker != null && paramY != null)
+            SetToleranceParam(paramTolerance);
+            if (shadowMarker != null && paramY != null)
             {
-                shadowMarker.position = new Vector3(transform.position.x,  paramY.GetYReference(), transform.position.z);
+                shadowMarker.position = new Vector3(transform.position.x, paramY.GetYReference(), transform.position.z);
                 lineToShadow.SetPosition(0, transform.position);
                 lineToShadow.SetPosition(1, shadowMarker.position);
+            }
+
+            if (toleranceMarker != null && paramTolerance != null)
+            {
+                float tolerance = paramTolerance.GetTolerance();
+                toleranceCircleRenderer.positionCount = 50;
+                for (int i = 0; i < 50; i++)
+                {
+                    float angle = i * Mathf.PI * 2 / 50;
+                    Vector3 pos = new(Mathf.Cos(angle) * tolerance, 0, Mathf.Sin(angle) * tolerance);
+                    toleranceCircleRenderer.SetPosition(i, pos + transform.position);
+                }
             }
         }
 
@@ -173,8 +204,12 @@ namespace SmarcGUI.WorldSpace
             
             arrowYup.SetActive(paramY != null && draw3Dwidgets);
             arrowYdown.SetActive(paramY != null && draw3Dwidgets);
+
             shadowMarker.gameObject.SetActive(draw3Dwidgets);
             lineToShadow.enabled = draw3Dwidgets;
+
+            toleranceMarker.gameObject.SetActive(paramTolerance != null);
+            toleranceCircleRenderer.enabled = paramTolerance != null;
 
             FloatingNameCanvas.gameObject.SetActive(draw3Dwidgets);
             FloatingNameCanvas.transform.rotation = guiState.CurrentCam.transform.rotation;

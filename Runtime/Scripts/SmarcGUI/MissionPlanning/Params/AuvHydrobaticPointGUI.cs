@@ -1,4 +1,3 @@
-using GeoRef;
 using SmarcGUI.WorldSpace;
 using TMPro;
 using UnityEngine;
@@ -7,19 +6,18 @@ using Unity.Robotics.ROSTCPConnector.ROSGeometry;
 
 
 namespace SmarcGUI.MissionPlanning.Params
-{    public class AuvHydrobaticPointGUI : ParamGUI, IParamHasXZ, IParamHasY, IParamHasOrientation
+{    public class AuvHydrobaticPointGUI : ParamGUI, IParamHasXZ, IParamHasY, IParamHasOrientation, IParamHasTolerance
     {
         [Header("AuvHydrobaticPointGUI")]
         public TMP_InputField LatField;
-        public TMP_InputField LonField, TargetDepthField, TimeoutField;        
+        public TMP_InputField LonField, TargetDepthField, TimeoutField, ToleranceField;
         public TMP_InputField exField, eyField, ezField;
-
-        GlobalReferencePoint globalReferencePoint;
 
         public double latitude
         {
-            get{return ((AuvHydrobaticPoint)paramValue).latitude; }
-            set{
+            get { return ((AuvHydrobaticPoint)paramValue).latitude; }
+            set
+            {
                 var gp = (AuvHydrobaticPoint)paramValue;
                 gp.latitude = value;
                 paramValue = gp;
@@ -29,8 +27,9 @@ namespace SmarcGUI.MissionPlanning.Params
         }
         public double longitude
         {
-            get{return ((AuvHydrobaticPoint)paramValue).longitude; }
-            set{
+            get { return ((AuvHydrobaticPoint)paramValue).longitude; }
+            set
+            {
                 var gp = (AuvHydrobaticPoint)paramValue;
                 gp.longitude = value;
                 paramValue = gp;
@@ -81,6 +80,19 @@ namespace SmarcGUI.MissionPlanning.Params
             }
         }
 
+        public float tolerance
+        {
+            get { return ((AuvHydrobaticPoint)paramValue).tolerance; }
+            set
+            {
+                var d = (AuvHydrobaticPoint)paramValue;
+                d.tolerance = value;
+                paramValue = d;
+                ToleranceField.text = value.ToString();
+                NotifyPathChange();
+            }
+        }
+
         void UpdateOrientationFromEuler()
         {
             var ex = exField.text != "" ? float.Parse(exField.text) : 0;
@@ -90,15 +102,11 @@ namespace SmarcGUI.MissionPlanning.Params
             orientation = new Orientation(ex, ey, ez);
         }
 
-        void Awake()
-        {
-            globalReferencePoint = FindFirstObjectByType<GlobalReferencePoint>();
-            guiState = FindFirstObjectByType<GUIState>();
-        }
+
 
         protected override void SetupFields()
         {
-            if(latitude == 0 && longitude == 0)
+            if (latitude == 0 && longitude == 0)
             {
                 // set this to be the same as the previous geo point
                 if (ParamIndex > 0)
@@ -109,25 +117,28 @@ namespace SmarcGUI.MissionPlanning.Params
                     target_depth = previousGp.target_depth;
                     timeout = previousGp.timeout;
                     orientation = previousGp.orientation;
+                    tolerance = previousGp.tolerance;
                     guiState.Log("New LatLon set to previous.");
                 }
                 // if there is no previous geo point, set it to where the camera is looking at
                 else
                 {
                     var point = guiState.GetLookAtPoint();
-                    var (lat, lon) = globalReferencePoint.GetLatLonFromUnityXZ(point.x, point.z);
+                    var (lat, lon) = GetLatLonFromUnityXZ(point.x, point.z);
                     latitude = lat;
                     longitude = lon;
                     guiState.Log("New LatLon set to where the camera is looking at.");
                 }
             }
 
-            if(target_depth == 0) target_depth = -1;
+            if (target_depth == 0) target_depth = -1;
+            if (tolerance == 0) tolerance = 1;
 
             LatField.text = latitude.ToString();
             LonField.text = longitude.ToString();
             TargetDepthField.text = target_depth.ToString();
             TimeoutField.text = timeout.ToString();
+            ToleranceField.text = tolerance.ToString();
             var euler = orientation.ToRPY();
             exField.text = euler.x.ToString();
             eyField.text = euler.y.ToString();
@@ -139,9 +150,11 @@ namespace SmarcGUI.MissionPlanning.Params
             LonField.onEndEdit.AddListener(OnLonChanged);
             TargetDepthField.onEndEdit.AddListener(OnDepthChanged);
             TimeoutField.onEndEdit.AddListener(OnTimeoutChanged);
+            ToleranceField.onEndEdit.AddListener(OnToleranceChanged);
             exField.onEndEdit.AddListener(OnEulerXChanged);
             eyField.onEndEdit.AddListener(OnEulerYChanged);
             ezField.onEndEdit.AddListener(OnEulerZChanged);
+
 
             fields.Add(LatField.GetComponent<RectTransform>());
             fields.Add(LonField.GetComponent<RectTransform>());
@@ -150,19 +163,32 @@ namespace SmarcGUI.MissionPlanning.Params
             fields.Add(exField.GetComponent<RectTransform>());
             fields.Add(eyField.GetComponent<RectTransform>());
             fields.Add(ezField.GetComponent<RectTransform>());
+            fields.Add(ToleranceField.GetComponent<RectTransform>());
 
             OnSelectedChange();
         }
 
         public override List<string> GetFieldLabels()
         {
-            return new List<string> { "Lat", "Lon", "T.Depth", "T/O", "Roll", "Pitch", "Yaw" };
+            return new List<string> { "Lat", "Lon", "T.Depth", "T/O", "Roll", "Pitch", "Yaw", "Tol"  };
+        }
+
+        void OnToleranceChanged(string s)
+        {
+            try { tolerance = float.Parse(s); }
+            catch
+            {
+                guiState.Log("Invalid tolerance value");
+                OnToleranceChanged(tolerance.ToString());
+                return;
+            }
+            NotifyPathChange();
         }
 
         void OnEulerXChanged(string s)
         {
-            try {UpdateOrientationFromEuler();}
-            catch 
+            try { UpdateOrientationFromEuler(); }
+            catch
             {
                 guiState.Log("Invalid euler X value");
                 OnEulerXChanged("0");
@@ -173,8 +199,8 @@ namespace SmarcGUI.MissionPlanning.Params
 
         void OnEulerYChanged(string s)
         {
-            try {UpdateOrientationFromEuler();}
-            catch 
+            try { UpdateOrientationFromEuler(); }
+            catch
             {
                 guiState.Log("Invalid euler Y value");
                 OnEulerYChanged("0");
@@ -185,8 +211,8 @@ namespace SmarcGUI.MissionPlanning.Params
 
         void OnEulerZChanged(string s)
         {
-            try {UpdateOrientationFromEuler();}
-            catch 
+            try { UpdateOrientationFromEuler(); }
+            catch
             {
                 guiState.Log("Invalid euler Z value");
                 OnEulerZChanged("0");
@@ -198,8 +224,8 @@ namespace SmarcGUI.MissionPlanning.Params
 
         void OnLatChanged(string s)
         {
-            try {latitude = double.Parse(s);}
-            catch 
+            try { latitude = double.Parse(s); }
+            catch
             {
                 guiState.Log("Invalid latitude value");
                 OnLatChanged(latitude.ToString());
@@ -210,7 +236,7 @@ namespace SmarcGUI.MissionPlanning.Params
 
         void OnLonChanged(string s)
         {
-            try{longitude = double.Parse(s);}
+            try { longitude = double.Parse(s); }
             catch
             {
                 guiState.Log("Invalid longitude value");
@@ -222,7 +248,7 @@ namespace SmarcGUI.MissionPlanning.Params
 
         void OnDepthChanged(string s)
         {
-            try {target_depth = float.Parse(s);}
+            try { target_depth = float.Parse(s); }
             catch
             {
                 guiState.Log("Invalid depth value");
@@ -235,7 +261,7 @@ namespace SmarcGUI.MissionPlanning.Params
 
         void OnTimeoutChanged(string s)
         {
-            try {timeout = float.Parse(s);}
+            try { timeout = float.Parse(s); }
             catch
             {
                 guiState.Log("Invalid timeout value");
@@ -245,17 +271,17 @@ namespace SmarcGUI.MissionPlanning.Params
             NotifyPathChange();
         }
 
-        
+
 
         public (float, float) GetXZ()
         {
-            var (tx,tz) = globalReferencePoint.GetUnityXZFromLatLon(latitude, longitude);
+            var (tx, tz) = GetUnityXZFromLatLon(latitude, longitude);
             return ((float)tx, (float)tz);
         }
 
         public void SetXZ(float x, float z)
         {
-            var (lat, lon) = globalReferencePoint.GetLatLonFromUnityXZ(x, z);
+            var (lat, lon) = GetLatLonFromUnityXZ(x, z);
             latitude = lat;
             longitude = lon;
         }
@@ -302,6 +328,16 @@ namespace SmarcGUI.MissionPlanning.Params
             // might be nice to have later, when there is a gui widget for setting the orientation
             // in-world
             Debug.Log("SetUnityQuat not implemented");
+        }
+        
+        public float GetTolerance()
+        {
+            return tolerance;
+        }
+
+        public void SetTolerance(float y)
+        {
+            tolerance = y;
         }
 
     }

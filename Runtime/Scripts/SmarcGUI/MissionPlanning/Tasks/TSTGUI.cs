@@ -18,12 +18,14 @@ namespace SmarcGUI.MissionPlanning.Tasks
         public TMP_InputField DescriptionField;
         public TMP_InputField TimeoutField;
         public Toggle DrawPathToggle;
+        public Toggle UseWebMercatorToggle;
         public RectTransform HighlightRT;
         public RectTransform SelectedHighlightRT;
         public LineRenderer PathLineRenderer;        
 
         bool isSelected = false;
         List<TaskGUI> taskGUIs = new();
+        public bool PlanInWebMercator => UseWebMercatorToggle.isOn;
 
 
         MissionPlanStore missionPlanStore;

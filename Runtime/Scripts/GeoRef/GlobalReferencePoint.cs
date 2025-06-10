@@ -25,6 +25,10 @@ namespace GeoRef
         public double UTMEasting;
         public double UTMNorthing;
 
+        [Header("Web Mercator properties")]
+        public double WebMercatorEasting;
+        public double WebMercatorNorthing;
+
         EagerLoad el;
         EagerLoad elWeb;
 
@@ -43,6 +47,12 @@ namespace GeoRef
             {
                 (Lat, Lon) = GetLatLonFromUTM(UTMEasting, UTMNorthing);
             }
+
+            var ll = new Coordinate(Lat, Lon);
+            elWeb ??= new(EagerLoadType.WebMercator);
+            var webmerc = ll.WebMercator;
+            WebMercatorEasting = webmerc.Easting;
+            WebMercatorNorthing = webmerc.Northing;
         }
 
         void Awake()
@@ -107,25 +117,54 @@ namespace GeoRef
             return (obj_easting, obj_northing, obj_lat, obj_lon);
         }
 
-        public (float x, float z) GetUnityXZFromLatLon(double lat, double lon)
+        public (float x, float z) GetUnityXZFromLatLon(double lat, double lon, bool useWebMercator = false)
         {
-            el ??= new(EagerLoadType.UTM_MGRS);
-            var latlon = new Coordinate(lat, lon, el);
-            var eastingDiff = latlon.UTM.Easting - UTMEasting;
-            var northingDiff = latlon.UTM.Northing - UTMNorthing;
-            var unityX = transform.position.x + eastingDiff;
-            var unityZ = transform.position.z + northingDiff;
-            return ((float)unityX, (float)unityZ);
+            if (useWebMercator)
+            {
+                elWeb ??= new(EagerLoadType.WebMercator);
+                var latlon = new Coordinate(lat, lon, elWeb);
+                var webmerc = latlon.WebMercator;
+                var eastingDiff = webmerc.Easting - WebMercatorEasting;
+                var northingDiff = webmerc.Northing - WebMercatorNorthing;
+                var unityX = transform.position.x + eastingDiff;
+                var unityZ = transform.position.z + northingDiff;
+                return ((float)unityX, (float)unityZ);
+            }
+            else
+            {
+                el ??= new(EagerLoadType.UTM_MGRS);
+                var latlon = new Coordinate(lat, lon, el);
+                var eastingDiff = latlon.UTM.Easting - UTMEasting;
+                var northingDiff = latlon.UTM.Northing - UTMNorthing;
+                var unityX = transform.position.x + eastingDiff;
+                var unityZ = transform.position.z + northingDiff;
+                return ((float)unityX, (float)unityZ);
+            }
         }
 
-        public (double lat, double lon) GetLatLonFromUnityXZ(float x, float z)
+
+
+        public (double lat, double lon) GetLatLonFromUnityXZ(float x, float z, bool useWebMercator = false)
         {
-            var eastingDiff = x - transform.position.x;
-            var northingDiff = z - transform.position.z;
-            var utm_easting = UTMEasting + eastingDiff;
-            var utm_northing = UTMNorthing + northingDiff;
-            (var lat, var lon) = GetLatLonFromUTM(utm_easting, utm_northing);
-            return (lat, lon);
+            if (useWebMercator)
+            {
+                elWeb ??= new(EagerLoadType.WebMercator);
+                var eastingDiff = x - transform.position.x;
+                var northingDiff = z - transform.position.z;
+                var webmerc_easting = WebMercatorEasting + eastingDiff;
+                var webmerc_northing = WebMercatorNorthing + northingDiff;
+                (var lat, var lon) = GetLatLonFromWebMercator(webmerc_easting, webmerc_northing);
+                return (lat, lon);
+            }
+            else
+            {
+                var eastingDiff = x - transform.position.x;
+                var northingDiff = z - transform.position.z;
+                var utm_easting = UTMEasting + eastingDiff;
+                var utm_northing = UTMNorthing + northingDiff;
+                (var lat, var lon) = GetLatLonFromUTM(utm_easting, utm_northing);
+                return (lat, lon);
+            }
         }
 
         public (double easting, double northing) GetWebMercatorFromLatLon(double lat, double lon)
@@ -134,6 +173,14 @@ namespace GeoRef
             var latlon = new Coordinate(lat, lon, elWeb);
             var webmerc = latlon.WebMercator;
             return (webmerc.Easting, webmerc.Northing);
+        }
+        
+        public (double lat, double lon) GetLatLonFromWebMercator(double easting, double northing)
+        {
+            elWeb ??= new(EagerLoadType.WebMercator);
+            var webmerc = new WebMercator(easting, northing);
+            var latlon = WebMercator.ConvertWebMercatortoLatLong(webmerc, elWeb);
+            return (latlon.Latitude.ToDouble(), latlon.Longitude.ToDouble());
         }
     }
     
