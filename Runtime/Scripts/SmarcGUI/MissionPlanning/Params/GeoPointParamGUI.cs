@@ -5,15 +5,16 @@ using System.Collections.Generic;
 
 namespace SmarcGUI.MissionPlanning.Params
 {
-    public class GeoPointParamGUI : ParamGUI, IParamHasXZ, IParamHasY
+    public class GeoPointParamGUI : ParamGUI, IParamHasXZ, IParamHasY, IParamHasTolerance
     {
         [Header("GeoPointParamGUI")]
         public TMP_InputField LatField, LonField, AltField, ToleranceField;
 
         public float altitude
         {
-            get{return (float)((GeoPoint)paramValue).altitude; }
-            set{
+            get { return (float)((GeoPoint)paramValue).altitude; }
+            set
+            {
                 var gp = (GeoPoint)paramValue;
                 gp.altitude = value;
                 paramValue = gp;
@@ -23,8 +24,9 @@ namespace SmarcGUI.MissionPlanning.Params
         }
         public double latitude
         {
-            get{return ((GeoPoint)paramValue).latitude; }
-            set{
+            get { return ((GeoPoint)paramValue).latitude; }
+            set
+            {
                 var gp = (GeoPoint)paramValue;
                 gp.latitude = value;
                 paramValue = gp;
@@ -34,8 +36,9 @@ namespace SmarcGUI.MissionPlanning.Params
         }
         public double longitude
         {
-            get{return ((GeoPoint)paramValue).longitude; }
-            set{
+            get { return ((GeoPoint)paramValue).longitude; }
+            set
+            {
                 var gp = (GeoPoint)paramValue;
                 gp.longitude = value;
                 paramValue = gp;
@@ -43,7 +46,7 @@ namespace SmarcGUI.MissionPlanning.Params
                 NotifyPathChange();
             }
         }
-        
+
         public float tolerance
         {
             get { return ((GeoPoint)paramValue).tolerance; }
@@ -84,13 +87,15 @@ namespace SmarcGUI.MissionPlanning.Params
                 }
             }
 
+            if (tolerance == 0) tolerance = 1;
+
             UpdateTexts();
 
             LatField.onEndEdit.AddListener(OnLatChanged);
             LonField.onEndEdit.AddListener(OnLonChanged);
             AltField.onEndEdit.AddListener(OnAltChanged);
             ToleranceField.onEndEdit.AddListener(OnToleranceChanged);
-            
+
 
             fields.Add(LatField.GetComponent<RectTransform>());
             fields.Add(LonField.GetComponent<RectTransform>());
@@ -102,7 +107,7 @@ namespace SmarcGUI.MissionPlanning.Params
 
         public override List<string> GetFieldLabels()
         {
-            return new List<string> { "Lat", "Lon", "Alt" };
+            return new List<string> { "Lat", "Lon", "Alt", "Tol"  };
         }
 
         void UpdateTexts()
@@ -114,7 +119,7 @@ namespace SmarcGUI.MissionPlanning.Params
 
         void OnToleranceChanged(string s)
         {
-            try {tolerance = float.Parse(s);}
+            try { tolerance = float.Parse(s); }
             catch
             {
                 guiState.Log("Invalid tolerance value");
@@ -126,8 +131,8 @@ namespace SmarcGUI.MissionPlanning.Params
 
         void OnLatChanged(string s)
         {
-            try {latitude = double.Parse(s);}
-            catch 
+            try { latitude = double.Parse(s); }
+            catch
             {
                 guiState.Log("Invalid latitude value");
                 OnLatChanged(latitude.ToString());
@@ -138,7 +143,7 @@ namespace SmarcGUI.MissionPlanning.Params
 
         void OnLonChanged(string s)
         {
-            try{longitude = double.Parse(s);}
+            try { longitude = double.Parse(s); }
             catch
             {
                 guiState.Log("Invalid longitude value");
@@ -146,11 +151,11 @@ namespace SmarcGUI.MissionPlanning.Params
                 return;
             }
             NotifyPathChange();
-        }   
+        }
 
         void OnAltChanged(string s)
         {
-            try{altitude = float.Parse(s);}
+            try { altitude = float.Parse(s); }
             catch
             {
                 guiState.Log("Invalid altitude value");
@@ -164,7 +169,7 @@ namespace SmarcGUI.MissionPlanning.Params
 
         public (float, float) GetXZ()
         {
-            var (tx,tz) = GetUnityXZFromLatLon(latitude, longitude);
+            var (tx, tz) = GetUnityXZFromLatLon(latitude, longitude);
             return ((float)tx, (float)tz);
         }
 
@@ -188,6 +193,16 @@ namespace SmarcGUI.MissionPlanning.Params
         public void SetY(float y)
         {
             altitude = y;
+        }
+        
+        public float GetTolerance()
+        {
+            return tolerance;
+        }
+
+        public void SetTolerance(float y)
+        {
+            tolerance = y;
         }
     }
 }

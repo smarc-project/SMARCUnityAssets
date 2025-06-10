@@ -6,17 +6,18 @@ using Unity.Robotics.ROSTCPConnector.ROSGeometry;
 
 
 namespace SmarcGUI.MissionPlanning.Params
-{    public class AuvHydrobaticPointGUI : ParamGUI, IParamHasXZ, IParamHasY, IParamHasOrientation
+{    public class AuvHydrobaticPointGUI : ParamGUI, IParamHasXZ, IParamHasY, IParamHasOrientation, IParamHasTolerance
     {
         [Header("AuvHydrobaticPointGUI")]
         public TMP_InputField LatField;
-        public TMP_InputField LonField, TargetDepthField, TimeoutField, ToleranceField;        
+        public TMP_InputField LonField, TargetDepthField, TimeoutField, ToleranceField;
         public TMP_InputField exField, eyField, ezField;
 
         public double latitude
         {
-            get{return ((AuvHydrobaticPoint)paramValue).latitude; }
-            set{
+            get { return ((AuvHydrobaticPoint)paramValue).latitude; }
+            set
+            {
                 var gp = (AuvHydrobaticPoint)paramValue;
                 gp.latitude = value;
                 paramValue = gp;
@@ -26,8 +27,9 @@ namespace SmarcGUI.MissionPlanning.Params
         }
         public double longitude
         {
-            get{return ((AuvHydrobaticPoint)paramValue).longitude; }
-            set{
+            get { return ((AuvHydrobaticPoint)paramValue).longitude; }
+            set
+            {
                 var gp = (AuvHydrobaticPoint)paramValue;
                 gp.longitude = value;
                 paramValue = gp;
@@ -104,7 +106,7 @@ namespace SmarcGUI.MissionPlanning.Params
 
         protected override void SetupFields()
         {
-            if(latitude == 0 && longitude == 0)
+            if (latitude == 0 && longitude == 0)
             {
                 // set this to be the same as the previous geo point
                 if (ParamIndex > 0)
@@ -129,7 +131,8 @@ namespace SmarcGUI.MissionPlanning.Params
                 }
             }
 
-            if(target_depth == 0) target_depth = -1;
+            if (target_depth == 0) target_depth = -1;
+            if (tolerance == 0) tolerance = 1;
 
             LatField.text = latitude.ToString();
             LonField.text = longitude.ToString();
@@ -151,7 +154,7 @@ namespace SmarcGUI.MissionPlanning.Params
             exField.onEndEdit.AddListener(OnEulerXChanged);
             eyField.onEndEdit.AddListener(OnEulerYChanged);
             ezField.onEndEdit.AddListener(OnEulerZChanged);
-            
+
 
             fields.Add(LatField.GetComponent<RectTransform>());
             fields.Add(LonField.GetComponent<RectTransform>());
@@ -167,12 +170,12 @@ namespace SmarcGUI.MissionPlanning.Params
 
         public override List<string> GetFieldLabels()
         {
-            return new List<string> { "Lat", "Lon", "T.Depth", "T/O", "Roll", "Pitch", "Yaw" };
+            return new List<string> { "Lat", "Lon", "T.Depth", "T/O", "Roll", "Pitch", "Yaw", "Tol"  };
         }
 
         void OnToleranceChanged(string s)
         {
-            try {tolerance = float.Parse(s);}
+            try { tolerance = float.Parse(s); }
             catch
             {
                 guiState.Log("Invalid tolerance value");
@@ -184,8 +187,8 @@ namespace SmarcGUI.MissionPlanning.Params
 
         void OnEulerXChanged(string s)
         {
-            try {UpdateOrientationFromEuler();}
-            catch 
+            try { UpdateOrientationFromEuler(); }
+            catch
             {
                 guiState.Log("Invalid euler X value");
                 OnEulerXChanged("0");
@@ -196,8 +199,8 @@ namespace SmarcGUI.MissionPlanning.Params
 
         void OnEulerYChanged(string s)
         {
-            try {UpdateOrientationFromEuler();}
-            catch 
+            try { UpdateOrientationFromEuler(); }
+            catch
             {
                 guiState.Log("Invalid euler Y value");
                 OnEulerYChanged("0");
@@ -208,8 +211,8 @@ namespace SmarcGUI.MissionPlanning.Params
 
         void OnEulerZChanged(string s)
         {
-            try {UpdateOrientationFromEuler();}
-            catch 
+            try { UpdateOrientationFromEuler(); }
+            catch
             {
                 guiState.Log("Invalid euler Z value");
                 OnEulerZChanged("0");
@@ -221,8 +224,8 @@ namespace SmarcGUI.MissionPlanning.Params
 
         void OnLatChanged(string s)
         {
-            try {latitude = double.Parse(s);}
-            catch 
+            try { latitude = double.Parse(s); }
+            catch
             {
                 guiState.Log("Invalid latitude value");
                 OnLatChanged(latitude.ToString());
@@ -233,7 +236,7 @@ namespace SmarcGUI.MissionPlanning.Params
 
         void OnLonChanged(string s)
         {
-            try{longitude = double.Parse(s);}
+            try { longitude = double.Parse(s); }
             catch
             {
                 guiState.Log("Invalid longitude value");
@@ -245,7 +248,7 @@ namespace SmarcGUI.MissionPlanning.Params
 
         void OnDepthChanged(string s)
         {
-            try {target_depth = float.Parse(s);}
+            try { target_depth = float.Parse(s); }
             catch
             {
                 guiState.Log("Invalid depth value");
@@ -258,7 +261,7 @@ namespace SmarcGUI.MissionPlanning.Params
 
         void OnTimeoutChanged(string s)
         {
-            try {timeout = float.Parse(s);}
+            try { timeout = float.Parse(s); }
             catch
             {
                 guiState.Log("Invalid timeout value");
@@ -268,11 +271,11 @@ namespace SmarcGUI.MissionPlanning.Params
             NotifyPathChange();
         }
 
-        
+
 
         public (float, float) GetXZ()
         {
-            var (tx,tz) = GetUnityXZFromLatLon(latitude, longitude);
+            var (tx, tz) = GetUnityXZFromLatLon(latitude, longitude);
             return ((float)tx, (float)tz);
         }
 
@@ -325,6 +328,16 @@ namespace SmarcGUI.MissionPlanning.Params
             // might be nice to have later, when there is a gui widget for setting the orientation
             // in-world
             Debug.Log("SetUnityQuat not implemented");
+        }
+        
+        public float GetTolerance()
+        {
+            return tolerance;
+        }
+
+        public void SetTolerance(float y)
+        {
+            tolerance = y;
         }
 
     }

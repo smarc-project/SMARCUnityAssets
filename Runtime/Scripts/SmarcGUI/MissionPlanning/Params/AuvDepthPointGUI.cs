@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 namespace SmarcGUI.MissionPlanning.Params
 {
-    public class AuvDepthPointGUI : ParamGUI, IParamHasXZ, IParamHasY
+    public class AuvDepthPointGUI : ParamGUI, IParamHasXZ, IParamHasY, IParamHasTolerance
     {
         [Header("AuvDepthPointGUI")]
         public TMP_InputField LatField;
@@ -13,8 +13,9 @@ namespace SmarcGUI.MissionPlanning.Params
 
         public double latitude
         {
-            get{return ((AuvDepthPoint)paramValue).latitude; }
-            set{
+            get { return ((AuvDepthPoint)paramValue).latitude; }
+            set
+            {
                 var gp = (AuvDepthPoint)paramValue;
                 gp.latitude = value;
                 paramValue = gp;
@@ -24,8 +25,9 @@ namespace SmarcGUI.MissionPlanning.Params
         }
         public double longitude
         {
-            get{return ((AuvDepthPoint)paramValue).longitude; }
-            set{
+            get { return ((AuvDepthPoint)paramValue).longitude; }
+            set
+            {
                 var gp = (AuvDepthPoint)paramValue;
                 gp.longitude = value;
                 paramValue = gp;
@@ -98,7 +100,7 @@ namespace SmarcGUI.MissionPlanning.Params
                 NotifyPathChange();
             }
         }
-        
+
 
         protected override void SetupFields()
         {
@@ -130,6 +132,7 @@ namespace SmarcGUI.MissionPlanning.Params
 
             if (target_depth == 0) target_depth = -1;
             if (min_altitude == 0) min_altitude = 1;
+            if (tolerance == 0) tolerance = 1;
 
             LatField.text = latitude.ToString();
             LonField.text = longitude.ToString();
@@ -160,13 +163,13 @@ namespace SmarcGUI.MissionPlanning.Params
 
         public override List<string> GetFieldLabels()
         {
-            return new List<string> { "Lat", "Lon", "T.Depth", "MinAlt", "RPM", "T/O" };
+            return new List<string> { "Lat", "Lon", "T.Depth", "MinAlt", "RPM", "T/O", "Tol"  };
         }
 
 
         void OnToleranceChanged(string s)
         {
-            try {tolerance = float.Parse(s);}
+            try { tolerance = float.Parse(s); }
             catch
             {
                 guiState.Log("Invalid tolerance value");
@@ -178,8 +181,8 @@ namespace SmarcGUI.MissionPlanning.Params
 
         void OnLatChanged(string s)
         {
-            try {latitude = double.Parse(s);}
-            catch 
+            try { latitude = double.Parse(s); }
+            catch
             {
                 guiState.Log("Invalid latitude value");
                 OnLatChanged(latitude.ToString());
@@ -190,7 +193,7 @@ namespace SmarcGUI.MissionPlanning.Params
 
         void OnLonChanged(string s)
         {
-            try{longitude = double.Parse(s);}
+            try { longitude = double.Parse(s); }
             catch
             {
                 guiState.Log("Invalid longitude value");
@@ -202,7 +205,7 @@ namespace SmarcGUI.MissionPlanning.Params
 
         void OnDepthChanged(string s)
         {
-            try {target_depth = float.Parse(s);}
+            try { target_depth = float.Parse(s); }
             catch
             {
                 guiState.Log("Invalid depth value");
@@ -214,7 +217,7 @@ namespace SmarcGUI.MissionPlanning.Params
 
         void OnMinAltitudeChanged(string s)
         {
-            try {min_altitude = float.Parse(s);}
+            try { min_altitude = float.Parse(s); }
             catch
             {
                 guiState.Log("Invalid min altitude value");
@@ -226,7 +229,7 @@ namespace SmarcGUI.MissionPlanning.Params
 
         void OnRpmChanged(string s)
         {
-            try {rpm = float.Parse(s);}
+            try { rpm = float.Parse(s); }
             catch
             {
                 guiState.Log("Invalid rpm value");
@@ -238,7 +241,7 @@ namespace SmarcGUI.MissionPlanning.Params
 
         void OnTimeoutChanged(string s)
         {
-            try {timeout = float.Parse(s);}
+            try { timeout = float.Parse(s); }
             catch
             {
                 guiState.Log("Invalid timeout value");
@@ -248,11 +251,11 @@ namespace SmarcGUI.MissionPlanning.Params
             NotifyPathChange();
         }
 
-        
+
 
         public (float, float) GetXZ()
         {
-            var (tx,tz) = GetUnityXZFromLatLon(latitude, longitude);
+            var (tx, tz) = GetUnityXZFromLatLon(latitude, longitude);
             return ((float)tx, (float)tz);
         }
 
@@ -276,6 +279,16 @@ namespace SmarcGUI.MissionPlanning.Params
         public void SetY(float y)
         {
             target_depth = -y;
+        }
+        
+        public float GetTolerance()
+        {
+            return tolerance;
+        }
+
+        public void SetTolerance(float y)
+        {
+            tolerance = y;
         }
 
     }

@@ -102,6 +102,8 @@ namespace SmarcGUI.MissionPlanning.Tasks
                 if(paramgui is IParamHasY paramY) pointmarker.SetYParam(paramY);
                 if(paramgui is IParamHasHeading paramH) pointmarker.SetHeadingParam(paramH);
                 if(paramgui is IParamHasOrientation paramO) pointmarker.SetOrientationParam(paramO);
+                if(paramgui is IParamHasTolerance paramT) pointmarker.SetToleranceParam(paramT);
+                pointmarker.OnParamChanged();
                 pointmarkers.Add(pointmarker);
                 return pointmarker;
             }
