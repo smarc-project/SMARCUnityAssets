@@ -114,7 +114,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 10a8919bb6be9cfc88e08395412d871b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  topic: core/thruster2_fb
+  topic: core/standard/thruster2_fb
   frequency: 10
   ignoreSensorState: 0
 --- !u!114 &9190152339477900123
@@ -129,7 +129,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c429a099bc8d99179a44603b0781227c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  topic: core/thruster2_cmd
+  topic: core/standard/thruster2_cmd
   expectedFrequency: 2
   resetting: 1
   receivedFrequency: 0
@@ -202,7 +202,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b7d3cd42937cc751eb3683ea7a6f3573, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  topic: core/vbs_fb
+  topic: core/standard/vbs_fb
   frequency: 10
   ignoreSensorState: 0
 --- !u!114 &2231964782047557348
@@ -217,7 +217,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3ffe676cf10cf64929ef506876e8bf6f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  topic: core/vbs_cmd
+  topic: core/standard/vbs_cmd
   expectedFrequency: 2
   resetting: 1
   receivedFrequency: 0
@@ -298,7 +298,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 10a8919bb6be9cfc88e08395412d871b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  topic: core/thruster1_fb
+  topic: core/standard/thruster1_fb
   frequency: 10
   ignoreSensorState: 0
 --- !u!114 &8433107569252019721
@@ -313,7 +313,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c429a099bc8d99179a44603b0781227c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  topic: core/thruster1_cmd
+  topic: core/standard/thruster1_cmd
   expectedFrequency: 2
   resetting: 1
   receivedFrequency: 0
@@ -384,7 +384,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b7d3cd42937cc751eb3683ea7a6f3573, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  topic: core/lcg_fb
+  topic: core/standard/lcg_fb
   frequency: 10
   ignoreSensorState: 0
 --- !u!114 &8895723212842834944
@@ -399,7 +399,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3ffe676cf10cf64929ef506876e8bf6f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  topic: core/lcg_cmd
+  topic: core/standard/lcg_cmd
   expectedFrequency: 2
   resetting: 1
   receivedFrequency: 0
@@ -470,7 +470,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 771d0adfb2667593a8c266a12060997f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  topic: core/thrust_vector_pitch_cmd
+  topic: core/standard/thrust_vector_pitch_cmd
   expectedFrequency: 2
   resetting: 1
   receivedFrequency: 0
@@ -542,7 +542,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 771d0adfb2667593a8c266a12060997f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  topic: core/thrust_vector_yaw_cmd
+  topic: core/standard/thrust_vector_yaw_cmd
   expectedFrequency: 2
   resetting: 1
   receivedFrequency: 0
