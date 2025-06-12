@@ -381,7 +381,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c0b413b5dc0c51c2296e027fc46a0bc9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  topic: core/leak
+  topic: core/standard/leak
   frequency: 10
   ignoreSensorState: 0
 --- !u!1 &2156977267458112211
