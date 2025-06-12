@@ -66,19 +66,22 @@ namespace SmarcGUI.Connections
 
         void Start()
         {
-            Context = mqttClient.Context;
+            if (Context == null || Context == "")
+                Context = mqttClient.Context;
         }
 
         void OnEnable()
         {
-            Context = mqttClient.Context;
+            if (Context == null || Context == "")
+                Context = mqttClient.Context;
         }
 
         public override void StartPublishing()
         {
             AgentName = $"{Environment.UserName}_Unity_{robotGO.name}";
             AgentType = UnitType.ToString();
-            Context = mqttClient.Context;
+            if (Context == null || Context == "")
+                Context = mqttClient.Context;
 
             msg = new WaspHeartbeatMsg(
                 agentType: AgentType,

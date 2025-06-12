@@ -1294,7 +1294,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b53b4caa09486ed69afd7310efb6dbaf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  topic: core/battery
+  topic: core/battery_status
   frequency: 10
   ignoreSensorState: 0
 --- !u!1 &6843956064454985405
@@ -1342,10 +1342,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   topic: /tf
-  m_GlobalFrameIds:
-  - map
-  Suffix: _gt
-  TransformTreeRootName: odom
+  BaseLinkName: base_link
   Frequency: 10
 --- !u!1 &7228304869328427846
 GameObject:
@@ -1392,10 +1389,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   topic: /tf
-  m_GlobalFrameIds:
-  - map
-  Suffix: _gt
-  TransformTreeRootName: odom
+  BaseLinkName: base_link
   Frequency: 10
 --- !u!1 &7611823193007283588
 GameObject:

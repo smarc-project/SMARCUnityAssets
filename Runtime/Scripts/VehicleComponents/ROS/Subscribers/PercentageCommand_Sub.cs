@@ -1,13 +1,13 @@
 using UnityEngine;
 
-using RosMessageTypes.Smarc; // PercentStamped
+using RosMessageTypes.Std;
 using IPercentageActuator = VehicleComponents.Actuators.IPercentageActuator;
 
 namespace VehicleComponents.ROS.Subscribers
 {
 
     [RequireComponent(typeof(IPercentageActuator))]
-    public class PercentageCommand_Sub : Actuator_Sub<PercentStampedMsg>
+    public class PercentageCommand_Sub : Actuator_Sub<Float32Msg>
     {
         IPercentageActuator act;
 
@@ -27,7 +27,7 @@ namespace VehicleComponents.ROS.Subscribers
                 return;
             }
             if(reset) act.SetPercentage(act.GetResetValue());
-            else act.SetPercentage(ROSMsg.value);
+            else act.SetPercentage(ROSMsg.data);
         }
     }
 }
