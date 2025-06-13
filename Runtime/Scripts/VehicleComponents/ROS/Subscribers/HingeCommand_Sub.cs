@@ -1,13 +1,13 @@
 using UnityEngine;
 
-using RosMessageTypes.Sam; // ThrusterAngles,
+using RosMessageTypes.Std;
 using Hinge = VehicleComponents.Actuators.Hinge;
 
 namespace VehicleComponents.ROS.Subscribers
 {
 
     [RequireComponent(typeof(Hinge))]
-    public class HingeCommand_Sub : Actuator_Sub<ThrusterAnglesMsg>
+    public class HingeCommand_Sub : Actuator_Sub<Float32Msg>
     {        
         public enum AngleChoice
         {
@@ -40,10 +40,7 @@ namespace VehicleComponents.ROS.Subscribers
                 hinge.SetAngle(0);
                 return;
             }
-            var angle=0f;
-            if(angleChoice == AngleChoice.vertical) angle = ROSMsg.thruster_vertical_radians;
-            else angle = ROSMsg.thruster_horizontal_radians;
-            hinge.SetAngle(angle);
+            hinge.SetAngle(ROSMsg.data);
         }
     }
 }

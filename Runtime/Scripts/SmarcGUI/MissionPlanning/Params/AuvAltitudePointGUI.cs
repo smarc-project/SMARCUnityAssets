@@ -1,4 +1,3 @@
-using GeoRef;
 using SmarcGUI.WorldSpace;
 using TMPro;
 using UnityEngine;
@@ -7,18 +6,17 @@ using System.Collections.Generic;
 
 namespace SmarcGUI.MissionPlanning.Params
 {
-    public class AuvAltitudePointGUI : ParamGUI, IParamHasXZ, IParamHasY
+    public class AuvAltitudePointGUI : ParamGUI, IParamHasXZ, IParamHasY, IParamHasTolerance
     {
         [Header("AuvAltitudePointGUI")]
         public TMP_InputField LatField;
-        public TMP_InputField LonField, TargetAltitudeField, MaxDepthField, RpmField, TimeoutField;
-
-        GlobalReferencePoint globalReferencePoint;
+        public TMP_InputField LonField, TargetAltitudeField, MaxDepthField, RpmField, TimeoutField, ToleranceField;
 
         public double latitude
         {
-            get{return ((AuvAltitudePoint)paramValue).latitude; }
-            set{
+            get { return ((AuvAltitudePoint)paramValue).latitude; }
+            set
+            {
                 var gp = (AuvAltitudePoint)paramValue;
                 gp.latitude = value;
                 paramValue = gp;
@@ -28,8 +26,9 @@ namespace SmarcGUI.MissionPlanning.Params
         }
         public double longitude
         {
-            get{return ((AuvAltitudePoint)paramValue).longitude; }
-            set{
+            get { return ((AuvAltitudePoint)paramValue).longitude; }
+            set
+            {
                 var gp = (AuvAltitudePoint)paramValue;
                 gp.longitude = value;
                 paramValue = gp;
@@ -90,15 +89,23 @@ namespace SmarcGUI.MissionPlanning.Params
             }
         }
 
-        void Awake()
+        public float tolerance
         {
-            globalReferencePoint = FindFirstObjectByType<GlobalReferencePoint>();
-            guiState = FindFirstObjectByType<GUIState>();
+            get { return ((AuvAltitudePoint)paramValue).tolerance; }
+            set
+            {
+                var d = (AuvAltitudePoint)paramValue;
+                d.tolerance = value;
+                paramValue = d;
+                ToleranceField.text = value.ToString();
+                NotifyPathChange();
+            }
         }
+
 
         protected override void SetupFields()
         {
-            if(latitude == 0 && longitude == 0)
+            if (latitude == 0 && longitude == 0)
             {
                 // set this to be the same as the previous geo point
                 if (ParamIndex > 0)
@@ -110,20 +117,22 @@ namespace SmarcGUI.MissionPlanning.Params
                     max_depth = previousGp.max_depth;
                     rpm = previousGp.rpm;
                     timeout = previousGp.timeout;
+                    tolerance = previousGp.tolerance;
                     guiState.Log("New LatLon set to previous.");
                 }
                 // if there is no previous geo point, set it to where the camera is looking at
                 else
                 {
                     var point = guiState.GetLookAtPoint();
-                    var (lat, lon) = globalReferencePoint.GetLatLonFromUnityXZ(point.x, point.z);
+                    var (lat, lon) = GetLatLonFromUnityXZ(point.x, point.z);
                     latitude = lat;
                     longitude = lon;
                     guiState.Log("New LatLon set to where the camera is looking at.");
                 }
             }
 
-            if(target_altitude == 0) target_altitude = 1;
+            if (target_altitude == 0) target_altitude = 1;
+            if (tolerance == 0) tolerance = 1;
 
             LatField.text = latitude.ToString();
             LonField.text = longitude.ToString();
@@ -131,6 +140,7 @@ namespace SmarcGUI.MissionPlanning.Params
             MaxDepthField.text = max_depth.ToString();
             RpmField.text = rpm.ToString();
             TimeoutField.text = timeout.ToString();
+            ToleranceField.text = tolerance.ToString();
 
             LatField.onEndEdit.AddListener(OnLatChanged);
             LonField.onEndEdit.AddListener(OnLonChanged);
@@ -138,6 +148,7 @@ namespace SmarcGUI.MissionPlanning.Params
             MaxDepthField.onEndEdit.AddListener(OnMaxDepthChanged);
             RpmField.onEndEdit.AddListener(OnRpmChanged);
             TimeoutField.onEndEdit.AddListener(OnTimeoutChanged);
+            ToleranceField.onEndEdit.AddListener(OnToleranceChanged);
 
             fields.Add(LatField.GetComponent<RectTransform>());
             fields.Add(LonField.GetComponent<RectTransform>());
@@ -145,21 +156,22 @@ namespace SmarcGUI.MissionPlanning.Params
             fields.Add(MaxDepthField.GetComponent<RectTransform>());
             fields.Add(RpmField.GetComponent<RectTransform>());
             fields.Add(TimeoutField.GetComponent<RectTransform>());
+            fields.Add(ToleranceField.GetComponent<RectTransform>());
 
             OnSelectedChange();
         }
 
         public override List<string> GetFieldLabels()
         {
-            return new List<string> { "Lat", "Lon", "T.Alt", "MaxDepth", "RPM", "T/O" };
+            return new List<string> { "Lat", "Lon", "T.Alt", "MaxDepth", "RPM", "T/O", "Tol" };
         }
 
 
 
         void OnLatChanged(string s)
         {
-            try {latitude = double.Parse(s);}
-            catch 
+            try { latitude = double.Parse(s); }
+            catch
             {
                 guiState.Log("Invalid latitude value");
                 OnLatChanged(latitude.ToString());
@@ -170,7 +182,7 @@ namespace SmarcGUI.MissionPlanning.Params
 
         void OnLonChanged(string s)
         {
-            try{longitude = double.Parse(s);}
+            try { longitude = double.Parse(s); }
             catch
             {
                 guiState.Log("Invalid longitude value");
@@ -182,7 +194,7 @@ namespace SmarcGUI.MissionPlanning.Params
 
         void OnTargetAltitudeChanged(string s)
         {
-            try {target_altitude = float.Parse(s);}
+            try { target_altitude = float.Parse(s); }
             catch
             {
                 guiState.Log("Invalid target alt value");
@@ -194,7 +206,7 @@ namespace SmarcGUI.MissionPlanning.Params
 
         void OnMaxDepthChanged(string s)
         {
-            try {max_depth = float.Parse(s);}
+            try { max_depth = float.Parse(s); }
             catch
             {
                 guiState.Log("Invalid max depth value");
@@ -206,7 +218,7 @@ namespace SmarcGUI.MissionPlanning.Params
 
         void OnRpmChanged(string s)
         {
-            try {rpm = float.Parse(s);}
+            try { rpm = float.Parse(s); }
             catch
             {
                 guiState.Log("Invalid rpm value");
@@ -218,7 +230,7 @@ namespace SmarcGUI.MissionPlanning.Params
 
         void OnTimeoutChanged(string s)
         {
-            try {timeout = float.Parse(s);}
+            try { timeout = float.Parse(s); }
             catch
             {
                 guiState.Log("Invalid timeout value");
@@ -228,24 +240,36 @@ namespace SmarcGUI.MissionPlanning.Params
             NotifyPathChange();
         }
 
-        
+        void OnToleranceChanged(string s)
+        {
+            try { tolerance = float.Parse(s); }
+            catch
+            {
+                guiState.Log("Invalid tolerance value");
+                OnToleranceChanged(tolerance.ToString());
+                return;
+            }
+            NotifyPathChange();
+        }
+
+
 
         public (float, float) GetXZ()
         {
-            var (tx,tz) = globalReferencePoint.GetUnityXZFromLatLon(latitude, longitude);
+            var (tx, tz) = GetUnityXZFromLatLon(latitude, longitude);
             return ((float)tx, (float)tz);
         }
 
         public void SetXZ(float x, float z)
         {
-            var (lat, lon) = globalReferencePoint.GetLatLonFromUnityXZ(x, z);
+            var (lat, lon) = GetLatLonFromUnityXZ(x, z);
             latitude = lat;
             longitude = lon;
         }
 
         public float GetY()
         {
-            return -max_depth+target_altitude;
+            return -max_depth + target_altitude;
         }
 
         public float GetYReference()
@@ -256,6 +280,16 @@ namespace SmarcGUI.MissionPlanning.Params
         public void SetY(float y)
         {
             target_altitude = y;
+        }
+
+        public float GetTolerance()
+        {
+            return tolerance;
+        }
+
+        public void SetTolerance(float y)
+        {
+            tolerance = y;
         }
 
     }

@@ -1,8 +1,5 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using Utils = DefaultNamespace.Utils;
-using Force;  // Assuming MixedBody is in the Force namespace
+
 
 namespace VehicleComponents.Sensors
 {
@@ -37,7 +34,7 @@ namespace VehicleComponents.Sensors
             }
 
             // Use MixedBody to handle both Rigidbody and ArticulationBody
-            localVelocity = mixedBody.transform.InverseTransformVector(mixedBody.ab ? mixedBody.velocity : mixedBody.velocity);
+            localVelocity = mixedBody.transform.InverseTransformVector(mixedBody.velocity);
 
             if (deltaTime > 0)
             {
@@ -45,7 +42,7 @@ namespace VehicleComponents.Sensors
                 linearAcceleration = deltaLinearAcceleration / (float)deltaTime;
             }
 
-            angularVelocity = mixedBody.transform.InverseTransformVector(mixedBody.angularVelocity);
+            angularVelocity = -mixedBody.transform.InverseTransformVector(mixedBody.angularVelocity);
             eulerAngles = mixedBody.transform.rotation.eulerAngles;
             orientation = Quaternion.Euler(eulerAngles);
 

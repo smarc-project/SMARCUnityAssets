@@ -19,7 +19,7 @@ namespace SmarcGUI.Connections
             return JsonConvert.SerializeObject(this);
         }
 
-        public BaseCommand(){}
+        public BaseCommand() { }
 
         public BaseCommand(string jsonString)
         {
@@ -52,7 +52,12 @@ namespace SmarcGUI.Connections
         public static string ABORT = "$abort";
     }
 
-    public class SigntalTaskCommand: BaseCommand
+    public static class SmarcSignals
+    {
+        public static string CANCEL_ABORT = "$cancel_abort";
+    }
+
+    public class SigntalTaskCommand : BaseCommand
     {
         public string Signal;
         public string TaskUuid;
@@ -81,7 +86,7 @@ namespace SmarcGUI.Connections
 
             ExecutionUnit = robot_name;
             TaskUuid = task.TaskUuid;
-            Task = task;    
+            Task = task;
         }
     }
 
@@ -108,6 +113,24 @@ namespace SmarcGUI.Connections
             this.tst = tst;
             this.tst.CommonParams["execunit"] = $"/{robot_name}";
             this.tst.CommonParams["node-uuid"] = Guid.NewGuid().ToString();
+        }
+    }
+    
+    public class SignalTSTUnit : BaseCommand
+    {
+        public string Receiver;
+        public string Signal;
+        public string Unit;
+
+        public SignalTSTUnit(string signal, string robot_name)
+        {
+            //https://api-docs.waraps.org/#/agent_communication/tst/tst_commands/signal_tst
+            ComUuid = Guid.NewGuid().ToString();
+            Command = "signal-unit";
+            Receiver = robot_name;
+
+            Signal = signal;
+            Unit = $"/{robot_name}";
         }
     }
 

@@ -308,6 +308,7 @@ namespace SmarcGUI
                 // convert to compass direction
                 string[] compassDirections = { "N", "NE", "E", "SE", "S", "SW", "W", "NW" };
                 int index = Mathf.RoundToInt((angle + 360) / 45) % 8;
+                angle = (angle + 360) % 360; // normalize angle to [0, 360)
                 ComapssText.text = $"{angle:F1}° ({compassDirections[index]})";
             }
         }

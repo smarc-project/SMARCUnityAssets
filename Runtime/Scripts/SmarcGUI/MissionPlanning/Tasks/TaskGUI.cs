@@ -50,7 +50,7 @@ namespace SmarcGUI.MissionPlanning.Tasks
 
         MissionPlanStore missionPlanStore;
         GUIState guiState;
-        TSTGUI tstGUI;
+        public TSTGUI tstGUI{ get; private set; }
         RectTransform rt;
         float baseHeight;
         Image RunButtonImage;
@@ -102,6 +102,8 @@ namespace SmarcGUI.MissionPlanning.Tasks
                 if(paramgui is IParamHasY paramY) pointmarker.SetYParam(paramY);
                 if(paramgui is IParamHasHeading paramH) pointmarker.SetHeadingParam(paramH);
                 if(paramgui is IParamHasOrientation paramO) pointmarker.SetOrientationParam(paramO);
+                if(paramgui is IParamHasTolerance paramT) pointmarker.SetToleranceParam(paramT);
+                pointmarker.OnParamChanged();
                 pointmarkers.Add(pointmarker);
                 return pointmarker;
             }
@@ -138,7 +140,9 @@ namespace SmarcGUI.MissionPlanning.Tasks
                 var paramgui = InstantiateParamGui(Params.transform, task.Params, task.Params.Keys.ElementAt(i));
                 if(paramgui is ListParamGUI listParamGUI)
                 {
-                    foreach(var p in listParamGUI.ParamGUIs) AddPointMarker(p);
+                    listParamGUI.ReArrangeForList();
+                    listParamGUI.SetListLabels();
+                    foreach (var p in listParamGUI.ParamGUIs) AddPointMarker(p);
                 }
                 else AddPointMarker(paramgui);
             }

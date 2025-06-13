@@ -147,7 +147,7 @@ ArticulationBody:
   m_Enabled: 1
   serializedVersion: 5
   m_Mass: 0.0000001
-  m_ParentAnchorPosition: {x: -0.0024414062, y: 0.0069999695, z: 0.2409668}
+  m_ParentAnchorPosition: {x: -0.0024414062, y: 0.0069999993, z: 0.2409668}
   m_ParentAnchorRotation: {x: 0, y: 0, z: 0.7071068, w: 0.7071068}
   m_AnchorPosition: {x: 0, y: 0, z: 0}
   m_AnchorRotation: {x: 0, y: 0, z: 0.7071068, w: 0.7071068}
@@ -262,7 +262,7 @@ ArticulationBody:
   m_Enabled: 1
   serializedVersion: 5
   m_Mass: 0.0000001
-  m_ParentAnchorPosition: {x: 0.27697754, y: 0.20399952, z: -1.5510254}
+  m_ParentAnchorPosition: {x: 0.27697754, y: 0.204, z: -1.5510254}
   m_ParentAnchorRotation: {x: 0, y: 0.7071068, z: 0, w: 0.7071068}
   m_AnchorPosition: {x: 0, y: 0, z: 0}
   m_AnchorRotation: {x: 0, y: 0.7071068, z: 0, w: 0.7071068}
@@ -707,7 +707,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 10a8919bb6be9cfc88e08395412d871b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  topic: core/thruster_port_fb
+  topic: actuators/thruster_port_fb
   frequency: 10
   ignoreSensorState: 0
 --- !u!114 &5378080136670906774
@@ -722,7 +722,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c429a099bc8d99179a44603b0781227c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  topic: core/thruster_port_cmd
+  topic: actuators/thruster_port_cmd
   expectedFrequency: 2
   resetting: 1
   receivedFrequency: 0
@@ -892,7 +892,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 10a8919bb6be9cfc88e08395412d871b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  topic: core/thruster_stbd_fb
+  topic: actuators/thruster_strb_fb
   frequency: 10
   ignoreSensorState: 0
 --- !u!114 &6309090320770876276
@@ -907,7 +907,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c429a099bc8d99179a44603b0781227c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  topic: core/thruster_stbd_cmd
+  topic: actuators/thruster_strb_cmd
   expectedFrequency: 2
   resetting: 1
   receivedFrequency: 0
@@ -971,7 +971,7 @@ ArticulationBody:
   m_Enabled: 1
   serializedVersion: 5
   m_Mass: 0.0000001
-  m_ParentAnchorPosition: {x: -0.25195312, y: 0.2869997, z: -0.9449463}
+  m_ParentAnchorPosition: {x: -0.25195312, y: 0.287, z: -0.9449463}
   m_ParentAnchorRotation: {x: 0, y: 0, z: -0.7071068, w: 0.7071068}
   m_AnchorPosition: {x: 0, y: 0, z: 0}
   m_AnchorRotation: {x: 0, y: 0, z: -0.7071068, w: 0.7071068}
@@ -1160,7 +1160,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6c1407c79a8032a329313e14db655bcb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  topic: dr/lat_lon
+  topic: smarc/latlon
   frequency: 10
   ignoreSensorState: 1
 --- !u!114 &2186974322604431293
@@ -1237,7 +1237,7 @@ ArticulationBody:
   m_Enabled: 1
   serializedVersion: 5
   m_Mass: 0.0000001
-  m_ParentAnchorPosition: {x: 0.10205078, y: 0.19299984, z: -1.0830078}
+  m_ParentAnchorPosition: {x: 0.10205078, y: 0.193, z: -1.0830078}
   m_ParentAnchorRotation: {x: -0.5, y: 0.5, z: -0.5, w: 0.5}
   m_AnchorPosition: {x: 0, y: 0, z: 0}
   m_AnchorRotation: {x: 0, y: 0.70710677, z: 0, w: 0.70710677}
@@ -1309,38 +1309,6 @@ MonoBehaviour:
   jointName: vert_thruster_back_stbd_joint
   EffortLimit: 1000
   VelocityLimit: 1000
---- !u!1 &1803018405386258593
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 7285459531232985065}
-  m_Layer: 0
-  m_Name: odom
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &7285459531232985065
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1803018405386258593}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 8762727590247875068}
-  m_Father: {fileID: 2802199936676877118}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1835949919394526367
 GameObject:
   m_ObjectHideFlags: 0
@@ -1417,7 +1385,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 10a8919bb6be9cfc88e08395412d871b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  topic: core/vert_thruster_front_port_fb
+  topic: actuators/vertical_thruster_front_port_fb
   frequency: 10
   ignoreSensorState: 0
 --- !u!114 &3360185221928561318
@@ -1432,7 +1400,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c429a099bc8d99179a44603b0781227c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  topic: core/vert_thruster_front_port_cmd
+  topic: actuators/vertical_thruster_front_port_cmd
   expectedFrequency: 2
   resetting: 1
   receivedFrequency: 0
@@ -1449,6 +1417,7 @@ GameObject:
   - component: {fileID: 5484218348474997294}
   - component: {fileID: 7941678749477173086}
   - component: {fileID: 5362321045208250545}
+  - component: {fileID: 3538794161214738261}
   m_Layer: 0
   m_Name: ElevonStbd
   m_TagString: Untagged
@@ -1504,7 +1473,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 771d0adfb2667593a8c266a12060997f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  topic: core/elevon_stbd_cmd
+  topic: actuators/elevon_strb_cmd
   expectedFrequency: -1
   resetting: 1
   receivedFrequency: 0
@@ -1525,6 +1494,21 @@ MonoBehaviour:
   LiftForceMultiplier: 500
   DragForceMultiplier: 50
   Orientation: 1
+--- !u!114 &3538794161214738261
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1851872486568332449}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ba2274c9a2cfbb209949c7493a84c250, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  topic: actuators/elevon_port_fb
+  frequency: 10
+  ignoreSensorState: 0
 --- !u!1 &1990175017669939580
 GameObject:
   m_ObjectHideFlags: 0
@@ -1601,7 +1585,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 10a8919bb6be9cfc88e08395412d871b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  topic: core/vert_thruster_front_stbd_fb
+  topic: actuators/vertical_thruster_front_strb_fb
   frequency: 10
   ignoreSensorState: 0
 --- !u!114 &1286021298945174430
@@ -1616,7 +1600,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c429a099bc8d99179a44603b0781227c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  topic: core/vert_thruster_front_stbd_cmd
+  topic: actuators/vertical_thruster_front_strb_cmd
   expectedFrequency: 2
   resetting: 1
   receivedFrequency: 0
@@ -1725,7 +1709,7 @@ ArticulationBody:
   m_Enabled: 1
   serializedVersion: 5
   m_Mass: 0.0000001
-  m_ParentAnchorPosition: {x: -0.10205078, y: 0.19299984, z: -1.0830078}
+  m_ParentAnchorPosition: {x: -0.10205078, y: 0.193, z: -1.0830078}
   m_ParentAnchorRotation: {x: -0.5, y: 0.5, z: -0.5, w: 0.5}
   m_AnchorPosition: {x: 0, y: 0, z: 0}
   m_AnchorRotation: {x: 0, y: 0.70710677, z: 0, w: 0.70710677}
@@ -1873,7 +1857,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 10a8919bb6be9cfc88e08395412d871b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  topic: core/vert_thruster_back_stbd_fb
+  topic: actuators/vertical_thruster_back_strb_fb
   frequency: 10
   ignoreSensorState: 0
 --- !u!114 &3274884573070327101
@@ -1888,7 +1872,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c429a099bc8d99179a44603b0781227c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  topic: core/vert_thruster_back_stbd_cmd
+  topic: actuators/vertical_thruster_back_strb_cmd
   expectedFrequency: 2
   resetting: 1
   receivedFrequency: 0
@@ -2008,7 +1992,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b53b4caa09486ed69afd7310efb6dbaf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  topic: core/battery
+  topic: smarc/battery_percent
   frequency: 10
   ignoreSensorState: 0
 --- !u!1 &2736854850070752478
@@ -2202,7 +2186,7 @@ ArticulationBody:
   m_Enabled: 1
   serializedVersion: 5
   m_Mass: 0.0000001
-  m_ParentAnchorPosition: {x: -0.27697754, y: 0.20399952, z: -1.5510254}
+  m_ParentAnchorPosition: {x: -0.27697754, y: 0.204, z: -1.5510254}
   m_ParentAnchorRotation: {x: 0, y: 0.7071068, z: 0, w: 0.7071068}
   m_AnchorPosition: {x: 0, y: 0, z: 0}
   m_AnchorRotation: {x: 0, y: 0.7071068, z: 0, w: 0.7071068}
@@ -2535,7 +2519,7 @@ ArticulationBody:
   m_Enabled: 1
   serializedVersion: 5
   m_Mass: 0.0000001
-  m_ParentAnchorPosition: {x: -0.5090332, y: 0.20399952, z: -1.0400391}
+  m_ParentAnchorPosition: {x: -0.5090332, y: 0.204, z: -1.0400391}
   m_ParentAnchorRotation: {x: 0, y: 0, z: 0, w: 1}
   m_AnchorPosition: {x: 0, y: 0, z: 0}
   m_AnchorRotation: {x: 0, y: 0, z: 0, w: 1}
@@ -2619,6 +2603,7 @@ GameObject:
   - component: {fileID: 5509758317750954899}
   - component: {fileID: 5656115355840583319}
   - component: {fileID: 2475123470653226916}
+  - component: {fileID: 8948703872086008529}
   m_Layer: 0
   m_Name: ElevonPort
   m_TagString: Untagged
@@ -2674,7 +2659,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 771d0adfb2667593a8c266a12060997f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  topic: core/elevon_port_cmd
+  topic: actuators/elevon_port_cmd
   expectedFrequency: -1
   resetting: 1
   receivedFrequency: 0
@@ -2695,6 +2680,21 @@ MonoBehaviour:
   LiftForceMultiplier: 500
   DragForceMultiplier: 50
   Orientation: 1
+--- !u!114 &8948703872086008529
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3088666195858771038}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ba2274c9a2cfbb209949c7493a84c250, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  topic: actuators/elevon_port_fb
+  frequency: 10
+  ignoreSensorState: 0
 --- !u!1 &3112749638478343169
 GameObject:
   m_ObjectHideFlags: 0
@@ -3007,8 +3007,6 @@ Transform:
   - {fileID: 4729611028893047812}
   - {fileID: 8893028506487899040}
   - {fileID: 848811823009434717}
-  - {fileID: 9127437004811071234}
-  - {fileID: 1941043537097059392}
   - {fileID: 2724813198870714958}
   m_Father: {fileID: 2802199936676877118}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -3088,7 +3086,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 10a8919bb6be9cfc88e08395412d871b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  topic: core/vert_thruster_back_port_fb
+  topic: actuators/vertical_thruster_back_port_fb
   frequency: 10
   ignoreSensorState: 0
 --- !u!114 &6894557112106137073
@@ -3103,7 +3101,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c429a099bc8d99179a44603b0781227c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  topic: core/vert_thruster_back_port_cmd
+  topic: actuators/vertical_thruster_back_port_cmd
   expectedFrequency: 2
   resetting: 1
   receivedFrequency: 0
@@ -3152,56 +3150,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 46398bc5d6905ad429a6d2d973afe002, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!1 &4055439500778439963
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 9127437004811071234}
-  - component: {fileID: 4305443681641663497}
-  m_Layer: 0
-  m_Name: ROS_TF
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &9127437004811071234
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4055439500778439963}
-  serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 1.026, z: 0.053}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 5797510638496293541}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &4305443681641663497
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4055439500778439963}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 78564e3e0c2d8c65cb6601a38bee530d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  topic: /tf
-  m_GlobalFrameIds:
-  - map
-  Suffix: _gt
-  TransformTreeRootName: odom
-  Frequency: 10
 --- !u!1 &4083309362110725478
 GameObject:
   m_ObjectHideFlags: 0
@@ -3343,179 +3291,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   IsBaseLink: 0
---- !u!1 &4279409121121638269
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1941043537097059392}
-  - component: {fileID: 4460657138554152630}
-  - component: {fileID: 6131898369363888411}
-  - component: {fileID: 3340011986941278559}
-  m_Layer: 0
-  m_Name: Odometry
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1941043537097059392
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4279409121121638269}
-  serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 1.09, z: 0.145}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 5797510638496293541}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!171741748 &4460657138554152630
-ArticulationBody:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4279409121121638269}
-  m_Enabled: 1
-  serializedVersion: 5
-  m_Mass: 0.0000001
-  m_ParentAnchorPosition: {x: 0, y: 0, z: 0}
-  m_ParentAnchorRotation: {x: 0, y: 0, z: 0.7071068, w: 0.7071068}
-  m_AnchorPosition: {x: 0, y: 0, z: 0}
-  m_AnchorRotation: {x: 0, y: 0, z: 0.7071068, w: 0.7071068}
-  m_MatchAnchors: 1
-  m_ArticulationJointType: 0
-  m_LinearX: 2
-  m_LinearY: 2
-  m_LinearZ: 2
-  m_SwingY: 2
-  m_SwingZ: 2
-  m_Twist: 2
-  m_XDrive:
-    lowerLimit: 0
-    upperLimit: 0
-    stiffness: 0
-    damping: 0
-    forceLimit: 3.4028235e+38
-    target: 0
-    targetVelocity: 0
-    driveType: 0
-  m_YDrive:
-    lowerLimit: 0
-    upperLimit: 0
-    stiffness: 0
-    damping: 0
-    forceLimit: 3.4028235e+38
-    target: 0
-    targetVelocity: 0
-    driveType: 0
-  m_ZDrive:
-    lowerLimit: 0
-    upperLimit: 0
-    stiffness: 0
-    damping: 0
-    forceLimit: 3.4028235e+38
-    target: 0
-    targetVelocity: 0
-    driveType: 0
-  m_LinearDamping: 0
-  m_AngularDamping: 0
-  m_JointFriction: 0.05
-  m_CenterOfMass: {x: 0, y: 0, z: 0}
-  m_InertiaTensor: {x: 0.000001, y: 0.000001, z: 0.000001}
-  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ImplicitCom: 1
-  m_ImplicitTensor: 0
-  m_Immovable: 0
-  m_UseGravity: 0
-  m_CollisionDetectionMode: 0
---- !u!114 &6131898369363888411
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4279409121121638269}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cc1f312a0e6c8dd7da476f6f6ea03d43, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  linkName: base_link
-  retryUntilSuccess: 1
-  rotateForROSCamera: 0
-  roll: 0
-  pitch: 0
-  yaw: 0
-  frequency: 10
-  hasNewData: 0
-  withGravity: 1
-  localVelocity: {x: 0, y: 0, z: 0}
-  linearAcceleration: {x: 0, y: 0, z: 0}
-  linearAccelerationCovariance:
-  - 0
-  - 0
-  - 0
-  - 0
-  - 0
-  - 0
-  - 0
-  - 0
-  - 0
-  angularVelocity: {x: 0, y: 0, z: 0}
-  angularVelocityCovariance:
-  - 0
-  - 0
-  - 0
-  - 0
-  - 0
-  - 0
-  - 0
-  - 0
-  - 0
-  eulerAngles: {x: 0, y: 0, z: 0}
-  orientation: {x: 0, y: 0, z: 0, w: 0}
-  orientationCovariance:
-  - 0
-  - 0
-  - 0
-  - 0
-  - 0
-  - 0
-  - 0
-  - 0
-  - 0
---- !u!114 &3340011986941278559
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4279409121121638269}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0488af2a38628407dba8adb3eb1a253b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  topic: core/odom_gt
-  frequency: 10
-  ignoreSensorState: 0
-  useNED: 0
-  ROSPosition: {x: 0, y: 0, z: 0}
 --- !u!1 &4373880607358293845
 GameObject:
   m_ObjectHideFlags: 0
@@ -3709,7 +3484,7 @@ ArticulationBody:
   m_Enabled: 1
   serializedVersion: 5
   m_Mass: 0.0000001
-  m_ParentAnchorPosition: {x: 0.25195312, y: 0.2869997, z: -0.9449463}
+  m_ParentAnchorPosition: {x: 0.25195312, y: 0.287, z: -0.9449463}
   m_ParentAnchorRotation: {x: 0, y: 0, z: -0.7071068, w: 0.7071068}
   m_AnchorPosition: {x: 0, y: 0, z: 0}
   m_AnchorRotation: {x: 0, y: 0, z: -0.7071068, w: 0.7071068}
@@ -4063,6 +3838,7 @@ GameObject:
   - component: {fileID: 3677734391477021078}
   - component: {fileID: 6893560062159568582}
   - component: {fileID: 4266979242169438577}
+  - component: {fileID: 3219888531968145508}
   m_Layer: 0
   m_Name: RudderStbd
   m_TagString: Untagged
@@ -4118,7 +3894,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 771d0adfb2667593a8c266a12060997f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  topic: core/rudder_stbd_cmd
+  topic: actuators/rudder_cmd
   expectedFrequency: -1
   resetting: 1
   receivedFrequency: 0
@@ -4139,6 +3915,21 @@ MonoBehaviour:
   LiftForceMultiplier: 200
   DragForceMultiplier: 50
   Orientation: 0
+--- !u!114 &3219888531968145508
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4986870767559087563}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ba2274c9a2cfbb209949c7493a84c250, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  topic: actuators/rudder_stbd_fb
+  frequency: 10
+  ignoreSensorState: 0
 --- !u!1 &5061089593730785023
 GameObject:
   m_ObjectHideFlags: 0
@@ -4242,7 +4033,7 @@ ArticulationBody:
   m_Enabled: 1
   serializedVersion: 5
   m_Mass: 0.0000001
-  m_ParentAnchorPosition: {x: -0.38098145, y: 0.24100018, z: 1.875}
+  m_ParentAnchorPosition: {x: -0.38098145, y: 0.241, z: 1.875}
   m_ParentAnchorRotation: {x: -0.5, y: 0.5, z: -0.5, w: 0.5}
   m_AnchorPosition: {x: 0, y: 0, z: 0}
   m_AnchorRotation: {x: 0, y: 0.70710677, z: 0, w: 0.70710677}
@@ -4615,7 +4406,7 @@ ArticulationBody:
   m_Enabled: 1
   serializedVersion: 5
   m_Mass: 0.0000001
-  m_ParentAnchorPosition: {x: 0.5090332, y: 0.20399952, z: -1.0400391}
+  m_ParentAnchorPosition: {x: 0.5090332, y: 0.204, z: -1.0400391}
   m_ParentAnchorRotation: {x: 0, y: 0, z: 0, w: 1}
   m_AnchorPosition: {x: 0, y: 0, z: 0}
   m_AnchorRotation: {x: 0, y: 0, z: 0, w: 1}
@@ -4784,7 +4575,7 @@ Transform:
   - {fileID: 1711407556501657870}
   - {fileID: 4907145451434052186}
   - {fileID: 3026341041441641882}
-  m_Father: {fileID: 7285459531232985065}
+  m_Father: {fileID: 2802199936676877118}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &2668597019550692420
 MonoBehaviour:
@@ -4924,7 +4715,7 @@ ArticulationBody:
   m_Enabled: 1
   serializedVersion: 5
   m_Mass: 0.0000001
-  m_ParentAnchorPosition: {x: 0.38098145, y: 0.24100018, z: 1.875}
+  m_ParentAnchorPosition: {x: 0.38098145, y: 0.241, z: 1.875}
   m_ParentAnchorRotation: {x: -0.5, y: 0.5, z: -0.5, w: 0.5}
   m_AnchorPosition: {x: 0, y: 0, z: 0}
   m_AnchorRotation: {x: 0, y: 0.70710677, z: 0, w: 0.70710677}
@@ -5572,6 +5363,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2802199936676877118}
   - component: {fileID: 1631846539262112515}
+  - component: {fileID: 2108031976575880233}
   m_Layer: 0
   m_Name: lolo_auv_v1
   m_TagString: robot
@@ -5592,9 +5384,10 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 7285459531232985065}
+  - {fileID: 8762727590247875068}
   - {fileID: 5797510638496293541}
   - {fileID: 675674666241882756}
+  - {fileID: 8766864583192073578}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1631846539262112515
@@ -5610,6 +5403,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ThrustSteering: 0
+  ThrustRolling: 1
+  ThrustPitching: 1
   elevatorHingeGo: {fileID: 8939564543920937555}
   elevonPortHingeGo: {fileID: 3088666195858771038}
   elevonStbdHingeGo: {fileID: 1851872486568332449}
@@ -5623,6 +5418,22 @@ MonoBehaviour:
   verticalThrusterBackStbdGo: {fileID: 2233677225763660634}
   moveRpms: 800
   verticalRpms: 3000
+--- !u!114 &2108031976575880233
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7152737545778712160}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 78564e3e0c2d8c65cb6601a38bee530d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  topic: /tf
+  Suffix: 
+  BaseLinkName: base_link
+  Frequency: 10
 --- !u!1 &7181258836340888077
 GameObject:
   m_ObjectHideFlags: 0
@@ -6482,7 +6293,7 @@ ArticulationBody:
   m_Enabled: 1
   serializedVersion: 5
   m_Mass: 0.0000001
-  m_ParentAnchorPosition: {x: 0, y: 0.20300007, z: -1.2650146}
+  m_ParentAnchorPosition: {x: 0, y: 0.203, z: -1.2650146}
   m_ParentAnchorRotation: {x: 0, y: 0, z: 0, w: 1}
   m_AnchorPosition: {x: 0, y: 0, z: 0}
   m_AnchorRotation: {x: 0, y: 0, z: 0, w: 1}
@@ -6701,6 +6512,7 @@ GameObject:
   - component: {fileID: 8622398935020907109}
   - component: {fileID: 1142930201475144146}
   - component: {fileID: 3128894399437828345}
+  - component: {fileID: 5218003246215299508}
   m_Layer: 0
   m_Name: RudderPort
   m_TagString: Untagged
@@ -6756,7 +6568,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 771d0adfb2667593a8c266a12060997f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  topic: core/rudder_port_cmd
+  topic: actuators/rudder_cmd
   expectedFrequency: -1
   resetting: 1
   receivedFrequency: 0
@@ -6777,6 +6589,21 @@ MonoBehaviour:
   LiftForceMultiplier: 200
   DragForceMultiplier: 50
   Orientation: 0
+--- !u!114 &5218003246215299508
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8929270944956807269}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ba2274c9a2cfbb209949c7493a84c250, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  topic: actuators/rudder_port_fb
+  frequency: 10
+  ignoreSensorState: 0
 --- !u!1 &8939564543920937555
 GameObject:
   m_ObjectHideFlags: 0
@@ -6789,6 +6616,7 @@ GameObject:
   - component: {fileID: 6705580153912414063}
   - component: {fileID: 5609090389659058721}
   - component: {fileID: 1923256330921035209}
+  - component: {fileID: 3266584881478901045}
   m_Layer: 0
   m_Name: Elevator
   m_TagString: Untagged
@@ -6844,7 +6672,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 771d0adfb2667593a8c266a12060997f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  topic: core/elevator_cmd
+  topic: actuators/elevator_cmd
   expectedFrequency: -1
   resetting: 1
   receivedFrequency: 0
@@ -6865,6 +6693,21 @@ MonoBehaviour:
   LiftForceMultiplier: 1000
   DragForceMultiplier: 100
   Orientation: 1
+--- !u!114 &3266584881478901045
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8939564543920937555}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ba2274c9a2cfbb209949c7493a84c250, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  topic: actuators/elevator_fb
+  frequency: 10
+  ignoreSensorState: 0
 --- !u!1001 &472361327994526713
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -8792,6 +8635,68 @@ PrefabInstance:
 Transform:
   m_CorrespondingSourceObject: {fileID: 5935641589257227572, guid: 3a014debc3b3e05449edaee2fa65ba19, type: 3}
   m_PrefabInstance: {fileID: 7037858923240392894}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1001 &8292295455673157831
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 2802199936676877118}
+    m_Modifications:
+    - target: {fileID: 628326655526641662, guid: 54bab9885e32841659014f4170bafc82, type: 3}
+      propertyPath: m_Name
+      value: SmarcROS
+      objectReference: {fileID: 0}
+    - target: {fileID: 774071767909129645, guid: 54bab9885e32841659014f4170bafc82, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 774071767909129645, guid: 54bab9885e32841659014f4170bafc82, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 774071767909129645, guid: 54bab9885e32841659014f4170bafc82, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 774071767909129645, guid: 54bab9885e32841659014f4170bafc82, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 774071767909129645, guid: 54bab9885e32841659014f4170bafc82, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 774071767909129645, guid: 54bab9885e32841659014f4170bafc82, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 774071767909129645, guid: 54bab9885e32841659014f4170bafc82, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 774071767909129645, guid: 54bab9885e32841659014f4170bafc82, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 774071767909129645, guid: 54bab9885e32841659014f4170bafc82, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 774071767909129645, guid: 54bab9885e32841659014f4170bafc82, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 54bab9885e32841659014f4170bafc82, type: 3}
+--- !u!4 &8766864583192073578 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 774071767909129645, guid: 54bab9885e32841659014f4170bafc82, type: 3}
+  m_PrefabInstance: {fileID: 8292295455673157831}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &8605387498777118240
 PrefabInstance:

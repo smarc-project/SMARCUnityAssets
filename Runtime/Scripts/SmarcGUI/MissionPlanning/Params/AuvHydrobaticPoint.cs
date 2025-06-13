@@ -1,4 +1,5 @@
 using Newtonsoft.Json;
+using NUnit.Framework.Constraints;
 
 namespace SmarcGUI.MissionPlanning.Params
 {
@@ -10,6 +11,7 @@ namespace SmarcGUI.MissionPlanning.Params
         public float target_depth{get; set;}
         public Orientation orientation{get; set;}
         public float timeout{get; set;}
+        public float tolerance { get; set; }
 
         public string ToJson()
         {
@@ -24,6 +26,7 @@ namespace SmarcGUI.MissionPlanning.Params
             target_depth = ll.target_depth;
             orientation = ll.orientation;
             timeout = ll.timeout;
+            tolerance = ll.tolerance;
         }
     }
 }

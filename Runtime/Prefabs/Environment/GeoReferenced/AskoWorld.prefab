@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 96608748515142421}
   - component: {fileID: 8256193781073082475}
+  - component: {fileID: 4809759905142873926}
   m_Layer: 0
   m_Name: GLOBALREF - AskoPierTip
   m_TagString: Untagged
@@ -51,6 +52,22 @@ MonoBehaviour:
   UTMZone: 33
   UTMEasting: 652149.8149329375
   UTMNorthing: 6523374.627482311
+--- !u!114 &4809759905142873926
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1652747394773475537}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c7a0410be87d7e0429b0f2f55d2c95b1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  TileMaterial: {fileID: 2100000, guid: 9072ca04dff50fe4eaec58b5880c5e08, type: 2}
+  Radius: 1000
+  TileSizePx: 400
+  TileSizeMeters: 256
 --- !u!1 &2729431865407277324
 GameObject:
   m_ObjectHideFlags: 0

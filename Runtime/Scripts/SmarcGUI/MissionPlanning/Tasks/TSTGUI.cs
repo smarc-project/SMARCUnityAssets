@@ -4,6 +4,7 @@ using SmarcGUI.WorldSpace;
 using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.UI;
 
 
 
@@ -15,12 +16,16 @@ namespace SmarcGUI.MissionPlanning.Tasks
 
         [Header("UI Elements")]
         public TMP_InputField DescriptionField;
+        public TMP_InputField TimeoutField;
+        public Toggle DrawPathToggle;
+        public Toggle UseWebMercatorToggle;
         public RectTransform HighlightRT;
         public RectTransform SelectedHighlightRT;
         public LineRenderer PathLineRenderer;        
 
         bool isSelected = false;
         List<TaskGUI> taskGUIs = new();
+        public bool PlanInWebMercator => UseWebMercatorToggle.isOn;
 
 
         MissionPlanStore missionPlanStore;
@@ -32,6 +37,8 @@ namespace SmarcGUI.MissionPlanning.Tasks
             guiState = FindFirstObjectByType<GUIState>();
             missionPlanStore = FindFirstObjectByType<MissionPlanStore>();
             DescriptionField.onEndEdit.AddListener(OnDescriptionChanged);
+            TimeoutField.onEndEdit.AddListener(OnTimeoutChanged);
+            DrawPathToggle.onValueChanged.AddListener((v) => PathLineRenderer.enabled = v);
         }
 
 
@@ -47,6 +54,19 @@ namespace SmarcGUI.MissionPlanning.Tasks
         {
             if(tst == null) return;
             tst.Description = desc;
+        }
+
+        void OnTimeoutChanged(string timeout)
+        {
+            if(tst == null) return;
+            if(float.TryParse(timeout, out float parsedTimeout))
+            {
+                tst.Params["timeout"] = parsedTimeout;
+            }
+            else
+            {
+                tst.Params.Remove("timeout");
+            }
         }
 
 
@@ -77,10 +97,9 @@ namespace SmarcGUI.MissionPlanning.Tasks
 
         void OnSelectionChanged()
         {
-            if(SelectedHighlightRT != null) SelectedHighlightRT.gameObject.SetActive(isSelected);
-            missionPlanStore.OnTSTSelected(isSelected? this : null);
+            if (SelectedHighlightRT != null) SelectedHighlightRT.gameObject.SetActive(isSelected);
+            missionPlanStore.OnTSTSelected(isSelected ? this : null);
             UpdateTasksGUI();
-            PathLineRenderer.enabled = isSelected;
         }
 
         public void OnTaskAdded(TaskSpec taskSpec)

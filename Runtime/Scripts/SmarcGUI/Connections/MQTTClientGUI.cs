@@ -13,6 +13,7 @@ using System.Collections.Generic;
 using SmarcGUI.MissionPlanning.Params;
 using System.Security.Authentication;
 using System.IO;
+using YamlDotNet;
 
 namespace SmarcGUI.Connections
 {
@@ -79,7 +80,7 @@ namespace SmarcGUI.Connections
             if(File.Exists(settingsFile))
             {
                 var settings = File.ReadAllText(settingsFile);
-                var deserializer = new Unity.VisualScripting.YamlDotNet.Serialization.Deserializer();
+                var deserializer = new YamlDotNet.Serialization.Deserializer();
                 var settingsDict = deserializer.Deserialize<Dictionary<string, string>>(settings);
                 if(settingsDict.ContainsKey("BrokerAddress")) ServerAddressInput.text = settingsDict["BrokerAddress"];
                 if(settingsDict.ContainsKey("BrokerPort")) PortInput.text = settingsDict["BrokerPort"];
@@ -104,7 +105,7 @@ namespace SmarcGUI.Connections
                     { "Username", "" },
                     { "Password", "" }
                 };
-                var serializer = new Unity.VisualScripting.YamlDotNet.Serialization.Serializer();
+                var serializer = new YamlDotNet.Serialization.Serializer();
                 var settingsYaml = serializer.Serialize(settingsDict);
                 File.WriteAllText(settingsFile, settingsYaml);
                 guiState.Log($"No MQTT settings file found. Created default settings file at {settingsFile}");

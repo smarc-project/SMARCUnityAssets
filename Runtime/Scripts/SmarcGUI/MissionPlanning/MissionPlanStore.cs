@@ -35,6 +35,8 @@ namespace SmarcGUI.MissionPlanning
 
         [Header("Mission Control Elements")]
         public Button RunMissionButton;
+        public TMP_Dropdown MissionSignalsDropdown;
+        public Button MissionSignalButton;
 
 
         [Header("Tasks GUI Elements")]
@@ -62,6 +64,8 @@ namespace SmarcGUI.MissionPlanning
         public TSTGUI SelectedTSTGUI;
 
         Dictionary<string, Type> TaskTypes;
+        Dictionary<string, string> TaskKebabToCamelCase;
+
 
         void Awake()
         {
@@ -70,24 +74,43 @@ namespace SmarcGUI.MissionPlanning
             LoadMissionsButton.onClick.AddListener(LoadMissionPlans);
             SaveMissionsButton.onClick.AddListener(SaveMissionPlans);
             RunMissionButton.onClick.AddListener(() => guiState.SelectedRobotGUI.SendStartTSTCommand(SelectedTSTGUI.tst));
+            MissionSignalsDropdown.ClearOptions();
+            MissionSignalsDropdown.AddOptions(new List<string>
+            {
+                WaspSignals.ENOUGH,
+                WaspSignals.CONTINUE,
+                WaspSignals.PAUSE,
+                WaspSignals.ABORT,
+                SmarcSignals.CANCEL_ABORT
+            });
+            MissionSignalButton.onClick.AddListener(() => guiState.SelectedRobotGUI.SendSignalTSTUnitCommand(MissionSignalsDropdown.options[MissionSignalsDropdown.value].text));
             AddTaskButton.onClick.AddListener(AddNewTask);
 
             // this finds all task types in the assembly through reflection.
             TaskTypes ??= Task.GetAllKnownTaskTypes();
+            TaskKebabToCamelCase = new Dictionary<string, string>();
+            foreach (var taskType in TaskTypes)
+            {
+                // convert the task name to kebab-case
+                var kebabCaseName = Regex.Replace(taskType.Key, "([a-z0-9])([A-Z])", "$1-$2").ToLower();
+                TaskKebabToCamelCase[kebabCaseName] = taskType.Key;
+            }
             TaskTypeDropdown.ClearOptions();
-            var taskNames = new List<string>(TaskTypes.Keys);
-            TaskTypeDropdown.AddOptions(taskNames);
+            var taskKebabNames = new List<string>(TaskKebabToCamelCase.Keys);
+            TaskTypeDropdown.AddOptions(taskKebabNames);
         }
 
         string ConvertDashToCamelCase(string input)
         {
-            var camelized = Regex.Replace(input, "-.", m => m.Value.ToUpper().Substring(1));
-            return char.ToUpper(camelized[0]) + camelized.Substring(1);
+            var camelized = Regex.Replace(input, "-.", m => m.Value.ToUpper()[1..]);
+            return char.ToUpper(camelized[0]) + camelized[1..];
         }
 
         public void AddNewTask()
         {
-            SelectedTSTGUI.OnTaskAdded(new TaskSpec(TaskTypeDropdown.options[TaskTypeDropdown.value].text, null));
+            SelectedTSTGUI.OnTaskAdded(new TaskSpec(
+                TaskKebabToCamelCase[TaskTypeDropdown.options[TaskTypeDropdown.value].text], // convert from kebab to camel to match c# class names
+                null));
         }
 
         public Task CreateTask(string taskName)
@@ -117,9 +140,14 @@ namespace SmarcGUI.MissionPlanning
 
         void LateUpdate()
         {
-            RunMissionButton.interactable = SelectedTSTGUI != null &&
+            var missionInteraction = SelectedTSTGUI != null &&
                                             guiState.SelectedRobotGUI != null &&
                                             guiState.SelectedRobotGUI.TSTExecInfoReceived;
+                                            
+            RunMissionButton.interactable = missionInteraction;
+            MissionSignalsDropdown.interactable = missionInteraction;
+            MissionSignalButton.interactable = missionInteraction;
+
             AddTaskButton.interactable = SelectedTSTGUI != null;
         }
 

@@ -11,6 +11,7 @@ namespace SmarcGUI.MissionPlanning.Params
         public float max_depth{get; set;}
         public float rpm{get; set;}
         public float timeout{get; set;}
+        public float tolerance{get; set;}
 
         public string ToJson()
         {
@@ -26,6 +27,7 @@ namespace SmarcGUI.MissionPlanning.Params
             max_depth = ll.max_depth;
             rpm = ll.rpm;
             timeout = ll.timeout;
+            tolerance = ll.tolerance;
         }
     }
 }

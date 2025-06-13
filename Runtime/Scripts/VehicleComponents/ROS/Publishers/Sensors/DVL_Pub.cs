@@ -17,7 +17,7 @@ namespace VehicleComponents.ROS.Publishers
 
         protected override void InitPublisher()
         {
-            ROSMsg.header.frame_id = sensor.linkName;
+            ROSMsg.header.frame_id = $"{frame_id_prefix}/{sensor.linkName}";
             beamMsgs = new DVLBeamMsg[sensor.numBeams];
             for(int i=0; i < sensor.numBeams; i++)
             {
