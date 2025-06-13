@@ -9,6 +9,7 @@ namespace SmarcGUI.MissionPlanning.Params
         public double longitude{get; set;}
         public float altitude{get; set;}
         public readonly string rostype{ get{return "GeoPoint";} }
+        public float tolerance;
 
         public string ToJson()
         {
@@ -21,6 +22,7 @@ namespace SmarcGUI.MissionPlanning.Params
             latitude = gp.latitude;
             longitude = gp.longitude;
             altitude = gp.altitude;
+            tolerance = gp.tolerance;
         }
     }
 }

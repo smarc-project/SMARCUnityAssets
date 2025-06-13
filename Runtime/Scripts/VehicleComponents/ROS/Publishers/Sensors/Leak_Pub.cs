@@ -1,7 +1,5 @@
 using UnityEngine;
-using RosMessageTypes.Sensor;
-using Unity.Robotics.Core; //Clock
-using RosMessageTypes.Smarc;
+using RosMessageTypes.Std;
 
 using SensorLeak = VehicleComponents.Sensors.Leak;
 using VehicleComponents.ROS.Core;
@@ -10,16 +8,15 @@ using VehicleComponents.ROS.Core;
 namespace VehicleComponents.ROS.Publishers
 {
     [RequireComponent(typeof(SensorLeak))]
-    class Leak_Pub: ROSPublisher<LeakMsg, SensorLeak>
+    class Leak_Pub: ROSPublisher<BoolMsg, SensorLeak>
     { 
         protected override void UpdateMessage()
         {
             if(sensor.leaked)
             {
-                ROSMsg.value = true;
-                ROSMsg.leak_counter = sensor.count;
+                ROSMsg.data = true;
             }
-            else ROSMsg.value = false;
+            else ROSMsg.data = false;
         }
     }
 }
