@@ -113,8 +113,6 @@ namespace DroneController
         public double DistanceErrorCapNormalized = 2;
         [Tooltip("Distance error cap for tracking control when using non-normalized tracking. Smaller=less aggressive")]
         public double DistanceErrorCapFree = 10;
-        [Tooltip("Time in seconds to look ahead for velocity control. Smaller=less aggressive")]
-        public float VelocityLookaheadTime = 1;
 
 
 

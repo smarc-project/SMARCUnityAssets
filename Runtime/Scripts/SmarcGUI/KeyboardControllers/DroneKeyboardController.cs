@@ -1,6 +1,5 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
-using Propeller = VehicleComponents.Actuators.Propeller;
 
 namespace SmarcGUI.KeyboardControllers
 {
