@@ -138,11 +138,14 @@ namespace SmarcGUI
         void OnLookAt()
         {
             var tf = cameraLookableItem.GetWorldTarget();
-            guiState.SelectDefaultCamera();
+            // guiState.SelectDefaultCamera();
             var cam = guiState.CurrentCam;
-            cam.GetComponent<SmoothFollow>().target = null;
-            cam.transform.position = tf.position + new Vector3(0, 10, 0);
-            cam.transform.LookAt(tf);
+            cam.transform.position = new Vector3(tf.position.x, cam.transform.position.y, tf.position.z);
+            if(cam.TryGetComponent(out SmoothFollow smooth))
+            {
+                smooth.target = null;
+                cam.transform.LookAt(tf);
+            }
             Destroy(gameObject);
         }
         
