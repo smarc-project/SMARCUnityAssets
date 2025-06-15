@@ -83,7 +83,7 @@ namespace SmarcGUI.MissionPlanning.Tasks
                             break;
                     }
                 }
-                else if(param.Key == "waypoints")
+                else if(param.Key == "waypoints" || param.Key == "rope_points")
                 {
                     switch(Name)
                     {
@@ -98,6 +98,9 @@ namespace SmarcGUI.MissionPlanning.Tasks
                             break;
                         case "auv-hydrobatic-move-path":
                             paramType = typeof(List<AuvHydrobaticPoint>);
+                            break;
+                        case "alars-recover":
+                            paramType = typeof(List<GeoPoint>);
                             break;
                         default:
                             break;
