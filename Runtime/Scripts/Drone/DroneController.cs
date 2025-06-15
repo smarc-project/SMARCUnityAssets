@@ -6,7 +6,6 @@ using MathNet.Numerics.LinearAlgebra.Double;
 // using MinimumSnapTrajectory = Trajectory.MinimumSnapTrajectory;
 
 // Directives for publishing messages
-using Unity.Robotics.Core; //Clock
 using Unity.Robotics.ROSTCPConnector;
 using StdMessages = RosMessageTypes.Std;
 using VehicleComponents.Actuators;
@@ -25,8 +24,7 @@ namespace DroneController
         LoadControl = 1,
         TrackingControlMinSnap = 2,
         TrackingControlNormalizedXYZ = 3,
-        TrackingControlNormalizedXY = 4,
-        VelocityControl = 5,
+        TrackingControlNormalizedXY = 4
     }
 
     /// <summary>
@@ -115,6 +113,8 @@ namespace DroneController
         public double DistanceErrorCapNormalized = 2;
         [Tooltip("Distance error cap for tracking control when using non-normalized tracking. Smaller=less aggressive")]
         public double DistanceErrorCapFree = 10;
+        [Tooltip("Time in seconds to look ahead for velocity control. Smaller=less aggressive")]
+        public float VelocityLookaheadTime = 1;
 
 
 
@@ -207,8 +207,7 @@ namespace DroneController
 
             if (controllerState is DroneControllerState.TrackingControl
                 or DroneControllerState.TrackingControlNormalizedXYZ
-                or DroneControllerState.TrackingControlNormalizedXY
-                or DroneControllerState.VelocityControl)
+                or DroneControllerState.TrackingControlNormalizedXY)
             {
                 (f, M, controllerError) = ComputeTrackingControl();
             }
@@ -296,53 +295,42 @@ namespace DroneController
             Vector<double> errorTrackingPosition;
 
             // Control
-
-            // Set the target velocity and acceleration if in velocity control mode
-            if (controllerState is DroneControllerState.VelocityControl)
+            targetPosition = TrackingTargetTF.position.To<ENU>().ToDense();
+            targetVelocity = DenseVector.OfArray(new double[] { 0, 0, 0 });
+            targetAccel = DenseVector.OfArray(new double[] { 0, 0, 0 });
+            errorTrackingPosition = dronePosition - targetPosition;
+            
+            if (controllerState is DroneControllerState.TrackingControlNormalizedXYZ
+                or DroneControllerState.TrackingControlNormalizedXY)
             {
-                targetVelocity = TargetVelocity.To<ENU>().ToDense();
-                targetAccel = DenseVector.OfArray(new double[] { 0, 0, 0 });
-                errorTrackingPosition = DenseVector.OfArray(new double[] { 0, 0, 0 });
+                int endIndex;
+                if (controllerState is DroneControllerState.TrackingControlNormalizedXYZ)
+                {
+                    // Full normalization of entire vector
+                    endIndex = errorTrackingPosition.Count;
+                }
+                else 
+                {
+                    // If statement above guards for any other cases arriving here
+                    // Normalization of X,Y component only
+                    endIndex = errorTrackingPosition.Count - 1;
+                }
+
+                Vector<double> errorTrackingPositionSubVec =
+                    errorTrackingPosition.SubVector(0, endIndex);
+                errorTrackingPositionSubVec =
+                    Math.Min(DistanceErrorCapNormalized, errorTrackingPositionSubVec.Norm(2)) *
+                    errorTrackingPositionSubVec.Normalize(2);
+                errorTrackingPosition.SetSubVector(0, endIndex, errorTrackingPositionSubVec);
             }
-            // otherwise compute them from the target position
             else
             {
-                targetPosition = TrackingTargetTF.position.To<ENU>().ToDense();
-                targetVelocity = DenseVector.OfArray(new double[] { 0, 0, 0 });
-                targetAccel = DenseVector.OfArray(new double[] { 0, 0, 0 });
-                errorTrackingPosition = dronePosition - targetPosition;
-                
-                if (controllerState is DroneControllerState.TrackingControlNormalizedXYZ
-                    or DroneControllerState.TrackingControlNormalizedXY)
-                {
-                    int endIndex;
-                    if (controllerState is DroneControllerState.TrackingControlNormalizedXYZ)
-                    {
-                        // Full normalization of entire vector
-                        endIndex = errorTrackingPosition.Count;
-                    }
-                    else 
-                    {
-                        // If statement above guards for any other cases arriving here
-                        // Normalization of X,Y component only
-                        endIndex = errorTrackingPosition.Count - 1;
-                    }
-
-                    Vector<double> errorTrackingPositionSubVec =
-                        errorTrackingPosition.SubVector(0, endIndex);
-                    errorTrackingPositionSubVec =
-                        Math.Min(DistanceErrorCapNormalized, errorTrackingPositionSubVec.Norm(2)) *
-                        errorTrackingPositionSubVec.Normalize(2);
-                    errorTrackingPosition.SetSubVector(0, endIndex, errorTrackingPositionSubVec);
-                }
-                else
-                {
-                    // Handles DroneControllerState.TrackingControl
-                    errorTrackingPosition = (dronePosition - targetPosition) *
-                                            Math.Min(DistanceErrorCapFree / (dronePosition - targetPosition).Norm(2),
-                                                1);
-                }
+                // Handles DroneControllerState.TrackingControl
+                errorTrackingPosition = (dronePosition - targetPosition) *
+                                        Math.Min(DistanceErrorCapFree / (dronePosition - targetPosition).Norm(2),
+                                            1);
             }
+    
 
             Vector<double> errorTrackingVelocity = droneVelocity - targetVelocity;
 
