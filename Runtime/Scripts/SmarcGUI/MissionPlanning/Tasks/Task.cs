@@ -63,11 +63,14 @@ namespace SmarcGUI.MissionPlanning.Tasks
             {
                 var paramValue = param.Value;
                 Type paramType = null;
-                if(param.Key == "waypoint")
+                if(param.Key == "waypoint" || param.Key == "search_center")
                 {
                     switch(Name)
                     {
                         case "move-to":
+                            paramType = typeof(GeoPoint);
+                            break;
+                        case "alars-search":
                             paramType = typeof(GeoPoint);
                             break;
                         case "auv-depth-move-to":
