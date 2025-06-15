@@ -189,7 +189,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   topic: /tf
-  Suffix: 
   BaseLinkName: base_link
   Frequency: 10
 --- !u!1 &1648915923807604
@@ -2997,7 +2996,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 231f68cb232aa5bd6ad168c7a19ccfd9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  topic: go_to_setpoint
+  topic: move_to_setpoint
   Target: {fileID: 6110627571383574328}
   TeleportFrame: 0
   UseDebugInput: 0
