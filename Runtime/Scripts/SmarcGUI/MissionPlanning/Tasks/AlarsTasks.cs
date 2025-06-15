@@ -11,7 +11,6 @@ namespace SmarcGUI.MissionPlanning.Tasks
             Name = "alars-search";
             Description = "Search for an AUV in the water";
             Params.Add("search_center", new GeoPoint());
-            Params.Add("search_radius", 10.0f);
         }
     }
 
