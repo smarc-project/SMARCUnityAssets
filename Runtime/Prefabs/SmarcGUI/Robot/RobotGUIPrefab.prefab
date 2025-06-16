@@ -452,6 +452,7 @@ MonoBehaviour:
   SAMGhostPrefab: {fileID: 3181005593662985397, guid: 17ef068908d4826489bbbb32dbee9971, type: 3}
   EvoloGhostPrefab: {fileID: 2262435256448856204, guid: d7891a7a48acf3340b871362edf39f77, type: 3}
   LoloGhostPrefab: {fileID: 8776832606900950051, guid: b0ad24499bb3b494c8ba7e73967a7745, type: 3}
+  PuffinGhostPrefab: {fileID: 4535255802015675968, guid: 173247a026a8151d590f54c0c97b6988, type: 3}
   TasksAvailableNames: []
   TSTExecInfoReceived: 0
 --- !u!1 &1808457659505454176

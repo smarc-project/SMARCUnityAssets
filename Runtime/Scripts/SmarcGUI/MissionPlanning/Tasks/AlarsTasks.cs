@@ -4,24 +4,14 @@ using SmarcGUI.MissionPlanning.Params;
 namespace SmarcGUI.MissionPlanning.Tasks
 {
 
-    public class AlarsSearch : Task
+    public class AlarsSearchAndFollow : Task
     {
         public override void SetParams()
         {
-            Name = "alars-search";
-            Description = "Search for an AUV in the water";
+            Name = "alars-search-and-follow";
+            Description = "Search for an AUV and then follow it in the water";
             Params.Add("search_center", new GeoPoint());
-        }
-    }
-
-
-    public class AlarsFollow : Task
-    {
-        public override void SetParams()
-        {
-            Name = "alars-follow";
-            Description = "Follow an AUV in the water";
-            Params.Add("timeout", 60);
+            Params.Add("keep_following", true);
         }
     }
 
