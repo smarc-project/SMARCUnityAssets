@@ -469,6 +469,12 @@ namespace SmarcGUI.Connections
                             float roll = float.Parse(payload);
                             robotgui.OnRollReceived(roll);
                             break;
+                        case "depth":
+                            //TODO
+                            break;
+                        case "executing_tasks":
+                            //TODO
+                            break;
                         default:
                             guiState.Log($"{topic}\n{payload}");
                             break;

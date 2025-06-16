@@ -16,6 +16,7 @@ namespace SmarcGUI.Connections
         MixedBody body;
 
         public float Rate = 5.0f;
+        public bool PositionInWebMercator = true;
         WaspHeartbeat waspHeartbeat;
         GlobalReferencePoint globalReferencePoint;
 
@@ -62,7 +63,7 @@ namespace SmarcGUI.Connections
             while (publish)
             {
                 if(!waspHeartbeat.HasPublihed) yield return wait;
-                var (lat, lon) = globalReferencePoint.GetLatLonFromUnityXZ(body.position.x, body.position.z);
+                var (lat, lon) = globalReferencePoint.GetLatLonFromUnityXZ(body.position.x, body.position.z, PositionInWebMercator);
                 posGP.latitude = lat;
                 posGP.longitude = lon;
                 posGP.altitude = body.position.y;

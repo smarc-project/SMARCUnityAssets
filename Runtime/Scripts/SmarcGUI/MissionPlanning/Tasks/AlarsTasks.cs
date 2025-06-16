@@ -3,6 +3,20 @@ using SmarcGUI.MissionPlanning.Params;
 
 namespace SmarcGUI.MissionPlanning.Tasks
 {
+
+    public class AlarsSearchAndFollow : Task
+    {
+        public override void SetParams()
+        {
+            Name = "alars-search-and-follow";
+            Description = "Search for an AUV and then follow it in the water";
+            Params.Add("search_center", new GeoPoint());
+            Params.Add("keep_following", true);
+        }
+    }
+
+
+
     public class AlarsRecover : Task
     {
         public override void SetParams()
@@ -19,6 +33,8 @@ namespace SmarcGUI.MissionPlanning.Tasks
             Params.Add("raise_vertical", 10.0f);
         }
     }
+    
+    
 
     
 
