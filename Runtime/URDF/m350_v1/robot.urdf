@@ -1,0 +1,428 @@
+<?xml version="1.0" ?>
+<!-- Generated using onshape-to-robot -->
+<!-- Onshape https://cad.onshape.com/documents/c248f19a0f0b3ba59d40bf96/w/d44af1218bde81f59010375a/e/d2acb386f891232a817fe8a2 -->
+<robot name="m350_v1">
+  <!-- Link body -->
+  <link name="body">
+    <inertial>
+      <origin xyz="0.00257267 -0.0169103 0.0625409" rpy="0 0 0"/>
+      <mass value="3.87918"/>
+      <inertia ixx="0.0326721" ixy="5.47272e-08" ixz="-4.24269e-08" iyy="0.0175823" iyz="0.000884552" izz="0.0256938"/>
+    </inertial>
+    <!-- Part body -->
+    <visual>
+      <origin xyz="0.00257275 -0.00204705 0.00687887" rpy="0 -0 -2.1684e-19"/>
+      <geometry>
+        <mesh filename="assets/body.stl"/>
+      </geometry>
+      <material name="body_material">
+        <color rgba="0.701961 0.701961 0.701961 1"/>
+      </material>
+    </visual>
+    <collision>
+      <origin xyz="0.00257275 -0.00204705 0.00687887" rpy="0 -0 -2.1684e-19"/>
+      <geometry>
+        <mesh filename="assets/body.stl"/>
+      </geometry>
+    </collision>
+  </link>
+  <!-- Frame front_camera (dummy link + fixed joint) -->
+  <link name="front_camera">
+    <origin xyz="0 0 0" rpy="0 -0 0"/>
+    <inertial>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <mass value="1e-9"/>
+      <inertia ixx="0" ixy="0" ixz="0" iyy="0" iyz="0" izz="0"/>
+    </inertial>
+  </link>
+  <joint name="front_camera_frame" type="fixed">
+    <origin xyz="-0.00742147 -0.135524 0.124536" rpy="1.5708 -0 -2.1684e-19"/>
+    <parent link="body"/>
+    <child link="front_camera"/>
+    <axis xyz="0 0 0"/>
+  </joint>
+  <!-- Link batt_left -->
+  <link name="batt_left">
+    <inertial>
+      <origin xyz="0.0197759 2.64258e-06 -0.0823849" rpy="0 0 0"/>
+      <mass value="0.528299"/>
+      <inertia ixx="0.00152426" ixy="3.3895e-10" ixz="7.28017e-09" iyy="0.00135282" iyz="1.72826e-08" izz="0.000563146"/>
+    </inertial>
+    <!-- Part batt_left -->
+    <visual>
+      <origin xyz="-0.0200738 0.0657542 -0.133261" rpy="1.5708 -2.1225e-12 0"/>
+      <geometry>
+        <mesh filename="assets/batt_left.stl"/>
+      </geometry>
+      <material name="batt_left_material">
+        <color rgba="0.301961 0.301961 0.301961 1"/>
+      </material>
+    </visual>
+    <collision>
+      <origin xyz="-0.0200738 0.0657542 -0.133261" rpy="1.5708 -2.1225e-12 0"/>
+      <geometry>
+        <mesh filename="assets/batt_left.stl"/>
+      </geometry>
+    </collision>
+  </link>
+  <!-- Joint from body to batt_left -->
+  <joint name="batt_left" type="fixed">
+    <origin xyz="0.0226466 0.131214 0.0726331" rpy="-1.5708 5.87747e-39 -2.1225e-12"/>
+    <parent link="body"/>
+    <child link="batt_left"/>
+    <axis xyz="0 0 1"/>
+    <limit effort="10" velocity="10"/>
+  </joint>
+  <!-- Link batt_right -->
+  <link name="batt_right">
+    <inertial>
+      <origin xyz="-0.0197759 3.25297e-06 -0.0823836" rpy="0 0 0"/>
+      <mass value="0.528323"/>
+      <inertia ixx="0.00152437" ixy="3.39444e-10" ixz="-7.21661e-09" iyy="0.00135292" iyz="-2.46836e-08" izz="0.000563176"/>
+    </inertial>
+    <!-- Part batt_right -->
+    <visual>
+      <origin xyz="0.0200738 0.0657542 -0.133261" rpy="1.5708 -2.1225e-12 0"/>
+      <geometry>
+        <mesh filename="assets/batt_right.stl"/>
+      </geometry>
+      <material name="batt_right_material">
+        <color rgba="0.301961 0.301961 0.301961 1"/>
+      </material>
+    </visual>
+    <collision>
+      <origin xyz="0.0200738 0.0657542 -0.133261" rpy="1.5708 -2.1225e-12 0"/>
+      <geometry>
+        <mesh filename="assets/batt_right.stl"/>
+      </geometry>
+    </collision>
+  </link>
+  <!-- Joint from body to batt_right -->
+  <joint name="batt_right" type="fixed">
+    <origin xyz="-0.017501 0.131214 0.0726331" rpy="-1.5708 -0 -2.1225e-12"/>
+    <parent link="body"/>
+    <child link="batt_right"/>
+    <axis xyz="0 0 1"/>
+    <limit effort="10" velocity="10"/>
+  </joint>
+  <!-- Link prop_arm_fl -->
+  <link name="prop_arm_fl">
+    <inertial>
+      <origin xyz="0.00406926 -0.00417922 -0.214397" rpy="0 0 0"/>
+      <mass value="0.592953"/>
+      <inertia ixx="0.0111979" ixy="1.56084e-05" ixz="0.000143294" iyy="0.0109891" iyz="-0.000371307" izz="0.000312746"/>
+    </inertial>
+    <!-- Part prop_arm_fl -->
+    <visual>
+      <origin xyz="0.061459 0.00207034 0.104294" rpy="1.56766 1.03205 4.22639e-19"/>
+      <geometry>
+        <mesh filename="assets/prop_arm_fl.stl"/>
+      </geometry>
+      <material name="prop_arm_fl_material">
+        <color rgba="0.4 0.4 0.4 1"/>
+      </material>
+    </visual>
+    <collision>
+      <origin xyz="0.061459 0.00207034 0.104294" rpy="1.56766 1.03205 4.22639e-19"/>
+      <geometry>
+        <mesh filename="assets/prop_arm_fl.stl"/>
+      </geometry>
+    </collision>
+  </link>
+  <!-- Link prop_fl -->
+  <link name="prop_fl">
+    <inertial>
+      <origin xyz="-3.34435e-08 -4.4977e-08 -0.0180893" rpy="0 0 0"/>
+      <mass value="0.120786"/>
+      <inertia ixx="0.000277984" ixy="-0.00015915" ixz="-5.68271e-11" iyy="0.000145598" iyz="-8.79131e-11" izz="0.00039223"/>
+    </inertial>
+    <!-- Part prop_fl -->
+    <visual>
+      <origin xyz="-0.362002 0.281368 0.0563482" rpy="0.0715887 0.0188751 4.3376e-19"/>
+      <geometry>
+        <mesh filename="assets/prop_fl.stl"/>
+      </geometry>
+      <material name="prop_fl_material">
+        <color rgba="0.4 0.4 0.4 1"/>
+      </material>
+    </visual>
+    <collision>
+      <origin xyz="-0.362002 0.281368 0.0563482" rpy="0.0715887 0.0188751 4.3376e-19"/>
+      <geometry>
+        <mesh filename="assets/prop_fl.stl"/>
+      </geometry>
+    </collision>
+  </link>
+  <!-- Joint from prop_arm_fl to prop_fl -->
+  <joint name="prop_FL" type="revolute">
+    <origin xyz="0.00368875 0.0304324 -0.353141" rpy="1.46468 1.03035 -0.0365883"/>
+    <parent link="prop_arm_fl"/>
+    <child link="prop_fl"/>
+    <axis xyz="0 0 1"/>
+    <limit effort="10" velocity="10" lower="-3.141592653589793" upper="3.141592653589793"/>
+  </joint>
+  <!-- Joint from body to prop_arm_fl -->
+  <joint name="arm_FL" type="fixed">
+    <origin xyz="0.0605622 -0.108315 0.0086168" rpy="-1.56919 -0.00269164 1.03205"/>
+    <parent link="body"/>
+    <child link="prop_arm_fl"/>
+    <axis xyz="0 0 1"/>
+    <limit effort="10" velocity="10"/>
+  </joint>
+  <!-- Link prop_arm_fr -->
+  <link name="prop_arm_fr">
+    <inertial>
+      <origin xyz="-0.00406893 -0.00417892 -0.214396" rpy="0 0 0"/>
+      <mass value="0.592955"/>
+      <inertia ixx="0.011198" ixy="-1.56077e-05" ixz="-0.000143289" iyy="0.0109892" iyz="-0.000371302" izz="0.000312747"/>
+    </inertial>
+    <!-- Part prop_arm_fr -->
+    <visual>
+      <origin xyz="-0.0614586 0.00207064 0.104294" rpy="1.56766 -1.03205 -4.22639e-19"/>
+      <geometry>
+        <mesh filename="assets/prop_arm_fr.stl"/>
+      </geometry>
+      <material name="prop_arm_fr_material">
+        <color rgba="0.4 0.4 0.4 1"/>
+      </material>
+    </visual>
+    <collision>
+      <origin xyz="-0.0614586 0.00207064 0.104294" rpy="1.56766 -1.03205 -4.22639e-19"/>
+      <geometry>
+        <mesh filename="assets/prop_arm_fr.stl"/>
+      </geometry>
+    </collision>
+  </link>
+  <!-- Link prop_fr -->
+  <link name="prop_fr">
+    <inertial>
+      <origin xyz="3.22875e-08 -4.45539e-08 -0.0180893" rpy="0 0 0"/>
+      <mass value="0.120786"/>
+      <inertia ixx="0.000277983" ixy="0.000159149" ixz="5.6631e-11" iyy="0.000145597" iyz="-8.73439e-11" izz="0.000392228"/>
+    </inertial>
+    <!-- Part prop_fr -->
+    <visual>
+      <origin xyz="0.362002 0.281368 0.0563482" rpy="0.0715887 -0.0188751 -4.34872e-19"/>
+      <geometry>
+        <mesh filename="assets/prop_fr.stl"/>
+      </geometry>
+      <material name="prop_fr_material">
+        <color rgba="0.4 0.4 0.4 1"/>
+      </material>
+    </visual>
+    <collision>
+      <origin xyz="0.362002 0.281368 0.0563482" rpy="0.0715887 -0.0188751 -4.34872e-19"/>
+      <geometry>
+        <mesh filename="assets/prop_fr.stl"/>
+      </geometry>
+    </collision>
+  </link>
+  <!-- Joint from prop_arm_fr to prop_fr -->
+  <joint name="prop_FR" type="revolute">
+    <origin xyz="-0.0036884 0.0304327 -0.353141" rpy="1.46468 -1.03035 0.0365883"/>
+    <parent link="prop_arm_fr"/>
+    <child link="prop_fr"/>
+    <axis xyz="0 0 1"/>
+    <limit effort="10" velocity="10" lower="-3.141592653589793" upper="3.141592653589793"/>
+  </joint>
+  <!-- Joint from body to prop_arm_fr -->
+  <joint name="arm_FR" type="fixed">
+    <origin xyz="-0.0554166 -0.108315 0.00861619" rpy="-1.56919 0.00269164 -1.03205"/>
+    <parent link="body"/>
+    <child link="prop_arm_fr"/>
+    <axis xyz="0 0 1"/>
+    <limit effort="10" velocity="10"/>
+  </joint>
+  <!-- Link prop_arm_bl -->
+  <link name="prop_arm_bl">
+    <inertial>
+      <origin xyz="0.00423695 0.00894387 -0.218262" rpy="0 0 0"/>
+      <mass value="0.654334"/>
+      <inertia ixx="0.0106459" ixy="-2.3351e-05" ixz="0.00015424" iyy="0.0103705" iyz="0.000714105" izz="0.000417197"/>
+    </inertial>
+    <!-- Part prop_arm_bl -->
+    <visual>
+      <origin xyz="0.0735221 -0.00208662 0.112761" rpy="-1.56798 0.962238 1.43972e-19"/>
+      <geometry>
+        <mesh filename="assets/prop_arm_bl.stl"/>
+      </geometry>
+      <material name="prop_arm_bl_material">
+        <color rgba="0.4 0.4 0.4 1"/>
+      </material>
+    </visual>
+    <collision>
+      <origin xyz="0.0735221 -0.00208662 0.112761" rpy="-1.56798 0.962238 1.43972e-19"/>
+      <geometry>
+        <mesh filename="assets/prop_arm_bl.stl"/>
+      </geometry>
+    </collision>
+  </link>
+  <!-- Link prop_bl -->
+  <link name="prop_bl">
+    <inertial>
+      <origin xyz="-3.53958e-08 4.22881e-08 -0.0180893" rpy="0 0 0"/>
+      <mass value="0.120786"/>
+      <inertia ixx="0.000255247" ixy="0.000166798" ixz="-6.26903e-11" iyy="0.000168333" iyz="8.3314e-11" izz="0.000392228"/>
+    </inertial>
+    <!-- Part prop_bl -->
+    <visual>
+      <origin xyz="-0.314232 -0.302184 0.0557012" rpy="-0.0727283 0.0138398 1.27212e-19"/>
+      <geometry>
+        <mesh filename="assets/prop_bl.stl"/>
+      </geometry>
+      <material name="prop_bl_material">
+        <color rgba="0.4 0.4 0.4 1"/>
+      </material>
+    </visual>
+    <collision>
+      <origin xyz="-0.314232 -0.302184 0.0557012" rpy="-0.0727283 0.0138398 1.27212e-19"/>
+      <geometry>
+        <mesh filename="assets/prop_bl.stl"/>
+      </geometry>
+    </collision>
+  </link>
+  <!-- Joint from prop_arm_bl to prop_bl -->
+  <joint name="prop_BL" type="revolute">
+    <origin xyz="0.00318101 -0.0304812 -0.320142" rpy="-1.47549 0.961057 0.0241004"/>
+    <parent link="prop_arm_bl"/>
+    <child link="prop_bl"/>
+    <axis xyz="0 0 1"/>
+    <limit effort="10" velocity="10" lower="-3.141592653589793" upper="3.141592653589793"/>
+  </joint>
+  <!-- Joint from body to prop_arm_bl -->
+  <joint name="arm_BL" type="fixed">
+    <origin xyz="0.0530589 0.122745 0.00861467" rpy="1.56919 -0.00230901 -0.962236"/>
+    <parent link="body"/>
+    <child link="prop_arm_bl"/>
+    <axis xyz="0 0 1"/>
+    <limit effort="10" velocity="10"/>
+  </joint>
+  <!-- Link prop_arm_br -->
+  <link name="prop_arm_br">
+    <inertial>
+      <origin xyz="-0.00423695 0.0089434 -0.218264" rpy="0 0 0"/>
+      <mass value="0.654319"/>
+      <inertia ixx="0.0106455" ixy="2.3353e-05" ixz="-0.000154204" iyy="0.0103701" iyz="0.000714086" izz="0.000417186"/>
+    </inertial>
+    <!-- Part prop_arm_br -->
+    <visual>
+      <origin xyz="-0.0735218 -0.00208683 0.112761" rpy="-1.56798 -0.962238 4.78437e-19"/>
+      <geometry>
+        <mesh filename="assets/prop_arm_br.stl"/>
+      </geometry>
+      <material name="prop_arm_br_material">
+        <color rgba="0.4 0.4 0.4 1"/>
+      </material>
+    </visual>
+    <collision>
+      <origin xyz="-0.0735218 -0.00208683 0.112761" rpy="-1.56798 -0.962238 4.78437e-19"/>
+      <geometry>
+        <mesh filename="assets/prop_arm_br.stl"/>
+      </geometry>
+    </collision>
+  </link>
+  <!-- Link prop_br -->
+  <link name="prop_br">
+    <inertial>
+      <origin xyz="5.40036e-08 6.7325e-08 -0.0180893" rpy="0 0 0"/>
+      <mass value="0.120786"/>
+      <inertia ixx="0.000255249" ixy="-0.000166799" ixz="8.78341e-11" iyy="0.000168334" iyz="1.19167e-10" izz="0.000392231"/>
+    </inertial>
+    <!-- Part prop_br -->
+    <visual>
+      <origin xyz="0.314232 -0.302184 0.0557012" rpy="-0.0727283 -0.0138398 -1.26064e-19"/>
+      <geometry>
+        <mesh filename="assets/prop_br.stl"/>
+      </geometry>
+      <material name="prop_br_material">
+        <color rgba="0.4 0.4 0.4 1"/>
+      </material>
+    </visual>
+    <collision>
+      <origin xyz="0.314232 -0.302184 0.0557012" rpy="-0.0727283 -0.0138398 -1.26064e-19"/>
+      <geometry>
+        <mesh filename="assets/prop_br.stl"/>
+      </geometry>
+    </collision>
+  </link>
+  <!-- Joint from prop_arm_br to prop_br -->
+  <joint name="prop_BR" type="revolute">
+    <origin xyz="-0.00318065 -0.0304814 -0.320142" rpy="-1.47549 -0.961057 -0.0241004"/>
+    <parent link="prop_arm_br"/>
+    <child link="prop_br"/>
+    <axis xyz="0 0 1"/>
+    <limit effort="10" velocity="10" lower="-3.141592653589793" upper="3.141592653589793"/>
+  </joint>
+  <!-- Joint from body to prop_arm_br -->
+  <joint name="arm_BR" type="fixed">
+    <origin xyz="-0.0479131 0.122745 0.00861478" rpy="1.56919 0.00230901 0.962236"/>
+    <parent link="body"/>
+    <child link="prop_arm_br"/>
+    <axis xyz="0 0 1"/>
+    <limit effort="10" velocity="10"/>
+  </joint>
+  <!-- Link leg_l -->
+  <link name="leg_l">
+    <inertial>
+      <origin xyz="9.12275e-06 8.81775e-05 -0.17393" rpy="0 0 0"/>
+      <mass value="0.366553"/>
+      <inertia ixx="0.00386699" ixy="-2.37996e-08" ixz="1.15906e-07" iyy="0.00207981" iyz="1.91129e-06" izz="0.001813"/>
+    </inertial>
+    <!-- Part leg_l -->
+    <visual>
+      <origin xyz="-0.0622521 -0.00919995 0.0831711" rpy="-4.37165e-06 0.453798 -2.01205e-22"/>
+      <geometry>
+        <mesh filename="assets/leg_l.stl"/>
+      </geometry>
+      <material name="leg_l_material">
+        <color rgba="0.4 0.4 0.4 1"/>
+      </material>
+    </visual>
+    <collision>
+      <origin xyz="-0.0622521 -0.00919995 0.0831711" rpy="-4.37165e-06 0.453798 -2.01205e-22"/>
+      <geometry>
+        <mesh filename="assets/leg_l.stl"/>
+      </geometry>
+    </collision>
+  </link>
+  <!-- Joint from body to leg_l -->
+  <joint name="leg_L" type="fixed">
+    <origin xyz="0.0949562 0.00712378 -0.0405981" rpy="4.86393e-06 -0.453798 -2.13226e-06"/>
+    <parent link="body"/>
+    <child link="leg_l"/>
+    <axis xyz="0 0 1"/>
+    <limit effort="10" velocity="10"/>
+  </joint>
+  <!-- Link leg_r -->
+  <link name="leg_r">
+    <inertial>
+      <origin xyz="-9.22786e-06 8.77989e-05 -0.17393" rpy="0 0 0"/>
+      <mass value="0.366552"/>
+      <inertia ixx="0.00386701" ixy="2.15077e-08" ixz="-1.18797e-07" iyy="0.00207981" iyz="1.90235e-06" izz="0.00181301"/>
+    </inertial>
+    <!-- Part leg_r -->
+    <visual>
+      <origin xyz="0.0622521 -0.00919995 0.0831711" rpy="-4.37165e-06 -0.453798 -3.43986e-23"/>
+      <geometry>
+        <mesh filename="assets/leg_r.stl"/>
+      </geometry>
+      <material name="leg_r_material">
+        <color rgba="0.4 0.4 0.4 1"/>
+      </material>
+    </visual>
+    <collision>
+      <origin xyz="0.0622521 -0.00919995 0.0831711" rpy="-4.37165e-06 -0.453798 -3.43986e-23"/>
+      <geometry>
+        <mesh filename="assets/leg_r.stl"/>
+      </geometry>
+    </collision>
+  </link>
+  <!-- Joint from body to leg_r -->
+  <joint name="leg_R" type="fixed">
+    <origin xyz="-0.0898092 0.00711765 -0.0405989" rpy="4.86393e-06 0.453798 2.13226e-06"/>
+    <parent link="body"/>
+    <child link="leg_r"/>
+    <axis xyz="0 0 1"/>
+    <limit effort="10" velocity="10"/>
+  </joint>
+</robot>
