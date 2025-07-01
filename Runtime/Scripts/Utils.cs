@@ -244,14 +244,16 @@ namespace DefaultNamespace
 
         public static Vector3 ToVector3(this Vector<double> vec)
         {
-            return new Vector3((float) vec[0], (float) vec[1], (float) vec[2]);
+            return new Vector3((float)vec[0], (float)vec[1], (float)vec[2]);
         }
 
         public static GameObject FindChildWithTag(GameObject parent, string tag)
         {
             GameObject child = null;
-            foreach(Transform transform in parent.transform) {
-                if(transform.CompareTag(tag)) {
+            foreach (Transform transform in parent.transform)
+            {
+                if (transform.CompareTag(tag))
+                {
                     child = transform.gameObject;
                     break;
                 }
@@ -261,12 +263,12 @@ namespace DefaultNamespace
 
         public static GameObject FindDeepChildWithTag(GameObject parent, string tag)
         {
-            if(parent.transform.CompareTag(tag)) return parent;
+            if (parent.transform.CompareTag(tag)) return parent;
 
-            foreach(Transform child in parent.transform)
+            foreach (Transform child in parent.transform)
             {
                 var result_go = FindDeepChildWithTag(child.gameObject, tag);
-                if(result_go != null) return result_go;
+                if (result_go != null) return result_go;
             }
             return null;
         }
@@ -274,15 +276,15 @@ namespace DefaultNamespace
 
         public static GameObject FindDeepChildWithName(GameObject parent, string name)
         {
-            if(parent.name == name) return parent;
+            if (parent.name == name) return parent;
 
             Transform result = parent.transform.Find(name);
-            if(result != null) return result.gameObject;
+            if (result != null) return result.gameObject;
 
-            foreach(Transform child in parent.transform)
+            foreach (Transform child in parent.transform)
             {
                 var result_go = FindDeepChildWithName(child.gameObject, name);
-                if(result_go != null) return result_go;
+                if (result_go != null) return result_go;
             }
             return null;
         }
@@ -290,12 +292,12 @@ namespace DefaultNamespace
         public static GameObject FindParentWithTag(GameObject self, string tag, bool returnTopLevel)
         {
             Transform parent_tf = self.transform.parent;
-            if(parent_tf == null)
+            if (parent_tf == null)
             {
-                if(returnTopLevel) return self;
+                if (returnTopLevel) return self;
                 else return null;
             }
-            if(parent_tf.CompareTag(tag))
+            if (parent_tf.CompareTag(tag))
             {
                 return parent_tf.gameObject;
             }
@@ -313,7 +315,7 @@ namespace DefaultNamespace
             return path;
         }
 
-        public static Vector2 WorldToCanvasPosition(Canvas canvas, Camera worldCamera, Vector3 worldPosition) 
+        public static Vector2 WorldToCanvasPosition(Canvas canvas, Camera worldCamera, Vector3 worldPosition)
         // https://discussions.unity.com/t/how-to-convert-from-world-space-to-canvas-space/117981/18
         {
             //Vector position (percentage from 0 to 1) considering camera size.
@@ -330,6 +332,40 @@ namespace DefaultNamespace
 
             var rootToWorldPos = rootCanvasTransform.TransformPoint(rootCoord);
             return canvas.transform.InverseTransformPoint(rootToWorldPos);
+        }
+
+        /// <summary>
+        /// Calculates the center of mass of an ArticulationBody and (optionally) its children. This will crawl the
+        /// ArticulationBody hierarchy and compute the weighted average of the center of mass
+        /// and return the CoM in world coordinates.
+        /// </summary>
+        public static Vector3 GetCenterOfMass(ArticulationBody ab, bool includeChildren = true)
+        {
+            if (!includeChildren)
+            {
+                return ab.transform.position + ab.centerOfMass;
+            }
+
+            var com = (ab.transform.position + ab.centerOfMass) * ab.mass;
+            var totalMass = ab.mass;
+            var abs = ab.GetComponentsInChildren<ArticulationBody>();
+            foreach (var childAb in abs)
+            {
+                if (childAb == ab) continue; // Skip the root ArticulationBody
+                com += (childAb.transform.position + childAb.centerOfMass) * childAb.mass;
+                totalMass += childAb.mass;
+            }
+
+            if (totalMass > 0)
+            {
+                com /= totalMass;
+                return com;
+            }
+            else
+            {
+                Debug.LogWarning("Total mass is zero, cannot draw center of mass.");
+                return Vector3.zero; // Return zero vector if total mass is zero
+            }
         }
 
         

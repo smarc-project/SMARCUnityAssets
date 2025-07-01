@@ -52,41 +52,29 @@ public class SimpleGizmo : MonoBehaviour
             enabled = false;
             return;
         }
-        var com = (ab.transform.position + ab.centerOfMass) * ab.mass;
-        var totalMass = ab.mass;
+        var com = Utils.GetCenterOfMass(ab);
 
-        var abs = GetComponentsInChildren<ArticulationBody>();
-        foreach (var childAb in abs)
+        if (com == Vector3.zero)
         {
-            if (childAb == ab) continue; // Skip the root ArticulationBody
-            com += (childAb.transform.position + childAb.centerOfMass) * childAb.mass;
-            totalMass += childAb.mass;
-        }
-
-        if (totalMass > 0)
-        {
-            com /= totalMass;
-            Gizmos.color = color;
-
-            Gizmos.DrawSphere(com, radius);
-            DrawArrow(com, com + Vector3.down * (radius * 2.5f));
-        }
-        else
-        {
-            Debug.LogWarning("Total mass is zero, cannot draw center of mass.");
+            Debug.LogWarning("Center of Mass is zero!");
             enabled = false;
+            return;
         }
+
+        Gizmos.color = color;
+        Gizmos.DrawSphere(com, radius);
+        DrawArrow(com, com + Vector3.down * (radius * 2.5f));
+
     }
 
-    private void DrawCop()
+    private Vector3 GetCoP()
     {
         // no props _right now_ under the object, but likely the props are stored elsewhere, so we go to robot root and search from there
         var robot = Utils.FindParentWithTag(gameObject, "robot", false);
         if (robot == null)
         {
             Debug.LogWarning("No robot found with tag 'robot'.");
-            enabled = false;
-            return;
+            return Vector3.zero;
         }
 
         // now find all the props under the robot
@@ -94,8 +82,7 @@ public class SimpleGizmo : MonoBehaviour
         if (props.Length == 0)
         {
             Debug.LogWarning("No props found under the robot.");
-            enabled = false;
-            return;
+            return Vector3.zero;
         }
 
         // prop objects are link attachments, so we need their attachment points
@@ -109,7 +96,19 @@ public class SimpleGizmo : MonoBehaviour
             validProps++;
         }
         cop /= validProps;
+        return cop;
+    }
 
+    private void DrawCop()
+    {
+        
+        var cop = GetCoP();
+        if (cop == Vector3.zero)
+        {
+            Debug.LogWarning("Center of Props is zero!");
+            enabled = false;
+            return;
+        }
         Gizmos.DrawSphere(cop, radius);
         DrawArrow(cop, cop + Vector3.up * (radius * 2.5f));
     }
@@ -119,5 +118,42 @@ public class SimpleGizmo : MonoBehaviour
         if (gizmoType == GizmoType.Position) DrawPosition();
         if (gizmoType == GizmoType.CenterOfMass) DrawCom();
         if (gizmoType == GizmoType.CenterOfProps) DrawCop();
+    }
+
+    public void CreateObject()
+    {
+        GameObject obj = new GameObject($"SimpleGizmo_{gizmoType}");
+        Vector3 pt;
+        switch (gizmoType)
+        {
+            case GizmoType.Position:
+                pt = transform.position;
+                break;
+            case GizmoType.CenterOfMass:
+                if (!TryGetComponent<ArticulationBody>(out var ab))
+                {
+                    Debug.LogWarning("No ArticulationBody found on this GameObject.");
+                    return;
+                }
+                pt = Utils.GetCenterOfMass(ab);
+                if (pt == Vector3.zero)
+                {
+                    Debug.LogWarning("Center of Mass is zero!");
+                    return;
+                }
+                break;
+            case GizmoType.CenterOfProps:
+                pt = GetCoP();
+                if (pt == Vector3.zero)
+                {
+                    Debug.LogWarning("Center of Props is zero!");
+                    return;
+                }
+                break;
+            default:
+                return;
+        }
+        obj.transform.parent = transform;
+        obj.transform.position = pt;
     }
 }

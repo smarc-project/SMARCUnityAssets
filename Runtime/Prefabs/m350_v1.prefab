@@ -61,7 +61,7 @@ ArticulationBody:
   serializedVersion: 5
   m_Mass: 0.23
   m_ParentAnchorPosition: {x: -0.030432718, y: -0.35314113, z: -0.003688395}
-  m_ParentAnchorRotation: {x: -0.010227993, y: -0.49275577, z: -0.86931455, w: 0.037142098}
+  m_ParentAnchorRotation: {x: -0.010227993, y: -0.49275577, z: -0.8693147, w: 0.03714207}
   m_AnchorPosition: {x: 0, y: 0, z: 0}
   m_AnchorRotation: {x: 0, y: 0, z: -0.7071068, w: 0.7071068}
   m_MatchAnchors: 1
@@ -250,10 +250,10 @@ MonoBehaviour:
   reverse: 1
   orientation: 1
   rpm: 0
-  RPMMax: 1e+20
+  RPMMax: 3500
   RPMMin: 0
   RPMToForceMultiplier: 0.01
-  HoverDefault: 1
+  HoverDefault: 0
   DefaultHoverRPM: 0
   ApplyManualTorque: 0
   ManualTorqueUp: 0
@@ -269,6 +269,8 @@ GameObject:
   m_Component:
   - component: {fileID: 6909006502536124820}
   - component: {fileID: 8457145872779598679}
+  - component: {fileID: 9216906975348785377}
+  - component: {fileID: 4961902520350068583}
   m_Layer: 0
   m_Name: m350_v1
   m_TagString: robot
@@ -309,6 +311,41 @@ MonoBehaviour:
   chosenAxis: 0
   currentOrientation: 0
   collisionExceptions: []
+--- !u!114 &9216906975348785377
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 333827259996945589}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0e60890fbf1078a4292a9c0ad223e471, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ComAB: {fileID: 4818710180873596960}
+  controllerType: 0
+  commandVelocityFLU: {x: 0, y: 0, z: 0}
+  commandPositionENU: {x: 0, y: 0, z: 0}
+  FL: {fileID: 7914359358507958576}
+  FR: {fileID: 8211211513727453642}
+  BL: {fileID: 8341314688662995929}
+  BR: {fileID: 1453933997702307484}
+  kp: 500
+--- !u!114 &4961902520350068583
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 333827259996945589}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 249485a618488c044ad8d2f5a1f0d47e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxCmdVelocity: 1
+  maxCmdPosition: 1
 --- !u!1 &403156701649502633
 GameObject:
   m_ObjectHideFlags: 0
@@ -661,7 +698,7 @@ ArticulationBody:
   serializedVersion: 5
   m_Mass: 0.23
   m_ParentAnchorPosition: {x: 0.030481186, y: -0.32014206, z: 0.0031810254}
-  m_ParentAnchorRotation: {x: 0.46219867, y: 0.011344463, z: -0.036673754, w: 0.8859453}
+  m_ParentAnchorRotation: {x: 0.46219867, y: 0.0113444775, z: -0.036673725, w: 0.8859453}
   m_AnchorPosition: {x: 0, y: 0, z: 0}
   m_AnchorRotation: {x: 0, y: 0, z: -0.7071068, w: 0.7071068}
   m_MatchAnchors: 1
@@ -804,10 +841,10 @@ MonoBehaviour:
   reverse: 0
   orientation: 1
   rpm: 0
-  RPMMax: 1e+20
+  RPMMax: 3500
   RPMMin: 0
   RPMToForceMultiplier: 0.01
-  HoverDefault: 1
+  HoverDefault: 0
   DefaultHoverRPM: 0
   ApplyManualTorque: 0
   ManualTorqueUp: 0
@@ -948,10 +985,10 @@ MonoBehaviour:
   reverse: 0
   orientation: 1
   rpm: 0
-  RPMMax: 1e+20
+  RPMMax: 3500
   RPMMin: 0
   RPMToForceMultiplier: 0.01
-  HoverDefault: 1
+  HoverDefault: 0
   DefaultHoverRPM: 0
   ApplyManualTorque: 0
   ManualTorqueUp: 0
@@ -1735,7 +1772,7 @@ ArticulationBody:
   serializedVersion: 5
   m_Mass: 0.0000001
   m_ParentAnchorPosition: {x: 0.135524, y: 0.12453601, z: -0.00742147}
-  m_ParentAnchorRotation: {x: 0, y: 0, z: -0.0000018179417, w: 1.0000001}
+  m_ParentAnchorRotation: {x: -1.9387046e-25, y: 1.0842002e-19, z: -0.0000018179417, w: 1.0000001}
   m_AnchorPosition: {x: 0, y: 0, z: 0}
   m_AnchorRotation: {x: 0, y: 0, z: 0.7071068, w: 0.7071068}
   m_MatchAnchors: 1
@@ -2307,7 +2344,7 @@ ArticulationBody:
   serializedVersion: 5
   m_Mass: 1.35
   m_ParentAnchorPosition: {x: -0.131214, y: 0.07263312, z: -0.017501}
-  m_ParentAnchorRotation: {x: 1.0651508e-12, y: 0, z: 1.0000001, w: -0.0000018179417}
+  m_ParentAnchorRotation: {x: 1.0612503e-12, y: -1.951564e-18, z: 1.0000001, w: -0.0000018179417}
   m_AnchorPosition: {x: 0, y: 0, z: 0}
   m_AnchorRotation: {x: 0, y: 0, z: 0.7071068, w: 0.7071068}
   m_MatchAnchors: 1
@@ -2441,6 +2478,118 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e9090ae501ff9cd459bec5271d40249c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1 &4074077515746931474
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 7798324152179307368}
+  - component: {fileID: 3252383341901522751}
+  - component: {fileID: 4818710180873596960}
+  m_Layer: 0
+  m_Name: com_link
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &7798324152179307368
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4074077515746931474}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: 0.00000008742278, z: -0, w: -1}
+  m_LocalPosition: {x: -0.038592298, y: 0.023305267, z: 0.0025727514}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 216227618274457611}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &3252383341901522751
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4074077515746931474}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fba5fd74d37a6cf4284698624eb8f6aa, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  IsBaseLink: 0
+--- !u!171741748 &4818710180873596960
+ArticulationBody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4074077515746931474}
+  m_Enabled: 1
+  serializedVersion: 5
+  m_Mass: 0.0000001
+  m_ParentAnchorPosition: {x: -0.038592298, y: 0.023305267, z: 0.0025727514}
+  m_ParentAnchorRotation: {x: 0.00000006181724, y: 0.00000006181724, z: -0.7071068, w: -0.7071068}
+  m_AnchorPosition: {x: 0, y: 0, z: 0}
+  m_AnchorRotation: {x: 0, y: 0, z: 0.7071068, w: 0.7071068}
+  m_MatchAnchors: 1
+  m_ArticulationJointType: 0
+  m_LinearX: 2
+  m_LinearY: 2
+  m_LinearZ: 2
+  m_SwingY: 2
+  m_SwingZ: 2
+  m_Twist: 2
+  m_XDrive:
+    lowerLimit: 0
+    upperLimit: 0
+    stiffness: 0
+    damping: 0
+    forceLimit: 3.4028235e+38
+    target: 0
+    targetVelocity: 0
+    driveType: 0
+  m_YDrive:
+    lowerLimit: 0
+    upperLimit: 0
+    stiffness: 0
+    damping: 0
+    forceLimit: 3.4028235e+38
+    target: 0
+    targetVelocity: 0
+    driveType: 0
+  m_ZDrive:
+    lowerLimit: 0
+    upperLimit: 0
+    stiffness: 0
+    damping: 0
+    forceLimit: 3.4028235e+38
+    target: 0
+    targetVelocity: 0
+    driveType: 0
+  m_LinearDamping: 0
+  m_AngularDamping: 0
+  m_JointFriction: 0
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 0.0000001, y: 0.0000001, z: 0.0000001}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 0
+  m_ImplicitTensor: 0
+  m_Immovable: 0
+  m_UseGravity: 0
+  m_CollisionDetectionMode: 0
 --- !u!1 &4139808992816125866
 GameObject:
   m_ObjectHideFlags: 0
@@ -2736,7 +2885,7 @@ ArticulationBody:
   serializedVersion: 5
   m_Mass: 1.35
   m_ParentAnchorPosition: {x: -0.131214, y: 0.07263312, z: 0.0226466}
-  m_ParentAnchorRotation: {x: 1.0651508e-12, y: 0, z: 1.0000001, w: -0.0000018179417}
+  m_ParentAnchorRotation: {x: 1.0612503e-12, y: -1.951564e-18, z: 1.0000001, w: -0.0000018179417}
   m_AnchorPosition: {x: 0, y: 0, z: 0}
   m_AnchorRotation: {x: 0, y: 0, z: 0.7071068, w: 0.7071068}
   m_MatchAnchors: 1
@@ -3006,6 +3155,7 @@ Transform:
   - {fileID: 5903203023684213914}
   - {fileID: 6908919072289318243}
   - {fileID: 2248936075164403076}
+  - {fileID: 7798324152179307368}
   m_Father: {fileID: 6909006502536124820}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &9149146193005060556
@@ -4173,10 +4323,10 @@ MonoBehaviour:
   reverse: 1
   orientation: 1
   rpm: 0
-  RPMMax: 1e+20
+  RPMMax: 3500
   RPMMin: 0
   RPMToForceMultiplier: 0.01
-  HoverDefault: 1
+  HoverDefault: 0
   DefaultHoverRPM: 0
   ApplyManualTorque: 0
   ManualTorqueUp: 0
