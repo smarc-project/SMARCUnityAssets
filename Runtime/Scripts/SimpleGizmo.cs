@@ -1,3 +1,4 @@
+using DefaultNamespace;
 using UnityEngine;
 
 
@@ -20,6 +21,27 @@ public class SimpleGizmo : MonoBehaviour
         Gizmos.color = color;
         Gizmos.DrawSphere(transform.position, radius);
         return;
+    }
+
+    private void DrawArrow(Vector3 arrowStart, Vector3 arrowEnd)
+    {
+        Gizmos.DrawLine(arrowStart, arrowEnd);
+
+        float arrowHeadLength = radius * 0.7f;
+        float arrowHeadAngle = 25f;
+
+        // Arrowhead on XY plane
+        Vector3 directionXY = Vector3.up;
+        Vector3 rightXY = Quaternion.AngleAxis(arrowHeadAngle, Vector3.forward) * directionXY;
+        Vector3 leftXY = Quaternion.AngleAxis(-arrowHeadAngle, Vector3.forward) * directionXY;
+        Gizmos.DrawLine(arrowEnd, arrowEnd + rightXY.normalized * arrowHeadLength);
+        Gizmos.DrawLine(arrowEnd, arrowEnd + leftXY.normalized * arrowHeadLength);
+
+        // Arrowhead on YZ plane
+        Vector3 rightYZ = Quaternion.AngleAxis(arrowHeadAngle, Vector3.right) * directionXY;
+        Vector3 leftYZ = Quaternion.AngleAxis(-arrowHeadAngle, Vector3.right) * directionXY;
+        Gizmos.DrawLine(arrowEnd, arrowEnd + rightYZ.normalized * arrowHeadLength);
+        Gizmos.DrawLine(arrowEnd, arrowEnd + leftYZ.normalized * arrowHeadLength);
     }
 
     private void DrawCom()
@@ -45,27 +67,9 @@ public class SimpleGizmo : MonoBehaviour
         {
             com /= totalMass;
             Gizmos.color = color;
+
             Gizmos.DrawSphere(com, radius);
-            Vector3 arrowStart = com;
-            Vector3 arrowEnd = com + Vector3.down * (radius * 2.5f);
-            Gizmos.color = color;
-            Gizmos.DrawLine(arrowStart, arrowEnd);
-
-            float arrowHeadLength = radius * 0.7f;
-            float arrowHeadAngle = 25f;
-
-            // Arrowhead on XY plane
-            Vector3 directionXY = Vector3.up;
-            Vector3 rightXY = Quaternion.AngleAxis(arrowHeadAngle, Vector3.forward) * directionXY;
-            Vector3 leftXY = Quaternion.AngleAxis(-arrowHeadAngle, Vector3.forward) * directionXY;
-            Gizmos.DrawLine(arrowEnd, arrowEnd + rightXY.normalized * arrowHeadLength);
-            Gizmos.DrawLine(arrowEnd, arrowEnd + leftXY.normalized * arrowHeadLength);
-
-            // Arrowhead on YZ plane
-            Vector3 rightYZ = Quaternion.AngleAxis(arrowHeadAngle, Vector3.right) * directionXY;
-            Vector3 leftYZ = Quaternion.AngleAxis(-arrowHeadAngle, Vector3.right) * directionXY;
-            Gizmos.DrawLine(arrowEnd, arrowEnd + rightYZ.normalized * arrowHeadLength);
-            Gizmos.DrawLine(arrowEnd, arrowEnd + leftYZ.normalized * arrowHeadLength);
+            DrawArrow(com, com + Vector3.down * (radius * 2.5f));
         }
         else
         {
@@ -76,7 +80,38 @@ public class SimpleGizmo : MonoBehaviour
 
     private void DrawCop()
     {
-        return;
+        // no props _right now_ under the object, but likely the props are stored elsewhere, so we go to robot root and search from there
+        var robot = Utils.FindParentWithTag(gameObject, "robot", false);
+        if (robot == null)
+        {
+            Debug.LogWarning("No robot found with tag 'robot'.");
+            enabled = false;
+            return;
+        }
+
+        // now find all the props under the robot
+        var props = robot.GetComponentsInChildren<VehicleComponents.Actuators.Propeller>();
+        if (props.Length == 0)
+        {
+            Debug.LogWarning("No props found under the robot.");
+            enabled = false;
+            return;
+        }
+
+        // prop objects are link attachments, so we need their attachment points
+        Vector3 cop = Vector3.zero;
+        var validProps = 0;
+        for (int i = 0; i < props.Length; i++)
+        {
+            var pt = Utils.FindDeepChildWithName(robot, props[i].linkName);
+            if (pt == null) continue;
+            cop += pt.transform.position;
+            validProps++;
+        }
+        cop /= validProps;
+
+        Gizmos.DrawSphere(cop, radius);
+        DrawArrow(cop, cop + Vector3.up * (radius * 2.5f));
     }
 
     private void OnDrawGizmos()
