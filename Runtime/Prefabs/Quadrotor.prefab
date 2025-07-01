@@ -54,15 +54,15 @@ MonoBehaviour:
   pitch: 0
   yaw: 0
   reverse: 0
+  orientation: 0
   rpm: 0
   RPMMax: 1e+20
   RPMMin: 0
   RPMToForceMultiplier: 0.005
   HoverDefault: 1
-  NumPropellers: 4
-  ApplyTorque: 1
-  TorqueUp: 1
   DefaultHoverRPM: 0
+  ApplyManualTorque: 1
+  ManualTorqueUp: 1
   baseLinkArticulationBody: {fileID: 3179540796430959622}
   baseLinkRigidBody: {fileID: 0}
 --- !u!114 &3657326355121176362
@@ -449,15 +449,15 @@ MonoBehaviour:
   pitch: 0
   yaw: 0
   reverse: 1
+  orientation: 0
   rpm: 0
   RPMMax: 1e+20
   RPMMin: 0
   RPMToForceMultiplier: 0.005
   HoverDefault: 1
-  NumPropellers: 4
-  ApplyTorque: 1
-  TorqueUp: 0
   DefaultHoverRPM: 0
+  ApplyManualTorque: 1
+  ManualTorqueUp: 0
   baseLinkArticulationBody: {fileID: 3179540796430959622}
   baseLinkRigidBody: {fileID: 0}
 --- !u!114 &7853213438659321280
@@ -546,15 +546,15 @@ MonoBehaviour:
   pitch: 0
   yaw: 0
   reverse: 1
+  orientation: 0
   rpm: 0
   RPMMax: 1e+20
   RPMMin: 0
   RPMToForceMultiplier: 0.005
   HoverDefault: 1
-  NumPropellers: 4
-  ApplyTorque: 1
-  TorqueUp: 0
   DefaultHoverRPM: 0
+  ApplyManualTorque: 1
+  ManualTorqueUp: 0
   baseLinkArticulationBody: {fileID: 3179540796430959622}
   baseLinkRigidBody: {fileID: 0}
 --- !u!114 &7651963327394340505
@@ -739,15 +739,15 @@ MonoBehaviour:
   pitch: 0
   yaw: 0
   reverse: 0
+  orientation: 0
   rpm: 0
   RPMMax: 1e+20
   RPMMin: 0
   RPMToForceMultiplier: 0.005
   HoverDefault: 1
-  NumPropellers: 4
-  ApplyTorque: 1
-  TorqueUp: 1
   DefaultHoverRPM: 0
+  ApplyManualTorque: 1
+  ManualTorqueUp: 1
   baseLinkArticulationBody: {fileID: 3179540796430959622}
   baseLinkRigidBody: {fileID: 0}
 --- !u!114 &2215589600718411196
