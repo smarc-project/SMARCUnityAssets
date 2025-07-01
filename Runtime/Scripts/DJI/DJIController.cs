@@ -19,12 +19,15 @@ namespace dji
         public Propeller FL, FR, BL, BR;
 
         private float comPitch, comRoll;
+        private Vector3 comVel;
         public float kp;
 
         void FixedUpdate()
         {
             comPitch = ComAB.transform.rotation.eulerAngles.z;
             comRoll = ComAB.transform.rotation.eulerAngles.x;
+            comVel = ComAB.linearVelocity;
+
 
             // super stupid example controller
             var pitchErr = comPitch;
