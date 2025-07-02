@@ -54,15 +54,15 @@ MonoBehaviour:
   pitch: 0
   yaw: 0
   reverse: 0
+  orientation: 0
   rpm: 0
   RPMMax: 1e+20
   RPMMin: 0
   RPMToForceMultiplier: 0.005
   HoverDefault: 1
-  NumPropellers: 4
-  ApplyTorque: 1
-  TorqueUp: 1
   DefaultHoverRPM: 0
+  ApplyManualTorque: 1
+  ManualTorqueUp: 1
   baseLinkArticulationBody: {fileID: 3179540796430959622}
   baseLinkRigidBody: {fileID: 0}
 --- !u!114 &3657326355121176362
@@ -189,7 +189,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   topic: /tf
-  Suffix: 
   BaseLinkName: base_link
   Frequency: 10
 --- !u!1 &1648915923807604
@@ -450,15 +449,15 @@ MonoBehaviour:
   pitch: 0
   yaw: 0
   reverse: 1
+  orientation: 0
   rpm: 0
   RPMMax: 1e+20
   RPMMin: 0
   RPMToForceMultiplier: 0.005
   HoverDefault: 1
-  NumPropellers: 4
-  ApplyTorque: 1
-  TorqueUp: 0
   DefaultHoverRPM: 0
+  ApplyManualTorque: 1
+  ManualTorqueUp: 0
   baseLinkArticulationBody: {fileID: 3179540796430959622}
   baseLinkRigidBody: {fileID: 0}
 --- !u!114 &7853213438659321280
@@ -547,15 +546,15 @@ MonoBehaviour:
   pitch: 0
   yaw: 0
   reverse: 1
+  orientation: 0
   rpm: 0
   RPMMax: 1e+20
   RPMMin: 0
   RPMToForceMultiplier: 0.005
   HoverDefault: 1
-  NumPropellers: 4
-  ApplyTorque: 1
-  TorqueUp: 0
   DefaultHoverRPM: 0
+  ApplyManualTorque: 1
+  ManualTorqueUp: 0
   baseLinkArticulationBody: {fileID: 3179540796430959622}
   baseLinkRigidBody: {fileID: 0}
 --- !u!114 &7651963327394340505
@@ -740,15 +739,15 @@ MonoBehaviour:
   pitch: 0
   yaw: 0
   reverse: 0
+  orientation: 0
   rpm: 0
   RPMMax: 1e+20
   RPMMin: 0
   RPMToForceMultiplier: 0.005
   HoverDefault: 1
-  NumPropellers: 4
-  ApplyTorque: 1
-  TorqueUp: 1
   DefaultHoverRPM: 0
+  ApplyManualTorque: 1
+  ManualTorqueUp: 1
   baseLinkArticulationBody: {fileID: 3179540796430959622}
   baseLinkRigidBody: {fileID: 0}
 --- !u!114 &2215589600718411196
@@ -2997,7 +2996,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 231f68cb232aa5bd6ad168c7a19ccfd9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  topic: go_to_setpoint
+  topic: move_to_setpoint
   Target: {fileID: 6110627571383574328}
   TeleportFrame: 0
   UseDebugInput: 0
@@ -4900,6 +4899,15 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 4039007730990099910, guid: 246faa4526e9e158389691a72feb5596, type: 3}
       insertIndex: -1
       addedObject: {fileID: 4237389417141056380}
+    - targetCorrespondingSourceObject: {fileID: 4039007730990099910, guid: 246faa4526e9e158389691a72feb5596, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 2603616588984522265}
+    - targetCorrespondingSourceObject: {fileID: 3506910256720658690, guid: 246faa4526e9e158389691a72feb5596, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1759325152569127536}
+    - targetCorrespondingSourceObject: {fileID: 6040559385985837056, guid: 246faa4526e9e158389691a72feb5596, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 70907989555329064}
   m_SourcePrefab: {fileID: 100100000, guid: 246faa4526e9e158389691a72feb5596, type: 3}
 --- !u!1 &2762358029055510045 stripped
 GameObject:
@@ -4924,11 +4932,60 @@ MonoBehaviour:
   roll: 0
   pitch: 0
   yaw: 0
+--- !u!114 &2603616588984522265
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2762358029055510045}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fba5fd74d37a6cf4284698624eb8f6aa, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  IsBaseLink: 0
 --- !u!4 &3215108230359355312 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 3658882480078120043, guid: 246faa4526e9e158389691a72feb5596, type: 3}
   m_PrefabInstance: {fileID: 2186688780884634587}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &3383225385435507417 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 3506910256720658690, guid: 246faa4526e9e158389691a72feb5596, type: 3}
+  m_PrefabInstance: {fileID: 2186688780884634587}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1759325152569127536
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3383225385435507417}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fba5fd74d37a6cf4284698624eb8f6aa, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  IsBaseLink: 0
+--- !u!1 &5588066764457214939 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6040559385985837056, guid: 246faa4526e9e158389691a72feb5596, type: 3}
+  m_PrefabInstance: {fileID: 2186688780884634587}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &70907989555329064
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5588066764457214939}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fba5fd74d37a6cf4284698624eb8f6aa, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  IsBaseLink: 0
 --- !u!1001 &5788085485462771123
 PrefabInstance:
   m_ObjectHideFlags: 0
