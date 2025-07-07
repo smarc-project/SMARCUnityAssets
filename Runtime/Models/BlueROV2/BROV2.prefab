@@ -52,14 +52,15 @@ MonoBehaviour:
   pitch: 0
   yaw: 0
   reverse: 0
+  orientation: 0
   rpm: 0
   RPMMax: 100000
+  RPMMin: 0
   RPMToForceMultiplier: 0.005
   HoverDefault: 0
-  NumPropellers: 4
-  ApplyTorque: 0
-  TorqueUp: 0
   DefaultHoverRPM: 0
+  ApplyManualTorque: 0
+  ManualTorqueUp: 0
   baseLinkArticulationBody: {fileID: 0}
   baseLinkRigidBody: {fileID: 0}
 --- !u!114 &2120731980414946623
@@ -247,8 +248,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 32ccbfb20e694c726875aa7c68c0bca7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  frequency: 10
   topic: imu
+  frequency: 10
   ignoreSensorState: 0
   useNED: 0
 --- !u!1 &397096044455874006
@@ -471,17 +472,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 78564e3e0c2d8c65cb6601a38bee530d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  linkName: odom
-  retryUntilSuccess: 1
-  rotateForROSCamera: 0
-  roll: 0
-  pitch: 0
-  yaw: 0
-  m_GlobalFrameIds:
-  - map
-  suffix: _gt
-  frequency: 10
-  ErrorOnPublish: 0
+  topic: /tf
+  BaseLinkName: base_link
+  Frequency: 10
 --- !u!1 &1264338540441957435
 GameObject:
   m_ObjectHideFlags: 0
@@ -777,14 +770,15 @@ MonoBehaviour:
   pitch: 0
   yaw: 0
   reverse: 0
+  orientation: 0
   rpm: 0
   RPMMax: 100000
+  RPMMin: 0
   RPMToForceMultiplier: 0.005
   HoverDefault: 0
-  NumPropellers: 4
-  ApplyTorque: 0
-  TorqueUp: 0
   DefaultHoverRPM: 0
+  ApplyManualTorque: 0
+  ManualTorqueUp: 0
   baseLinkArticulationBody: {fileID: 0}
   baseLinkRigidBody: {fileID: 0}
 --- !u!114 &3646035966885713609
@@ -1214,10 +1208,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0488af2a38628407dba8adb3eb1a253b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  frequency: 10
   topic: odom
+  frequency: 10
   ignoreSensorState: 0
   useNED: 1
+  ROSPosition: {x: 0, y: 0, z: 0}
 --- !u!1 &3554436302367395411
 GameObject:
   m_ObjectHideFlags: 0
@@ -1270,14 +1265,15 @@ MonoBehaviour:
   pitch: 0
   yaw: 0
   reverse: 0
+  orientation: 0
   rpm: 0
   RPMMax: 100000
+  RPMMin: 0
   RPMToForceMultiplier: 0.005
   HoverDefault: 0
-  NumPropellers: 4
-  ApplyTorque: 0
-  TorqueUp: 0
   DefaultHoverRPM: 0
+  ApplyManualTorque: 0
+  ManualTorqueUp: 0
   baseLinkArticulationBody: {fileID: 0}
   baseLinkRigidBody: {fileID: 0}
 --- !u!114 &7424110433930492315
@@ -1349,14 +1345,15 @@ MonoBehaviour:
   pitch: 0
   yaw: 0
   reverse: 0
+  orientation: 0
   rpm: 0
   RPMMax: 100000
+  RPMMin: 0
   RPMToForceMultiplier: 0.005
   HoverDefault: 0
-  NumPropellers: 4
-  ApplyTorque: 0
-  TorqueUp: 0
   DefaultHoverRPM: 0
+  ApplyManualTorque: 0
+  ManualTorqueUp: 0
   baseLinkArticulationBody: {fileID: 0}
   baseLinkRigidBody: {fileID: 0}
 --- !u!114 &5424152280482168782
@@ -2034,14 +2031,15 @@ MonoBehaviour:
   pitch: 0
   yaw: 0
   reverse: 0
+  orientation: 0
   rpm: 0
   RPMMax: 100000
+  RPMMin: 0
   RPMToForceMultiplier: 0.005
   HoverDefault: 0
-  NumPropellers: 4
-  ApplyTorque: 0
-  TorqueUp: 0
   DefaultHoverRPM: 0
+  ApplyManualTorque: 0
+  ManualTorqueUp: 0
   baseLinkArticulationBody: {fileID: 0}
   baseLinkRigidBody: {fileID: 0}
 --- !u!114 &3028300969754988566
@@ -2113,14 +2111,15 @@ MonoBehaviour:
   pitch: 0
   yaw: 0
   reverse: 0
+  orientation: 0
   rpm: 0
   RPMMax: 100000
+  RPMMin: 0
   RPMToForceMultiplier: 0.005
   HoverDefault: 0
-  NumPropellers: 4
-  ApplyTorque: 0
-  TorqueUp: 0
   DefaultHoverRPM: 0
+  ApplyManualTorque: 0
+  ManualTorqueUp: 0
   baseLinkArticulationBody: {fileID: 0}
   baseLinkRigidBody: {fileID: 0}
 --- !u!114 &3341895745031192196
@@ -2364,14 +2363,15 @@ MonoBehaviour:
   pitch: 0
   yaw: 0
   reverse: 0
+  orientation: 0
   rpm: 0
   RPMMax: 100000
+  RPMMin: 0
   RPMToForceMultiplier: 0.005
   HoverDefault: 0
-  NumPropellers: 4
-  ApplyTorque: 0
-  TorqueUp: 0
   DefaultHoverRPM: 0
+  ApplyManualTorque: 0
+  ManualTorqueUp: 0
   baseLinkArticulationBody: {fileID: 0}
   baseLinkRigidBody: {fileID: 0}
 --- !u!114 &8837876110777621987
@@ -2714,8 +2714,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7cc571f3d07e418f59f2cadd3744da3a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  frequency: 10
   topic: dvl
+  frequency: 10
   ignoreSensorState: 0
 --- !u!1 &6475340759408910561
 GameObject:
@@ -2948,14 +2948,15 @@ MonoBehaviour:
   pitch: 0
   yaw: 0
   reverse: 0
+  orientation: 0
   rpm: 0
   RPMMax: 100000
+  RPMMin: 0
   RPMToForceMultiplier: 0.005
   HoverDefault: 0
-  NumPropellers: 4
-  ApplyTorque: 0
-  TorqueUp: 0
   DefaultHoverRPM: 0
+  ApplyManualTorque: 0
+  ManualTorqueUp: 0
   baseLinkArticulationBody: {fileID: 0}
   baseLinkRigidBody: {fileID: 0}
 --- !u!114 &4925551243916775872
@@ -3954,6 +3955,10 @@ PrefabInstance:
       propertyPath: m_ParentAnchorPosition.z
       value: 12.767666
       objectReference: {fileID: 0}
+    - target: {fileID: 983486002574109115, guid: 1291051c7b12daf41b9283a93e8a2e32, type: 3}
+      propertyPath: m_Mesh
+      value: 
+      objectReference: {fileID: -2432090755550338912, guid: 56356e0e00d4aa84ba1697b62b98e71a, type: 3}
     - target: {fileID: 1855936591135791677, guid: 1291051c7b12daf41b9283a93e8a2e32, type: 3}
       propertyPath: m_UseGravity
       value: 0
@@ -3977,6 +3982,14 @@ PrefabInstance:
     - target: {fileID: 1855936591135791677, guid: 1291051c7b12daf41b9283a93e8a2e32, type: 3}
       propertyPath: m_ParentAnchorPosition.z
       value: -0.14627013
+      objectReference: {fileID: 0}
+    - target: {fileID: 2238310283517702211, guid: 1291051c7b12daf41b9283a93e8a2e32, type: 3}
+      propertyPath: m_Mesh
+      value: 
+      objectReference: {fileID: -2432090755550338912, guid: 69af2083218a5a44ab334455983e0a96, type: 3}
+    - target: {fileID: 2386069469799784824, guid: 1291051c7b12daf41b9283a93e8a2e32, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -445
       objectReference: {fileID: 0}
     - target: {fileID: 3098753503941536549, guid: 1291051c7b12daf41b9283a93e8a2e32, type: 3}
       propertyPath: m_UseGravity
@@ -4026,6 +4039,18 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4085277237499600175, guid: 1291051c7b12daf41b9283a93e8a2e32, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 50
+      objectReference: {fileID: 0}
+    - target: {fileID: 4085277237499600175, guid: 1291051c7b12daf41b9283a93e8a2e32, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -86.2
+      objectReference: {fileID: 0}
+    - target: {fileID: 4338188079917035528, guid: 1291051c7b12daf41b9283a93e8a2e32, type: 3}
+      propertyPath: m_Mesh
+      value: 
+      objectReference: {fileID: -2432090755550338912, guid: 69af2083218a5a44ab334455983e0a96, type: 3}
     - target: {fileID: 4429271021217525099, guid: 1291051c7b12daf41b9283a93e8a2e32, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0.15984511
@@ -4066,9 +4091,17 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4448149458420742936, guid: 1291051c7b12daf41b9283a93e8a2e32, type: 3}
+      propertyPath: m_Mesh
+      value: 
+      objectReference: {fileID: -2432090755550338912, guid: 56356e0e00d4aa84ba1697b62b98e71a, type: 3}
     - target: {fileID: 4452836631160975150, guid: 1291051c7b12daf41b9283a93e8a2e32, type: 3}
       propertyPath: m_LocalPosition.x
       value: -0.3769113
+      objectReference: {fileID: 0}
+    - target: {fileID: 4840535234666678269, guid: 1291051c7b12daf41b9283a93e8a2e32, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -446
       objectReference: {fileID: 0}
     - target: {fileID: 4873188690751110789, guid: 1291051c7b12daf41b9283a93e8a2e32, type: 3}
       propertyPath: m_UseGravity
@@ -4133,6 +4166,14 @@ PrefabInstance:
     - target: {fileID: 6568517222433558365, guid: 1291051c7b12daf41b9283a93e8a2e32, type: 3}
       propertyPath: m_ParentAnchorPosition.z
       value: 0.12351426
+      objectReference: {fileID: 0}
+    - target: {fileID: 6933022748678821737, guid: 1291051c7b12daf41b9283a93e8a2e32, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 49.7
+      objectReference: {fileID: 0}
+    - target: {fileID: 6933022748678821737, guid: 1291051c7b12daf41b9283a93e8a2e32, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -94.6
       objectReference: {fileID: 0}
     - target: {fileID: 7387751848545444752, guid: 1291051c7b12daf41b9283a93e8a2e32, type: 3}
       propertyPath: m_Name
