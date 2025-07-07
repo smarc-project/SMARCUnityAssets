@@ -63,11 +63,14 @@ namespace SmarcGUI.MissionPlanning.Tasks
             {
                 var paramValue = param.Value;
                 Type paramType = null;
-                if(param.Key == "waypoint")
+                if(param.Key == "waypoint" || param.Key == "search_center")
                 {
                     switch(Name)
                     {
                         case "move-to":
+                            paramType = typeof(GeoPoint);
+                            break;
+                        case "alars-search":
                             paramType = typeof(GeoPoint);
                             break;
                         case "auv-depth-move-to":
@@ -83,7 +86,7 @@ namespace SmarcGUI.MissionPlanning.Tasks
                             break;
                     }
                 }
-                else if(param.Key == "waypoints")
+                else if(param.Key == "waypoints" || param.Key == "rope_points")
                 {
                     switch(Name)
                     {
@@ -98,6 +101,9 @@ namespace SmarcGUI.MissionPlanning.Tasks
                             break;
                         case "auv-hydrobatic-move-path":
                             paramType = typeof(List<AuvHydrobaticPoint>);
+                            break;
+                        case "alars-recover":
+                            paramType = typeof(List<GeoPoint>);
                             break;
                         default:
                             break;

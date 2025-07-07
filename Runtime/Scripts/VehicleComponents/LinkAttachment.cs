@@ -42,7 +42,7 @@ namespace VehicleComponents
             attachedLink = Utils.FindDeepChildWithName(theRobot, linkName);
             if (attachedLink == null)
             {
-                Debug.Log($"Object with name [{linkName}] not found under parent [{theRobot.name}]. Disabling {this.name}.");
+                Debug.Log($"Object with name [{linkName}] not found under parent [{theRobot.name}]. Disabling {gameObject.name}.");
                 gameObject.SetActive(false);
                 return;
             }
@@ -63,37 +63,27 @@ namespace VehicleComponents
             }
 
             transform.SetParent(attachedLink.transform);
-            
 
             GetMixedBody();
-
-            // ArticulationBody ab = GetComponent<ArticulationBody>();
-            // Rigidbody rb = GetComponent<Rigidbody>();
-            // mixedBody = new MixedBody(ab, rb);
-
-            // ArticulationBody parentAB = attachedLink.GetComponent<ArticulationBody>();
-            // Rigidbody parentRB = attachedLink.GetComponent<Rigidbody>();
-
-            // parentMixedBody = new MixedBody(parentAB, parentRB);
-
-            // if (!mixedBody.isValid) mixedBody = parentMixedBody;
         }
 
 
         public MixedBody GetMixedBody()
         {
-            if(mixedBody == null)
+            if(mixedBody == null || parentMixedBody == null)
             {
-                ArticulationBody ab = GetComponent<ArticulationBody>();
-                Rigidbody rb = GetComponent<Rigidbody>();
-                mixedBody = new MixedBody(ab, rb);
+                if (TryGetComponent(out ArticulationBody ab))
+                    mixedBody = new MixedBody(ab, null);
+                else if (TryGetComponent(out Rigidbody rb))
+                    mixedBody = new MixedBody(null, rb);
 
-                ArticulationBody parentAB = attachedLink.GetComponent<ArticulationBody>();
-                Rigidbody parentRB = attachedLink.GetComponent<Rigidbody>();
+                if (transform.parent.TryGetComponent(out ArticulationBody parentAB))
+                    parentMixedBody = new MixedBody(parentAB, null);
+                else if (transform.parent.TryGetComponent(out Rigidbody parentRB))
+                    parentMixedBody = new MixedBody(null, parentRB);
 
-                parentMixedBody = new MixedBody(parentAB, parentRB);
 
-                if (!mixedBody.isValid) mixedBody = parentMixedBody;
+                if (mixedBody == null || !mixedBody.isValid) mixedBody = parentMixedBody;
             }
             return mixedBody;
         }

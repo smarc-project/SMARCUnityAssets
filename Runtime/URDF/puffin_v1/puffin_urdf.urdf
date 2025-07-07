@@ -1,0 +1,77 @@
+<?xml version="1.0"?>
+<robot name="puffin_auv">
+
+  <!-- baselink -->
+  <link name="base_link">
+    <visual>
+      <!--No real reference point decided. Centroid of cylindrical housing for now.-->
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+        <mesh filename="mesh/puffin_hull.dae" scale="1 1 1" />
+      </geometry>
+    </visual>
+  </link>
+
+  <!-- sensor links -->
+  <link name="gps_link"/>
+
+  <!-- hydrostatic links-->
+  <link name="buoyancy_center_link"/>
+  <link name="gravity_center_link"/>
+
+  <!-- thruster links-->
+  <link name="thruster_port">
+    <visual>
+      <origin xyz="0.0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="mesh/puffin_propeller_port.dae" scale="1 1 1"/>
+      </geometry>
+    </visual>
+  </link>
+
+  <link name="thruster_stbd">
+    <visual>
+      <origin xyz="0.0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="mesh/puffin_propeller_stb.dae" scale="1 1 1"/>
+      </geometry>
+    </visual>
+  </link>
+
+  <!-- thruster joints -->
+  <joint name="thruster_port_joint" type="continuous">
+    <origin xyz="-0.305076 0.042368 0.03" rpy="0 0 -1.39626" />
+    <axis xyz="1 0 0"/>
+    <parent link="base_link"/>
+    <child link="thruster_port"/>
+  </joint>
+
+  <joint name="thruster_stbd_joint" type="continuous">
+    <origin xyz="-0.305076 -0.042368 0.03" rpy="0 0 1.39626" />
+    <axis xyz="1 0 0"/>
+    <parent link="base_link"/>
+    <child link="thruster_stbd"/>
+  </joint>
+
+  <!-- GNSS joint -->
+  <joint name="gps_joint" type="fixed">
+    <origin xyz="0.0 0.0 0.0" rpy="0 0 0" />
+    <parent link="base_link"/>
+    <child link="gps_link"/>
+  </joint>
+
+  <!-- Hydrostatic joints -->
+  <joint name="gravity_center_joint" type="fixed">
+    <origin xyz="-0.0685 0.0 0.168" rpy="0 0 0" />
+    <parent link="base_link"/>
+    <child link="gravity_center_link"/>
+  </joint>
+
+  <joint name="buoyancy_center_joint" type="fixed">
+    <origin xyz="-0.0511 0 -0.09" rpy="0 0 0" />
+    <parent link="base_link"/>
+    <child link="buoyancy_center_link"/>
+  </joint>
+
+
+</robot>
