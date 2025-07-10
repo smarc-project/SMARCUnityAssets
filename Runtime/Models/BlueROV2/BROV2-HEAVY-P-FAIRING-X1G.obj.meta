@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 9ebabc9e290766c4d892e3a6c3bbb429
+guid: 69af2083218a5a44ab334455983e0a96
 ModelImporter:
   serializedVersion: 22200
   internalIDToNameTable: []
@@ -41,8 +41,8 @@ ModelImporter:
     importPhysicalCameras: 1
     importVisibility: 1
     importBlendShapes: 1
-    importCameras: 0
-    importLights: 0
+    importCameras: 1
+    importLights: 1
     nodeNameCollisionStrategy: 1
     fileIdsGeneration: 2
     swapUVChannels: 0
@@ -95,7 +95,7 @@ ModelImporter:
     skeletonHasParents: 1
   lastHumanDescriptionAvatarSource: {instanceID: 0}
   autoGenerateAvatarMappingIfUnspecified: 1
-  animationType: 0
+  animationType: 2
   humanoidOversampling: 1
   avatarSetup: 0
   addHumanoidExtraRootOnlyWhenUsingAvatar: 1
