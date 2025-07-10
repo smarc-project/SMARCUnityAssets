@@ -250,9 +250,9 @@ MonoBehaviour:
   reverse: 1
   orientation: 1
   rpm: 0
-  RPMMax: 3500
+  RPMMax: 5200
   RPMMin: 0
-  RPMToForceMultiplier: 0.01
+  RPMToForceMultiplier: 0.006
   HoverDefault: 0
   DefaultHoverRPM: 0
   ApplyManualTorque: 0
@@ -331,7 +331,24 @@ MonoBehaviour:
   FR: {fileID: 8211211513727453642}
   BL: {fileID: 8341314688662995929}
   BR: {fileID: 1453933997702307484}
-  kp: 500
+  position: {x: 0, y: 0, z: 0}
+  FLUVel: {x: 0, y: 0, z: 0}
+  base_speed: 0
+  target_alt: 0
+  command_pitch: 0
+  command_roll: 0
+  target_pitch: 0
+  target_roll: 0
+  prev_alt_output: 0
+  alt_error: 0
+  prev_pitch_output: 0
+  pitch_error: 0
+  prev_vel_error: {x: 0, y: 0, z: 0}
+  prev_vel_output: {x: 0, y: 0, z: 0}
+  vel_output: {x: 0, y: 0, z: 0}
+  vel_error: {x: 0, y: 0, z: 0}
+  prev_roll_output: 0
+  roll_error: 0
 --- !u!114 &4961902520350068583
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -841,9 +858,9 @@ MonoBehaviour:
   reverse: 0
   orientation: 1
   rpm: 0
-  RPMMax: 3500
+  RPMMax: 5200
   RPMMin: 0
-  RPMToForceMultiplier: 0.01
+  RPMToForceMultiplier: 0.006
   HoverDefault: 0
   DefaultHoverRPM: 0
   ApplyManualTorque: 0
@@ -985,9 +1002,9 @@ MonoBehaviour:
   reverse: 0
   orientation: 1
   rpm: 0
-  RPMMax: 3500
+  RPMMax: 5200
   RPMMin: 0
-  RPMToForceMultiplier: 0.01
+  RPMToForceMultiplier: 0.006
   HoverDefault: 0
   DefaultHoverRPM: 0
   ApplyManualTorque: 0
@@ -4323,9 +4340,9 @@ MonoBehaviour:
   reverse: 1
   orientation: 1
   rpm: 0
-  RPMMax: 3500
+  RPMMax: 5200
   RPMMin: 0
-  RPMToForceMultiplier: 0.01
+  RPMToForceMultiplier: 0.006
   HoverDefault: 0
   DefaultHoverRPM: 0
   ApplyManualTorque: 0

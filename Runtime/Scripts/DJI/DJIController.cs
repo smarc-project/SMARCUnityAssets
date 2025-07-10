@@ -25,14 +25,12 @@ namespace dji
         private Vector3 comVel;
         private Vector3 localVel;
         public Vector3 FLUVel;
-        public float kP_roll;
-        public float base_speed;
+        public float base_speed = 2900;
         public float target_alt;
         public float command_pitch = 0;
         public float command_roll = 0;
         public float target_pitch;
         public float target_roll;
-        private float period = .02f;
         private float prev_alt_error = 0;
         public float prev_alt_output = 0;
         public float alt_error;
@@ -57,8 +55,16 @@ namespace dji
         public float prev_roll_output = 0;
         public float roll_error;
 
+        void Awake(){
+            FL.HoverDefault = false;
+            BL.HoverDefault = false;
+            FR.HoverDefault = false;
+            BR.HoverDefault = false;
+        }
+
         void FixedUpdate()
         {
+
 
             comPitch = ComAB.transform.rotation.eulerAngles.z;
             comRoll = ComAB.transform.rotation.eulerAngles.x;
@@ -106,9 +112,9 @@ namespace dji
             if (pitch_error < -180f) pitch_error += 360f;
 
             //Pitch Controller Things
-            float k = 30f;
-            float z = .98f;
-            float p = .96f;
+            float k = 30f; //Larger makes faster
+            float z = .98f; //Larger makes mores stable (between 0 and 1)
+            float p = .96f; //Larger makes "more aggressive", faster with more overshoot (between 0 and 1)
 
             var pitch_output = k * pitch_error - k * z * prev_pitch_error + p * prev_pitch_output;
             prev_pitch_error = pitch_error;
@@ -129,7 +135,7 @@ namespace dji
 
             alt_error = target_alt - position.y;
 
-            var alt_output = 6590f * alt_error - 6508f * prev_alt_error + .9058f * prev_alt_output; //digital_controller_output(kP_alt, a_alt, b_alt, period, alt_error, prev_alt_error, prev_alt_output);
+            var alt_output = 6590f * alt_error - 6508f * prev_alt_error + .9058f * prev_alt_output;
 
             prev_alt_error = alt_error;
             prev_alt_output = alt_output;
@@ -140,13 +146,5 @@ namespace dji
             BR.SetRpm(base_speed + alt_output - pitch_output + roll_output);
         }
         
-        
-        float digital_controller_output(float K, float a, float b, float T, float error, float prev_error, float prev_output){
-            float z = Mathf.Pow(2.72f, -a*T);
-            float p = Mathf.Pow(2.72f, -b*T);
-            float k_d = K * a / b * (1 - p) / (1 - z);
-            float u = k_d * error - k_d * z * prev_error + p * prev_output;
-            return u;
-        }
     }
 }
