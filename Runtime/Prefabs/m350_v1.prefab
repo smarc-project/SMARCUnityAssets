@@ -333,8 +333,8 @@ MonoBehaviour:
   BR: {fileID: 1453933997702307484}
   position: {x: 0, y: 0, z: 0}
   FLUVel: {x: 0, y: 0, z: 0}
-  base_speed: 0
-  target_alt: 0
+  base_speed: 2900
+  target_alt: 10
   command_pitch: 0
   command_roll: 0
   target_pitch: 0
