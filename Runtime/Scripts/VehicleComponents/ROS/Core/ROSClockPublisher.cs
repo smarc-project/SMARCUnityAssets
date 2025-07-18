@@ -71,7 +71,7 @@ namespace Unity.Robotics.Core
             if (!ShouldPublishMessage) return;
 
             var publishTime = Clock.time;
-            clockMsg.sec = (int)publishTime;
+            clockMsg.sec = (uint)publishTime;
             clockMsg.nanosec = (uint)((publishTime - Math.Floor(publishTime)) * Clock.k_NanoSecondsInSeconds);
             m_LastPublishTimeSeconds = publishTime;
             rosCon.Publish("/clock", clockMsg);

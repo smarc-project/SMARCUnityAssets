@@ -17,16 +17,15 @@ namespace VehicleComponents.ROS.Publishers
         TransformTreeNode BaseLinkTreeNode;
         string prefix;
 
-        
-        [Header("TF Tree")]
-        public string BaseLinkName = "base_link";
+
+        [Header("TF Tree")] public string BaseLinkName = "base_link";
         GameObject BaseLinkGO;
         GameObject OdomLinkGO;
 
         public float Frequency = 10f;
 
-        
-        float period => 1.0f/Frequency;
+
+        float period => 1.0f / Frequency;
         double lastUpdate;
 
         TFMessageMsg finalMsg;
@@ -52,28 +51,29 @@ namespace VehicleComponents.ROS.Publishers
                 Debug.LogWarning($"[{transform.name}] TF Publisher transform (probably the root robot object: {transform.name}) is not identity, this will cause issues with the TF tree! Resetting to identity.");
                 transform.rotation = Quaternion.identity;
             }
-            
         }
 
         protected override void StartROS()
         {
             OdomLinkGO = Utils.FindParentWithTag(gameObject, "robot", true);
-            if(OdomLinkGO == null)
+            if (OdomLinkGO == null)
             {
                 Debug.LogError($"No #robot tagged parent found for {gameObject.name}! Disabling.");
                 enabled = false;
             }
+
             prefix = OdomLinkGO.name;
 
             // we need map(ENU) -> odom(ENU) -> base_link(ENU) -> children(FLU)
 
             BaseLinkGO = Utils.FindDeepChildWithName(OdomLinkGO, BaseLinkName);
-            if(BaseLinkGO == null)
+            if (BaseLinkGO == null)
             {
                 Debug.LogError($"No {BaseLinkName} found under {OdomLinkGO.name}! Disabling.");
                 enabled = false;
                 return;
             }
+
             BaseLinkTreeNode = new TransformTreeNode(BaseLinkGO);
 
 
@@ -82,7 +82,6 @@ namespace VehicleComponents.ROS.Publishers
                 rosCon.RegisterPublisher<TFMessageMsg>(topic);
                 registered = true;
             }
-            
         }
 
         static void PopulateTFList(List<TransformStampedMsg> tfList, TransformTreeNode tfNode)
@@ -114,7 +113,7 @@ namespace VehicleComponents.ROS.Publishers
                 translation = OdomLinkGO.transform.To<ENU>().translation,
             };
             var mapToOdom = new TransformStampedMsg(
-                new HeaderMsg(new TimeStamp(Clock.time), $"map_gt"),
+                new HeaderMsg(0, new TimeStamp(Clock.time), $"map_gt"),
                 $"{prefix}/odom",
                 mapToOdomMsg);
             tfMessageList.Add(mapToOdom);
@@ -135,7 +134,7 @@ namespace VehicleComponents.ROS.Publishers
                     rosOdomOri.w)
             };
             var odomToBaseLink = new TransformStampedMsg(
-                new HeaderMsg(new TimeStamp(Clock.time), $"{prefix}/odom"),
+                new HeaderMsg(0, new TimeStamp(Clock.time), $"{prefix}/odom"),
                 $"{prefix}/{BaseLinkTreeNode.name}",
                 odomToBaseLinkMsg);
             tfMessageList.Add(odomToBaseLink);
@@ -147,7 +146,8 @@ namespace VehicleComponents.ROS.Publishers
             try
             {
                 PopulateTFList(tfMessageList, BaseLinkTreeNode);
-            }catch(MissingReferenceException)
+            }
+            catch (MissingReferenceException)
             {
                 // If the object tree was modified after the TF Tree was built
                 // such as deleting a child object, this will throw an exception
@@ -156,7 +156,8 @@ namespace VehicleComponents.ROS.Publishers
                 BaseLinkTreeNode = new TransformTreeNode(BaseLinkGO);
                 return;
             }
-            foreach(TransformStampedMsg msg in tfMessageList)
+
+            foreach (TransformStampedMsg msg in tfMessageList)
             {
                 msg.header.frame_id = $"{prefix}/{msg.header.frame_id}";
                 msg.child_frame_id = $"{prefix}/{msg.child_frame_id}";
