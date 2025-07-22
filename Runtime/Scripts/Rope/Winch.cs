@@ -125,7 +125,7 @@ namespace Rope
 
             // simple speed control   
             var lenDiff = TargetLength - CurrentLength;
-            if(Mathf.Abs(lenDiff) > 0.005)   // > 0.025
+            if(Mathf.Abs(lenDiff) > 0.015)   // > 0.025  too small will cause the winch control jitering
             {
                 CurrentRopeSpeed = lenDiff > 0 ? WinchSpeed : -WinchSpeed;
             }
