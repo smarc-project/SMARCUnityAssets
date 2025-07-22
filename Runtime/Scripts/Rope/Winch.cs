@@ -30,7 +30,11 @@ namespace Rope
 
         ROSConnection ros;
 
-        
+        string winchFeedbackTopic = "/winch_control_unity";
+        float CurrentRopeSpeedFeedback;
+        float CurrentLengthFeedback;
+        float TargetLengthFeedback;
+
         void WinchControlTestCallback(StdMessages.Float32MultiArrayMsg msg)
         {
             if (msg.data.Length >= 2)
@@ -80,19 +84,38 @@ namespace Rope
             Debug.Log("Subscribing to /winch_control_test");
             ros.Subscribe<StdMessages.Float32MultiArrayMsg>("/winch_control_test", WinchControlTestCallback);
 
-
-            if(loadBody == null) loadBody = new MixedBody(LoadAB, LoadRB);
+            // Register publisher
+            ros.RegisterPublisher<StdMessages.Float32MultiArrayMsg>(winchFeedbackTopic);
+            
+            if (loadBody == null) loadBody = new MixedBody(LoadAB, LoadRB);
         }
 
         void Update()
         {
-            if(!setup) return;
+            if (!setup) return;
             ActualDistance = Vector3.Distance(loadBody.position, transform.position);
             bool ropeSlack = ActualDistance < CurrentLength;
             lineRenderer.SetPosition(0, transform.position);
             lineRenderer.SetPosition(1, loadBody.position);
             lineRenderer.startColor = ropeSlack ? Color.green : Color.red;
             lineRenderer.endColor = lineRenderer.startColor;
+
+
+            // Update feedback values
+            CurrentRopeSpeedFeedback = CurrentRopeSpeed;
+            TargetLengthFeedback = TargetLength;
+            CurrentLengthFeedback = CurrentLength;
+            
+            PublishWinchFeedback();
+
+        }
+
+
+        void PublishWinchFeedback()
+        {
+            StdMessages.Float32MultiArrayMsg feedbackMsg = new StdMessages.Float32MultiArrayMsg();
+            feedbackMsg.data = new float[] { CurrentRopeSpeedFeedback, TargetLengthFeedback, CurrentLengthFeedback };
+            ros.Publish(winchFeedbackTopic, feedbackMsg);
         }
 
         void FixedUpdate()
@@ -100,9 +123,9 @@ namespace Rope
             if(!setup) return;
             
 
-            // simple speed control
+            // simple speed control   
             var lenDiff = TargetLength - CurrentLength;
-            if(Mathf.Abs(lenDiff) > 0.025)
+            if(Mathf.Abs(lenDiff) > 0.005)   // > 0.025
             {
                 CurrentRopeSpeed = lenDiff > 0 ? WinchSpeed : -WinchSpeed;
             }
