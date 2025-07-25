@@ -1,5 +1,5 @@
 {
-    "name": "SMARCScripts",
+    "name": "SMARC.Main",
     "rootNamespace": "",
     "references": [
         "SMARCROS",
