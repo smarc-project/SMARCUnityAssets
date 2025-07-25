@@ -68,7 +68,7 @@ namespace VehicleComponents.ROS.Publishers
             mapgt_in_utm.translation.y = originNorthing;
 
             utmToMapMsg = new TransformStampedMsg(
-                new HeaderMsg(0, new TimeStamp(Clock.time), "utm"), //header
+                new HeaderMsg(new TimeStamp(Clock.time), "utm"), //header
                 "map_gt", //child frame_id
                 mapgt_in_utm
             );
@@ -77,7 +77,7 @@ namespace VehicleComponents.ROS.Publishers
             // that do not care about actual global location...
             utmZBToUtmMsg = new TransformStampedMsg
             (
-                new HeaderMsg(0, new TimeStamp(Clock.time), utm_zone_band), //header
+                new HeaderMsg(new TimeStamp(Clock.time), utm_zone_band), //header
                 "utm", //child frame_id
                 new TransformMsg() // 0-transform
             );
