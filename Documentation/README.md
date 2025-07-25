@@ -1398,6 +1398,10 @@ The GUI can be used to:
 
 # Developer Environment Setup
 
+## Configuring HDRP
+
+See the [HDRP sub-assembly readme](../Runtime/HDRP/README.md)
+
 ## CSharp SDK and LSP Setup
 Unity's default C# dotnet package does not come with an SDK. This can impede text editors ability to properly refactor code and provide reference searching and other tasks. Basically it will slow you down.
 
