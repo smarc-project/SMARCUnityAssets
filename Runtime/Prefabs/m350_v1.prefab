@@ -331,24 +331,27 @@ MonoBehaviour:
   FR: {fileID: 8211211513727453642}
   BL: {fileID: 8341314688662995929}
   BR: {fileID: 1453933997702307484}
+  comPitch: 0
+  comRoll: 0
+  comYaw: 0
   position: {x: 0, y: 0, z: 0}
   FLUVel: {x: 0, y: 0, z: 0}
   base_speed: 2900
   target_alt: 10
   command_pitch: 0
   command_roll: 0
+  command_yaw: -90
   target_pitch: 0
   target_roll: 0
-  prev_alt_output: 0
-  alt_error: 0
-  prev_pitch_output: 0
-  pitch_error: 0
-  prev_vel_error: {x: 0, y: 0, z: 0}
-  prev_vel_output: {x: 0, y: 0, z: 0}
-  vel_output: {x: 0, y: 0, z: 0}
-  vel_error: {x: 0, y: 0, z: 0}
-  prev_roll_output: 0
-  roll_error: 0
+  target_yaw: 0
+  vel_k_left: 30
+  vel_z_left: 0
+  vel_p_left: 0
+  yaw_error: 0
+  yaw_output: 0
+  counter: 0
+  data_path: c:\School\UnityLogger.csv
+  takeoff_service_name: /m350_v1/wrapper/psdk_ros2/takeoff
 --- !u!114 &4961902520350068583
 MonoBehaviour:
   m_ObjectHideFlags: 0
