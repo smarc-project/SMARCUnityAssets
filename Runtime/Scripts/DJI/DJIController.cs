@@ -42,9 +42,12 @@ namespace dji
         public float target_pitch;
         public float target_roll;
         public float target_yaw;
-        private float prev_alt_error = 0;
-        private float prev_alt_output = 0;
-        private float alt_error;
+        private float prev_alt_error_pos = 0;
+        private float prev_alt_output_pos = 0;
+        private float alt_error_pos;
+        public float prev_alt_error_vel = 0;
+        public float prev_alt_output_vel = 0;
+        private float alt_error_vel;
         private float prev_pitch_error = 0;
         private float prev_pitch_output = 0;
         private float pitch_error;
@@ -78,7 +81,7 @@ namespace dji
         public string data_path = @"c:\School\UnityLogger.csv";
 
         public string takeoff_service_name = "/m350_v1/wrapper/psdk_ros2/takeoff";
-
+        public string robot_name = "M350/";
         void Awake(){
             FL.HoverDefault = false;
             BL.HoverDefault = false;
@@ -105,11 +108,11 @@ namespace dji
                 }
             }
             ROSConnection ros = ROSConnection.GetOrCreateInstance();
-            ros.Subscribe<Float32Msg>("m350_v1/sim/target_alt", _target_alt_sub_callback); //TODO: Make variable
-            ros.Subscribe<Vector3StampedMsg>("m350_v1/sim/joy", _joy_sub_callback); //TODO: Make variable
-            ros.Subscribe<Int8Msg>("m350_v1/sim/control_mode", _control_sub_callback); //TODO: Make variable
+            ros.Subscribe<Float32Msg>(robot_name + "sim/target_alt", _target_alt_sub_callback); //TODO: Make variable
+            ros.Subscribe<Vector3StampedMsg>(robot_name + "sim/joy", _joy_sub_callback); //TODO: Make variable
+            ros.Subscribe<Int8Msg>(robot_name + "sim/control_mode", _control_sub_callback); //TODO: Make variable
         }
-
+ 
         void FixedUpdate()
         {
             counter++;
@@ -208,7 +211,7 @@ namespace dji
             float z_yaw = .98f;
             float p_yaw = .8f;
 
-            yaw_output = k_yaw * yaw_error - k_yaw * z_yaw * prev_alt_error + p_yaw * prev_alt_output ;
+            yaw_output = k_yaw * yaw_error - k_yaw * z_yaw * prev_yaw_error + p_yaw * prev_yaw_output ;
             if(yaw_output > 100){
                 yaw_output = 100;
             }
@@ -217,24 +220,44 @@ namespace dji
             }
             prev_yaw_error = yaw_error;
             prev_yaw_output = yaw_output;
+
+            float alt_output;
             
+            if(controllerType == ControllerType.FLU_Attitude){
+                alt_error_pos = target_alt - position.y;
 
-            alt_error = target_alt - position.y;
+                float k_alt_pos = 2712f;
+                float z_alt_pos = .999263f;
+                float p_alt_pos = .9937f;
 
-            float k_alt = 2712f;
-            float z_alt = .999263f;
-            float p_alt = .9937f;
-
-            var alt_output = k_alt * alt_error - k_alt * z_alt * prev_alt_error + p_alt * prev_alt_output;
-            // var alt_output = 6590f * alt_error - 6508f * prev_alt_error + .9058f * prev_alt_output;
-            if(alt_output > 1000){
-                alt_output = 1000;
+                alt_output = k_alt_pos * alt_error_pos - k_alt_pos * z_alt_pos * prev_alt_error_pos + p_alt_pos * prev_alt_output_pos;
+                if(alt_output > 1000){
+                    alt_output = 1000;
+                }
+                else if(alt_output < -100){
+                    alt_output = -100;
+                }
+                prev_alt_error_pos = alt_error_pos;
+                prev_alt_output_pos = alt_output;
             }
-            else if(alt_output < -100){
-                alt_output = -100;
+
+            else{
+                alt_error_vel = commandVelocityFLU.z - FLUVel.z;
+
+                float k_alt_vel = 3000f;
+                float z_alt_vel = .95f;
+                float p_alt_vel = .9f;
+
+                alt_output = k_alt_vel * alt_error_vel - k_alt_vel * z_alt_vel * prev_alt_error_vel + p_alt_vel * prev_alt_output_vel;
+                if(alt_output > 1000){
+                    alt_output = 1000;
+                }
+                else if(alt_output < -100){
+                    alt_output = -100;
+                }
+                prev_alt_error_vel = alt_error_vel;
+                prev_alt_output_vel = alt_output;
             }
-            prev_alt_error = alt_error;
-            prev_alt_output = alt_output;
 
             var FL_RPM = base_speed + alt_output + pitch_output - roll_output - yaw_output;
             var FR_RPM = base_speed + alt_output + pitch_output + roll_output + yaw_output;
