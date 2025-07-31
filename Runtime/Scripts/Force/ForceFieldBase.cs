@@ -13,7 +13,7 @@ namespace Force
 
         public bool IncludeInVisualizer = true;
 
-        protected Collider col;
+        Collider col;
 
         protected virtual Vector3 Field(Vector3 position)
         {
