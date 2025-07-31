@@ -3,11 +3,13 @@ using Unity.Robotics.Core;
 using Unity.Robotics.ROSTCPConnector.ROSGeometry;
 using UnityEngine;
 using VehicleComponents.Sensors;
+using RosMessageTypes.PSDKInterfaces;
+
 
 
 namespace M350.PSDK_ROS2
 {
-    public class PsdkFusedPos : PsdkBase<Vector3StampedMsg>
+    public class PsdkFusedPos : PsdkBase<PositionFusedMsg>
     {
         Vector3 initialPos;
         protected override void InitPublisher(){
@@ -24,9 +26,9 @@ namespace M350.PSDK_ROS2
             currPos.z = (float)body.transform.position.y;
             currPos = currPos - initialPos;
 
-            ROSMsg.vector.x = currPos.x;
-            ROSMsg.vector.y = currPos.y;
-            ROSMsg.vector.z = currPos.z;
+            ROSMsg.position.x = currPos.x;
+            ROSMsg.position.y = currPos.y;
+            ROSMsg.position.z = currPos.z;
             ROSMsg.header.frame_id = "psdk_map_enu";
             ROSMsg.header.stamp = new TimeStamp(Clock.time);
         }
