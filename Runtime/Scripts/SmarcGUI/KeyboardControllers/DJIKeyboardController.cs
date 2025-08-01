@@ -25,7 +25,7 @@ namespace SmarcGUI.KeyboardControllers
         void Update()
         {
             var forwardValue = forwardAction.ReadValue<float>();
-            var strafeValue = strafeAction.ReadValue<float>();
+            var strafeValue = -strafeAction.ReadValue<float>();
             var verticalValue = verticalAction.ReadValue<float>();
 
             // FLU and ENU are aligned when X is forward and East, so no need to transform the values here.
