@@ -169,6 +169,8 @@ namespace SmarcGUI
 
                 waspBasics = simRobotGO.GetComponentInChildren<WaspBasics>();
                 if (waspBasics != null) waspBasics.PositionInWebMercator = projectionMode == ProjectionModes.WebMercator;
+
+                if (waspBasics == null || !waspBasics.gameObject.activeSelf) ProjectionModeDropdown.gameObject.SetActive(false);
             }
 
             if (infoSource == InfoSource.MQTT)
