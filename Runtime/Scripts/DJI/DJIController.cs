@@ -105,6 +105,7 @@ namespace dji
         }
 
         void Start(){
+            Debug.LogWarning("Currently running DJIController. Make sure Fixed Time Step is set to 0.002 in Project Settings or Controller will not work!");
             if(takeoff_srv == null){
                 takeoff_srv = GetComponentInChildren<PsdkTakeoffService>();
             }

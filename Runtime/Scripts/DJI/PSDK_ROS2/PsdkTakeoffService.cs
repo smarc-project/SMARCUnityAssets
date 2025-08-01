@@ -14,7 +14,6 @@ namespace M350.PSDK_ROS2
     {
         protected string tf_prefix;
 
-        double lastUpdate = 0f;
         bool registered = false;
         public bool takingOff = false;
         public float takeoffAlt = 5; //Actual drone takes off to 2 meters, but thsi ensures that one can have it move around succesfully and gives some error on height

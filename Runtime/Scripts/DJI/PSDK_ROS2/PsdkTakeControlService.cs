@@ -14,7 +14,6 @@ namespace M350.PSDK_ROS2
     {
         protected string tf_prefix;
 
-        double lastUpdate = 0f;
         bool registered = false;
         DJIController controller = null;
 
