@@ -66,6 +66,7 @@ namespace SmarcGUI
         public GameObject LoloGhostPrefab;
         public GameObject PuffinGhostPrefab;
 
+        WaspBasics waspBasics;
 
         Transform worldMarkersTF;
         Transform ghostTF;
@@ -110,6 +111,7 @@ namespace SmarcGUI
             guiState = FindFirstObjectByType<GUIState>();
             mqttClient = FindFirstObjectByType<MQTTClientGUI>();
             missionPlanStore = FindFirstObjectByType<MissionPlanStore>();
+
             worldMarkersTF = GameObject.Find(WorldMarkerName).transform;
             globalReferencePoint = FindFirstObjectByType<GlobalReferencePoint>();
             AddTaskButton.onClick.AddListener(() => OnTaskAdded(TasksAvailableDropdown.value));
@@ -122,13 +124,12 @@ namespace SmarcGUI
             UserInputToggle.gameObject.SetActive(false);
 
             ProjectionModeDropdown.gameObject.SetActive(true);
+            ProjectionModeDropdown.AddOptions(Enum.GetNames(typeof(ProjectionModes)).ToList());
             ProjectionModeDropdown.onValueChanged.AddListener(value =>
             {
                 projectionMode = (ProjectionModes)value;
+                if (waspBasics != null) waspBasics.PositionInWebMercator = projectionMode == ProjectionModes.WebMercator;
             });
-            ProjectionModeDropdown.value = (int)projectionMode;
-            ProjectionModeDropdown.AddOptions(Enum.GetNames(typeof(ProjectionModes)).ToList());
-            ProjectionModeDropdown.RefreshShownValue();
 
             BGImage = GetComponent<Image>();
             originalColor = BGImage.color;
@@ -147,13 +148,27 @@ namespace SmarcGUI
             {
                 HeartRT.gameObject.SetActive(false);
                 UserInputToggle.gameObject.SetActive(true);
-                ProjectionModeDropdown.interactable = false;
-                projectionMode = ProjectionModes.UTM;
-                ProjectionModeDropdown.value = (int)projectionMode;
-                ProjectionModeDropdown.RefreshShownValue();
+
+
                 simRobotGO = GameObject.Find(robotname);
                 simRobotBaseLinkTF = Utils.FindDeepChildWithName(simRobotGO, "base_link").transform;
+
                 keyboardController = simRobotGO.GetComponent<KeyboardControllerBase>();
+
+                PingButton.gameObject.SetActive(false);
+                AbortButton.gameObject.SetActive(false);
+
+                minHeight = rt.sizeDelta.y - AbortButton.GetComponent<RectTransform>().sizeDelta.y;
+                rt.sizeDelta = new Vector2(rt.sizeDelta.x, minHeight);
+
+                projectionMode = ProjectionModes.UTM;
+                ProjectionModeDropdown.onValueChanged.Invoke((int)projectionMode);
+                ProjectionModeDropdown.value = (int)projectionMode;
+                ProjectionModeDropdown.RefreshShownValue();
+
+
+                waspBasics = simRobotGO.GetComponentInChildren<WaspBasics>();
+                if (waspBasics != null) waspBasics.PositionInWebMercator = projectionMode == ProjectionModes.WebMercator;
             }
 
             if (infoSource == InfoSource.MQTT)
@@ -171,6 +186,11 @@ namespace SmarcGUI
                 PingButtonText.text = "Ping!";
                 rt.sizeDelta = new Vector2(rt.sizeDelta.x, minHeight + AvailTasksPanelRT.sizeDelta.y + ExecTasksPanelRT.sizeDelta.y);
                 HeartRT.gameObject.SetActive(true);
+
+                projectionMode = ProjectionModes.WebMercator;
+                ProjectionModeDropdown.onValueChanged.Invoke((int)projectionMode);
+                ProjectionModeDropdown.value = (int)projectionMode;
+                ProjectionModeDropdown.RefreshShownValue();
             }
 
             if (infoSource != InfoSource.SIM && worldMarkersTF != null)
