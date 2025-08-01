@@ -5,12 +5,12 @@ using System.Collections.Generic;
 using System.Text;
 using Unity.Robotics.ROSTCPConnector.MessageGeneration;
 
-namespace RosMessageTypes.PSDKInterfaces
+namespace RosMessageTypes.PsdkInterfaces
 {
     [Serializable]
     public class SDKCtrlInfoMsg : Message
     {
-        public const string k_RosMessageName = "PSDKInterfaces/SDKCtrlInfo";
+        public const string k_RosMessageName = "psdk_interfaces/SDKCtrlInfo";
         public override string RosMessageName => k_RosMessageName;
 
         public Std.HeaderMsg header;

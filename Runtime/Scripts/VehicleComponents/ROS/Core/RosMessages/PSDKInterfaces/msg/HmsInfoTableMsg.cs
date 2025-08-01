@@ -5,12 +5,12 @@ using System.Collections.Generic;
 using System.Text;
 using Unity.Robotics.ROSTCPConnector.MessageGeneration;
 
-namespace RosMessageTypes.PSDKInterfaces
+namespace RosMessageTypes.PsdkInterfaces
 {
     [Serializable]
     public class HmsInfoTableMsg : Message
     {
-        public const string k_RosMessageName = "PSDKInterfaces/HmsInfoTable";
+        public const string k_RosMessageName = "psdk_interfaces/HmsInfoTable";
         public override string RosMessageName => k_RosMessageName;
 
         public uint num_msg;

@@ -3,7 +3,9 @@ using Unity.Robotics.Core;
 using Unity.Robotics.ROSTCPConnector.ROSGeometry;
 using UnityEngine;
 using VehicleComponents.Sensors;
-using RosMessageTypes.PSDKInterfaces;
+using RosMessageTypes.PsdkInterfaces;
+using dji;
+using VehicleComponents.ROS.Publishers;
 
 
 
@@ -11,24 +13,33 @@ namespace M350.PSDK_ROS2
 {
     public class PsdkFusedPos : PsdkBase<PositionFusedMsg>
     {
-        Vector3 initialPos;
+        private DJIController controller = null;
+        private Odometry_Pub odom = null;
+        
         protected override void InitPublisher(){
-            initialPos.x = (float)body.transform.position.z;
-            initialPos.y = (float)body.transform.position.x;
-            initialPos.z = (float)body.transform.position.y;
+            controller = GetComponentInParent<DJIController>(); //Get current control state from the controller itself
+            if(controller !=null){
+                odom = controller.GetComponentInChildren<Odometry_Pub>();
+            }
         }
 
-        protected override void UpdateMessage()
-        {
-            Vector3 currPos;
-            currPos.x = (float)body.transform.position.z;
-            currPos.y = (float)body.transform.position.x;
-            currPos.z = (float)body.transform.position.y;
-            currPos = currPos - initialPos;
+        protected override void UpdateMessage(){
+            Vector3 ROSPosition = Vector3.zero;
 
-            ROSMsg.position.x = currPos.x;
-            ROSMsg.position.y = currPos.y;
-            ROSMsg.position.z = currPos.z;
+            if(controller == null){
+                controller = GetComponentInParent<DJIController>();
+            }
+            if(controller !=null && odom == null){
+                odom = controller.GetComponentInChildren<Odometry_Pub>();
+                
+            }
+            if(odom != null){
+                    ROSPosition = odom.ROSPosition;  
+            }
+
+            ROSMsg.position.x = ROSPosition.x;
+            ROSMsg.position.y = ROSPosition.y;
+            ROSMsg.position.z = ROSPosition.z;
             ROSMsg.header.frame_id = "psdk_map_enu";
             ROSMsg.header.stamp = new TimeStamp(Clock.time);
         }

@@ -5,12 +5,12 @@ using System.Collections.Generic;
 using System.Text;
 using Unity.Robotics.ROSTCPConnector.MessageGeneration;
 
-namespace RosMessageTypes.PSDKInterfaces
+namespace RosMessageTypes.PsdkInterfaces
 {
     [Serializable]
     public class GimbalRotationMsg : Message
     {
-        public const string k_RosMessageName = "PSDKInterfaces/GimbalRotation";
+        public const string k_RosMessageName = "psdk_interfaces/GimbalRotation";
         public override string RosMessageName => k_RosMessageName;
 
         public byte payload_index = 1; //  see enum E_DjiMountPosition in dji_typedef.h

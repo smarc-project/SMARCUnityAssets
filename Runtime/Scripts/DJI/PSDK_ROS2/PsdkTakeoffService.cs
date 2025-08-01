@@ -1,7 +1,8 @@
 using UnityEngine;
 using ROSMessage = Unity.Robotics.ROSTCPConnector.MessageGeneration.Message;
-using RosMessageTypes.PsdkInterfaces;
+using RosMessageTypes.Std;
 using DefaultNamespace;
+using dji;
 
 using VehicleComponents.ROS.Core;
 using Force;
@@ -9,18 +10,19 @@ using Unity.Robotics.Core;
 
 namespace M350.PSDK_ROS2
 {
-    public abstract class PsdkBase<RosMsgType> : ROSBehaviour
-        where RosMsgType: ROSMessage, new()
+    public class PsdkTakeoffService : ROSBehaviour
     {
         protected string tf_prefix;
 
-        [Header("PsdkBase")]
-        public float frequency = 10f;
-        float period => 1.0f / frequency;
         double lastUpdate = 0f;
         bool registered = false;
+        public bool takingOff = false;
+        public float takeoffAlt = 5; //Actual drone takes off to 2 meters, but thsi ensures that one can have it move around succesfully and gives some error on height
+        public float takeoffError = 1f;
+        DJIController controller = null;
 
-        protected RosMsgType ROSMsg;
+
+
         protected MixedBody body;
 
         void Awake()
@@ -56,26 +58,40 @@ namespace M350.PSDK_ROS2
 
         protected override void StartROS()
         {
-            ROSMsg = new RosMsgType();
+            if(controller == null){
+                controller = GetComponentInParent<DJIController>();
+            }
             if (!registered)
             {
-                rosCon.RegisterPublisher<RosMsgType>(topic);
+                rosCon.ImplementService<TriggerRequest, TriggerResponse>(topic, _takeoff_callback);
                 registered = true;
             }
-            InitPublisher();
         }
 
-        protected abstract void UpdateMessage();
-        protected virtual void InitPublisher() { }
+        private TriggerResponse _takeoff_callback(TriggerRequest request){
+            TriggerResponse response = new TriggerResponse();
 
-        void FixedUpdate()
-        {
-            if (Clock.Now - lastUpdate < period) return;
-            lastUpdate = Clock.Now;
-            UpdateMessage();
-            rosCon.Publish(topic, ROSMsg);
+            if(controller == null){
+                controller = GetComponentInParent<DJIController>();
+            }
+
+            if(controller != null){
+                if(controller.controllerType == (dji.ControllerType)0 && controller.position.y < takeoffAlt - takeoffError){
+                    takingOff = true;
+                    controller.target_alt = takeoffAlt;
+                    response.success = true;
+                }
+                else{
+                    response.success = false;
+                    return response;
+                }
+                return response;
+            }
+            else{
+                response.success = false;
+                return response;
+            }
         }
-
 
     }
 }

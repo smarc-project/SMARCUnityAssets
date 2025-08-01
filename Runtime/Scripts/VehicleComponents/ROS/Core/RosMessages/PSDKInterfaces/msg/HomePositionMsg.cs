@@ -5,12 +5,12 @@ using System.Collections.Generic;
 using System.Text;
 using Unity.Robotics.ROSTCPConnector.MessageGeneration;
 
-namespace RosMessageTypes.PSDKInterfaces
+namespace RosMessageTypes.PsdkInterfaces
 {
     [Serializable]
     public class HomePositionMsg : Message
     {
-        public const string k_RosMessageName = "PSDKInterfaces/HomePosition";
+        public const string k_RosMessageName = "psdk_interfaces/HomePosition";
         public override string RosMessageName => k_RosMessageName;
 
         public const byte HOME_POSITION_STATUS_FAILED = 0;

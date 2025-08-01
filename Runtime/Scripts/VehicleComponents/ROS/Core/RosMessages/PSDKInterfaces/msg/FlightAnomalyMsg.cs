@@ -5,12 +5,12 @@ using System.Collections.Generic;
 using System.Text;
 using Unity.Robotics.ROSTCPConnector.MessageGeneration;
 
-namespace RosMessageTypes.PSDKInterfaces
+namespace RosMessageTypes.PsdkInterfaces
 {
     [Serializable]
     public class FlightAnomalyMsg : Message
     {
-        public const string k_RosMessageName = "PSDKInterfaces/FlightAnomaly";
+        public const string k_RosMessageName = "psdk_interfaces/FlightAnomaly";
         public override string RosMessageName => k_RosMessageName;
 
         public Std.HeaderMsg header;

@@ -1,7 +1,8 @@
 using UnityEngine;
 using ROSMessage = Unity.Robotics.ROSTCPConnector.MessageGeneration.Message;
-using RosMessageTypes.PsdkInterfaces;
+using RosMessageTypes.Std;
 using DefaultNamespace;
+using dji;
 
 using VehicleComponents.ROS.Core;
 using Force;
@@ -9,18 +10,14 @@ using Unity.Robotics.Core;
 
 namespace M350.PSDK_ROS2
 {
-    public abstract class PsdkBase<RosMsgType> : ROSBehaviour
-        where RosMsgType: ROSMessage, new()
+    public class PsdkReleaseControlService : ROSBehaviour
     {
         protected string tf_prefix;
 
-        [Header("PsdkBase")]
-        public float frequency = 10f;
-        float period => 1.0f / frequency;
         double lastUpdate = 0f;
         bool registered = false;
-
-        protected RosMsgType ROSMsg;
+        DJIController controller = null;
+        
         protected MixedBody body;
 
         void Awake()
@@ -56,26 +53,33 @@ namespace M350.PSDK_ROS2
 
         protected override void StartROS()
         {
-            ROSMsg = new RosMsgType();
+            if(controller == null){
+                controller = GetComponentInParent<DJIController>();
+            }
             if (!registered)
             {
-                rosCon.RegisterPublisher<RosMsgType>(topic);
+                rosCon.ImplementService<TriggerRequest, TriggerResponse>(topic, _take_control_callback);
                 registered = true;
             }
-            InitPublisher();
         }
 
-        protected abstract void UpdateMessage();
-        protected virtual void InitPublisher() { }
+        private TriggerResponse _take_control_callback(TriggerRequest request){
+            TriggerResponse response = new TriggerResponse();
 
-        void FixedUpdate()
-        {
-            if (Clock.Now - lastUpdate < period) return;
-            lastUpdate = Clock.Now;
-            UpdateMessage();
-            rosCon.Publish(topic, ROSMsg);
+            if(controller == null){
+                controller = GetComponentInParent<DJIController>();
+            }
+            if(controller != null){
+                controller.target_alt = controller.position.y;
+                controller.controllerType = (dji.ControllerType)2; //Set to attitude control
+                response.success = true;
+                return response;
+            }
+            else{
+                response.success = false;
+                return response;
+            }
         }
-
 
     }
 }

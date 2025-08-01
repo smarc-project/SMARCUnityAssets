@@ -5,12 +5,12 @@ using System.Collections.Generic;
 using System.Text;
 using Unity.Robotics.ROSTCPConnector.MessageGeneration;
 
-namespace RosMessageTypes.PSDKInterfaces
+namespace RosMessageTypes.PsdkInterfaces
 {
     [Serializable]
     public class PerceptionCameraParametersMsg : Message
     {
-        public const string k_RosMessageName = "PSDKInterfaces/PerceptionCameraParameters";
+        public const string k_RosMessageName = "psdk_interfaces/PerceptionCameraParameters";
         public override string RosMessageName => k_RosMessageName;
 
         public Std.HeaderMsg header;

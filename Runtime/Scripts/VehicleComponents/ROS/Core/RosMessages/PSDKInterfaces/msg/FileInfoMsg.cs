@@ -5,12 +5,12 @@ using System.Collections.Generic;
 using System.Text;
 using Unity.Robotics.ROSTCPConnector.MessageGeneration;
 
-namespace RosMessageTypes.PSDKInterfaces
+namespace RosMessageTypes.PsdkInterfaces
 {
     [Serializable]
     public class FileInfoMsg : Message
     {
-        public const string k_RosMessageName = "PSDKInterfaces/FileInfo";
+        public const string k_RosMessageName = "psdk_interfaces/FileInfo";
         public override string RosMessageName => k_RosMessageName;
 
         public string name;

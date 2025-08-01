@@ -5,12 +5,12 @@ using System.Collections.Generic;
 using System.Text;
 using Unity.Robotics.ROSTCPConnector.MessageGeneration;
 
-namespace RosMessageTypes.PSDKInterfaces
+namespace RosMessageTypes.PsdkInterfaces
 {
     [Serializable]
     public class PositionFusedMsg : Message
     {
-        public const string k_RosMessageName = "PSDKInterfaces/PositionFused";
+        public const string k_RosMessageName = "psdk_interfaces/PositionFused";
         public override string RosMessageName => k_RosMessageName;
 
         public Std.HeaderMsg header;

@@ -5,12 +5,12 @@ using System.Collections.Generic;
 using System.Text;
 using Unity.Robotics.ROSTCPConnector.MessageGeneration;
 
-namespace RosMessageTypes.PSDKInterfaces
+namespace RosMessageTypes.PsdkInterfaces
 {
     [Serializable]
     public class FlightStatusMsg : Message
     {
-        public const string k_RosMessageName = "PSDKInterfaces/FlightStatus";
+        public const string k_RosMessageName = "psdk_interfaces/FlightStatus";
         public override string RosMessageName => k_RosMessageName;
 
         public const byte FLIGHT_STATUS_STOPED = 0;

@@ -1,26 +1,25 @@
 using UnityEngine;
 using ROSMessage = Unity.Robotics.ROSTCPConnector.MessageGeneration.Message;
-using RosMessageTypes.PsdkInterfaces;
+using RosMessageTypes.Sensor;
 using DefaultNamespace;
 
 using VehicleComponents.ROS.Core;
 using Force;
 using Unity.Robotics.Core;
+using dji;
+
 
 namespace M350.PSDK_ROS2
 {
-    public abstract class PsdkBase<RosMsgType> : ROSBehaviour
-        where RosMsgType: ROSMessage, new()
+    public class PsdkJoySubscriber : ROSBehaviour
     {
         protected string tf_prefix;
+        public float joy_timeout = 1;
+        public float time_since_joy;
 
-        [Header("PsdkBase")]
-        public float frequency = 10f;
-        float period => 1.0f / frequency;
-        double lastUpdate = 0f;
         bool registered = false;
+        DJIController controller = null;
 
-        protected RosMsgType ROSMsg;
         protected MixedBody body;
 
         void Awake()
@@ -54,28 +53,38 @@ namespace M350.PSDK_ROS2
 
         }
 
-        protected override void StartROS()
-        {
-            ROSMsg = new RosMsgType();
+        protected override void StartROS(){
+            if(controller == null){
+                controller = GetComponentInParent<DJIController>();
+            }
+
+            JoyMsg ROSMsg = new JoyMsg();
             if (!registered)
             {
-                rosCon.RegisterPublisher<RosMsgType>(topic);
+                rosCon.Subscribe<JoyMsg>(topic, _joy_sub_callback);
                 registered = true;
             }
-            InitPublisher();
         }
 
-        protected abstract void UpdateMessage();
-        protected virtual void InitPublisher() { }
-
-        void FixedUpdate()
-        {
-            if (Clock.Now - lastUpdate < period) return;
-            lastUpdate = Clock.Now;
-            UpdateMessage();
-            rosCon.Publish(topic, ROSMsg);
+        void _joy_sub_callback(JoyMsg msg){
+            if(controller == null){
+                controller = GetComponentInParent<DJIController>();
+            }
+            if(controller != null){
+                time_since_joy = (float)Clock.time - msg.header.stamp.sec - msg.header.stamp.nanosec / Mathf.Pow(10f,9f);
+                if(time_since_joy  < joy_timeout){
+                    controller.commandVelocityFLU.x = msg.axes[0];
+                    controller.commandVelocityFLU.y = msg.axes[1];
+                    controller.commandVelocityFLU.z = msg.axes[2];
+                }
+                else{
+                    controller.commandVelocityFLU.x = 0;
+                    controller.commandVelocityFLU.y = 0;
+                    controller.commandVelocityFLU.z = 0;
+                }
+            }
+            
         }
-
 
     }
 }

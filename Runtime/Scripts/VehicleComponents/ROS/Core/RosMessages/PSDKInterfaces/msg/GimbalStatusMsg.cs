@@ -5,12 +5,12 @@ using System.Collections.Generic;
 using System.Text;
 using Unity.Robotics.ROSTCPConnector.MessageGeneration;
 
-namespace RosMessageTypes.PSDKInterfaces
+namespace RosMessageTypes.PsdkInterfaces
 {
     [Serializable]
     public class GimbalStatusMsg : Message
     {
-        public const string k_RosMessageName = "PSDKInterfaces/GimbalStatus";
+        public const string k_RosMessageName = "psdk_interfaces/GimbalStatus";
         public override string RosMessageName => k_RosMessageName;
 
         public Std.HeaderMsg header;
