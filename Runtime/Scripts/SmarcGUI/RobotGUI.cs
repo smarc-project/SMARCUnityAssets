@@ -24,6 +24,12 @@ namespace SmarcGUI
         ROS
     }
 
+    public enum ProjectionModes
+    {
+        UTM,
+        WebMercator,
+    }
+
 
     public class RobotGUI : MonoBehaviour, IPointerClickHandler, IPointerExitHandler, IPointerEnterHandler, ICameraLookable
     {
@@ -41,6 +47,7 @@ namespace SmarcGUI
         public Button AddTaskButton;
         public RectTransform AvailTasksPanelRT;
         public Toggle UserInputToggle;
+        public TMP_Dropdown ProjectionModeDropdown;
         public string WorldMarkerName = "WorldMarkers";
         public RectTransform ExecutingTasksScrollContent;
         public RectTransform ExecTasksPanelRT;
@@ -65,22 +72,23 @@ namespace SmarcGUI
         RobotGhost ghost;
         GameObject simRobotGO;
         Transform simRobotBaseLinkTF;
+        ProjectionModes projectionMode = ProjectionModes.WebMercator;
 
 
-        public InfoSource InfoSource{get; private set;}
+        public InfoSource InfoSource { get; private set; }
         WaspDirectExecutionInfoMsg directExecutionInfo;
         List<TaskSpec> tasksAvailable => directExecutionInfo.TasksAvailable;
         public List<string> TasksAvailableNames = new();
         public HashSet<string> TasksExecutingUuids = new();
 
-        public string AgentUuid{get; private set;}
+        public string AgentUuid { get; private set; }
 
         public bool TSTExecInfoReceived = false;
 
         public string RobotName => RobotNameText.text;
         string robotNamespace;
 
-        public bool IsSelected{get; private set;}
+        public bool IsSelected { get; private set; }
         GUIState guiState;
         MQTTClientGUI mqttClient;
         GlobalReferencePoint globalReferencePoint;
@@ -112,6 +120,16 @@ namespace SmarcGUI
             AvailTasksPanelRT.gameObject.SetActive(false);
             ExecTasksPanelRT.gameObject.SetActive(false);
             UserInputToggle.gameObject.SetActive(false);
+
+            ProjectionModeDropdown.gameObject.SetActive(true);
+            ProjectionModeDropdown.onValueChanged.AddListener(value =>
+            {
+                projectionMode = (ProjectionModes)value;
+            });
+            ProjectionModeDropdown.value = (int)projectionMode;
+            ProjectionModeDropdown.AddOptions(Enum.GetNames(typeof(ProjectionModes)).ToList());
+            ProjectionModeDropdown.RefreshShownValue();
+
             BGImage = GetComponent<Image>();
             originalColor = BGImage.color;
         }
@@ -125,23 +143,27 @@ namespace SmarcGUI
             RobotNameText.text = robotname;
             InfoSourceText.text = $"({infoSource})";
 
-            if(infoSource == InfoSource.SIM)
+            if (infoSource == InfoSource.SIM)
             {
                 HeartRT.gameObject.SetActive(false);
                 UserInputToggle.gameObject.SetActive(true);
+                ProjectionModeDropdown.interactable = false;
+                projectionMode = ProjectionModes.UTM;
+                ProjectionModeDropdown.value = (int)projectionMode;
+                ProjectionModeDropdown.RefreshShownValue();
                 simRobotGO = GameObject.Find(robotname);
                 simRobotBaseLinkTF = Utils.FindDeepChildWithName(simRobotGO, "base_link").transform;
                 keyboardController = simRobotGO.GetComponent<KeyboardControllerBase>();
             }
 
-            if(infoSource == InfoSource.MQTT) 
+            if (infoSource == InfoSource.MQTT)
             {
-                mqttClient.SubToTopic(robotNamespace+"tst_execution_info");
-                mqttClient.SubToTopic(robotNamespace+"direct_execution_info");
-                mqttClient.SubToTopic(robotNamespace+"sensor_info");
-                mqttClient.SubToTopic(robotNamespace+"exec/command");
-                mqttClient.SubToTopic(robotNamespace+"exec/response");
-                mqttClient.SubToTopic(robotNamespace+"exec/feedback");
+                mqttClient.SubToTopic(robotNamespace + "tst_execution_info");
+                mqttClient.SubToTopic(robotNamespace + "direct_execution_info");
+                mqttClient.SubToTopic(robotNamespace + "sensor_info");
+                mqttClient.SubToTopic(robotNamespace + "exec/command");
+                mqttClient.SubToTopic(robotNamespace + "exec/response");
+                mqttClient.SubToTopic(robotNamespace + "exec/feedback");
                 AvailTasksPanelRT.gameObject.SetActive(true);
                 ExecTasksPanelRT.gameObject.SetActive(true);
                 PingButton.gameObject.SetActive(true);
@@ -151,12 +173,12 @@ namespace SmarcGUI
                 HeartRT.gameObject.SetActive(true);
             }
 
-            if(infoSource != InfoSource.SIM && worldMarkersTF != null)
+            if (infoSource != InfoSource.SIM && worldMarkersTF != null)
             {
-                if(robotname.Contains("sam", StringComparison.InvariantCultureIgnoreCase)) ghostTF = Instantiate(SAMGhostPrefab).transform;
-                else if(robotname.Contains("evolo", StringComparison.InvariantCultureIgnoreCase)) ghostTF = Instantiate(EvoloGhostPrefab).transform;
-                else if(robotname.Contains("lolo", StringComparison.InvariantCultureIgnoreCase)) ghostTF = Instantiate(LoloGhostPrefab).transform;
-                else if(robotname.Contains("puffin", StringComparison.InvariantCultureIgnoreCase)) ghostTF = Instantiate(PuffinGhostPrefab).transform;
+                if (robotname.Contains("sam", StringComparison.InvariantCultureIgnoreCase)) ghostTF = Instantiate(SAMGhostPrefab).transform;
+                else if (robotname.Contains("evolo", StringComparison.InvariantCultureIgnoreCase)) ghostTF = Instantiate(EvoloGhostPrefab).transform;
+                else if (robotname.Contains("lolo", StringComparison.InvariantCultureIgnoreCase)) ghostTF = Instantiate(LoloGhostPrefab).transform;
+                else if (robotname.Contains("puffin", StringComparison.InvariantCultureIgnoreCase)) ghostTF = Instantiate(PuffinGhostPrefab).transform;
                 else
                 {
                     guiState.Log($"No specific ghost prefab for {robotname}, using generic arrow.");
@@ -175,7 +197,7 @@ namespace SmarcGUI
                 robotOverlay.GetComponent<RectTransform>().anchoredPosition = new Vector2(0, 0);
             }
         }
-        
+
 
         /////////////////////////////////////////
         // MQTT STUFF
@@ -183,13 +205,13 @@ namespace SmarcGUI
         public void SendPing()
         {
             var pingCommand = new PingCommand();
-            switch(InfoSource)
+            switch (InfoSource)
             {
                 case InfoSource.SIM:
                     guiState.Log($"Ping! -> {RobotName} in SIM");
                     break;
                 case InfoSource.MQTT:
-                    mqttClient.Publish(robotNamespace+"exec/command", pingCommand.ToJson());
+                    mqttClient.Publish(robotNamespace + "exec/command", pingCommand.ToJson());
                     break;
                 case InfoSource.ROS:
                     guiState.Log($"Ping! -> {RobotName} in ROS");
@@ -241,21 +263,21 @@ namespace SmarcGUI
         public StartTaskCommand SendStartTaskCommand(Task task)
         {
             var startTaskCommand = new StartTaskCommand(task, RobotName);
-            switch(InfoSource)
+            switch (InfoSource)
             {
                 case InfoSource.SIM:
                     guiState.Log($"Sending StartTaskCommand {task} to {RobotName} in SIM");
                     break;
                 case InfoSource.MQTT:
-                    mqttClient.Publish(robotNamespace+"exec/command", startTaskCommand.ToJson());
+                    mqttClient.Publish(robotNamespace + "exec/command", startTaskCommand.ToJson());
                     break;
                 case InfoSource.ROS:
                     guiState.Log($"Sending StartTaskCommand {task} to {RobotName} in ROS");
                     break;
-            }   
+            }
             return startTaskCommand;
         }
-        
+
         public void SendSignalTSTUnitCommand(string signal)
         {
             var signalTSTCommand = new SignalTSTUnit(signal, RobotName);
@@ -282,7 +304,7 @@ namespace SmarcGUI
                     guiState.Log($"Sending StartTSTCommand {tst} to {RobotName} in SIM");
                     break;
                 case InfoSource.MQTT:
-                    mqttClient.Publish(robotNamespace+"tst/command", startTSTCommand.ToJson());
+                    mqttClient.Publish(robotNamespace + "tst/command", startTSTCommand.ToJson());
                     break;
                 case InfoSource.ROS:
                     guiState.Log($"Sending StartTSTCommand {tst} to {RobotName} in ROS");
@@ -300,9 +322,9 @@ namespace SmarcGUI
 
         public void OnSensorInfoReceived(WaspSensorInfoMsg msg)
         {
-            foreach(string sensorName in msg.SensorDataProvided)
+            foreach (string sensorName in msg.SensorDataProvided)
             {
-                mqttClient.SubToTopic(robotNamespace+"sensor/"+sensorName);
+                mqttClient.SubToTopic(robotNamespace + "sensor/" + sensorName);
             }
         }
 
@@ -326,7 +348,7 @@ namespace SmarcGUI
             HashSet<string> newUuids = new();
             foreach (var task in newTasks)
             {
-                if(!task.ContainsKey("task-uuid"))
+                if (!task.ContainsKey("task-uuid"))
                 {
                     guiState.Log($"Task executing on robot {RobotName} has no task-uuid!");
                     guiState.Log($"Task has keys: {task.Keys.Aggregate((acc, next) => acc + ", " + next)}");
@@ -359,10 +381,10 @@ namespace SmarcGUI
                 var execTaskGUI = execTaskGO.GetComponent<ExecutingTaskGUI>();
                 var taskSpec = msg.TasksAvailable.Find(t => t.Name == taskName);
                 List<string> signals = new();
-                if(taskSpec != null) signals = new List<string>(taskSpec.Signals);
+                if (taskSpec != null) signals = new List<string>(taskSpec.Signals);
                 // abort must be available for tasks that have not been defined in tasks-available by the vehicle
                 // as a fallback, so that the user can always stop a task.
-                if(signals.Count == 0)
+                if (signals.Count == 0)
                 {
                     guiState.Log($"No signals available for robot::task: {RobotName}::{taskName}, adding $abort as a fallback!");
                     signals.Add(WaspSignals.ABORT);
@@ -394,12 +416,12 @@ namespace SmarcGUI
 
         public void OnPositionReceived(GeoPoint pos)
         {
-            if(globalReferencePoint == null) return;
-            if(ghostTF == null) return;
-            if(pos.latitude == 0 && pos.longitude == 0) return;
-            if(ghostTF.gameObject.activeSelf == false) ghostTF.gameObject.SetActive(true);
+            if (globalReferencePoint == null) return;
+            if (ghostTF == null) return;
+            if (pos.latitude == 0 && pos.longitude == 0) return;
+            if (ghostTF.gameObject.activeSelf == false) ghostTF.gameObject.SetActive(true);
 
-            bool useWebMercator = InfoSource != InfoSource.SIM;
+            bool useWebMercator = projectionMode == ProjectionModes.WebMercator;
             var (x, z) = globalReferencePoint.GetUnityXZFromLatLon(pos.latitude, pos.longitude, useWebMercator);
             ghost.UpdatePosition(new Vector3(x, pos.altitude, z));
         }
@@ -426,13 +448,13 @@ namespace SmarcGUI
 
         public void OnSpeedReceived(float speed)
         {
-           ghost.UpdateSpeed(speed);
+            ghost.UpdateSpeed(speed);
         }
 
         public void OnPingCmdReceived(PingCommand pingCmd)
         {
             var pongResponse = new PongResponse(pingCmd);
-            mqttClient.Publish(robotNamespace+"exec/response", pongResponse.ToJson());
+            mqttClient.Publish(robotNamespace + "exec/response", pongResponse.ToJson());
         }
 
         public void OnPongResponseReceived(PongResponse pongResponse)
@@ -451,14 +473,14 @@ namespace SmarcGUI
         /////////////////////////////////////////
         public void OnPointerClick(PointerEventData eventData)
         {
-            if(eventData.button == PointerEventData.InputButton.Right)
+            if (eventData.button == PointerEventData.InputButton.Right)
             {
                 var contextMenu = guiState.CreateContextMenu();
                 contextMenu.SetItem(eventData.position, this);
                 contextMenu.SetItem(eventData.position, (ICameraLookable)this);
             }
 
-            if(eventData.button == PointerEventData.InputButton.Left)
+            if (eventData.button == PointerEventData.InputButton.Left)
             {
                 IsSelected = !IsSelected;
                 OnSelectedChange(true);
@@ -468,43 +490,43 @@ namespace SmarcGUI
         void OnSelectedChange(bool notify = false)
         {
             SelectedHighlightRT?.gameObject.SetActive(IsSelected);
-            if(notify) guiState.OnRobotSelectionChanged(this);
+            if (notify) guiState.OnRobotSelectionChanged(this);
         }
 
         public void Deselect()
         {
             IsSelected = false;
             OnSelectedChange();
-            if(keyboardController != null) keyboardController.Disable();
+            if (keyboardController != null) keyboardController.Disable();
         }
 
         void OnTaskAdded(int index)
         {
             var taskSpec = tasksAvailable[index];
-            if(missionPlanStore.SelectedTSTGUI != null) missionPlanStore.SelectedTSTGUI.OnTaskAdded(taskSpec);
+            if (missionPlanStore.SelectedTSTGUI != null) missionPlanStore.SelectedTSTGUI.OnTaskAdded(taskSpec);
         }
 
         public void OnPointerExit(PointerEventData eventData)
         {
-            if(HighlightRT != null) HighlightRT.gameObject.SetActive(false);
+            if (HighlightRT != null) HighlightRT.gameObject.SetActive(false);
         }
 
         public void OnPointerEnter(PointerEventData eventData)
         {
-            if(HighlightRT != null) HighlightRT.gameObject.SetActive(true);
+            if (HighlightRT != null) HighlightRT.gameObject.SetActive(true);
         }
 
         public Transform GetWorldTarget()
         {
             Transform tf;
-            if(InfoSource != InfoSource.SIM)
+            if (InfoSource != InfoSource.SIM)
             {
-                if(ghostTF == null) return null;
+                if (ghostTF == null) return null;
                 tf = ghostTF;
             }
             else
             {
-                if(simRobotBaseLinkTF == null) return null;
+                if (simRobotBaseLinkTF == null) return null;
                 tf = simRobotBaseLinkTF;
             }
             return tf;
@@ -531,8 +553,8 @@ namespace SmarcGUI
                 TSTExecInfoReceived = false;
                 ghost.Freeze();
             }
-            
-            if(Time.time - lastAbortClick > 2)
+
+            if (Time.time - lastAbortClick > 2)
             {
                 AbortButton.GetComponentInChildren<TMP_Text>().text = "ABORT";
                 abortCount = MaxAbortCount;
@@ -541,8 +563,8 @@ namespace SmarcGUI
 
         public void OnDisconnected()
         {
-            if(ghostTF != null) Destroy(ghostTF.gameObject);
-            if(robotOverlayGO != null) Destroy(robotOverlayGO);
+            if (ghostTF != null) Destroy(ghostTF.gameObject);
+            if (robotOverlayGO != null) Destroy(robotOverlayGO);
             Destroy(gameObject);
         }
 
