@@ -15,7 +15,6 @@ namespace M350.PSDK_ROS2
         protected string tf_prefix;
 
         bool registered = false;
-        public bool takingOff = false;
         public float takeoffAlt = 5; //Actual drone takes off to 2 meters, but thsi ensures that one can have it move around succesfully and gives some error on height
         public float takeoffError = 1f;
         DJIController controller = null;
@@ -69,24 +68,29 @@ namespace M350.PSDK_ROS2
 
         private TriggerResponse _takeoff_callback(TriggerRequest request){
             TriggerResponse response = new TriggerResponse();
-
+            Debug.Log("Take off service running");
             if(controller == null){
                 controller = GetComponentInParent<DJIController>();
+                Debug.Log("Finding Controller Component");
             }
 
             if(controller != null){
+                Debug.Log("Controller not Null");
                 if(controller.controllerType == (dji.ControllerType)0 && controller.position.y < takeoffAlt - takeoffError){
-                    takingOff = true;
+                    controller.isTakingOff = true;
+                    Debug.Log("Setting takingOff to true");
                     controller.target_alt = takeoffAlt;
                     response.success = true;
                 }
-                else{
+                else{ 
+                    Debug.Log("Either controller Type or alt is wrong");
                     response.success = false;
                     return response;
                 }
                 return response;
             }
             else{
+                Debug.Log("Controller Null! Can't Take off");
                 response.success = false;
                 return response;
             }

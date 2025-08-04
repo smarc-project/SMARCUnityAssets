@@ -97,6 +97,8 @@ namespace dji
 
         public string robot_name = "M350/";
 
+        public bool isTakingOff = false;
+
         void Awake(){
             FL.HoverDefault = false;
             BL.HoverDefault = false;
@@ -246,10 +248,10 @@ namespace dji
             }
             prev_yaw_error = yaw_error;
             prev_yaw_output = yaw_output;
-
+        
             //Vertical Controllers
             float alt_output;
-            if(controllerType == ControllerType.FLU_Attitude || (takeoff_srv != null && takeoff_srv.takingOff == true)){
+            if(controllerType == ControllerType.FLU_Attitude || isTakingOff){
                 //Altitude Controller. This is used either in Attitude Control Mode or while taking off.
                 alt_error_pos = target_alt - position.y;
 
@@ -267,9 +269,10 @@ namespace dji
                 prev_alt_error_pos = alt_error_pos;
                 prev_alt_output_pos = alt_output;
 
-                if(takeoff_srv != null && takeoff_srv.takingOff == true){ //Checks if done taking off
+                if(isTakingOff){ //Checks if done taking off
                     if(position.y > takeoff_srv.takeoffAlt - takeoff_srv.takeoffError){
-                        takeoff_srv.takingOff = false;
+                        isTakingOff = false;
+                        Debug.Log("Setting takeoff to false");
                     }
                 }
             }
