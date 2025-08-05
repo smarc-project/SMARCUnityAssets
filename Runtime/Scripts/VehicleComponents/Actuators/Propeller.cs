@@ -23,6 +23,7 @@ namespace VehicleComponents.Actuators
         public float RPMMax = 100000;
         public float RPMMin = 0;
         public float RPMToForceMultiplier = 0.005f;
+        public float RPMReverseMultiplier = 0.6f;
 
         [Header("Drone Propeller")]
         [Tooltip("If set, the propeller will try to hover at a default RPM when started. Assumes the props are all equally distant to the center of mass! If this is not the case, the drone will likely flip around :)")]
@@ -64,8 +65,9 @@ namespace VehicleComponents.Actuators
         {
             if (Mathf.Abs(rpm) < RPMMin) rpm = 0;
 
-            float r = rpm * RPMToForceMultiplier;
-
+            
+            float r = rpm * RPMToForceMultiplier * (rpm < 0 ? RPMReverseMultiplier : 1f);
+            
             Vector3 forceDirection = orientation == PropellerOrientation.ZForward ? parentMixedBody.transform.forward : parentMixedBody.transform.up;
             parentMixedBody.AddForceAtPosition(r * forceDirection,
                                                    parentMixedBody.transform.position,
