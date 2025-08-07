@@ -8,6 +8,7 @@ using RosMessageTypes.Geometry;
 using Unity.Robotics.ROSTCPConnector;
 using Unity.Robotics.ROSTCPConnector.ROSGeometry;
 using M350.PSDK_ROS2;
+using VehicleComponents.Sensors;
 
 namespace dji
 {
@@ -43,7 +44,9 @@ namespace dji
         private float target_pitch;
         private float target_roll;
         private float target_yaw;
-        private PsdkTakeoffService takeoff_srv;
+        private PsdkTakeoffService takeoff_srv = null;
+        private PsdkLandingService landing_srv = null;
+        private LockedDirectionDepthSensor depthSensor = null;
 
         //Used for altitude controller
         private float prev_alt_error_pos = 0;
@@ -98,6 +101,8 @@ namespace dji
         public string robot_name = "M350/";
 
         public bool isTakingOff = false;
+        public bool isLanding = false;
+        public bool isLanded = true;
 
         public float max_controller_output_alt = 2000;
         public float max_controller_output_pitch_roll = 1000;
@@ -132,6 +137,12 @@ namespace dji
             if(takeoff_srv == null){
                 takeoff_srv = GetComponentInChildren<PsdkTakeoffService>();
             }
+            if(landing_srv == null){
+                landing_srv = GetComponentInChildren<PsdkLandingService>();
+            }
+            if(depthSensor == null){
+                depthSensor = GetComponentInChildren<LockedDirectionDepthSensor>();
+            }
             if(log_data){
                 DateTime localDate = DateTime.Now;
                 DateTime utcDate = DateTime.UtcNow;
@@ -158,6 +169,13 @@ namespace dji
             if(!enabled){
                 return;
             }
+            if(isLanded){
+                FL.SetRpm(0);
+                FR.SetRpm(0);
+                BL.SetRpm(0);
+                BR.SetRpm(0);
+                return;
+            }
             counter++;
 
             //Current rotation about the center of mass
@@ -177,12 +195,18 @@ namespace dji
             if(takeoff_srv == null){
                 takeoff_srv = GetComponentInChildren<PsdkTakeoffService>();
             }
+            if(landing_srv == null){
+                landing_srv = GetComponentInChildren<PsdkLandingService>();
+            }
+            if(depthSensor == null){
+                depthSensor = GetComponentInChildren<LockedDirectionDepthSensor>();
+            }
 
             target_yaw = command_yaw; //target and command angles are split so that the same attitude control can be used for velocity. For yaw, these are currently always equivalent.
 
             //Vertical Controllers
             float alt_output;
-            if(controllerType == ControllerType.FLU_Attitude || isTakingOff){
+            if(controllerType == ControllerType.FLU_Attitude || isTakingOff || isLanding){
                 //Altitude Controller. This is used either in Attitude Control Mode or while taking off or landing.
                 alt_error_pos = target_alt - position.y;
 
@@ -204,6 +228,21 @@ namespace dji
                     if(position.y > takeoff_srv.takeoffAlt - takeoff_srv.takeoffError){
                         isTakingOff = false;
                         Debug.Log("Setting takeoff to false");
+                    }
+                }
+
+                if(isLanding){
+                    Debug.Log("Depth: " + depthSensor.depth + " landingError: " + landing_srv.landingError);
+                    if(depthSensor.depth > landing_srv.landingError){
+                        target_alt = position.y - depthSensor.depth;
+                    }
+                    else{
+                        isLanding = false;
+                        Debug.Log("Setting landing to false");
+                        if(!depthSensor.usingWater){
+                            isLanded = true;
+                        }
+                        
                     }
                 }
             }
