@@ -29,6 +29,9 @@ public class ArticulationChainComponent : MonoBehaviour
         {
             bodyPart.ResetArticulationBody();
         }
+
+        root.angularVelocity = Vector3.zero;
+        root.linearVelocity = Vector3.zero;
     }
 
     public class DriveController
@@ -65,6 +68,12 @@ public class ArticulationChainComponent : MonoBehaviour
 
         public void ResetArticulationBody()
         {
+            articulationBody.jointPosition = initialPosition;
+            articulationBody.SetDriveTarget(ArticulationDriveAxis.X, 0);
+            articulationBody.linearVelocity = Vector3.zero;
+            articulationBody.angularVelocity = Vector3.zero;
+
+
             switch (articulationBody.dofCount)
             {
                 case 1:
@@ -80,11 +89,6 @@ public class ArticulationChainComponent : MonoBehaviour
                     articulationBody.jointVelocity = new ArticulationReducedSpace(0f, 0f, 0f);
                     break;
             }
-
-            articulationBody.jointPosition = initialPosition;
-            articulationBody.SetDriveTarget(ArticulationDriveAxis.X, 0);
-            articulationBody.linearVelocity = Vector3.zero;
-            articulationBody.angularVelocity = Vector3.zero;
         }
 
         public void SetDriveStrength(float x)
@@ -145,13 +149,13 @@ public class ArticulationChainComponent : MonoBehaviour
     public List<ArticulationBody> FindArticulationBodies(Transform item)
     {
         var findArticulationBodies = new List<ArticulationBody>();
-        
+
         var comp = item.GetComponent<ArticulationBody>();
         if (comp != null)
         {
             findArticulationBodies.Add(comp);
         }
-        
+
         foreach (Transform child in item)
         {
             findArticulationBodies.AddRange(FindArticulationBodies(child));
