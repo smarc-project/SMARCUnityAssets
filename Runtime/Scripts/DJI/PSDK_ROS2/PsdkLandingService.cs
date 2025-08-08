@@ -7,18 +7,19 @@ using dji;
 using VehicleComponents.ROS.Core;
 using Force;
 using Unity.Robotics.Core;
+using VehicleComponents.Sensors;
 
 namespace M350.PSDK_ROS2
 {
-    public class PsdkTakeoffService : ROSBehaviour
+    public class PsdkLandingService : ROSBehaviour
     {
         protected string tf_prefix;
 
         bool registered = false;
-        public float takeoffAlt = 5; //Actual drone takes off to 2 meters, but thsi ensures that one can have it move around succesfully and gives some error on height
-        public float takeoffError = .1f;
+        public float landingAlt = 3; 
+        public float landingError = .05f;
         DJIController controller = null;
-
+        LockedDirectionDepthSensor depthSensor = null;
 
 
         protected MixedBody body;
@@ -59,44 +60,42 @@ namespace M350.PSDK_ROS2
             if(controller == null){
                 controller = GetComponentInParent<DJIController>();
             }
+            if(controller != null && depthSensor == null){
+                depthSensor = controller.GetComponentInChildren<LockedDirectionDepthSensor>();
+            }
             if (!registered)
             {
-                rosCon.ImplementService<TriggerRequest, TriggerResponse>(topic, _takeoff_callback);
+                rosCon.ImplementService<TriggerRequest, TriggerResponse>(topic, _landing_callback);
                 registered = true;
             }
         }
 
-        private TriggerResponse _takeoff_callback(TriggerRequest request){
+        private TriggerResponse _landing_callback(TriggerRequest request){
             TriggerResponse response = new TriggerResponse();
-            Debug.Log("Take off service running");
             if(controller == null){
                 controller = GetComponentInParent<DJIController>();
-                Debug.Log("Finding Controller Component");
+            }
+            if(controller != null && depthSensor == null){
+                depthSensor = controller.GetComponentInChildren<LockedDirectionDepthSensor>();
             }
 
-            if(controller != null){
-                Debug.Log("Controller not Null");
-                if(controller.controllerType == (dji.ControllerType)0 && controller.position.y < takeoffAlt - takeoffError){
-                    controller.isTakingOff = true;
-                    controller.isLanding = false;
-                    controller.isLanded = false;
-                    Debug.Log("Setting takingOff to true");
-                    controller.target_alt = takeoffAlt;
+            if(controller != null && depthSensor != null){
+                if(controller.controllerType == (dji.ControllerType)0){
+                    controller.isTakingOff = false;
+                    controller.isLanding = true;
+                    controller.target_alt = controller.position.y - depthSensor.depth;
                     response.success = true;
                 }
                 else{ 
-                    Debug.Log("Either controller Type or alt is wrong");
                     response.success = false;
                     return response;
                 }
                 return response;
             }
             else{
-                Debug.Log("Controller Null! Can't Take off");
                 response.success = false;
                 return response;
             }
         }
-
     }
 }
