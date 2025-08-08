@@ -52,6 +52,11 @@ namespace VehicleComponents.Actuators
 
         public void FixedUpdate()
         {
+            DoUpdate();
+        }
+
+        public void DoUpdate()
+        {
             mixedBody.mass = 0.300f + _initialMass * GetCurrentValue() / 100; // Piston weight + water weight
             mixedBody.SetDriveTarget(ArticulationDriveAxis.X, Mathf.Lerp(_maximumPos, _minimumPos, percentage / 100));
         }

@@ -63,6 +63,11 @@ namespace VehicleComponents.Actuators
 
         void FixedUpdate()
         {
+            DoUpdate();
+        }
+
+        public void DoUpdate()
+        {
             if (Mathf.Abs(rpm) < RPMMin) rpm = 0;
 
             
@@ -70,8 +75,8 @@ namespace VehicleComponents.Actuators
             
             Vector3 forceDirection = orientation == PropellerOrientation.ZForward ? parentMixedBody.transform.forward : parentMixedBody.transform.up;
             parentMixedBody.AddForceAtPosition(r * forceDirection,
-                                                   parentMixedBody.transform.position,
-                                                   ForceMode.Force);
+                parentMixedBody.transform.position,
+                ForceMode.Force);
 
             // Dont spin the props (which lets physics handle the torques and such) if we are applying manual
             // torque. This is useful for drones or vehicles where numerical things are known

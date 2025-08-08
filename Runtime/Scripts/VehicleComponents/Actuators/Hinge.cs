@@ -24,6 +24,11 @@ namespace VehicleComponents.Actuators
 
         void FixedUpdate()
         {
+            DoUpdate();
+        }
+
+        public void DoUpdate()
+        {
             int direction = reverse? -1 : 1;
             parentMixedBody.SetDriveTarget(ArticulationDriveAxis.X, direction * angle * Mathf.Rad2Deg);
         }

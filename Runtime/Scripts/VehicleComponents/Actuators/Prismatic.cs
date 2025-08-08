@@ -36,6 +36,11 @@ namespace VehicleComponents.Actuators
         
         public void FixedUpdate()
         {
+            DoUpdate();
+        }
+
+        public void DoUpdate()
+        {
             mixedBody.SetDriveTarget(ArticulationDriveAxis.X, Mathf.Lerp(_minimumPos, _maximumPos, percentage / 100));
         }
 
