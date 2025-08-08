@@ -338,9 +338,11 @@ MonoBehaviour:
   comPitch: 0
   comRoll: 0
   comYaw: 0
+  isLanded: 1
   position: {x: 0, y: 0, z: 0}
   FLUVel: {x: 0, y: 0, z: 0}
   base_speed: 3000
+  altitude: 0
   target_alt: 0
   command_pitch: 0
   command_roll: 0
@@ -352,9 +354,9 @@ MonoBehaviour:
   robot_name: M350/
   isTakingOff: 0
   isLanding: 0
-  isLanded: 1
   max_controller_output_alt: 2000
   max_controller_output_pitch_roll: 1000
+  max_ENU_speed: 0.8
 --- !u!114 &4961902520350068583
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2903,6 +2905,7 @@ MonoBehaviour:
   noiseMean: 0
   noiseSigma: 0.1
   maxRaycastDistance: 30
+  usingWater: 0
   sensingDirection: {x: 0, y: -1, z: 0}
 --- !u!114 &2509119667161350990
 MonoBehaviour:
@@ -4548,6 +4551,7 @@ GameObject:
   - component: {fileID: 960551430523908320}
   - component: {fileID: 5549607364984268469}
   - component: {fileID: 8548423156286122105}
+  - component: {fileID: 4911057463750997551}
   m_Layer: 0
   m_Name: PSDKROS
   m_TagString: Untagged
@@ -4953,6 +4957,21 @@ MonoBehaviour:
   topic: wrapper/psdk_ros2/land
   landingAlt: 3
   landingError: 0.05
+--- !u!114 &4911057463750997551
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7389123085629018318}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9533d6186751b884bb2eb4858e814966, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  topic: wrapper/psdk_ros2/flight_control_setpoint_ENUposition_yaw
+  joy_timeout: 1
+  time_since_joy: 0
 --- !u!1 &7417689352982998975
 GameObject:
   m_ObjectHideFlags: 0
