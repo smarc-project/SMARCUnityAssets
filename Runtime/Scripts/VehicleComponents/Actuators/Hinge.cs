@@ -3,10 +3,9 @@ using VehicleComponents.ROS.Core;
 
 namespace VehicleComponents.Actuators
 {
-    public class Hinge: LinkAttachment, IROSPublishable
+    public class Hinge : LinkAttachment, IROSPublishable
     {
-        [Header("Hinge")]
-        public float angle;
+        [Header("Hinge")] public float angle;
         public float AngleMax = 0.2f;
         public bool reverse = false;
 
@@ -24,12 +23,12 @@ namespace VehicleComponents.Actuators
 
         void FixedUpdate()
         {
-            DoUpdate();
+            if (Physics.simulationMode == SimulationMode.FixedUpdate) DoUpdate();
         }
 
         public void DoUpdate()
         {
-            int direction = reverse? -1 : 1;
+            int direction = reverse ? -1 : 1;
             parentMixedBody.SetDriveTarget(ArticulationDriveAxis.X, direction * angle * Mathf.Rad2Deg);
         }
 

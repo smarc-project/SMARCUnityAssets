@@ -52,7 +52,7 @@ namespace VehicleComponents.Actuators
 
         public void FixedUpdate()
         {
-            DoUpdate();
+            if (Physics.simulationMode == SimulationMode.FixedUpdate) DoUpdate();
         }
 
         public void DoUpdate()
