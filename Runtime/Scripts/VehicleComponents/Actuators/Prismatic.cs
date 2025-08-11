@@ -12,7 +12,7 @@ namespace VehicleComponents.Actuators
 
         public void Start()
         {
-            var xDrive = parentMixedBody.xDrive;
+            var xDrive = mixedBody.xDrive;
             _minimumPos = xDrive.upperLimit;
             _maximumPos = xDrive.lowerLimit;
         }
@@ -39,12 +39,17 @@ namespace VehicleComponents.Actuators
 
         public void DoUpdate()
         {
-            mixedBody.SetDriveTarget(ArticulationDriveAxis.X, Mathf.Lerp(_minimumPos, _maximumPos, percentage / 100));
+            mixedBody.SetDriveTarget(ArticulationDriveAxis.X, ComputeTargetValue(percentage));
         }
 
         public bool HasNewData()
         {
             return true;
+        }
+
+        public float ComputeTargetValue(float target)
+        {
+            return Mathf.Lerp(_minimumPos, _maximumPos, target / 100);
         }
     }
 }
