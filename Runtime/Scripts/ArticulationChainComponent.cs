@@ -23,15 +23,18 @@ public class ArticulationChainComponent : MonoBehaviour
     public void Restart(Vector3 position, Quaternion rotation)
     {
         if (DriveControllers == null || root == null) DoAwake();
-        root.TeleportRoot(position, rotation);
 
+        ZeroForces();
+        root.TeleportRoot(position, rotation);
+        ZeroForces();
+    }
+
+    public void ZeroForces()
+    {
         foreach (var bodyPart in DriveControllers.Values)
-        {
+        {   
             bodyPart.ResetArticulationBody();
         }
-
-        root.angularVelocity = Vector3.zero;
-        root.linearVelocity = Vector3.zero;
     }
 
     public class DriveController
@@ -68,27 +71,26 @@ public class ArticulationChainComponent : MonoBehaviour
 
         public void ResetArticulationBody()
         {
+            switch (articulationBody.dofCount)
+            {
+                case 1:
+                    articulationBody.jointVelocity = new ArticulationReducedSpace(0f);
+                    articulationBody.jointForce = new ArticulationReducedSpace(0f);
+                    break;
+                case 2:
+                    articulationBody.jointVelocity = new ArticulationReducedSpace(0f, 0f);
+                    articulationBody.jointForce = new ArticulationReducedSpace(0f, 0f);
+                    break;
+                case 3:
+                    articulationBody.jointVelocity = new ArticulationReducedSpace(0f, 0f, 0f);
+                    articulationBody.jointForce = new ArticulationReducedSpace(0f, 0f, 0f);
+                    break;
+            }
+            
             articulationBody.jointPosition = initialPosition;
             articulationBody.SetDriveTarget(ArticulationDriveAxis.X, 0);
             articulationBody.linearVelocity = Vector3.zero;
             articulationBody.angularVelocity = Vector3.zero;
-
-
-            switch (articulationBody.dofCount)
-            {
-                case 1:
-                    articulationBody.jointForce = new ArticulationReducedSpace(0f);
-                    articulationBody.jointVelocity = new ArticulationReducedSpace(0f);
-                    break;
-                case 2:
-                    articulationBody.jointForce = new ArticulationReducedSpace(0f, 0f);
-                    articulationBody.jointVelocity = new ArticulationReducedSpace(0f, 0f);
-                    break;
-                case 3:
-                    articulationBody.jointForce = new ArticulationReducedSpace(0f, 0f, 0f);
-                    articulationBody.jointVelocity = new ArticulationReducedSpace(0f, 0f, 0f);
-                    break;
-            }
         }
 
         public void SetDriveStrength(float x)
@@ -143,6 +145,7 @@ public class ArticulationChainComponent : MonoBehaviour
 
     public ArticulationBody GetRoot()
     {
+        if(root == null) DoAwake();
         return root;
     }
 

@@ -10,9 +10,10 @@ namespace VehicleComponents.Actuators
         private float _maximumPos;
         private float _minimumPos;
 
-        public void Start()
+        public new void Awake()
         {
-            var xDrive = mixedBody.xDrive;
+            base.Awake();
+            var xDrive = GetMixedBody().xDrive;
             _minimumPos = xDrive.upperLimit;
             _maximumPos = xDrive.lowerLimit;
         }

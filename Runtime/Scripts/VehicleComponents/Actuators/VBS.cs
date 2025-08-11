@@ -19,8 +19,9 @@ namespace VehicleComponents.Actuators
         private float _maximumPos;
         private float _minimumPos;
 
-        public void Start()
+        public new void Awake()
         {
+            base.Awake();
             //TODO: VBS Starts at 5% in the real world.
             var xDrive = parentMixedBody.xDrive;
             //   _initialMass = parentArticulationBody.mass;
@@ -56,8 +57,6 @@ namespace VehicleComponents.Actuators
 
         public void DoUpdate()
         {
-            if (_initialMass == 0 || _maximumPos == 0 || _minimumPos == 0) Start();
-            
             mixedBody.mass = 0.300f + _initialMass * GetCurrentValue() / 100; // Piston weight + water weight
             var computeTargetValue = ComputeTargetValue(percentage);
             mixedBody.SetDriveTarget(ArticulationDriveAxis.X, computeTargetValue);
