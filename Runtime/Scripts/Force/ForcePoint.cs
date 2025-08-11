@@ -93,7 +93,6 @@ namespace Force
 
         public void Awake()
         {
-            Debug.Log("ForcePoint Awake");
             body = new MixedBody(ConnectedArticulationBody, ConnectedRigidbody);
 
             if (!body.isValid)
