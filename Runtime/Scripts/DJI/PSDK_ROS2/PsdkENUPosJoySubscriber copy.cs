@@ -1,25 +1,24 @@
 using UnityEngine;
 using ROSMessage = Unity.Robotics.ROSTCPConnector.MessageGeneration.Message;
-using RosMessageTypes.Std;
+using RosMessageTypes.Sensor;
 using DefaultNamespace;
-using dji;
 
 using VehicleComponents.ROS.Core;
 using Force;
 using Unity.Robotics.Core;
+using dji;
+
 
 namespace M350.PSDK_ROS2
 {
-    public class PsdkTakeoffService : ROSBehaviour
+    public class PsdkENUPosJoySubscriber : ROSBehaviour
     {
         protected string tf_prefix;
+        public float joy_timeout = 1;
+        public float time_since_joy;
 
         bool registered = false;
-        public float takeoffAlt = 5; //Actual drone takes off to 2 meters, but thsi ensures that one can have it move around succesfully and gives some error on height
-        public float takeoffError = .1f;
         DJIController controller = null;
-
-
 
         protected MixedBody body;
 
@@ -54,48 +53,38 @@ namespace M350.PSDK_ROS2
 
         }
 
-        protected override void StartROS()
-        {
+        protected override void StartROS(){
             if(controller == null){
                 controller = GetComponentInParent<DJIController>();
             }
+
+            JoyMsg ROSMsg = new JoyMsg();
             if (!registered)
             {
-                rosCon.ImplementService<TriggerRequest, TriggerResponse>(topic, _takeoff_callback);
+                rosCon.Subscribe<JoyMsg>(topic, _ENU_pos_joy_sub_callback);
                 registered = true;
             }
         }
 
-        private TriggerResponse _takeoff_callback(TriggerRequest request){
-            TriggerResponse response = new TriggerResponse();
-            Debug.Log("Take off service running");
+        void _ENU_pos_joy_sub_callback(JoyMsg msg){
             if(controller == null){
                 controller = GetComponentInParent<DJIController>();
-                Debug.Log("Finding Controller Component");
             }
-
             if(controller != null){
-                Debug.Log("Controller not Null");
-                if(controller.controllerType == (dji.ControllerType)0 && controller.position.y < takeoffAlt - takeoffError){
-                    controller.isTakingOff = true;
-                    controller.isLanding = false;
-                    controller.isLanded = false;
-                    Debug.Log("Setting takingOff to true");
-                    controller.target_alt = takeoffAlt;
-                    response.success = true;
+                time_since_joy = (float)Clock.time - msg.header.stamp.sec - msg.header.stamp.nanosec / Mathf.Pow(10f,9f);
+                controller.controllerType = (ControllerType)1; //Position Control
+                if(time_since_joy  < joy_timeout){
+                    controller.commandPositionENU.x = msg.axes[0];
+                    controller.commandPositionENU.y = msg.axes[1];
+                    controller.commandPositionENU.z = msg.axes[2];
                 }
-                else{ 
-                    Debug.Log("Either controller Type or alt is wrong");
-                    response.success = false;
-                    return response;
+                else{
+                    controller.commandPositionENU.x = 0;
+                    controller.commandPositionENU.y = 0;
+                    controller.commandVelocityFLU.z = 0;
                 }
-                return response;
             }
-            else{
-                Debug.Log("Controller Null! Can't Take off");
-                response.success = false;
-                return response;
-            }
+            
         }
 
     }

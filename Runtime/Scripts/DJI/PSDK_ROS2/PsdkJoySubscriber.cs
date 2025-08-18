@@ -72,6 +72,7 @@ namespace M350.PSDK_ROS2
             }
             if(controller != null){
                 time_since_joy = (float)Clock.time - msg.header.stamp.sec - msg.header.stamp.nanosec / Mathf.Pow(10f,9f);
+                controller.controllerType = (ControllerType) 0; //Velocity Control
                 if(time_since_joy  < joy_timeout){
                     controller.commandVelocityFLU.x = msg.axes[0];
                     controller.commandVelocityFLU.y = msg.axes[1];

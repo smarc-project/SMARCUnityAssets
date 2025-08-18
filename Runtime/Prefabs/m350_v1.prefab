@@ -60,8 +60,8 @@ ArticulationBody:
   m_Enabled: 1
   serializedVersion: 5
   m_Mass: 0.23
-  m_ParentAnchorPosition: {x: -0.030432718, y: -0.3531412, z: -0.003688395}
-  m_ParentAnchorRotation: {x: -0.010228083, y: -0.49275577, z: -0.8693148, w: 0.037142128}
+  m_ParentAnchorPosition: {x: -0.030432688, y: -0.35314113, z: -0.003688395}
+  m_ParentAnchorRotation: {x: -0.010227993, y: -0.49275577, z: -0.8693147, w: 0.03714207}
   m_AnchorPosition: {x: 0, y: 0, z: 0}
   m_AnchorRotation: {x: 0, y: 0, z: -0.7071068, w: 0.7071068}
   m_MatchAnchors: 1
@@ -338,9 +338,11 @@ MonoBehaviour:
   comPitch: 0
   comRoll: 0
   comYaw: 0
+  isLanded: 1
   position: {x: 0, y: 0, z: 0}
   FLUVel: {x: 0, y: 0, z: 0}
   base_speed: 3000
+  altitude: 0
   target_alt: 0
   command_pitch: 0
   command_roll: 0
@@ -350,6 +352,11 @@ MonoBehaviour:
   log_data: 0
   data_path: c:\School\UnityLogger.csv
   robot_name: M350/
+  isTakingOff: 0
+  isLanding: 0
+  max_controller_output_alt: 2000
+  max_controller_output_pitch_roll: 1000
+  max_ENU_speed: 0.8
 --- !u!114 &4961902520350068583
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -561,8 +568,8 @@ ArticulationBody:
   m_Enabled: 1
   serializedVersion: 5
   m_Mass: 0.0000001
-  m_ParentAnchorPosition: {x: -0.12274502, y: 0.008614659, z: 0.053058907}
-  m_ParentAnchorRotation: {x: -0.0006517768, y: 0.46277097, z: 0.0012462437, w: 0.886477}
+  m_ParentAnchorPosition: {x: -0.122745, y: 0.008614659, z: 0.0530589}
+  m_ParentAnchorRotation: {x: -0.0006517619, y: 0.46277094, z: 0.0012462139, w: 0.8864769}
   m_AnchorPosition: {x: 0, y: 0, z: 0}
   m_AnchorRotation: {x: 0, y: 0, z: 0.7071068, w: 0.7071068}
   m_MatchAnchors: 1
@@ -734,8 +741,8 @@ ArticulationBody:
   m_Enabled: 1
   serializedVersion: 5
   m_Mass: 0.23
-  m_ParentAnchorPosition: {x: 0.030481186, y: -0.32014212, z: 0.0031810105}
-  m_ParentAnchorRotation: {x: 0.46219873, y: 0.011344507, z: -0.036673695, w: 0.88594544}
+  m_ParentAnchorPosition: {x: 0.030481156, y: -0.32014206, z: 0.0031810254}
+  m_ParentAnchorRotation: {x: 0.46219867, y: 0.0113444775, z: -0.036673725, w: 0.8859453}
   m_AnchorPosition: {x: 0, y: 0, z: 0}
   m_AnchorRotation: {x: 0, y: 0, z: -0.7071068, w: 0.7071068}
   m_MatchAnchors: 1
@@ -1137,8 +1144,8 @@ ArticulationBody:
   m_Enabled: 1
   serializedVersion: 5
   m_Mass: 0.0000001
-  m_ParentAnchorPosition: {x: 0.108315006, y: 0.008616179, z: -0.055416614}
-  m_ParentAnchorRotation: {x: 0.49342704, y: -0.00077429414, z: 0.869786, w: 0.001362592}
+  m_ParentAnchorPosition: {x: 0.108315, y: 0.008616209, z: -0.0554166}
+  m_ParentAnchorRotation: {x: 0.49342704, y: -0.00077427924, z: 0.8697859, w: 0.0013626516}
   m_AnchorPosition: {x: 0, y: 0, z: 0}
   m_AnchorRotation: {x: 0, y: 0, z: 0.7071068, w: 0.7071068}
   m_MatchAnchors: 1
@@ -1920,7 +1927,7 @@ ArticulationBody:
   m_Enabled: 1
   serializedVersion: 5
   m_Mass: 0.0000001
-  m_ParentAnchorPosition: {x: 0.10831502, y: 0.008616805, z: 0.060562216}
+  m_ParentAnchorPosition: {x: 0.108315, y: 0.008616805, z: 0.0605622}
   m_ParentAnchorRotation: {x: -0.49342704, y: 0.00077427924, z: 0.8697859, w: 0.0013626516}
   m_AnchorPosition: {x: 0, y: 0, z: 0}
   m_AnchorRotation: {x: 0, y: 0, z: 0.7071068, w: 0.7071068}
@@ -2091,8 +2098,8 @@ ArticulationBody:
   m_Enabled: 1
   serializedVersion: 5
   m_Mass: 0.0000001
-  m_ParentAnchorPosition: {x: 0.13552403, y: 0.12453601, z: -0.0074214786}
-  m_ParentAnchorRotation: {x: 0, y: 0, z: -0.0000017881393, w: 1.0000002}
+  m_ParentAnchorPosition: {x: 0.135524, y: 0.12453598, z: -0.00742147}
+  m_ParentAnchorRotation: {x: -1.9387046e-25, y: 1.0842002e-19, z: -0.0000018179417, w: 1.0000001}
   m_AnchorPosition: {x: 0, y: 0, z: 0}
   m_AnchorRotation: {x: 0, y: 0, z: 0.7071068, w: 0.7071068}
   m_MatchAnchors: 1
@@ -2330,8 +2337,8 @@ ArticulationBody:
   m_Enabled: 1
   serializedVersion: 5
   m_Mass: 0.0000001
-  m_ParentAnchorPosition: {x: -0.12274502, y: 0.0086147785, z: -0.047913104}
-  m_ParentAnchorRotation: {x: 0.0006517619, y: -0.462771, z: 0.0012462437, w: 0.886477}
+  m_ParentAnchorPosition: {x: -0.122745, y: 0.0086147785, z: -0.0479131}
+  m_ParentAnchorRotation: {x: 0.0006517619, y: -0.46277094, z: 0.0012462139, w: 0.8864769}
   m_AnchorPosition: {x: 0, y: 0, z: 0}
   m_AnchorRotation: {x: 0, y: 0, z: 0.7071068, w: 0.7071068}
   m_MatchAnchors: 1
@@ -2556,8 +2563,8 @@ ArticulationBody:
   m_Enabled: 1
   serializedVersion: 5
   m_Mass: 0.23
-  m_ParentAnchorPosition: {x: -0.030432405, y: -0.35314104, z: 0.0036887676}
-  m_ParentAnchorRotation: {x: 0.010228023, y: 0.49275577, z: -0.86931455, w: 0.037142128}
+  m_ParentAnchorPosition: {x: -0.030432405, y: -0.353141, z: 0.0036887527}
+  m_ParentAnchorRotation: {x: 0.010227993, y: 0.49275577, z: -0.8693147, w: 0.03714207}
   m_AnchorPosition: {x: 0, y: 0, z: 0}
   m_AnchorRotation: {x: 0, y: 0, z: -0.7071068, w: 0.7071068}
   m_MatchAnchors: 1
@@ -2751,8 +2758,8 @@ ArticulationBody:
   m_Enabled: 1
   serializedVersion: 5
   m_Mass: 1.35
-  m_ParentAnchorPosition: {x: -0.13121401, y: 0.07263312, z: -0.017501011}
-  m_ParentAnchorRotation: {x: 0, y: 0, z: 1.0000002, w: -0.0000017881393}
+  m_ParentAnchorPosition: {x: -0.131214, y: 0.07263309, z: -0.017501}
+  m_ParentAnchorRotation: {x: 1.0612503e-12, y: -1.951564e-18, z: 1.0000001, w: -0.0000018179417}
   m_AnchorPosition: {x: 0, y: 0, z: 0}
   m_AnchorRotation: {x: 0, y: 0, z: 0.7071068, w: 0.7071068}
   m_MatchAnchors: 1
@@ -2898,6 +2905,7 @@ MonoBehaviour:
   noiseMean: 0
   noiseSigma: 0.1
   maxRaycastDistance: 30
+  usingWater: 0
   sensingDirection: {x: 0, y: -1, z: 0}
 --- !u!114 &2509119667161350990
 MonoBehaviour:
@@ -3015,8 +3023,8 @@ ArticulationBody:
   m_Enabled: 1
   serializedVersion: 5
   m_Mass: 0.0000001
-  m_ParentAnchorPosition: {x: -0.038592305, y: 0.023305267, z: 0.0025727525}
-  m_ParentAnchorRotation: {x: 0.00000006322028, y: 0.00000006322028, z: -0.7071069, w: -0.7071069}
+  m_ParentAnchorPosition: {x: -0.038592298, y: 0.023305237, z: 0.0025727514}
+  m_ParentAnchorRotation: {x: 0.00000006181724, y: 0.00000006181724, z: -0.7071068, w: -0.7071068}
   m_AnchorPosition: {x: 0, y: 0, z: 0}
   m_AnchorRotation: {x: 0, y: 0, z: 0.7071068, w: 0.7071068}
   m_MatchAnchors: 1
@@ -3733,8 +3741,8 @@ ArticulationBody:
   m_Enabled: 1
   serializedVersion: 5
   m_Mass: 1.35
-  m_ParentAnchorPosition: {x: -0.13121402, y: 0.07263312, z: 0.022646613}
-  m_ParentAnchorRotation: {x: 0, y: 0, z: 1.0000002, w: -0.0000017881393}
+  m_ParentAnchorPosition: {x: -0.131214, y: 0.07263309, z: 0.0226466}
+  m_ParentAnchorRotation: {x: 1.0612503e-12, y: -1.951564e-18, z: 1.0000001, w: -0.0000018179417}
   m_AnchorPosition: {x: 0, y: 0, z: 0}
   m_AnchorRotation: {x: 0, y: 0, z: 0.7071068, w: 0.7071068}
   m_MatchAnchors: 1
@@ -4542,6 +4550,8 @@ GameObject:
   - component: {fileID: 7268725714684582768}
   - component: {fileID: 960551430523908320}
   - component: {fileID: 5549607364984268469}
+  - component: {fileID: 8548423156286122105}
+  - component: {fileID: 4911057463750997551}
   m_Layer: 0
   m_Name: PSDKROS
   m_TagString: Untagged
@@ -4875,7 +4885,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   topic: wrapper/psdk_ros2/takeoff
-  takingOff: 0
   takeoffAlt: 5
   takeoffError: 1
 --- !u!114 &7253901380376042119
@@ -4932,6 +4941,36 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   topic: wrapper/psdk_ros2/flight_control_setpoint_FLUvelocity_yawrate
   joy_timeout: 10
+  time_since_joy: 0
+--- !u!114 &8548423156286122105
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7389123085629018318}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a108cde68091d5a4b9be6350d20a9c17, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  topic: wrapper/psdk_ros2/land
+  landingAlt: 3
+  landingError: 0.05
+--- !u!114 &4911057463750997551
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7389123085629018318}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9533d6186751b884bb2eb4858e814966, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  topic: wrapper/psdk_ros2/flight_control_setpoint_ENUposition_yaw
+  joy_timeout: 1
   time_since_joy: 0
 --- !u!1 &7417689352982998975
 GameObject:
@@ -5039,8 +5078,8 @@ ArticulationBody:
   m_Enabled: 1
   serializedVersion: 5
   m_Mass: 0.0000001
-  m_ParentAnchorPosition: {x: -0.007123789, y: -0.040598094, z: 0.09495621}
-  m_ParentAnchorRotation: {x: -0.15906835, y: 0.15906906, z: 0.6889813, w: 0.6889843}
+  m_ParentAnchorPosition: {x: -0.00712378, y: -0.040598094, z: 0.0949562}
+  m_ParentAnchorRotation: {x: -0.15906836, y: 0.15906905, z: 0.6889813, w: 0.6889843}
   m_AnchorPosition: {x: 0, y: 0, z: 0}
   m_AnchorRotation: {x: 0, y: 0, z: 0.7071068, w: 0.7071068}
   m_MatchAnchors: 1
@@ -5711,8 +5750,8 @@ ArticulationBody:
   m_Enabled: 1
   serializedVersion: 5
   m_Mass: 0.0000001
-  m_ParentAnchorPosition: {x: -0.0071176514, y: -0.0405989, z: -0.08980922}
-  m_ParentAnchorRotation: {x: 0.15906836, y: -0.15906908, z: 0.6889813, w: 0.6889843}
+  m_ParentAnchorPosition: {x: -0.00711765, y: -0.04059893, z: -0.0898092}
+  m_ParentAnchorRotation: {x: 0.15906836, y: -0.15906905, z: 0.6889813, w: 0.6889843}
   m_AnchorPosition: {x: 0, y: 0, z: 0}
   m_AnchorRotation: {x: 0, y: 0, z: 0.7071068, w: 0.7071068}
   m_MatchAnchors: 1
@@ -6255,8 +6294,8 @@ ArticulationBody:
   m_Enabled: 1
   serializedVersion: 5
   m_Mass: 0.23
-  m_ParentAnchorPosition: {x: 0.030481385, y: -0.32014215, z: -0.0031805485}
-  m_ParentAnchorRotation: {x: -0.46219873, y: -0.0113444775, z: -0.036673695, w: 0.88594544}
+  m_ParentAnchorPosition: {x: 0.030481385, y: -0.32014206, z: -0.003180638}
+  m_ParentAnchorRotation: {x: -0.46219867, y: -0.0113444775, z: -0.036673725, w: 0.8859453}
   m_AnchorPosition: {x: 0, y: 0, z: 0}
   m_AnchorRotation: {x: 0, y: 0, z: -0.7071068, w: 0.7071068}
   m_MatchAnchors: 1
