@@ -10,7 +10,7 @@ using ROS.Core;
 namespace ROS.Publishers
 {
     [RequireComponent(typeof(Sonar))]
-    class SonarPointCloud_Pub: ROSPublisher<PointCloud2Msg, Sonar>
+    class SonarPointCloud_Pub: ROSSensorPublisher<PointCloud2Msg, Sonar>
     { 
         protected override void InitPublisher()
         {

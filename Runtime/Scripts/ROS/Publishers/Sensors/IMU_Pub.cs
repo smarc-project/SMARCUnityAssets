@@ -10,7 +10,7 @@ using ROS.Core;
 namespace ROS.Publishers
 {
     [RequireComponent(typeof(SensorIMU))]
-    class IMU_Pub: ROSPublisher<ImuMsg, SensorIMU>
+    class IMU_Pub: ROSSensorPublisher<ImuMsg, SensorIMU>
     { 
         [Tooltip("If false, orientation is in ENU in ROS.")]
         public bool useNED = false;

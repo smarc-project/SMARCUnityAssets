@@ -8,7 +8,7 @@ using ROS.Core;
 namespace ROS.Publishers
 {
     [RequireComponent(typeof(SensorGPS))]
-    class GeoPoint_Pub: ROSPublisher<GeoPointMsg, SensorGPS>
+    class GeoPoint_Pub: ROSSensorPublisher<GeoPointMsg, SensorGPS>
     { 
         void OnValidate()
         {

@@ -8,7 +8,7 @@ using ROS.Core;
 namespace ROS.Publishers
 {
     [RequireComponent(typeof(SensorBattery))]
-    class Battery_Pub: ROSPublisher<BatteryStateMsg, SensorBattery>
+    class Battery_Pub: ROSSensorPublisher<BatteryStateMsg, SensorBattery>
     {
         protected override void InitPublisher()
         {

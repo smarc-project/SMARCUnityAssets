@@ -8,7 +8,7 @@ using ROS.Core;
 namespace ROS.Publishers
 {
     [RequireComponent(typeof(Propeller))]
-    public class PropellerFeedback_Pub: ROSPublisher<Float32Msg, Propeller>
+    public class PropellerFeedback_Pub: ROSSensorPublisher<Float32Msg, Propeller>
     {
         Propeller prop;
         protected override void InitPublisher()

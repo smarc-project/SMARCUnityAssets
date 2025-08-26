@@ -7,7 +7,7 @@ using RosMessageTypes.Std;
 namespace ROS.Publishers
 {
     [RequireComponent(typeof(Hinge))]
-    public class HingeFeedback_Pub: ROSPublisher<Float32Msg, Hinge>
+    public class HingeFeedback_Pub: ROSSensorPublisher<Float32Msg, Hinge>
     {
         Hinge hinge;
         protected override void InitPublisher()

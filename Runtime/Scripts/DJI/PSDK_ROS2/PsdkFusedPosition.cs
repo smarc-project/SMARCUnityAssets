@@ -5,7 +5,7 @@ using UnityEngine;
 using VehicleComponents.Sensors;
 using RosMessageTypes.PsdkInterfaces;
 using dji;
-using VehicleComponents.ROS.Publishers;
+using ROS.Publishers;
 
 
 

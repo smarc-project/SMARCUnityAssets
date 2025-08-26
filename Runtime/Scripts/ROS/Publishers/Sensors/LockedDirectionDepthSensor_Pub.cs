@@ -6,7 +6,7 @@ using ROS.Core;
 namespace ROS.Publishers
 {
     [RequireComponent(typeof(SensorDepth))]
-    class LockedDirectionDepthSensor_Pub : ROSPublisher<Float32Msg, SensorDepth>
+    class LockedDirectionDepthSensor_Pub : ROSSensorPublisher<Float32Msg, SensorDepth>
     { 
 
         protected override void UpdateMessage()

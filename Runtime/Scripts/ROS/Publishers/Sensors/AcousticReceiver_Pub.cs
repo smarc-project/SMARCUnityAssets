@@ -12,7 +12,7 @@ namespace ROS.Publishers
 {
 
     [RequireComponent(typeof(TX))]
-    public class AcousticReceiver_Pub : ROSPublisher<StringStampedMsg, TX>
+    public class AcousticReceiver_Pub : ROSSensorPublisher<StringStampedMsg, TX>
     {
         protected override void UpdateMessage()
         {

@@ -10,7 +10,7 @@ using ROS.Core;
 namespace ROS.Publishers
 {
     [RequireComponent(typeof(SideScanSonar))]
-    class SSS_Pub: ROSPublisher<SidescanMsg, SideScanSonar>
+    class SSS_Pub: ROSSensorPublisher<SidescanMsg, SideScanSonar>
     { 
         protected override void InitPublisher()
         {

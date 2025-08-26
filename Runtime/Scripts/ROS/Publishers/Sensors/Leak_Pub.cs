@@ -8,7 +8,7 @@ using ROS.Core;
 namespace ROS.Publishers
 {
     [RequireComponent(typeof(SensorLeak))]
-    class Leak_Pub: ROSPublisher<BoolMsg, SensorLeak>
+    class Leak_Pub: ROSSensorPublisher<BoolMsg, SensorLeak>
     { 
         protected override void UpdateMessage()
         {

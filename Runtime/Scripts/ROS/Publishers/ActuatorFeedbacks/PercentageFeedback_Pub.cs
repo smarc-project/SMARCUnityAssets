@@ -8,7 +8,7 @@ using ROS.Core;
 namespace ROS.Publishers
 {
     [RequireComponent(typeof(IPercentageActuator))]
-    public class PercentageFeedback_Pub: ROSPublisher<Float32Msg, IPercentageActuator>
+    public class PercentageFeedback_Pub: ROSSensorPublisher<Float32Msg, IPercentageActuator>
     {
         IPercentageActuator act;
         protected override void InitPublisher()

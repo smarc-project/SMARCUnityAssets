@@ -9,7 +9,7 @@ using ROS.Core;
 namespace ROS.Publishers
 {
     [RequireComponent(typeof(SensorPressure))]
-    class DepthPressure_Pub: ROSPublisher<FluidPressureMsg, SensorPressure>
+    class DepthPressure_Pub: ROSSensorPublisher<FluidPressureMsg, SensorPressure>
     { 
         protected override void InitPublisher()
         {

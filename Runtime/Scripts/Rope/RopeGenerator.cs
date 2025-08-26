@@ -1,5 +1,5 @@
 using UnityEngine;
-using VehicleComponents.ROS.Publishers;
+using ROS.Publishers;
 using Utils = DefaultNamespace.Utils;
 
 namespace Rope

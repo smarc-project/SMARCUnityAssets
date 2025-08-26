@@ -10,7 +10,7 @@ using ROS.Core;
 namespace ROS.Publishers
 {
     [RequireComponent(typeof(SensorDVL))]
-    class DVL_Pub: ROSPublisher<DVLMsg, SensorDVL>
+    class DVL_Pub: ROSSensorPublisher<DVLMsg, SensorDVL>
     { 
 
         DVLBeamMsg[] beamMsgs;

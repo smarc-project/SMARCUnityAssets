@@ -3,13 +3,8 @@ using VehicleComponents.Actuators;
 using System;
 using System.IO;
 using System.Globalization;
-using RosMessageTypes.Std;
-using RosMessageTypes.Geometry;
-using Unity.Robotics.ROSTCPConnector;
-using Unity.Robotics.ROSTCPConnector.ROSGeometry;
 using M350.PSDK_ROS2;
 using VehicleComponents.Sensors;
-using VehicleComponents.ROS.Publishers;
 
 
 namespace dji
@@ -122,7 +117,7 @@ namespace dji
             float delta = Time.fixedDeltaTime - 0.002f;
             if (Mathf.Abs(delta) > .0001)
             {
-                if (enabled) Debug.LogError("Disabling DJI Controller. Set fixed time step to .002 s for DJI captain to be functional. Currently: " + Time.fixedDeltaTime);
+                if (gameObject.scene.IsValid() && enabled) Debug.LogError("Disabling DJI Controller. Set fixed time step to .002 s for DJI captain to be functional. Currently: " + Time.fixedDeltaTime);
                 enabled = false;
             }
         }

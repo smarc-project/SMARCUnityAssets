@@ -10,7 +10,7 @@ namespace ROS.Publishers
 {
     [RequireComponent(typeof(CameraImageSensor))]
     [RequireComponent(typeof(Camera))]
-    class CameraInfo_Pub: ROSPublisher<CameraInfoMsg, CameraImageSensor>
+    class CameraInfo_Pub: ROSSensorPublisher<CameraInfoMsg, CameraImageSensor>
     {
         [Header("Camera Info")]
         [Header("Camera distortion model params for plumb_bob")]
