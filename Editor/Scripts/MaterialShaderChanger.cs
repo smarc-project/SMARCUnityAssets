@@ -1,6 +1,7 @@
 ﻿using System.Linq;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.Rendering.HighDefinition;
 
 namespace Editor
 {
@@ -9,7 +10,54 @@ namespace Editor
         private Shader newShader;
         private Shader oldShader;
 
-        [MenuItem("SMaRC/Change All Materials Shader")]
+        [MenuItem("SMaRC/Convert Package Materials to HDRP")]
+        static void ConvertHDRP()
+        {
+            string packagePath = "Packages/com.smarc.assets";
+            string[] guids = AssetDatabase.FindAssets("t:Material", new[] { packagePath });
+
+            foreach (string guid in guids)
+            {
+                string path = AssetDatabase.GUIDToAssetPath(guid);
+                var mat = AssetDatabase.LoadAssetAtPath<Material>(path);
+                var litShader = Shader.Find("HDRP/Lit");
+                
+                if (mat != null && (mat.shader.name =="Universal Render Pipeline/Lit" || mat.shader.name == "Standard"))
+                {
+                    mat.shader = litShader;
+                    EditorUtility.SetDirty(mat);
+                    Debug.Log($"Converted {mat.name} at {path}");
+                }
+                
+            }
+        }
+        
+        [MenuItem("SMaRC/Convert Package Materials to URP")]
+        static void ConvertURP()
+        {
+            string packagePath = "Packages/com.smarc.assets";
+            string[] guids = AssetDatabase.FindAssets("t:Material", new[] { packagePath });
+
+            foreach (string guid in guids)
+            {
+                string path = AssetDatabase.GUIDToAssetPath(guid);
+                var mat = AssetDatabase.LoadAssetAtPath<Material>(path);
+                var litShader = Shader.Find("Universal Render Pipeline/Lit");
+                
+                if (mat != null && (mat.shader.name =="HDRP/Lit" || mat.shader.name == "Standard"))
+                {
+                    mat.shader = litShader;
+                    EditorUtility.SetDirty(mat);
+                    Debug.Log($"Converted {mat.name} at {path}");
+                }
+                
+              
+            }
+        }
+
+        
+        //TODO: WIP
+        //[MenuItem("SMaRC/Change All Materials To Custom Shader")]
         public static void ShowWindow()
         {
             GetWindow<MaterialShaderChanger>("Material Shader Changer");

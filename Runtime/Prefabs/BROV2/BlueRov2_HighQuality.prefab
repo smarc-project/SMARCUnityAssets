@@ -58,6 +58,9 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -141,6 +144,9 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -224,6 +230,9 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -249,6 +258,38 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!1 &1829849352322564396
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 7d1cd0b9a01e8b6449025dc7b7d5809f, type: 3}
+  m_PrefabInstance: {fileID: 2051649616821612403}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2013765483358750872}
+  m_Layer: 0
+  m_Name: 'ImageToStl.com_brov2-heavy-p-guard-x1b (3) (Missing Prefab with guid:
+    7d1cd0b9a01e8b6449025dc7b7d5809f)'
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2013765483358750872
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 7d1cd0b9a01e8b6449025dc7b7d5809f, type: 3}
+  m_PrefabInstance: {fileID: 2051649616821612403}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1829849352322564396}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -1, w: 0}
+  m_LocalPosition: {x: 0.009498596, y: 0.16100001, z: 0.091260016}
+  m_LocalScale: {x: 0.0010002019, y: 0.0010002019, z: 0.0010002019}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 3657380728487459236}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: -180}
 --- !u!1 &1958278940128965290
 GameObject:
   m_ObjectHideFlags: 0
@@ -307,6 +348,9 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -390,6 +434,9 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -473,6 +520,9 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -556,6 +606,9 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -639,6 +692,9 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -664,6 +720,69 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!1 &4407342247277115298
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: f7e40b5978aaea4478a5a2a0b30e75a2, type: 3}
+  m_PrefabInstance: {fileID: 9180116038919173188}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 8713598431452058543}
+  m_Layer: 0
+  m_Name: 'ImageToStl.com_brov2-heavy-p-buoyancy-x1b1 (Missing Prefab with guid:
+    f7e40b5978aaea4478a5a2a0b30e75a2)'
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &8713598431452058543
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: f7e40b5978aaea4478a5a2a0b30e75a2, type: 3}
+  m_PrefabInstance: {fileID: 9180116038919173188}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4407342247277115298}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0.5, y: 0.5, z: 0.5, w: 0.5}
+  m_LocalPosition: {x: -0.63700104, y: 0.532, z: -0.297}
+  m_LocalScale: {x: 0.00107983, y: 0.00107983, z: 0.00107983}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 3657380728487459236}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &4539221753556245488
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 9ebabc9e290766c4d892e3a6c3bbb429, type: 3}
+  m_PrefabInstance: {fileID: 4167448807806663842}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4494444961190484809}
+  m_Layer: 0
+  m_Name: 'ImageToStl.com_brov2-heavy-p-fairing-x1g (Missing Prefab with guid: 9ebabc9e290766c4d892e3a6c3bbb429)'
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4494444961190484809
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 9ebabc9e290766c4d892e3a6c3bbb429, type: 3}
+  m_PrefabInstance: {fileID: 4167448807806663842}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4539221753556245488}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -0.2695999, y: 0.16600001, z: -0.12489998}
+  m_LocalScale: {x: 0.0009939295, y: 0.0009939295, z: 0.0009939295}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 3657380728487459236}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &4562426733314690487
 GameObject:
   m_ObjectHideFlags: 0
@@ -722,6 +841,9 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -747,6 +869,38 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!1 &5097555123512482093
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 9ebabc9e290766c4d892e3a6c3bbb429, type: 3}
+  m_PrefabInstance: {fileID: 2748422584606436958}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2427126538070510005}
+  m_Layer: 0
+  m_Name: 'ImageToStl.com_brov2-heavy-p-fairing-x1g (1) (Missing Prefab with guid:
+    9ebabc9e290766c4d892e3a6c3bbb429)'
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2427126538070510005
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 9ebabc9e290766c4d892e3a6c3bbb429, type: 3}
+  m_PrefabInstance: {fileID: 2748422584606436958}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5097555123512482093}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -0.049001694, y: 0.16600001, z: -0.12489998}
+  m_LocalScale: {x: 0.0009939295, y: 0.0009939295, z: 0.0009939295}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 3657380728487459236}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &5230314434435392759
 GameObject:
   m_ObjectHideFlags: 0
@@ -805,6 +959,9 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -888,6 +1045,9 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -971,6 +1131,9 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -1054,6 +1217,9 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -1137,6 +1303,9 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -1162,6 +1331,38 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!1 &7815836124254189260
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 7d1cd0b9a01e8b6449025dc7b7d5809f, type: 3}
+  m_PrefabInstance: {fileID: 4312671034728090598}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4346842295881493517}
+  m_Layer: 0
+  m_Name: 'ImageToStl.com_brov2-heavy-p-guard-x1b (2) (Missing Prefab with guid:
+    7d1cd0b9a01e8b6449025dc7b7d5809f)'
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4346842295881493517
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 7d1cd0b9a01e8b6449025dc7b7d5809f, type: 3}
+  m_PrefabInstance: {fileID: 4312671034728090598}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7815836124254189260}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -0.32850075, y: 0.15, z: 0.091260016}
+  m_LocalScale: {x: 0.0010002019, y: 0.0010002019, z: 0.0010002019}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 3657380728487459236}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &7833917941474514989
 GameObject:
   m_ObjectHideFlags: 0
@@ -1220,6 +1421,9 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -1303,6 +1507,9 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -1401,11 +1608,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 7d1cd0b9a01e8b6449025dc7b7d5809f, type: 3}
---- !u!4 &2013765483358750872 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 7d1cd0b9a01e8b6449025dc7b7d5809f, type: 3}
-  m_PrefabInstance: {fileID: 2051649616821612403}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &2748422584606436958
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1487,11 +1689,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 9ebabc9e290766c4d892e3a6c3bbb429, type: 3}
---- !u!4 &2427126538070510005 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 9ebabc9e290766c4d892e3a6c3bbb429, type: 3}
-  m_PrefabInstance: {fileID: 2748422584606436958}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &3840190699868249679
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1574,7 +1771,7 @@ PrefabInstance:
       objectReference: {fileID: -87404727030205547, guid: a5b135af3d6867749b789e42d47d3bc1, type: 3}
     - target: {fileID: 919132149155446097, guid: a5b135af3d6867749b789e42d47d3bc1, type: 3}
       propertyPath: m_Name
-      value: BlueRov2 1
+      value: BlueRov2_HighQuality
       objectReference: {fileID: 0}
     - target: {fileID: 1492051000253676761, guid: a5b135af3d6867749b789e42d47d3bc1, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
@@ -1790,11 +1987,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 9ebabc9e290766c4d892e3a6c3bbb429, type: 3}
---- !u!4 &4494444961190484809 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 9ebabc9e290766c4d892e3a6c3bbb429, type: 3}
-  m_PrefabInstance: {fileID: 4167448807806663842}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &4312671034728090598
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1868,11 +2060,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 7d1cd0b9a01e8b6449025dc7b7d5809f, type: 3}
---- !u!4 &4346842295881493517 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 7d1cd0b9a01e8b6449025dc7b7d5809f, type: 3}
-  m_PrefabInstance: {fileID: 4312671034728090598}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &9180116038919173188
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1946,8 +2133,3 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f7e40b5978aaea4478a5a2a0b30e75a2, type: 3}
---- !u!4 &8713598431452058543 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: f7e40b5978aaea4478a5a2a0b30e75a2, type: 3}
-  m_PrefabInstance: {fileID: 9180116038919173188}
-  m_PrefabAsset: {fileID: 0}
