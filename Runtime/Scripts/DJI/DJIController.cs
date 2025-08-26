@@ -119,17 +119,11 @@ namespace dji
         public float max_ENU_speed = .8f;
 
         void OnValidate(){
-            if(Mathf.Abs((float)(Time.fixedDeltaTime - 0.002)) < .0001){
-                enabled = true;
-            }
-            else{
+            float delta = Time.fixedDeltaTime - 0.002f;
+            if (Mathf.Abs(delta) > .0001)
+            {
+                if (enabled) Debug.LogError("Disabling DJI Controller. Set fixed time step to .002 s for DJI captain to be functional. Currently: " + Time.fixedDeltaTime);
                 enabled = false;
-                if(Time.fixedDeltaTime > 0.002){
-                    Debug.LogError("Timestep is too large! Set fixed time step to .002 s for DJI captain to be functional. Currently: " + Time.fixedDeltaTime);
-                }
-                if(Time.fixedDeltaTime < 0.002){
-                    Debug.LogError("Timestep is too small! Set fixed time step to .002 s for DJI captain to be functional or edit DJI captain to downsample to .002s. Currently: " + Time.fixedDeltaTime);
-                }
             }
         }
 
