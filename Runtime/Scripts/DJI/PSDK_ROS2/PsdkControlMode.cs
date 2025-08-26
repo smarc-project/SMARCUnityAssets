@@ -1,16 +1,12 @@
-using RosMessageTypes.Geometry;
-using Unity.Robotics.Core;
-using Unity.Robotics.ROSTCPConnector.ROSGeometry;
-using UnityEngine;
-using VehicleComponents.Sensors;
 using RosMessageTypes.PsdkInterfaces;
 using dji;
+using ROS.Core;
 
 
 
 namespace M350.PSDK_ROS2
 {
-    public class PsdkControlMode : PsdkBase<ControlModeMsg>
+    public class PsdkControlMode : ROSPublisher<ControlModeMsg>
     {
         private DJIController controller = null;
 
@@ -24,10 +20,12 @@ namespace M350.PSDK_ROS2
                 controller = GetComponentInParent<DJIController>();
             }
             if(controller != null){
-                if(controller.controllerType == (dji.ControllerType)2){ //Checks whether it is in attitude control mode.
+                if(controller.controllerType == ControllerType.FLU_Attitude)
+                {
                     ROSMsg.control_auth = 0;
                 }
-                else{
+                else
+                {
                     ROSMsg.control_auth = 1;
                 }
                 ROSMsg.device_mode = 4;

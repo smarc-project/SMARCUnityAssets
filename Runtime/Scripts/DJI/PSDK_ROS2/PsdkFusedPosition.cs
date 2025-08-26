@@ -1,22 +1,21 @@
-using RosMessageTypes.Geometry;
 using Unity.Robotics.Core;
-using Unity.Robotics.ROSTCPConnector.ROSGeometry;
 using UnityEngine;
-using VehicleComponents.Sensors;
 using RosMessageTypes.PsdkInterfaces;
 using dji;
 using ROS.Publishers;
+using ROS.Core;
 
 
 
 namespace M350.PSDK_ROS2
 {
-    public class PsdkFusedPos : PsdkBase<PositionFusedMsg>
+    public class PsdkFusedPos : ROSPublisher<PositionFusedMsg>
     {
         private DJIController controller = null;
         private OdomFromIMU_Pub odom = null;
         
         protected override void InitPublisher(){
+            base.InitPublisher();
             controller = GetComponentInParent<DJIController>(); //Get current control state from the controller itself
             if(controller !=null){
                 odom = controller.GetComponentInChildren<OdomFromIMU_Pub>();

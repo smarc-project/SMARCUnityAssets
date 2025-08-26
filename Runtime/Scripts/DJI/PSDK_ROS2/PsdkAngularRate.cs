@@ -1,3 +1,4 @@
+using ROS.Core;
 using RosMessageTypes.Geometry;
 using Unity.Robotics.Core;
 using Unity.Robotics.ROSTCPConnector.ROSGeometry;
@@ -8,7 +9,7 @@ using VehicleComponents.Sensors;
 namespace M350.PSDK_ROS2
 {
     [RequireComponent(typeof(IMU))]
-    public class PsdkAngularRate : PsdkBase<Vector3StampedMsg>
+    public class PsdkAngularRate : ROSPublisher<Vector3StampedMsg>
     {
         IMU imu;
 

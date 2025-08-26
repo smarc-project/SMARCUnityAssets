@@ -1,15 +1,12 @@
-using RosMessageTypes.Geometry;
 using Unity.Robotics.Core;
-using Unity.Robotics.ROSTCPConnector.ROSGeometry;
-using UnityEngine;
-using VehicleComponents.Sensors;
 using RosMessageTypes.PsdkInterfaces;
+using ROS.Core;
 
 
 
 namespace M350.PSDK_ROS2
 {
-    public class PsdkEscData : PsdkBase<EscDataMsg>
+    public class PsdkEscData : ROSPublisher<EscDataMsg>
     {
         protected override void UpdateMessage() 
         {

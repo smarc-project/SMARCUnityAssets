@@ -2,15 +2,21 @@ using UnityEngine;
 using Unity.Robotics.Core;
 using RosMessageTypes.Sensor;
 using GeoRef;
+using ROS.Core;
+using Force;
 
 
 namespace M350.PSDK_ROS2
 {
-    public class PsdkHomePosition : PsdkBase<NavSatFixMsg>
+    public class PsdkHomePosition : ROSPublisher<NavSatFixMsg>
     {
         GlobalReferencePoint globalReferencePoint;
         Vector3 initialPos;
-        protected override void InitPublisher(){
+
+        MixedBody body;
+
+        protected override void InitPublisher()
+        {
             if (globalReferencePoint == null)
             {
                 globalReferencePoint = FindFirstObjectByType<GlobalReferencePoint>();
@@ -21,11 +27,14 @@ namespace M350.PSDK_ROS2
                     return;
                 }
             }
+            GetMixedBody(out body);
             var (lat, lon) = globalReferencePoint.GetLatLonFromUnityXZ(body.transform.position.x, body.transform.position.z);
             initialPos.x = (float)lat;
             initialPos.y = (float)lon;
             initialPos.z = (float)body.transform.position.y;
         }
+
+        
         protected override void UpdateMessage()
         {
             ROSMsg.latitude = initialPos.x * Mathf.Deg2Rad;;
