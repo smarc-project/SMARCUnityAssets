@@ -3,7 +3,7 @@ using UnityEngine;
 using Unity.Robotics.Core; //Clock
 using Unity.Robotics.ROSTCPConnector;
 using ROSMessage = Unity.Robotics.ROSTCPConnector.MessageGeneration.Message;
-using VehicleComponents.ROS.Core;
+using ROS.Core;
 
 
 namespace VehicleComponents.ROS.Subscribers

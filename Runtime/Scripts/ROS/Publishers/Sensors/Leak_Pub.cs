@@ -2,7 +2,7 @@ using UnityEngine;
 using RosMessageTypes.Std;
 
 using SensorLeak = VehicleComponents.Sensors.Leak;
-using VehicleComponents.ROS.Core;
+using ROS.Core;
 
 
 namespace VehicleComponents.ROS.Publishers

@@ -1,4 +1,4 @@
-namespace VehicleComponents.ROS.Core
+namespace ROS.Core
 {
     public interface IROSPublishable
     {

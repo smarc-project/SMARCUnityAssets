@@ -3,7 +3,7 @@ using RosMessageTypes.Sensor;
 using Unity.Robotics.Core; //Clock
 
 using SensorBattery = VehicleComponents.Sensors.Battery;
-using VehicleComponents.ROS.Core;
+using ROS.Core;
 
 namespace VehicleComponents.ROS.Publishers
 {

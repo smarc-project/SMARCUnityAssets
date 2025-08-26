@@ -1,6 +1,6 @@
 using UnityEngine;
 using Unity.Robotics.Core;
-using VehicleComponents.ROS.Core;
+using ROS.Core;
 using Force;
 using RosMessageTypes.Nav;
 using DefaultNamespace;

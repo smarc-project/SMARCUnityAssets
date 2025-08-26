@@ -1,5 +1,5 @@
 using UnityEngine;
-using VehicleComponents.ROS.Core;
+using ROS.Core;
 using VehicleComponents.Actuators;
 using RosMessageTypes.Std;
 

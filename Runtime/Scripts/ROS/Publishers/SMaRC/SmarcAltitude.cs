@@ -1,6 +1,6 @@
 using UnityEngine;
 using Unity.Robotics.Core;
-using VehicleComponents.ROS.Core;
+using ROS.Core;
 using RosMessageTypes.Std;
 using DefaultNamespace.Water;
 using DefaultNamespace;

@@ -4,7 +4,7 @@ using DefaultNamespace; // ResetArticulationBody() extension
 
 using RosMessageTypes.Geometry;
 using Unity.Robotics.ROSTCPConnector.ROSGeometry; 
-using VehicleComponents.ROS.Core;
+using ROS.Core;
 using RosMessageTypes.Std;
 
 

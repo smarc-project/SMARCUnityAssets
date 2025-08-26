@@ -3,7 +3,7 @@ using UnityEngine;
 using RosMessageTypes.Smarc; // StringStampedMsg
 
 using TX = VehicleComponents.Acoustics.Transceiver;
-using VehicleComponents.ROS.Core;
+using ROS.Core;
 
 namespace VehicleComponents.ROS.Subscribers
 {

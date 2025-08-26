@@ -3,7 +3,7 @@ using Unity.Robotics.ROSTCPConnector;
 using DefaultNamespace;
 
 
-namespace VehicleComponents.ROS.Core
+namespace ROS.Core
 {
     /// <summary>
     /// Base class for all ROS behaviours. This class handles the connection to ROS and the topic name.

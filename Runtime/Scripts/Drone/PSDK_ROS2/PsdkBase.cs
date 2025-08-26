@@ -2,7 +2,7 @@ using UnityEngine;
 using ROSMessage = Unity.Robotics.ROSTCPConnector.MessageGeneration.Message;
 using DefaultNamespace;
 
-using VehicleComponents.ROS.Core;
+using ROS.Core;
 using Force;
 using Unity.Robotics.Core;
 

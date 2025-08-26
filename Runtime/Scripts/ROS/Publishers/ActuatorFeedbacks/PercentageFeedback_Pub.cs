@@ -2,7 +2,7 @@ using UnityEngine;
 using RosMessageTypes.Std;
 
 using IPercentageActuator = VehicleComponents.Actuators.IPercentageActuator;
-using VehicleComponents.ROS.Core;
+using ROS.Core;
 
 
 namespace VehicleComponents.ROS.Publishers

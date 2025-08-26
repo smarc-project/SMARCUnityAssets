@@ -3,7 +3,7 @@ using RosMessageTypes.Sensor;
 using Unity.Robotics.Core; //Clock
 
 using CameraImageSensor = VehicleComponents.Sensors.CameraImage;
-using VehicleComponents.ROS.Core;
+using ROS.Core;
 
 
 namespace VehicleComponents.ROS.Publishers

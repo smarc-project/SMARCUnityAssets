@@ -5,7 +5,7 @@ using Unity.Robotics.Core; //Clock
 using RosMessageTypes.Smarc;
 
 using SideScanSonar = VehicleComponents.Sensors.Sonar;
-using VehicleComponents.ROS.Core;
+using ROS.Core;
 
 
 namespace VehicleComponents.ROS.Publishers

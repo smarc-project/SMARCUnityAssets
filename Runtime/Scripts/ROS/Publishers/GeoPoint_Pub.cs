@@ -2,7 +2,7 @@ using UnityEngine;
 using RosMessageTypes.Geographic;
 
 using SensorGPS = VehicleComponents.Sensors.GPS;
-using VehicleComponents.ROS.Core;
+using ROS.Core;
 
 
 namespace VehicleComponents.ROS.Publishers

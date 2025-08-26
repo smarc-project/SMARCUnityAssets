@@ -4,7 +4,7 @@ using Unity.Robotics.Core; //Clock
 using System; //Bit converter
 
 using Sonar = VehicleComponents.Sensors.Sonar;
-using VehicleComponents.ROS.Core;
+using ROS.Core;
 
 
 namespace VehicleComponents.ROS.Publishers

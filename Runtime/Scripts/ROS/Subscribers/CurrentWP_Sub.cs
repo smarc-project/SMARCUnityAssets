@@ -3,7 +3,7 @@ using UnityEngine;
 using RosMessageTypes.SmarcMission; // GotoWaypointMsg
 using GeoRef; // GPSRef
 
-using VehicleComponents.ROS.Core;
+using ROS.Core;
 
 
 namespace VehicleComponents.ROS.Subscribers

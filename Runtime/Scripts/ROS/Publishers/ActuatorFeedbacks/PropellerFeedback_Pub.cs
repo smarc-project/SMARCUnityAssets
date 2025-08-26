@@ -4,7 +4,7 @@ using Unity.Robotics.Core; // Clock
 using Utils = DefaultNamespace.Utils;
 
 using Propeller = VehicleComponents.Actuators.Propeller;
-using VehicleComponents.ROS.Core;
+using ROS.Core;
 
 namespace VehicleComponents.ROS.Publishers
 {

@@ -6,7 +6,7 @@ using Unity.Robotics.Core; //Clock
 using RosMessageTypes.Smarc; // StringStampedMsg
 using TX = VehicleComponents.Acoustics.Transceiver;
 using StringStamped = VehicleComponents.Acoustics.StringStamped;
-using VehicleComponents.ROS.Core;
+using ROS.Core;
 
 namespace VehicleComponents.ROS.Publishers
 {

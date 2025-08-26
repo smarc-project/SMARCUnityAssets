@@ -3,7 +3,7 @@ using ROSMessage = Unity.Robotics.ROSTCPConnector.MessageGeneration.Message;
 using RosMessageTypes.Sensor;
 using DefaultNamespace;
 
-using VehicleComponents.ROS.Core;
+using ROS.Core;
 using Force;
 using Unity.Robotics.Core;
 using dji;

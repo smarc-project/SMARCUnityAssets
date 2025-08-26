@@ -4,7 +4,7 @@ using Unity.Robotics.Core;
 using Utils = DefaultNamespace.Utils;
 
 
-namespace VehicleComponents.ROS.Core
+namespace ROS.Core
 {
     [RequireComponent(typeof(IROSPublishable))]
     public abstract class ROSPublisher<RosMsgType, PublishableType> : ROSBehaviour

@@ -4,7 +4,7 @@ using Unity.Robotics.ROSTCPConnector;
 using RosMessageTypes.BuiltinInterfaces;
 using RosMessageTypes.Rosgraph;
 using Unity.Robotics.Core;
-using VehicleComponents.ROS.Core;
+using ROS.Core;
 
 namespace Unity.Robotics.Core
 {

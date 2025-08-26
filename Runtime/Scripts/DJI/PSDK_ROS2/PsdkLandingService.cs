@@ -4,7 +4,7 @@ using RosMessageTypes.Std;
 using DefaultNamespace;
 using dji;
 
-using VehicleComponents.ROS.Core;
+using ROS.Core;
 using Force;
 using Unity.Robotics.Core;
 using VehicleComponents.Sensors;

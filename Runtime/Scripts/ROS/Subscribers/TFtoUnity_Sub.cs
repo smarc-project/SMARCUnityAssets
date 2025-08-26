@@ -8,7 +8,7 @@ using Unity.Robotics.ROSTCPConnector.ROSGeometry;
 
 using Utils = DefaultNamespace.Utils;
 using GlobalReferencePoint = GeoRef.GlobalReferencePoint;
-using VehicleComponents.ROS.Core;
+using ROS.Core;
 
 
 namespace VehicleComponents.ROS.Subscribers

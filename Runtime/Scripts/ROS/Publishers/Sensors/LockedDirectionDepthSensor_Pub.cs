@@ -3,7 +3,7 @@ using RosMessageTypes.Std; // For Float32MultiArray
 using Unity.Robotics.Core; // For TimeStamp
 
 using SensorDepth = VehicleComponents.Sensors.LockedDirectionDepthSensor;
-using VehicleComponents.ROS.Core;
+using ROS.Core;
 
 namespace VehicleComponents.ROS.Publishers
 {

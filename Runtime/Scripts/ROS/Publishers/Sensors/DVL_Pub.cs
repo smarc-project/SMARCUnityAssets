@@ -4,7 +4,7 @@ using Unity.Robotics.ROSTCPConnector.ROSGeometry;
 using RosMessageTypes.Smarc;
 
 using SensorDVL = VehicleComponents.Sensors.DVL;
-using VehicleComponents.ROS.Core;
+using ROS.Core;
 
 
 namespace VehicleComponents.ROS.Publishers

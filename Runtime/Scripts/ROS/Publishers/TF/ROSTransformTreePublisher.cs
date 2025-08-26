@@ -8,7 +8,7 @@ using RosMessageTypes.Tf2;
 using Unity.Robotics.Core;
 using Unity.Robotics.ROSTCPConnector.ROSGeometry;
 using UnityEngine;
-using VehicleComponents.ROS.Core;
+using ROS.Core;
 
 namespace VehicleComponents.ROS.Publishers
 {
