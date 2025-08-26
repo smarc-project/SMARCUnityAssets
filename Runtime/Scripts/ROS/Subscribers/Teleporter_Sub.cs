@@ -8,7 +8,7 @@ using ROS.Core;
 using RosMessageTypes.Std;
 
 
-namespace VehicleComponents.ROS.Subscribers
+namespace ROS.Subscribers
 {
     
     public enum TeleportFrame

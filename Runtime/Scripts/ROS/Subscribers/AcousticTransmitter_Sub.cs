@@ -5,7 +5,7 @@ using RosMessageTypes.Smarc; // StringStampedMsg
 using TX = VehicleComponents.Acoustics.Transceiver;
 using ROS.Core;
 
-namespace VehicleComponents.ROS.Subscribers
+namespace ROS.Subscribers
 {
 
     [RequireComponent(typeof(TX))]

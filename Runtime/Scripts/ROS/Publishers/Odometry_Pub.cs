@@ -7,7 +7,7 @@ using SensorIMU = VehicleComponents.Sensors.IMU;
 using ROS.Core;
 
 
-namespace VehicleComponents.ROS.Publishers
+namespace ROS.Publishers
 {
     [RequireComponent(typeof(SensorIMU))]
     public class Odometry_Pub: ROSPublisher<OdometryMsg, SensorIMU>
@@ -25,7 +25,7 @@ namespace VehicleComponents.ROS.Publishers
         protected override void InitPublisher()
         {
             ROSMsg.header.frame_id = "map_gt";
-            ROSMsg.child_frame_id = $"{frame_id_prefix}/{sensor.linkName}";
+            ROSMsg.child_frame_id = $"{frame_id_prefix}/{DataSource.linkName}";
             ROSPosition = Vector3.zero;
         }
 
@@ -35,21 +35,21 @@ namespace VehicleComponents.ROS.Publishers
 
             if(useNED) 
             {
-                ROSMsg.pose.pose.orientation = sensor.orientation.To<NED>();
-                ROSMsg.pose.pose.position = sensor.transform.position.To<NED>();
+                ROSMsg.pose.pose.orientation = DataSource.orientation.To<NED>();
+                ROSMsg.pose.pose.position = DataSource.transform.position.To<NED>();
             }
             else
             {
-                ROSMsg.pose.pose.orientation = sensor.orientation.To<ENU>();
-                ROSMsg.pose.pose.position = sensor.transform.position.To<ENU>();
+                ROSMsg.pose.pose.orientation = DataSource.orientation.To<ENU>();
+                ROSMsg.pose.pose.position = DataSource.transform.position.To<ENU>();
             } 
 
             ROSPosition.x = (float)ROSMsg.pose.pose.position.x;
             ROSPosition.y = (float)ROSMsg.pose.pose.position.y;
             ROSPosition.z = (float)ROSMsg.pose.pose.position.z;
 
-            ROSMsg.twist.twist.linear = sensor.localVelocity.To<FLU>();
-            ROSMsg.twist.twist.angular = sensor.angularVelocity.To<FLU>();
+            ROSMsg.twist.twist.linear = DataSource.localVelocity.To<FLU>();
+            ROSMsg.twist.twist.angular = DataSource.angularVelocity.To<FLU>();
         }
     }
 }

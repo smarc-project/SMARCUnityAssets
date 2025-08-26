@@ -5,15 +5,15 @@ using Unity.Robotics.Core; //Clock
 using ROS.Core;
 using CameraImageSensor = VehicleComponents.Sensors.CameraImage;
 
-namespace VehicleComponents.ROS.Publishers
+namespace ROS.Publishers
 {
     [RequireComponent(typeof(CameraImageSensor))]
     class CameraImage_Pub: ROSPublisher<ImageMsg, CameraImageSensor>
     {
         protected override void InitPublisher()
         {
-            var textureHeight = sensor.textureHeight;
-            var textureWidth = sensor.textureWidth;
+            var textureHeight = DataSource.textureHeight;
+            var textureWidth = DataSource.textureWidth;
 
             ROSMsg.data = new byte[textureHeight * textureWidth * 3];
             ROSMsg.encoding = "rgb8";
@@ -21,12 +21,12 @@ namespace VehicleComponents.ROS.Publishers
             ROSMsg.width = (uint) textureWidth;
             ROSMsg.is_bigendian = 0;
             ROSMsg.step = (uint)(3*textureWidth);
-            ROSMsg.header.frame_id = $"{frame_id_prefix}/{sensor.linkName}";
+            ROSMsg.header.frame_id = $"{frame_id_prefix}/{DataSource.linkName}";
         }
 
         protected override void UpdateMessage()
         {
-            var img = sensor.image.GetRawTextureData<byte>();
+            var img = DataSource.image.GetRawTextureData<byte>();
             for(int i=0; i<img.Length; i++) ROSMsg.data[i] = img[i]; 
             ROSMsg.header.stamp = new TimeStamp(Clock.time);
         }

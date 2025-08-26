@@ -3,7 +3,7 @@ using UnityEngine;
 using RosMessageTypes.Std;
 using Propeller = VehicleComponents.Actuators.Propeller;
 
-namespace VehicleComponents.ROS.Subscribers
+namespace ROS.Subscribers
 {
     [RequireComponent(typeof(Propeller))]
     public class PropellerCommand_Sub : Actuator_Sub<Float32Msg>

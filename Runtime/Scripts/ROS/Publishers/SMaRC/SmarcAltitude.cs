@@ -6,7 +6,7 @@ using DefaultNamespace.Water;
 using DefaultNamespace;
 
 
-namespace VehicleComponents.ROS.Publishers
+namespace ROS.Publishers
 {
     class SmarcAltitude : ROSBehaviour
     {

@@ -10,7 +10,7 @@ using Unity.Robotics.ROSTCPConnector.ROSGeometry;
 using UnityEngine;
 using ROS.Core;
 
-namespace VehicleComponents.ROS.Publishers
+namespace ROS.Publishers
 {
     public class ROSTransformTreePublisher : ROSBehaviour
     {

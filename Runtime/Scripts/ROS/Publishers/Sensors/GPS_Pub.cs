@@ -6,25 +6,25 @@ using SensorGPS = VehicleComponents.Sensors.GPS;
 using ROS.Core;
 
 
-namespace VehicleComponents.ROS.Publishers
+namespace ROS.Publishers
 {
     [RequireComponent(typeof(SensorGPS))]
     class GPS_Pub: ROSPublisher<NavSatFixMsg, SensorGPS>
     { 
         protected override void InitPublisher()
         {
-            ROSMsg.header.frame_id = $"{frame_id_prefix}/{sensor.linkName}";
+            ROSMsg.header.frame_id = $"{frame_id_prefix}/{DataSource.linkName}";
         }
         
         protected override void UpdateMessage()
         {
             ROSMsg.header.stamp = new TimeStamp(Clock.time);
-            if(sensor.fix) 
+            if(DataSource.fix) 
             {
                 ROSMsg.status.status = NavSatStatusMsg.STATUS_FIX;
-                ROSMsg.latitude = sensor.lat;
-                ROSMsg.longitude = sensor.lon;
-                ROSMsg.altitude = sensor.alt;
+                ROSMsg.latitude = DataSource.lat;
+                ROSMsg.longitude = DataSource.lon;
+                ROSMsg.altitude = DataSource.alt;
             }
             else ROSMsg.status.status = NavSatStatusMsg.STATUS_NO_FIX;
         }

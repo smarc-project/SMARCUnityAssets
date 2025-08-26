@@ -7,7 +7,7 @@ using SensorDVL = VehicleComponents.Sensors.DVL;
 using ROS.Core;
 
 
-namespace VehicleComponents.ROS.Publishers
+namespace ROS.Publishers
 {
     [RequireComponent(typeof(SensorDVL))]
     class DVL_Pub: ROSPublisher<DVLMsg, SensorDVL>
@@ -17,9 +17,9 @@ namespace VehicleComponents.ROS.Publishers
 
         protected override void InitPublisher()
         {
-            ROSMsg.header.frame_id = $"{frame_id_prefix}/{sensor.linkName}";
-            beamMsgs = new DVLBeamMsg[sensor.numBeams];
-            for(int i=0; i < sensor.numBeams; i++)
+            ROSMsg.header.frame_id = $"{frame_id_prefix}/{DataSource.linkName}";
+            beamMsgs = new DVLBeamMsg[DataSource.numBeams];
+            for(int i=0; i < DataSource.numBeams; i++)
             {
                 beamMsgs[i] = new DVLBeamMsg();
             }
@@ -30,12 +30,12 @@ namespace VehicleComponents.ROS.Publishers
         {
             ROSMsg.header.stamp = new TimeStamp(Clock.time);
             
-            for(int i=0;i < sensor.numBeams; i++)
+            for(int i=0;i < DataSource.numBeams; i++)
             {
-                ROSMsg.beams[i].range = sensor.ranges[i];
+                ROSMsg.beams[i].range = DataSource.ranges[i];
             }
-            ROSMsg.velocity = sensor.velocity.To<FLU>();
-            ROSMsg.altitude = sensor.altitude;
+            ROSMsg.velocity = DataSource.velocity.To<FLU>();
+            ROSMsg.altitude = DataSource.altitude;
         }
     }
 }

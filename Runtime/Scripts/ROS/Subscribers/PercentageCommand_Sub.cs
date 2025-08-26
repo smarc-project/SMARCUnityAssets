@@ -3,7 +3,7 @@ using UnityEngine;
 using RosMessageTypes.Std;
 using IPercentageActuator = VehicleComponents.Actuators.IPercentageActuator;
 
-namespace VehicleComponents.ROS.Subscribers
+namespace ROS.Subscribers
 {
 
     [RequireComponent(typeof(IPercentageActuator))]

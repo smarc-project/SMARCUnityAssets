@@ -6,7 +6,7 @@ using ROSMessage = Unity.Robotics.ROSTCPConnector.MessageGeneration.Message;
 using ROS.Core;
 
 
-namespace VehicleComponents.ROS.Subscribers
+namespace ROS.Subscribers
 {
     public abstract class ActuatorSubscriber : ROSBehaviour
     {

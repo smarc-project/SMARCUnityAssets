@@ -7,7 +7,7 @@ using DefaultNamespace;
 using Unity.Robotics.ROSTCPConnector.ROSGeometry;
 
 
-namespace VehicleComponents.ROS.Publishers
+namespace ROS.Publishers
 {
     class SmarcOdom : ROSBehaviour
     {

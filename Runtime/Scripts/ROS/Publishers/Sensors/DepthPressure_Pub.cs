@@ -6,20 +6,20 @@ using SensorPressure = VehicleComponents.Sensors.DepthPressure;
 using ROS.Core;
 
 
-namespace VehicleComponents.ROS.Publishers
+namespace ROS.Publishers
 {
     [RequireComponent(typeof(SensorPressure))]
     class DepthPressure_Pub: ROSPublisher<FluidPressureMsg, SensorPressure>
     { 
         protected override void InitPublisher()
         {
-            ROSMsg.header.frame_id = $"{frame_id_prefix}/{sensor.linkName}";
+            ROSMsg.header.frame_id = $"{frame_id_prefix}/{DataSource.linkName}";
         }
 
         protected override void UpdateMessage()
         {
             ROSMsg.header.stamp = new TimeStamp(Clock.time);
-            ROSMsg.fluid_pressure = sensor.pressure;
+            ROSMsg.fluid_pressure = DataSource.pressure;
         }
     }
 }

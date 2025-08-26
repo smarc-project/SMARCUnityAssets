@@ -7,18 +7,17 @@ using Sonar = VehicleComponents.Sensors.Sonar;
 using ROS.Core;
 
 
-namespace VehicleComponents.ROS.Publishers
+namespace ROS.Publishers
 {
     [RequireComponent(typeof(Sonar))]
     class SonarPointCloud_Pub: ROSPublisher<PointCloud2Msg, Sonar>
     { 
-        public string frame_id="map_gt";
         protected override void InitPublisher()
         {
-            ROSMsg.header.frame_id = $"{frame_id_prefix}/{sensor.linkName}";
+            ROSMsg.header.frame_id = $"{frame_id_prefix}/{DataSource.linkName}";
 
             ROSMsg.height = 1; // just one long list of points
-            ROSMsg.width = (uint)sensor.TotalRayCount;
+            ROSMsg.width = (uint)DataSource.TotalRayCount;
             ROSMsg.is_bigendian = false;
             ROSMsg.is_dense = true;
             // 3x 4bytes (float32 x,y,z) + 1x 1byte (uint8 intensity) = 13bytes
@@ -58,9 +57,9 @@ namespace VehicleComponents.ROS.Publishers
         protected override void UpdateMessage()
         {
             ROSMsg.header.stamp = new TimeStamp(Clock.time);
-            for(int i=0; i<sensor.SonarHits.Length; i++)
+            for(int i=0; i<DataSource.SonarHits.Length; i++)
             {
-                byte[] pointByte = sensor.SonarHits[i].GetBytes();
+                byte[] pointByte = DataSource.SonarHits[i].GetBytes();
                 Buffer.BlockCopy(pointByte, 0, ROSMsg.data, i*pointByte.Length, pointByte.Length);
             }
 

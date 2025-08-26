@@ -13,13 +13,12 @@ namespace ROS.Core
     {
         [Header("ROS Publisher")]
         public float frequency = 10f;
-        float period => 1.0f/frequency;
-        double lastUpdate = 0f;
-
+        FrequencyTimer timer;
+        
         // Subclasses should be able to access these
         // to get data from the sensor and put it in
         // ROSMsg as needed.
-        protected PublishableType sensor;
+        protected PublishableType DataSource;
         protected RosMsgType ROSMsg;
 
         protected string frame_id_prefix = "";
@@ -32,7 +31,8 @@ namespace ROS.Core
 
         protected override void StartROS()
         {
-            sensor = GetComponent<PublishableType>();
+            timer = new FrequencyTimer(frequency);
+            DataSource = GetComponent<PublishableType>();
             ROSMsg = new RosMsgType();
             if(!registered)
             {
@@ -58,15 +58,18 @@ namespace ROS.Core
 
         /// <summary>
         /// Publish the message to ROS.
-        /// We do this in Update, so that things can be disabled and enabled at runtime.
+        /// We do this in FixedUpdate, so that things can be disabled and enabled at runtime.
+        /// And not in Update, because usually FixedUpdate is called at a consistent rate and faster than frames.
         /// </summary>
-        void Update()
+        void FixedUpdate()
         {
-            if (Clock.Now - lastUpdate < period) return;
-            lastUpdate = Clock.Now;
-            if(!(sensor.HasNewData() || ignoreSensorState)) return;
-            UpdateMessage();
-            rosCon.Publish(topic, ROSMsg);
+            while (timer.ShouldUpdate(Clock.Now))
+            {
+                if (!(DataSource.HasNewData() || ignoreSensorState)) return;
+                UpdateMessage();
+                rosCon.Publish(topic, ROSMsg);
+                timer.Tick();
+            }
         }
 
     }

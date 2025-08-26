@@ -1,11 +1,9 @@
 using UnityEngine;
-using RosMessageTypes.Std; // For Float32MultiArray
-using Unity.Robotics.Core; // For TimeStamp
-
+using RosMessageTypes.Std;
 using SensorDepth = VehicleComponents.Sensors.LockedDirectionDepthSensor;
 using ROS.Core;
 
-namespace VehicleComponents.ROS.Publishers
+namespace ROS.Publishers
 {
     [RequireComponent(typeof(SensorDepth))]
     class LockedDirectionDepthSensor_Pub : ROSPublisher<Float32Msg, SensorDepth>
@@ -13,9 +11,7 @@ namespace VehicleComponents.ROS.Publishers
 
         protected override void UpdateMessage()
         {
-            
-            // Assuming sensor.depth returns a single float, you can set it as a single-element array
-            ROSMsg.data =  sensor.depth ; // Wrap the depth value in an array
+            ROSMsg.data =  DataSource.depth ;
         }
     }
 }

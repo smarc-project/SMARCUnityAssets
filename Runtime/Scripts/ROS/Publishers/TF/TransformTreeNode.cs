@@ -4,7 +4,7 @@ using Unity.Robotics.Core;
 using Unity.Robotics.UrdfImporter;
 using UnityEngine;
 
-namespace VehicleComponents.ROS.Publishers
+namespace ROS.Publishers
 {
     class TransformTreeNode
     {

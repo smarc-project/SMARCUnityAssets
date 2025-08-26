@@ -4,7 +4,7 @@ using RosMessageTypes.Sensor;
 using ROS.Core; //Clock
 
 
-namespace VehicleComponents.ROS.Publishers
+namespace ROS.Publishers
 {
     class Joy_Pub: ROSBehaviour
     {

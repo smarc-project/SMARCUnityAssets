@@ -5,7 +5,7 @@ using SensorGPS = VehicleComponents.Sensors.GPS;
 using ROS.Core;
 
 
-namespace VehicleComponents.ROS.Publishers
+namespace ROS.Publishers
 {
     [RequireComponent(typeof(SensorGPS))]
     class GeoPoint_Pub: ROSPublisher<GeoPointMsg, SensorGPS>
@@ -17,7 +17,7 @@ namespace VehicleComponents.ROS.Publishers
 
         protected override void UpdateMessage()
         {        
-            var (_, _, lat, lon) = sensor.GetUTMLatLon();
+            var (_, _, lat, lon) = DataSource.GetUTMLatLon();
             ROSMsg.latitude = lat;
             ROSMsg.longitude = lon;
         }

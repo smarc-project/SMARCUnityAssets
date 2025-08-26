@@ -5,7 +5,7 @@ using IPercentageActuator = VehicleComponents.Actuators.IPercentageActuator;
 using ROS.Core;
 
 
-namespace VehicleComponents.ROS.Publishers
+namespace ROS.Publishers
 {
     [RequireComponent(typeof(IPercentageActuator))]
     public class PercentageFeedback_Pub: ROSPublisher<Float32Msg, IPercentageActuator>
@@ -25,7 +25,7 @@ namespace VehicleComponents.ROS.Publishers
         protected override void UpdateMessage()
         {
             if(act == null) return;
-            ROSMsg.data = (float)act.GetCurrentValue();
+            ROSMsg.data = act.GetCurrentValue();
         }
     }
 }

@@ -1,12 +1,11 @@
 using UnityEngine;
 using RosMessageTypes.Std;
-using Unity.Robotics.Core; // Clock
 using Utils = DefaultNamespace.Utils;
 
 using Propeller = VehicleComponents.Actuators.Propeller;
 using ROS.Core;
 
-namespace VehicleComponents.ROS.Publishers
+namespace ROS.Publishers
 {
     [RequireComponent(typeof(Propeller))]
     public class PropellerFeedback_Pub: ROSPublisher<Float32Msg, Propeller>
@@ -21,8 +20,6 @@ namespace VehicleComponents.ROS.Publishers
                 enabled = false;
                 return;
             }
-            var robotGO = Utils.FindParentWithTag(gameObject, "robot", false);
-            string prefix = robotGO.name;
         }
 
         protected override void UpdateMessage()

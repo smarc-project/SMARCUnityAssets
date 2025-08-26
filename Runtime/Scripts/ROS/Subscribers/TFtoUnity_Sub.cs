@@ -11,7 +11,7 @@ using GlobalReferencePoint = GeoRef.GlobalReferencePoint;
 using ROS.Core;
 
 
-namespace VehicleComponents.ROS.Subscribers
+namespace ROS.Subscribers
 {
 
     public class TFtoUnity_Sub: ROSBehaviour

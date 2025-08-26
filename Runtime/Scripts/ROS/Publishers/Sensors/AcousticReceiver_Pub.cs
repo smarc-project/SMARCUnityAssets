@@ -8,7 +8,7 @@ using TX = VehicleComponents.Acoustics.Transceiver;
 using StringStamped = VehicleComponents.Acoustics.StringStamped;
 using ROS.Core;
 
-namespace VehicleComponents.ROS.Publishers
+namespace ROS.Publishers
 {
 
     [RequireComponent(typeof(TX))]
@@ -16,7 +16,7 @@ namespace VehicleComponents.ROS.Publishers
     {
         protected override void UpdateMessage()
         {
-            StringStamped dp = sensor.Read();
+            StringStamped dp = DataSource.Read();
             if(dp == null) return;
             ROSMsg.data = dp.Data;
             ROSMsg.time_sent = new TimeStamp(dp.TimeSent);

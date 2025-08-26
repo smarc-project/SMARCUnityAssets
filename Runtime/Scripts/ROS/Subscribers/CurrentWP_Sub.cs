@@ -6,7 +6,7 @@ using GeoRef; // GPSRef
 using ROS.Core;
 
 
-namespace VehicleComponents.ROS.Subscribers
+namespace ROS.Subscribers
 {
 
     public enum PointingType

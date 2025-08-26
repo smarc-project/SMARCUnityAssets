@@ -6,7 +6,7 @@ using Force;
 using DefaultNamespace;
 
 
-namespace VehicleComponents.ROS.Publishers
+namespace ROS.Publishers
 {
     class SmarcCourse : ROSBehaviour
     {

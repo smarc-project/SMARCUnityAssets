@@ -7,7 +7,7 @@ using System.Collections.Generic;
 using DefaultNamespace;
 
 
-namespace VehicleComponents.ROS.Publishers
+namespace ROS.Publishers
 {
     class SmarcBatteryPercent : ROSBehaviour
     {

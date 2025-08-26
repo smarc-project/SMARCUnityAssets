@@ -4,7 +4,7 @@ using VehicleComponents.Actuators;
 using RosMessageTypes.Std;
 
 
-namespace VehicleComponents.ROS.Publishers
+namespace ROS.Publishers
 {
     [RequireComponent(typeof(Hinge))]
     public class HingeFeedback_Pub: ROSPublisher<Float32Msg, Hinge>

@@ -6,9 +6,10 @@ using CameraImageSensor = VehicleComponents.Sensors.CameraImage;
 using ROS.Core;
 
 
-namespace VehicleComponents.ROS.Publishers
+namespace ROS.Publishers
 {
     [RequireComponent(typeof(CameraImageSensor))]
+    [RequireComponent(typeof(Camera))]
     class CameraInfo_Pub: ROSPublisher<CameraInfoMsg, CameraImageSensor>
     {
         [Header("Camera Info")]
@@ -33,9 +34,9 @@ namespace VehicleComponents.ROS.Publishers
             ROSMsg.D = new double[5];
             ROSMsg.K = new double[9];
             ROSMsg.P = new double[12];
-            ROSMsg.height = (uint) sensor.textureHeight;
-            ROSMsg.width = (uint) sensor.textureWidth;
-            ROSMsg.header.frame_id = $"{frame_id_prefix}/{sensor.linkName}";
+            ROSMsg.height = (uint) DataSource.textureHeight;
+            ROSMsg.width = (uint) DataSource.textureWidth;
+            ROSMsg.header.frame_id = $"{frame_id_prefix}/{DataSource.linkName}";
             cam = GetComponent<Camera>();
         }
 

@@ -3,7 +3,7 @@ using UnityEngine;
 using RosMessageTypes.Std;
 using Hinge = VehicleComponents.Actuators.Hinge;
 
-namespace VehicleComponents.ROS.Subscribers
+namespace ROS.Subscribers
 {
 
     [RequireComponent(typeof(Hinge))]

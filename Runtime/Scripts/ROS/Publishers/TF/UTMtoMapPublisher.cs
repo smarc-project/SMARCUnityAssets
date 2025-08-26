@@ -10,7 +10,7 @@ using ROS.Core;
 
 
 
-namespace VehicleComponents.ROS.Publishers
+namespace ROS.Publishers
 {
     public class UTMtoMapPublisher: ROSBehaviour
     {

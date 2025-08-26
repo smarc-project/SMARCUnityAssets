@@ -6,7 +6,7 @@ using GeoRef;
 using DefaultNamespace;
 
 
-namespace VehicleComponents.ROS.Publishers
+namespace ROS.Publishers
 {
     class SmarcPosition : ROSBehaviour
     {

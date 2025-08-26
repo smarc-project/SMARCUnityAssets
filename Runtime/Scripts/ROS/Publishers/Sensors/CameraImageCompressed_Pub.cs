@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using RosMessageTypes.Sensor;
 using Unity.Robotics.Core; //Clock
@@ -7,7 +5,7 @@ using Unity.Robotics.Core; //Clock
 using ROS.Core;
 using CameraImageSensor = VehicleComponents.Sensors.CameraImage;
 
-namespace VehicleComponents.ROS.Publishers
+namespace ROS.Publishers
 {
     [RequireComponent(typeof(CameraImageSensor))]
     class CameraImageCompressed_Pub: ROSPublisher<CompressedImageMsg, CameraImageSensor>
@@ -20,13 +18,13 @@ namespace VehicleComponents.ROS.Publishers
         protected override void InitPublisher()
         {
             ROSMsg.format = "rgb8;jpeg compressed rgb8";
-            ROSMsg.header.frame_id = $"{frame_id_prefix}/{sensor.linkName}";
+            ROSMsg.header.frame_id = $"{frame_id_prefix}/{DataSource.linkName}";
         }
 
         protected override void UpdateMessage()
         {
             ROSMsg.header.stamp = new TimeStamp(Clock.time);
-            ROSMsg.data = ImageConversion.EncodeToJPG(sensor.image, quality);
+            ROSMsg.data = ImageConversion.EncodeToJPG(DataSource.image, quality);
         }
     }
 }

@@ -7,7 +7,7 @@ using SensorIMU = VehicleComponents.Sensors.IMU;
 using ROS.Core;
 
 
-namespace VehicleComponents.ROS.Publishers
+namespace ROS.Publishers
 {
     [RequireComponent(typeof(SensorIMU))]
     class IMU_Pub: ROSPublisher<ImuMsg, SensorIMU>
@@ -17,18 +17,17 @@ namespace VehicleComponents.ROS.Publishers
 
         protected override void InitPublisher()
         {
-            ROSMsg.header.frame_id = $"{frame_id_prefix}/{sensor.linkName}";
+            ROSMsg.header.frame_id = $"{frame_id_prefix}/{DataSource.linkName}";
         }
 
         protected override void UpdateMessage()
         {
             ROSMsg.header.stamp = new TimeStamp(Clock.time);
-            if(useNED) ROSMsg.orientation = sensor.orientation.To<NED>();
-            else ROSMsg.orientation = sensor.orientation.To<ENU>();
-            ROSMsg.angular_velocity = sensor.angularVelocity.To<FLU>();
-        
-            ROSMsg.linear_acceleration = sensor.linearAcceleration.To<FLU>();
-
+            if(useNED) ROSMsg.orientation = DataSource.orientation.To<NED>();
+            else ROSMsg.orientation = DataSource.orientation.To<ENU>();
+            
+            ROSMsg.angular_velocity = DataSource.angularVelocity.To<FLU>();
+            ROSMsg.linear_acceleration = DataSource.linearAcceleration.To<FLU>();
         }
     }
 }

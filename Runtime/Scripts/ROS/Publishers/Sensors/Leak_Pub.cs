@@ -5,14 +5,14 @@ using SensorLeak = VehicleComponents.Sensors.Leak;
 using ROS.Core;
 
 
-namespace VehicleComponents.ROS.Publishers
+namespace ROS.Publishers
 {
     [RequireComponent(typeof(SensorLeak))]
     class Leak_Pub: ROSPublisher<BoolMsg, SensorLeak>
     { 
         protected override void UpdateMessage()
         {
-            if(sensor.leaked)
+            if(DataSource.leaked)
             {
                 ROSMsg.data = true;
             }
