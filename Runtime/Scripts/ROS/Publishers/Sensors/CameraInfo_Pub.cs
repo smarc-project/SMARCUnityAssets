@@ -36,7 +36,7 @@ namespace ROS.Publishers
             ROSMsg.P = new double[12];
             ROSMsg.height = (uint) DataSource.textureHeight;
             ROSMsg.width = (uint) DataSource.textureWidth;
-            ROSMsg.header.frame_id = $"{frame_id_prefix}/{DataSource.linkName}";
+            ROSMsg.header.frame_id = $"{robot_name}/{DataSource.linkName}";
             cam = GetComponent<Camera>();
         }
 

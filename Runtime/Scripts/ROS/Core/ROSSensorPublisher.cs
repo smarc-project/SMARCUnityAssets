@@ -19,9 +19,8 @@ namespace ROS.Core
 
         protected override void StartROS()
         {
-            base.StartROS();
             DataSource = GetComponent<PublishableType>();
-            InitPublisher();
+            base.StartROS();
         }
 
     }

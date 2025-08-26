@@ -1,7 +1,6 @@
 using UnityEngine;
 using ROSMessage = Unity.Robotics.ROSTCPConnector.MessageGeneration.Message;
 using Unity.Robotics.Core;
-using Utils = DefaultNamespace.Utils;
 
 
 namespace ROS.Core
@@ -13,7 +12,7 @@ namespace ROS.Core
         public float frequency = 10f;
         
         protected RosMsgType ROSMsg;
-        protected string frame_id_prefix = "";
+        protected string robot_name = "";
 
         bool registered = false;
         FrequencyTimer timer;
@@ -28,8 +27,10 @@ namespace ROS.Core
                 rosCon.RegisterPublisher<RosMsgType>(topic);
                 registered = true;
             }
-            var robotGO = Utils.FindParentWithTag(gameObject, "robot", false);
-            frame_id_prefix = robotGO.name;
+            if (GetRobotGO(out var robotGO))
+            {
+                robot_name = robotGO.name;
+            }
             InitPublisher();
         }
 

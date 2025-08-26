@@ -79,7 +79,7 @@ namespace ROS.Publishers
             };
             var mapToOdom = new TransformStampedMsg(
                 new HeaderMsg(new TimeStamp(Clock.time), "map_gt"),
-                $"{frame_id_prefix}/odom",
+                $"{robot_name}/odom",
                 mapToOdomMsg);
             tfMessageList.Add(mapToOdom);
 
@@ -99,8 +99,8 @@ namespace ROS.Publishers
                     rosOdomOri.w)
             };
             var odomToBaseLink = new TransformStampedMsg(
-                new HeaderMsg(new TimeStamp(Clock.time), $"{frame_id_prefix}/odom"),
-                $"{frame_id_prefix}/{BaseLinkTreeNode.name}",
+                new HeaderMsg(new TimeStamp(Clock.time), $"{robot_name}/odom"),
+                $"{robot_name}/{BaseLinkTreeNode.name}",
                 odomToBaseLinkMsg);
             tfMessageList.Add(odomToBaseLink);
         }
@@ -123,8 +123,8 @@ namespace ROS.Publishers
             }
             foreach (TransformStampedMsg msg in tfMessageList)
             {
-                msg.header.frame_id = $"{frame_id_prefix}/{msg.header.frame_id}";
-                msg.child_frame_id = $"{frame_id_prefix}/{msg.child_frame_id}";
+                msg.header.frame_id = $"{robot_name}/{msg.header.frame_id}";
+                msg.child_frame_id = $"{robot_name}/{msg.child_frame_id}";
             }
 
             // populate the global frames last, dont wanna prefix those.
@@ -135,7 +135,7 @@ namespace ROS.Publishers
 
         public void SetBaseLinkName(string name)
         {
-            frame_id_prefix = name;
+            robot_name = name;
         }
 
     }

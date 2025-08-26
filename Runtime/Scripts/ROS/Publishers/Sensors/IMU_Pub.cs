@@ -17,7 +17,7 @@ namespace ROS.Publishers
 
         protected override void InitPublisher()
         {
-            ROSMsg.header.frame_id = $"{frame_id_prefix}/{DataSource.linkName}";
+            ROSMsg.header.frame_id = $"{robot_name}/{DataSource.linkName}";
         }
 
         protected override void UpdateMessage()

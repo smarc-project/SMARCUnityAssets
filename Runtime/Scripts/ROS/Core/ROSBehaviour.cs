@@ -14,10 +14,13 @@ namespace ROS.Core
     {
         protected ROSConnection rosCon;
         public string topic = "";
+        public bool NotARobot = false;
+
 
         protected bool GetRobotGO(out GameObject robotGO)
         {
             robotGO = null;
+            if(NotARobot) return false;
             if (gameObject.CompareTag("robot"))
             {
                 robotGO = gameObject;
@@ -40,6 +43,7 @@ namespace ROS.Core
         protected bool GetBaseLink(out Transform baseLink)
         {
             baseLink = null;
+            if(NotARobot) return false;
             if (GetRobotGO(out GameObject robotGO))
             {
                 baseLink = Utils.FindDeepChildWithName(robotGO, "base_link").transform;
@@ -56,6 +60,7 @@ namespace ROS.Core
         protected bool GetMixedBody(out MixedBody body)
         {
             body = null;
+            if(NotARobot) return false;
             if (GetBaseLink(out var base_link))
             {
                 var base_link_ab = base_link.GetComponent<ArticulationBody>();
@@ -92,7 +97,7 @@ namespace ROS.Core
             }
             
             // Aldready in root namespace, dont touch.
-            if(topic[0] != '/')
+            if (topic[0] != '/')
             {
                 // We namespace the topic with the robot name
                 if (GetRobotGO(out GameObject robotGO))
