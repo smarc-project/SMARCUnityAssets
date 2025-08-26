@@ -1,0 +1,91 @@
+using UnityEngine;
+using ROSMessage = Unity.Robotics.ROSTCPConnector.MessageGeneration.Message;
+using RosMessageTypes.Sensor;
+using DefaultNamespace;
+
+using VehicleComponents.ROS.Core;
+using Force;
+using Unity.Robotics.Core;
+using dji;
+
+
+namespace M350.PSDK_ROS2
+{
+    public class PsdkENUPosJoySubscriber : ROSBehaviour
+    {
+        protected string tf_prefix;
+        public float joy_timeout = 1;
+        public float time_since_joy;
+
+        bool registered = false;
+        DJIController controller = null;
+
+        protected MixedBody body;
+
+        void Awake()
+        {
+            var robot = Utils.FindParentWithTag(gameObject, "robot", false);
+            if (robot == null)
+            {
+                Debug.LogError("Robot not found!");
+                enabled = false;
+                return;
+            }
+            tf_prefix = robot.name;
+
+            var base_link = Utils.FindDeepChildWithName(robot, "base_link").transform;
+            if (base_link == null)
+            {
+                Debug.LogError("base_link not found!");
+                enabled = false;
+                return;
+            }
+
+            var base_link_ab = base_link.GetComponent<ArticulationBody>();
+            var base_link_rb = base_link.GetComponent<Rigidbody>();
+            body = new MixedBody(base_link_ab, base_link_rb);
+            if (!body.isValid)
+            {
+                Debug.LogError("Base link doesnt have a valid Rigidbody or ArticulationBody.");
+                enabled = false;
+                return;
+            }
+
+        }
+
+        protected override void StartROS(){
+            if(controller == null){
+                controller = GetComponentInParent<DJIController>();
+            }
+
+            JoyMsg ROSMsg = new JoyMsg();
+            if (!registered)
+            {
+                rosCon.Subscribe<JoyMsg>(topic, _ENU_pos_joy_sub_callback);
+                registered = true;
+            }
+        }
+
+        void _ENU_pos_joy_sub_callback(JoyMsg msg){
+            if(controller == null){
+                controller = GetComponentInParent<DJIController>();
+            }
+            if(controller != null){
+                time_since_joy = (float)Clock.time - msg.header.stamp.sec - msg.header.stamp.nanosec / Mathf.Pow(10f,9f);
+                controller.controllerType = (ControllerType)1; //Position Control
+                if(time_since_joy  < joy_timeout){
+                    controller.commandPositionENU.x = msg.axes[0];
+                    controller.commandPositionENU.y = msg.axes[1];
+                    controller.commandPositionENU.z = msg.axes[2];
+                }
+                else{
+                    controller.commandPositionENU.x = 0;
+                    controller.commandPositionENU.y = 0;
+                    controller.commandVelocityFLU.z = 0;
+                }
+            }
+            
+        }
+
+    }
+}
