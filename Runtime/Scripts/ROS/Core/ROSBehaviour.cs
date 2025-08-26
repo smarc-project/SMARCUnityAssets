@@ -1,6 +1,7 @@
 using UnityEngine;
 using Unity.Robotics.ROSTCPConnector;
 using DefaultNamespace;
+using Force;
 
 
 namespace ROS.Core
@@ -48,6 +49,24 @@ namespace ROS.Core
                 Debug.LogError($"base_link not found for {gameObject.name} with topic {topic}.");
                 enabled = false;
                 return false;
+            }
+            return true;
+        }
+
+        protected bool GetMixedBody(out MixedBody body)
+        {
+            body = null;
+            if (GetBaseLink(out var base_link))
+            {
+                var base_link_ab = base_link.GetComponent<ArticulationBody>();
+                var base_link_rb = base_link.GetComponent<Rigidbody>();
+                body = new MixedBody(base_link_ab, base_link_rb);
+                if (!body.isValid)
+                {
+                    Debug.LogError("Base link doesnt have a valid Rigidbody or ArticulationBody.");
+                    enabled = false;
+                    return false;
+                }
             }
             return true;
         }
