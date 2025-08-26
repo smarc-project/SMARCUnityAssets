@@ -52,7 +52,7 @@ namespace ROS.Core
         /// </summary>
         void FixedUpdate()
         {
-            while (timer.ShouldUpdate(Clock.Now))
+            while (timer.NeedsTick(Clock.Now))
             {
                 UpdateMessage();
                 rosCon.Publish(topic, ROSMsg);

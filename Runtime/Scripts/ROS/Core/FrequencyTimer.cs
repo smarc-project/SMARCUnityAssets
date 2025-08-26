@@ -16,7 +16,7 @@ namespace ROS.Core
             this.frequency = frequency;
         }
 
-        public bool ShouldUpdate(double now)
+        public bool NeedsTick(double now)
         {
             return now - lastUpdate >= period;
         }
