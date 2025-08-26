@@ -11,10 +11,46 @@ namespace ROS.Core
     /// </summary>
     public abstract class ROSBehaviour : MonoBehaviour
     {
-        [Header("ROS Behaviour")]
         protected ROSConnection rosCon;
         public string topic = "";
 
+        protected bool GetRobotGO(out GameObject robotGO)
+        {
+            robotGO = null;
+            if (gameObject.CompareTag("robot"))
+            {
+                robotGO = gameObject;
+            }
+            else
+            {
+                robotGO = Utils.FindParentWithTag(gameObject, "robot", false);
+            }
+
+            if (robotGO == null)
+            {
+                Debug.LogError($"No #robot tagged self/parent found for {gameObject.name} with topic {topic}.");
+                enabled = false;
+                return false;
+            }
+
+            return true;
+        }
+
+        protected bool GetBaseLink(out Transform baseLink)
+        {
+            baseLink = null;
+            if (GetRobotGO(out GameObject robotGO))
+            {
+                baseLink = Utils.FindDeepChildWithName(robotGO, "base_link").transform;
+            }
+            if (baseLink == null)
+            {
+                Debug.LogError($"base_link not found for {gameObject.name} with topic {topic}.");
+                enabled = false;
+                return false;
+            }
+            return true;
+        }
 
         void OnEnable()
         {
@@ -40,30 +76,25 @@ namespace ROS.Core
             if(topic[0] != '/')
             {
                 // We namespace the topic with the robot name
-                GameObject robotGO;
-                if(gameObject.CompareTag("robot"))
+                if (GetRobotGO(out GameObject robotGO))
                 {
-                    robotGO = gameObject;
+                    string robot_name = robotGO.name;
+                    if (robot_name == null)
+                    {
+                        Debug.LogWarning($"ROS topic is not namespaced with a robot name for {gameObject.name}! It will be under `/`");
+                        topic = $"/{topic}";
+                    }
+                    else
+                    {
+                        topic = $"/{robot_name}/{topic}";
+                    }
                 }
                 else
-                {
-                    robotGO = Utils.FindParentWithTag(gameObject, "robot", false);
-                }
-
-                if(robotGO == null)
                 {
                     Debug.LogError($"No #robot tagged self/parent found for {gameObject.name} with topic {topic} (which is not global), disabling.");
                     enabled = false;
                     return;
                 }
-
-                string robot_name = robotGO.name;
-                if(robot_name == null)
-                {
-                    Debug.LogWarning($"ROS topic is not namespaced with a robot name for {gameObject.name}! It will be under `/`");
-                    topic = $"/{topic}";
-                }
-                else topic = $"/{robot_name}/{topic}";
             }
 
             StartROS();

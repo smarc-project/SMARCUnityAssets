@@ -14,12 +14,12 @@ namespace M350.PSDK_ROS2
     public class PsdkFusedPos : PsdkBase<PositionFusedMsg>
     {
         private DJIController controller = null;
-        private Odometry_Pub odom = null;
+        private OdomFromIMU_Pub odom = null;
         
         protected override void InitPublisher(){
             controller = GetComponentInParent<DJIController>(); //Get current control state from the controller itself
             if(controller !=null){
-                odom = controller.GetComponentInChildren<Odometry_Pub>();
+                odom = controller.GetComponentInChildren<OdomFromIMU_Pub>();
             }
         }
 
@@ -30,7 +30,7 @@ namespace M350.PSDK_ROS2
                 controller = GetComponentInParent<DJIController>();
             }
             if(controller !=null && odom == null){
-                odom = controller.GetComponentInChildren<Odometry_Pub>();
+                odom = controller.GetComponentInChildren<OdomFromIMU_Pub>();
                 
             }
             if(odom != null){
