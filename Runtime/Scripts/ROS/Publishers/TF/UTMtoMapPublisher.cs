@@ -12,20 +12,14 @@ using ROS.Core;
 
 namespace ROS.Publishers
 {
-    public class UTMtoMapPublisher: ROSBehaviour
+    public class UTMtoMapPublisher: ROSPublisher<TFMessageMsg>
     {
-        public float frequency = 1f;
-        float period => 1.0f/frequency;
-        double lastUpdate = 0f;
         GPSRef gpsRef;
-        TFMessageMsg tfMessage;
         TransformStampedMsg utmToMapMsg, utmZBToUtmMsg;
         TransformMsg originTf;
 
-        bool registered = false;
 
-
-        protected override void StartROS()
+        protected override void InitPublisher()
         {
             topic = "/tf";
             var utmpubs = FindObjectsByType<UTMtoMapPublisher>(FindObjectsSortMode.None);
@@ -53,11 +47,6 @@ namespace ROS.Publishers
             // in the scene to publish a "global" frame that is map_gt
             // and they wont need to do any origin shenanigans that way
             transform.SetPositionAndRotation(Vector3.zero, Quaternion.identity);
-            if (!registered)
-            {
-                rosCon.RegisterPublisher<TFMessageMsg>(topic);
-                registered = true;
-            }
 
             // this is the position of unity-world in utm coordinates
             var (originEasting, originNorthing, _, _) = gpsRef.GetUTMLatLonOfObject(gameObject);
@@ -89,14 +78,11 @@ namespace ROS.Publishers
             };
             // These transforms never change during play mode
             // so we can publish the same message all the time
-            tfMessage = new TFMessageMsg(tfMessageList.ToArray());
+            ROSMsg = new TFMessageMsg(tfMessageList.ToArray());
         }
 
-        void Update()
+        protected override void UpdateMessage()
         {
-            if (Clock.time - lastUpdate < period) return;
-            lastUpdate = Clock.time;
-
             // these are static transforms, they just change stamps...
             var stamp = new TimeStamp(Clock.time);
             utmToMapMsg.header.stamp = stamp;
@@ -109,9 +95,7 @@ namespace ROS.Publishers
             };
             // These transforms never change during play mode
             // so we can publish the same message all the time
-            tfMessage = new TFMessageMsg(tfMessageList.ToArray());
-
-            rosCon.Publish(topic, tfMessage);
+            ROSMsg = new TFMessageMsg(tfMessageList.ToArray());
         }
     }
 }

@@ -6,11 +6,9 @@ using ROS.Core; //Clock
 
 namespace ROS.Publishers
 {
-    class Joy_Pub: ROSBehaviour
+    class Joy_Pub: ROSPublisher<JoyMsg>
     {
         InputAction lstick, rstick, lb, rb, lt, rt, north, south, east, west, dpad;
-
-        bool registered = false;
 
         void Awake()
         {
@@ -27,21 +25,13 @@ namespace ROS.Publishers
             dpad = InputSystem.actions.FindAction("VirtualJoy/Dpad");
         }
 
-        protected override void StartROS()
-        {
-            if(!registered)
-            {
-                rosCon.RegisterPublisher<JoyMsg>(topic);
-                registered = true;
-            }
-        }
 
-        void Update()
+        protected override void UpdateMessage()
         {
             var dpadVal = dpad.ReadValue<Vector2>();
             var leftval = lstick.ReadValue<Vector2>();
             var rightval = rstick.ReadValue<Vector2>();
-            rosCon.Publish(topic, new JoyMsg
+            ROSMsg = new JoyMsg
             {
                 // https://docs.ros.org/en/iron/p/joy/
                 axes = new float[] 
@@ -77,7 +67,7 @@ namespace ROS.Publishers
                     0,
                     0
                 }
-            });
+            };
         }
     }
 }
