@@ -3,12 +3,13 @@ using RosMessageTypes.Geometry;
 using Unity.Robotics.Core;
 using Unity.Robotics.ROSTCPConnector.ROSGeometry;
 using VehicleComponents.Sensors;
+using ROS.Core;
 
 
 namespace M350.PSDK_ROS2
 {
     [RequireComponent(typeof(IMU))]
-    public class PsdkAccelStamped : PsdkBase<AccelStampedMsg>
+    public class PsdkAccelStamped : ROSPublisher<AccelStampedMsg>
     {
         IMU imu;
         protected override void UpdateMessage()

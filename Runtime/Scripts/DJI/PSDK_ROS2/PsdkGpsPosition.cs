@@ -2,13 +2,22 @@ using UnityEngine;
 using Unity.Robotics.Core;
 using RosMessageTypes.Sensor;
 using GeoRef;
+using ROS.Core;
+using Force;
 
 
 namespace M350.PSDK_ROS2
 {
-    public class PsdkGpsPosition : PsdkBase<NavSatFixMsg>
+    public class PsdkGpsPosition : ROSPublisher<NavSatFixMsg>
     {
         GlobalReferencePoint globalReferencePoint;
+        
+        MixedBody body;
+
+        protected override void InitPublisher()
+        {
+            GetMixedBody(out body);
+        }
 
         protected override void UpdateMessage()
         {
@@ -22,7 +31,7 @@ namespace M350.PSDK_ROS2
                     return;
                 }
             }
-            
+
             var (lat, lon) = globalReferencePoint.GetLatLonFromUnityXZ(body.transform.position.x, body.transform.position.z);
             ROSMsg.latitude = lat;
             ROSMsg.longitude = lon;

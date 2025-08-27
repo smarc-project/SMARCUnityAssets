@@ -2,7 +2,7 @@ using UnityEngine;
 using Force;  // MixedBody is in the Force namespace
 
 
-using VehicleComponents.ROS.Core;
+using ROS.Core;
 
 namespace VehicleComponents.Actuators
 {
