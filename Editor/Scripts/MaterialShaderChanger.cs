@@ -10,7 +10,7 @@ namespace Editor
         private Shader newShader;
         private Shader oldShader;
 
-        [MenuItem("SMaRC/Convert Package Materials to HDRP")]
+        [MenuItem("SMaRC/Convert Package to HDRP")]
         static void ConvertHDRP()
         {
             string[] guids = AssetDatabase.FindAssets("t:Material", new[] { "Packages/com.smarc.assets", "Assets" });
@@ -27,10 +27,18 @@ namespace Editor
                     EditorUtility.SetDirty(mat);
                     Debug.Log($"Converted {mat.name} at {path}");
                 }
+                
+                litShader = Shader.Find("HDRP/Unlit");
+                if (mat != null && (mat.shader.name == "Universal Render Pipeline/Unlit"))
+                {
+                    mat.shader = litShader;
+                    EditorUtility.SetDirty(mat);
+                    Debug.Log($"Converted {mat.name} at {path}");
+                }
             }
         }
 
-        [MenuItem("SMaRC/Convert Package Materials to URP")]
+        [MenuItem("SMaRC/Convert Package to URP")]
         static void ConvertURP()
         {
             string[] guids = AssetDatabase.FindAssets("t:Material", new[] { "Packages/com.smarc.assets", "Assets" });
@@ -42,6 +50,15 @@ namespace Editor
                 var litShader = Shader.Find("Universal Render Pipeline/Lit");
 
                 if (mat != null && (mat.shader.name == "HDRP/Lit" || mat.shader.name == "Standard"))
+                {
+                    mat.shader = litShader;
+                    EditorUtility.SetDirty(mat);
+                    Debug.Log($"Converted {mat.name} at {path}");
+                }
+                
+                litShader = Shader.Find("Universal Render Pipeline/Unlit");
+
+                if (mat != null && (mat.shader.name == "HDRP/Unlit"))
                 {
                     mat.shader = litShader;
                     EditorUtility.SetDirty(mat);
