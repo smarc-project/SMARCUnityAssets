@@ -14,7 +14,10 @@ namespace ROS.Publishers
     { 
         protected override void InitPublisher()
         {
-            ROSMsg.header.frame_id = $"{robot_name}/{DataSource.linkName}";
+            // the sonar sensors produce points in Unity world frame, which is what is published as map_gt.
+            // if we want to publish points wrt the sensor's own frame, we'd need to transform _every single point_
+            // in the sonar sensor itself. which is likely not a good use of cpu time :)
+            ROSMsg.header.frame_id = "map_gt"; //$"{robot_name}/{DataSource.linkName}";
 
             ROSMsg.height = 1; // just one long list of points
             ROSMsg.width = (uint)DataSource.TotalRayCount;
