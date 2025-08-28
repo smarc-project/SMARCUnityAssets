@@ -1,9 +1,10 @@
 using UnityEngine;
-using Force; // MixedBody is in the Force namespace
-using VehicleComponents.ROS.Core;
+using Force;  // MixedBody is in the Force namespace
+using ROS.Core;
 
 namespace VehicleComponents.Actuators
 {
+
     public enum PropellerOrientation
     {
         ZForward,
@@ -12,26 +13,25 @@ namespace VehicleComponents.Actuators
 
     public class Propeller : LinkAttachment, IROSPublishable
     {
-        [Header("Propeller")] public bool reverse = false;
-
+        [Header("Propeller")]
+        public bool reverse = false;
         [Tooltip("Some props are setup with Z axis up, others with Y axis up...")]
         public PropellerOrientation orientation = PropellerOrientation.ZForward;
-
         public float rpm;
         public float RPMMax = 100000;
         public float RPMMin = 0;
         public float RPMToForceMultiplier = 0.005f;
         public float RPMReverseMultiplier = 0.6f;
 
-        [Header("Drone Propeller")] [Tooltip("If set, the propeller will try to hover at a default RPM when started. Assumes the props are all equally distant to the center of mass! If this is not the case, the drone will likely flip around :)")]
+        [Header("Drone Propeller")]
+        [Tooltip("If set, the propeller will try to hover at a default RPM when started. Assumes the props are all equally distant to the center of mass! If this is not the case, the drone will likely flip around :)")]
         public bool HoverDefault = false;
-
         public float DefaultHoverRPM;
 
         [Tooltip("Should the propeller apply manual torque? If unset, the propeller AB will be used to apply torque.")]
         public bool ApplyManualTorque = false;
-
-        [Tooltip("Direction of torque")] public bool ManualTorqueUp = false;
+        [Tooltip("Direction of torque")]
+        public bool ManualTorqueUp = false;
 
         public ArticulationBody baseLinkArticulationBody;
         public Rigidbody baseLinkRigidBody;

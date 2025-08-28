@@ -3,13 +3,8 @@ using VehicleComponents.Actuators;
 using System;
 using System.IO;
 using System.Globalization;
-using RosMessageTypes.Std;
-using RosMessageTypes.Geometry;
-using Unity.Robotics.ROSTCPConnector;
-using Unity.Robotics.ROSTCPConnector.ROSGeometry;
 using M350.PSDK_ROS2;
 using VehicleComponents.Sensors;
-using VehicleComponents.ROS.Publishers;
 
 
 namespace dji
@@ -119,17 +114,11 @@ namespace dji
         public float max_ENU_speed = .8f;
 
         void OnValidate(){
-            if(Mathf.Abs((float)(Time.fixedDeltaTime - 0.002)) < .0001){
-                enabled = true;
-            }
-            else{
+            float delta = Time.fixedDeltaTime - 0.002f;
+            if (Mathf.Abs(delta) > .0001)
+            {
+                if (gameObject.scene.IsValid() && enabled) Debug.LogError("Disabling DJI Controller. Set fixed time step to .002 s for DJI captain to be functional. Currently: " + Time.fixedDeltaTime);
                 enabled = false;
-                if(Time.fixedDeltaTime > 0.002){
-                    Debug.LogError("Timestep is too large! Set fixed time step to .002 s for DJI captain to be functional. Currently: " + Time.fixedDeltaTime);
-                }
-                if(Time.fixedDeltaTime < 0.002){
-                    Debug.LogError("Timestep is too small! Set fixed time step to .002 s for DJI captain to be functional or edit DJI captain to downsample to .002s. Currently: " + Time.fixedDeltaTime);
-                }
             }
         }
 

@@ -1,5 +1,5 @@
 using UnityEngine;
-using VehicleComponents.ROS.Publishers;
+using ROS.Publishers;
 using Utils = DefaultNamespace.Utils;
 
 namespace Rope
@@ -136,7 +136,7 @@ namespace Rope
                 RopeContainer.transform.SetParent(gameObject.transform);
                 RopeContainer.transform.SetPositionAndRotation(VehicleRopeLink.transform.position, VehicleRopeLink.transform.rotation);
                 var ropetf = RopeContainer.AddComponent<ROSTransformTreePublisher>();
-                ropetf.BaseLinkName = RopeContainer.name;
+                ropetf.SetBaseLinkName(RopeContainer.name);
             }
 
             InstantiateAllLinks();
