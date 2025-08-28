@@ -1,7 +1,6 @@
 ﻿using System.Linq;
 using UnityEditor;
 using UnityEngine;
-using UnityEngine.Rendering.HighDefinition;
 
 namespace Editor
 {
@@ -38,7 +37,7 @@ namespace Editor
             }
         }
 
-        [MenuItem("SMaRC/Convert Package to URP")]
+        //TODO: [MenuItem("SMaRC/Convert Package to URP")] 
         static void ConvertURP()
         {
             string[] guids = AssetDatabase.FindAssets("t:Material", new[] { "Packages/com.smarc.assets", "Assets" });
