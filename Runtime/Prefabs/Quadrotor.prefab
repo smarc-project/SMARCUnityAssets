@@ -59,6 +59,7 @@ MonoBehaviour:
   RPMMax: 1e+20
   RPMMin: 0
   RPMToForceMultiplier: 0.005
+  RPMReverseMultiplier: 0.6
   HoverDefault: 1
   DefaultHoverRPM: 0
   ApplyManualTorque: 1
@@ -454,6 +455,7 @@ MonoBehaviour:
   RPMMax: 1e+20
   RPMMin: 0
   RPMToForceMultiplier: 0.005
+  RPMReverseMultiplier: 0.6
   HoverDefault: 1
   DefaultHoverRPM: 0
   ApplyManualTorque: 1
@@ -551,6 +553,7 @@ MonoBehaviour:
   RPMMax: 1e+20
   RPMMin: 0
   RPMToForceMultiplier: 0.005
+  RPMReverseMultiplier: 0.6
   HoverDefault: 1
   DefaultHoverRPM: 0
   ApplyManualTorque: 1
@@ -744,6 +747,7 @@ MonoBehaviour:
   RPMMax: 1e+20
   RPMMin: 0
   RPMToForceMultiplier: 0.005
+  RPMReverseMultiplier: 0.6
   HoverDefault: 1
   DefaultHoverRPM: 0
   ApplyManualTorque: 1
@@ -1856,7 +1860,7 @@ ArticulationBody:
   m_Enabled: 1
   serializedVersion: 5
   m_Mass: 0.000001
-  m_ParentAnchorPosition: {x: 0, y: -0.042000055, z: 0}
+  m_ParentAnchorPosition: {x: 0, y: -0.042, z: 0}
   m_ParentAnchorRotation: {x: 0, y: 0, z: 0.7071068, w: 0.7071068}
   m_AnchorPosition: {x: 0, y: 0, z: 0}
   m_AnchorRotation: {x: 0, y: 0, z: 0.7071068, w: 0.7071068}
@@ -2300,6 +2304,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   onlyUnderwater: 0
   onlyAboveWater: 1
+  randomizationMode: 0
+  RandomRangeX: 0
+  RandomRangeY: 0
+  RandomRangeZ: 0
   IncludeInVisualizer: 1
   ConeTip: 2
   ForceMagnitudeCap: 0.1
@@ -2982,8 +2990,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c45d08c9307ff52ef83b1dd1ccdde076, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  color: {r: 1, g: 0.80166054, b: 0, a: 0.16470589}
+  gizmoType: 0
   radius: 0.1
+  color: {r: 1, g: 0.80166054, b: 0, a: 0.16470589}
 --- !u!114 &4097220763685838162
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3589,6 +3598,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   onlyUnderwater: 0
   onlyAboveWater: 1
+  randomizationMode: 0
+  RandomRangeX: 0
+  RandomRangeY: 0
+  RandomRangeZ: 0
   IncludeInVisualizer: 1
   ConeTip: 2
   ForceMagnitudeCap: 0.1
@@ -4003,6 +4016,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   onlyUnderwater: 0
   onlyAboveWater: 1
+  randomizationMode: 0
+  RandomRangeX: 0
+  RandomRangeY: 0
+  RandomRangeZ: 0
   IncludeInVisualizer: 1
   ConeTip: 2
   ForceMagnitudeCap: 0.1
@@ -4107,6 +4124,7 @@ MonoBehaviour:
   noiseMean: 0
   noiseSigma: 0.1
   maxRaycastDistance: 30
+  usingWater: 0
   sensingDirection: {x: 0, y: -1, z: 0}
 --- !u!114 &2988708122269160808
 MonoBehaviour:
@@ -4833,6 +4851,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   onlyUnderwater: 0
   onlyAboveWater: 1
+  randomizationMode: 0
+  RandomRangeX: 0
+  RandomRangeY: 0
+  RandomRangeZ: 0
   IncludeInVisualizer: 1
   ConeTip: 2
   ForceMagnitudeCap: 0.1
@@ -4844,6 +4866,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 6650294322077738963}
     m_Modifications:
+    - target: {fileID: 3216101987982471312, guid: 246faa4526e9e158389691a72feb5596, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: adb7cc33bb0a71547845a50bd7651390, type: 2}
     - target: {fileID: 3658882480078120043, guid: 246faa4526e9e158389691a72feb5596, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -4888,6 +4914,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: WinchSystem
       objectReference: {fileID: 0}
+    - target: {fileID: 4267314215908667581, guid: 246faa4526e9e158389691a72feb5596, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: adb7cc33bb0a71547845a50bd7651390, type: 2}
+    - target: {fileID: 7943042263183530929, guid: 246faa4526e9e158389691a72feb5596, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: adb7cc33bb0a71547845a50bd7651390, type: 2}
     - target: {fileID: 8205656881797901549, guid: 246faa4526e9e158389691a72feb5596, type: 3}
       propertyPath: m_ConnectedArticulationBody
       value: 
