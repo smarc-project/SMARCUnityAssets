@@ -2,7 +2,6 @@
     "name": "SMARC.Main",
     "rootNamespace": "",
     "references": [
-        "SMARCROS",
         "Unity.Robotics.ROSTCPConnector",
         "Unity.Mathematics",
         "Unity.Burst",
@@ -18,7 +17,7 @@
     ],
     "includePlatforms": [],
     "excludePlatforms": [],
-    "allowUnsafeCode": false,
+    "allowUnsafeCode": true,
     "overrideReferences": false,
     "precompiledReferences": [],
     "autoReferenced": true,
