@@ -7,13 +7,13 @@
         "Unity.Burst",
         "Unity.Robotics.ROSTCPConnector.Messages",
         "Unity.Robotics.ROSTCPConnector.MessageGeneration",
-        "Unity.Robotics.UrdfImporter",
         "Unity.TextMeshPro",
         "Unity.InputSystem",
         "Unity.RenderPipelines.HighDefinition.Runtime",
         "Unity.RenderPipelines.HighDefinition.Config.Runtime",
         "Unity.RenderPipelines.Core.Runtime",
-        "Unity.Rendering.LightTransport.Runtime"
+        "Unity.Rendering.LightTransport.Runtime",
+        "Unity.Robotics.UrdfImporter"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

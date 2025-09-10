@@ -2,12 +2,13 @@
     "name": "SMARC.Editor",
     "rootNamespace": "",
     "references": [
-        "SMARC.Main"
+        "SMARC.Main",
+        "Unity.Robotics.UrdfImporter"
     ],
-    "includePlatforms": [],
-    "excludePlatforms": [
+    "includePlatforms": [
         "Editor"
     ],
+    "excludePlatforms": [],
     "allowUnsafeCode": false,
     "overrideReferences": false,
     "precompiledReferences": [],
