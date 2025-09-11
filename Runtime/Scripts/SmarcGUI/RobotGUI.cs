@@ -24,12 +24,6 @@ namespace SmarcGUI
         ROS
     }
 
-    public enum ProjectionModes
-    {
-        UTM,
-        WebMercator,
-    }
-
 
     public class RobotGUI : MonoBehaviour, IPointerClickHandler, IPointerExitHandler, IPointerEnterHandler, ICameraLookable
     {
@@ -47,7 +41,6 @@ namespace SmarcGUI
         public Button AddTaskButton;
         public RectTransform AvailTasksPanelRT;
         public Toggle UserInputToggle;
-        public TMP_Dropdown ProjectionModeDropdown;
         public string WorldMarkerName = "WorldMarkers";
         public RectTransform ExecutingTasksScrollContent;
         public RectTransform ExecTasksPanelRT;
@@ -73,7 +66,6 @@ namespace SmarcGUI
         RobotGhost ghost;
         GameObject simRobotGO;
         Transform simRobotBaseLinkTF;
-        ProjectionModes projectionMode = ProjectionModes.WebMercator;
 
 
         public InfoSource InfoSource { get; private set; }
@@ -123,14 +115,6 @@ namespace SmarcGUI
             ExecTasksPanelRT.gameObject.SetActive(false);
             UserInputToggle.gameObject.SetActive(false);
 
-            ProjectionModeDropdown.gameObject.SetActive(true);
-            ProjectionModeDropdown.AddOptions(Enum.GetNames(typeof(ProjectionModes)).ToList());
-            ProjectionModeDropdown.onValueChanged.AddListener(value =>
-            {
-                projectionMode = (ProjectionModes)value;
-                if (waspBasics != null) waspBasics.PositionInWebMercator = projectionMode == ProjectionModes.WebMercator;
-            });
-
             BGImage = GetComponent<Image>();
             originalColor = BGImage.color;
         }
@@ -160,17 +144,6 @@ namespace SmarcGUI
 
                 minHeight = rt.sizeDelta.y - AbortButton.GetComponent<RectTransform>().sizeDelta.y;
                 rt.sizeDelta = new Vector2(rt.sizeDelta.x, minHeight);
-
-                projectionMode = ProjectionModes.UTM;
-                ProjectionModeDropdown.onValueChanged.Invoke((int)projectionMode);
-                ProjectionModeDropdown.value = (int)projectionMode;
-                ProjectionModeDropdown.RefreshShownValue();
-
-
-                waspBasics = simRobotGO.GetComponentInChildren<WaspBasics>();
-                if (waspBasics != null) waspBasics.PositionInWebMercator = projectionMode == ProjectionModes.WebMercator;
-
-                if (waspBasics == null || !waspBasics.gameObject.activeSelf) ProjectionModeDropdown.gameObject.SetActive(false);
             }
 
             if (infoSource == InfoSource.MQTT)
@@ -188,11 +161,6 @@ namespace SmarcGUI
                 PingButtonText.text = "Ping!";
                 rt.sizeDelta = new Vector2(rt.sizeDelta.x, minHeight + AvailTasksPanelRT.sizeDelta.y + ExecTasksPanelRT.sizeDelta.y);
                 HeartRT.gameObject.SetActive(true);
-
-                projectionMode = ProjectionModes.WebMercator;
-                ProjectionModeDropdown.onValueChanged.Invoke((int)projectionMode);
-                ProjectionModeDropdown.value = (int)projectionMode;
-                ProjectionModeDropdown.RefreshShownValue();
             }
 
             if (infoSource != InfoSource.SIM && worldMarkersTF != null)
@@ -443,8 +411,7 @@ namespace SmarcGUI
             if (pos.latitude == 0 && pos.longitude == 0) return;
             if (ghostTF.gameObject.activeSelf == false) ghostTF.gameObject.SetActive(true);
 
-            bool useWebMercator = projectionMode == ProjectionModes.WebMercator;
-            var (x, z) = globalReferencePoint.GetUnityXZFromLatLon(pos.latitude, pos.longitude, useWebMercator);
+            var (x, z) = globalReferencePoint.GetUnityXZFromLatLon(pos.latitude, pos.longitude);
             ghost.UpdatePosition(new Vector3(x, pos.altitude, z));
         }
 
