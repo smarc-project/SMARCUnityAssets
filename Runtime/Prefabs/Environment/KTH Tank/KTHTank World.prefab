@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 5015413490385728692}
   - component: {fileID: 8604363294382296149}
   - component: {fileID: 505423518118131011}
+  - component: {fileID: 6600082402906574140}
   m_Layer: 0
   m_Name: Water
   m_TagString: Untagged
@@ -32,7 +33,7 @@ Transform:
   m_LocalScale: {x: 9.624389, y: 1, z: 5.041994}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 1101948116815116915}
+  m_Father: {fileID: 9125333271976860974}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &5015413490385728692
 MonoBehaviour:
@@ -234,6 +235,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   water: {fileID: 5015413490385728692}
+--- !u!114 &6600082402906574140
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 331914464447237204}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 849219c700ef443281978d8398f9f60d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &920024747048373790
 GameObject:
   m_ObjectHideFlags: 0
@@ -266,7 +279,6 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 9125333271976860974}
-  - {fileID: 7221368691899755062}
   - {fileID: 9074528388647197953}
   - {fileID: 5833105128060148657}
   m_Father: {fileID: 0}
@@ -937,7 +949,7 @@ Light:
   m_RenderingLayerMask: 1
   m_Lightmapping: 1
   m_LightShadowCasterMode: 2
-  m_AreaSize: {x: 1, y: 1}
+  m_AreaSize: {x: 0.5, y: 0.5}
   m_BounceIntensity: 1
   m_ColorTemperature: 6570
   m_UseColorTemperature: 1
@@ -1123,6 +1135,7 @@ Transform:
   m_Children:
   - {fileID: 4493107996328536347}
   - {fileID: 4387817126085698032}
+  - {fileID: 7221368691899755062}
   m_Father: {fileID: 1101948116815116915}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &8185974856605130840
