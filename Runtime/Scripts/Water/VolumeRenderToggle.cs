@@ -1,23 +1,21 @@
 ﻿using UnityEngine;
-using UnityEngine.Rendering;
 using UnityEngine.Rendering.HighDefinition;
 
 namespace SmarcGUI.Water
 {
-    
-    [RequireComponent(typeof(Volume))]
+    [RequireComponent(typeof(WaterSurface))]
     public class VolumeRenderToggle : WaterRenderToggle
     {
-        private Volume _volumeSettings;
+        private WaterSurface _surface;
 
         void Awake()
         {
-            _volumeSettings = GetComponent<Volume>();
+            _surface = GetComponent<WaterSurface>();
         }
         public override void ToggleWaterRender(bool render)
         {
-            _volumeSettings.profile.TryGet<WaterRendering>(out var waterRendering);
-            waterRendering.enable.value = render;
+            _surface.enabled = render;
         }
     }
+
 }
