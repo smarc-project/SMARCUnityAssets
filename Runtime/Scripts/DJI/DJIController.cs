@@ -5,6 +5,7 @@ using System.IO;
 using System.Globalization;
 using M350.PSDK_ROS2;
 using VehicleComponents.Sensors;
+using UnityEditor.EditorTools;
 
 
 namespace dji
@@ -111,14 +112,27 @@ namespace dji
         float yaw_output;
 
         //Metrics for forward speed controller 
-        float vel_k_forw = 30f;
-        float vel_z_forw = .9f;
-        float vel_p_forw = .8f;
+        [Header("Velocity Controller Tuning")]
+        [Tooltip("Larger -> Faster")]
+        [Range(0,100)]
+        public float K_VelForw = 30f;
+        [Tooltip("Larger -> More Stable")]
+        [Range(0,1)]
+        public float Z_VelForw = .9f;
+        [Tooltip("Larger -> More Aggressive, more overshoot")]
+        [Range(0,1)]
+        public float P_VelForw = .8f;
 
         //Metrics for side-to-side speed controller
-        float vel_k_left =  20f;
-        float vel_z_left = 0f;
-        float vel_p_left = 0f;
+        [Tooltip("Larger -> Faster")]
+        [Range(0,100)]
+        public float K_VelLeft = 20f;
+        [Tooltip("Larger -> More Stable")]
+        [Range(0,1)]
+        public float Z_VelLeft = 0f;
+        [Tooltip("Larger -> More Aggressive, more overshoot")]
+        [Range(0,1)]
+        public float P_VelLeft = 0f;
 
         //Used for speed controller
         Vector3 prev_vel_error = Vector3.zero;
@@ -363,8 +377,8 @@ namespace dji
             else if(vel_counter >= vel_counter_max){
                 //if statement used to reduce the frequency of the velocity controller. This is done to improve the performance by making it slower than the attitude controller.
                 vel_counter = 0;
-                target_pitch = vel_error.x * vel_k_forw - prev_vel_error.x * vel_k_forw * vel_z_forw + prev_vel_output.x * vel_p_forw; //Using a lead/lag controller with the defined gain, k, zero, z, and pole, p.
-                target_roll = -(vel_error.y * vel_k_left - prev_vel_error.y * vel_k_left * vel_z_left + prev_vel_output.y * vel_p_left); //Using a lead/lag controller with the defined gain, k, zero, z, and pole, p.
+                target_pitch = vel_error.x * K_VelForw - prev_vel_error.x * K_VelForw * Z_VelForw + prev_vel_output.x * P_VelForw; //Using a lead/lag controller with the defined gain, k, zero, z, and pole, p.
+                target_roll = -(vel_error.y * K_VelLeft - prev_vel_error.y * K_VelLeft * Z_VelLeft + prev_vel_output.y * P_VelLeft); //Using a lead/lag controller with the defined gain, k, zero, z, and pole, p.
                 prev_vel_error = vel_error;
                 
                 //Roll and pitch limited to 20 degrees. This is partly for safety and partly because the controller was designed around a linear approximation of sine.

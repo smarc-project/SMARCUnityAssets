@@ -333,6 +333,7 @@ MonoBehaviour:
   FR: {fileID: 8211211513727453642}
   BL: {fileID: 8341314688662995929}
   BR: {fileID: 1453933997702307484}
+  MaxRPM: 8000
   MotorsOff: 1
   ControllerType: 0
   CommandVelocityFLU: {x: 0, y: 0, z: 0}
@@ -348,9 +349,14 @@ MonoBehaviour:
   log_data: 0
   data_path: c:\School\UnityLogger.csv
   MaxControllerOutputAltitude: 2000
-  MaxControllerOutputPitchRoll: 1000
-  MaxRPM: 5200
+  MaxControllerOutputPitchRoll: 2000
   MaxENUSpeed: 0.8
+  K_VelForw: 30
+  Z_VelForw: 0.3
+  P_VelForw: 0.8
+  K_VelLeft: 7
+  Z_VelLeft: 0
+  P_VelLeft: 0
 --- !u!114 &4961902520350068583
 MonoBehaviour:
   m_ObjectHideFlags: 0
