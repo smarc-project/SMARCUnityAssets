@@ -49,9 +49,11 @@ namespace VehicleComponents.Sensors
             base.FixedUpdate();
             while (timer.NeedsTick(Clock.Now))
             {
-                hasNewData = UpdateSensor(Period);
                 timer.Tick();
             }
+            // we dont actually want to do more sensor updates per fixedupdate
+            // unlike the ros publisher. since the sensor data would be exactly the same...
+            hasNewData = UpdateSensor(Period);
         }
 
     }
