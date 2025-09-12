@@ -10,8 +10,6 @@ namespace M350.PSDK_ROS2
     public class PsdkTakeoffService : ROSBehaviour
     {
         bool registered = false;
-        public float takeoffAlt = 5; //Actual drone takes off to 2 meters, but thsi ensures that one can have it move around succesfully and gives some error on height
-        public float takeoffError = .1f;
         DJIController controller = null;
 
 
@@ -27,36 +25,24 @@ namespace M350.PSDK_ROS2
             }
         }
 
-        private TriggerResponse _takeoff_callback(TriggerRequest request){
+        private TriggerResponse _takeoff_callback(TriggerRequest request)
+        {
             TriggerResponse response = new TriggerResponse();
             Debug.Log("Take off service running");
-            if(controller == null){
-                controller = GetComponentInParent<DJIController>();
+            if (controller == null)
+            {
                 Debug.Log("Finding Controller Component");
-            }
-
-            if(controller != null){
-                Debug.Log("Controller not Null");
-                if(controller.controllerType == ControllerType.FLU_Velocity && controller.position.y < takeoffAlt - takeoffError){
-                    controller.isTakingOff = true;
-                    controller.isLanding = false;
-                    controller.isLanded = false;
-                    Debug.Log("Setting takingOff to true");
-                    controller.target_alt = takeoffAlt;
-                    response.success = true;
-                }
-                else{ 
-                    Debug.Log("Either controller Type or alt is wrong");
+                controller = GetComponentInParent<DJIController>();
+                if (controller == null)
+                {
+                    Debug.Log("Controller not found");
                     response.success = false;
                     return response;
                 }
-                return response;
             }
-            else{
-                Debug.Log("Controller Null! Can't Take off");
-                response.success = false;
-                return response;
-            }
+
+            response.success = controller.TakeOff();
+            return response;
         }
 
     }

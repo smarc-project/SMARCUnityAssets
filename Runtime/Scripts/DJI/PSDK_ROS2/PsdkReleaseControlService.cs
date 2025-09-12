@@ -32,8 +32,8 @@ namespace M350.PSDK_ROS2
                 controller = GetComponentInParent<DJIController>();
             }
             if(controller != null){
-                controller.target_alt = controller.position.y;
-                controller.controllerType = ControllerType.FLU_Attitude;
+                controller.TargetAlt = controller.Position.y;
+                controller.ControllerType = ControllerType.FLU_Attitude;
                 response.success = true;
                 return response;
             }

@@ -31,7 +31,7 @@ namespace M350.PSDK_ROS2
                 controller = GetComponentInParent<DJIController>();
             }
             if(controller != null){
-                controller.controllerType = ControllerType.FLU_Velocity;
+                controller.ControllerType = ControllerType.FLU_Velocity;
                 response.success = true;
                 return response;
             }

@@ -329,35 +329,28 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ComAB: {fileID: 4818710180873596960}
-  controllerType: 2
-  commandVelocityFLU: {x: 0, y: 0, z: 0}
-  commandPositionENU: {x: 0, y: 0, z: 0}
   FL: {fileID: 7914359358507958576}
   FR: {fileID: 8211211513727453642}
   BL: {fileID: 8341314688662995929}
   BR: {fileID: 1453933997702307484}
-  comPitch: 0
-  comRoll: 0
-  comYaw: 0
-  isLanded: 1
-  position: {x: 0, y: 0, z: 0}
-  FLUVel: {x: 0, y: 0, z: 0}
-  base_speed: 3000
-  altitude: 0
-  target_alt: 0
-  command_pitch: 0
-  command_roll: 0
-  command_yaw: 0
-  yaw_error: 0
-  yaw_output: 0
+  MotorsOff: 1
+  ControllerType: 0
+  CommandVelocityFLU: {x: 0, y: 0, z: 0}
+  CommandPositionENU: {x: 0, y: 0, z: 0}
+  CommandPitch: 0
+  CommandRoll: 0
+  CommandYaw: 0
+  TargetAlt: 0
+  BaseRPM: 3000
+  TakeOffAltitude: 5
+  TakeOffError: 0.1
+  LandingError: 0.3
   log_data: 0
   data_path: c:\School\UnityLogger.csv
-  robot_name: M350/
-  isTakingOff: 0
-  isLanding: 0
-  max_controller_output_alt: 2000
-  max_controller_output_pitch_roll: 1000
-  max_ENU_speed: 0.8
+  MaxControllerOutputAltitude: 2000
+  MaxControllerOutputPitchRoll: 1000
+  MaxRPM: 5200
+  MaxENUSpeed: 0.8
 --- !u!114 &4961902520350068583
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2905,11 +2898,11 @@ MonoBehaviour:
   roll: 0
   pitch: 0
   yaw: 0
-  frequency: 10
+  frequency: 50
   hasNewData: 0
   depth: 0
   noiseMean: 0
-  noiseSigma: 0.1
+  noiseSigma: 0
   maxRaycastDistance: 30
   usingWater: 0
   sensingDirection: {x: 0, y: -1, z: 0}
@@ -4913,8 +4906,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   topic: wrapper/psdk_ros2/takeoff
   NotARobot: 0
-  takeoffAlt: 5
-  takeoffError: 1
 --- !u!114 &7253901380376042119
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4988,8 +4979,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   topic: wrapper/psdk_ros2/land
   NotARobot: 0
-  landingAlt: 3
-  landingError: 0.05
 --- !u!114 &4911057463750997551
 MonoBehaviour:
   m_ObjectHideFlags: 0

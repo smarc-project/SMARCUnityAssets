@@ -19,99 +19,122 @@ namespace dji
 
     public class DJIController : MonoBehaviour
     {
+        [Header("Drone Components")]
         public ArticulationBody ComAB;
-        public ControllerType controllerType = ControllerType.FLU_Velocity;
-        public Vector3 commandVelocityFLU = Vector3.zero;
-        public Vector3 commandPositionENU = Vector3.zero;
-
         public Propeller FL, FR, BL, BR;
 
-        public float comPitch, comRoll;
-        public float comYaw;
-        public bool isLanded = true;
-        private Quaternion worldRotation;
-        public Vector3 position;
-        private Vector3 comVel;
-        private Vector3 localVel;
-        public Vector3 FLUVel;
-        public float base_speed = 3000; //The "base" speed the props rotate at. Should be slightly below the critical speed that produces enough thrust to take off
-        public float altitude;
-        public float target_alt; //Height to hover at when in Attitude control mode
-        public float command_pitch = 0; //target pitch when in Attitude control mode
-        public float command_roll = 0; //target roll when in Attitude control mode
-        public float command_yaw = 0; //target yaw, regardless of control mode
-        private float target_pitch;
-        private float target_roll;
-        private float target_yaw;
-        private PsdkTakeoffService takeoff_srv = null;
-        private PsdkLandingService landing_srv = null;
-        private LockedDirectionDepthSensor depthSensor = null;
 
-        //Used for altitude controller
-        private float prev_alt_error_pos = 0;
-        private float prev_alt_output_pos = 0;
-        private float alt_error_pos;
+        [Header("Control Commands")]
+        [Tooltip("Set to true when landed to cut power to motors")]
+        public bool MotorsOff = true;
+        public ControllerType ControllerType = ControllerType.FLU_Velocity;
+        public Vector3 CommandVelocityFLU = Vector3.zero;
+        public Vector3 CommandPositionENU = Vector3.zero;
+        [Tooltip("target Pitch when in Attitude control mode")]
+        public float CommandPitch = 0;
+        [Tooltip("target Roll when in Attitude control mode")]
+        public float CommandRoll = 0;
+        [Tooltip("target Yaw, regardless of control mode")]
+        public float CommandYaw = 0;
+        [Tooltip("Height to hover at when in Attitude control mode")]
+        public float TargetAlt;
+        [Tooltip("The 'base' speed the props rotate at. Should be slightly below the critical speed that produces enough thrust to take off")]
+        public float BaseRPM = 3000;
 
-        //Used for vertical speed controller
-        private float prev_alt_error_vel = 0;
-        private float prev_alt_output_vel = 0;
-        private float alt_error_vel;
+        [Header("Takeoff and Landing")]
+        public float TakeOffAltitude = 5;
+        public float TakeOffError = .1f;
+        public float LandingError = .05f;
 
-        //Used for pitch controller
-        private float prev_pitch_error = 0;
-        private float prev_pitch_output = 0;
-        private float pitch_error;
 
-        //Used for roll controller
-        private float prev_roll_error = 0;
-        private float prev_roll_output = 0;
-        private float roll_error;
-
-        //Used for yaw controller
-        private float prev_yaw_error = 0;
-        private float prev_yaw_output = 0;
-        public float yaw_error;
-        public float yaw_output;
-
-        //Metrics for forward speed controller 
-        private float vel_k_forw = 30f;
-        private float vel_z_forw = .9f;
-        private float vel_p_forw = .8f;
-
-        //Metrics for side-to-side speed controller
-        private float vel_k_left =  20f;
-        private float vel_z_left = 0f;
-        private float vel_p_left = 0f;
-
-        //Used for speed controller
-        private Vector3 prev_vel_error = Vector3.zero;
-        private Vector3 prev_vel_output = Vector3.zero;
-        private Vector3 vel_output = Vector3.zero;
-        private Vector3 vel_error = Vector3.zero;
-
-        //Used for position controller
-        private Vector3 prev_ENU_pos_output = Vector3.zero;
-        private Vector3 ENU_pos_output = Vector3.zero;
-
-        //Used to reduce the frequency of the speed controller for better performance
-        private float vel_counter = 0;
-        private float vel_counter_max = 25;
-        private float pos_counter = 0;
-        private float pos_counter_max = 50; //.1 second period
-
+        [Header("Data Logging")]
         //Path to which flight data is recorded. Should be a .csv
         public bool log_data = false;
         public string data_path = @"c:\School\UnityLogger.csv";
 
-        public string robot_name = "M350/";
+        [Header("Controller Limits")]
+        public float MaxControllerOutputAltitude = 2000;
+        public float MaxControllerOutputPitchRoll = 1000;
+        public float MaxRPM = 5200f;
+        public float MaxENUSpeed = .8f;
 
-        public bool isTakingOff = false;
-        public bool isLanding = false;
+        bool isTakingOff = false;
+        bool isLanding = false;
 
-        public float max_controller_output_alt = 2000;
-        public float max_controller_output_pitch_roll = 1000;
-        private float max_RPM = 5200f;
-        public float max_ENU_speed = .8f;
+
+
+        float comPitch, comRoll;
+        float comYaw;
+
+
+        public Vector3 Position { get; private set;}
+        Quaternion worldRotation;
+        Vector3 comVel;
+        Vector3 localVel;
+        Vector3 FLUVel;
+
+        float altitude;
+        float target_pitch;
+        float target_roll;
+        float target_yaw;
+
+        PsdkTakeoffService takeoff_srv = null;
+        PsdkLandingService landing_srv = null;
+        LockedDirectionDepthSensor depthSensor = null;
+
+
+        //Used for altitude controller
+        float prev_alt_error_pos = 0;
+        float prev_alt_output_pos = 0;
+        float alt_error_pos;
+
+        //Used for vertical speed controller
+        float prev_alt_error_vel = 0;
+        float prev_alt_output_vel = 0;
+        float alt_error_vel;
+
+        //Used for pitch controller
+        float prev_pitch_error = 0;
+        float prev_pitch_output = 0;
+        float pitch_error;
+
+        //Used for roll controller
+        float prev_roll_error = 0;
+        float prev_roll_output = 0;
+        float roll_error;
+
+        //Used for yaw controller
+        float prev_yaw_error = 0;
+        float prev_yaw_output = 0;
+        float yaw_error;
+        float yaw_output;
+
+        //Metrics for forward speed controller 
+        float vel_k_forw = 30f;
+        float vel_z_forw = .9f;
+        float vel_p_forw = .8f;
+
+        //Metrics for side-to-side speed controller
+        float vel_k_left =  20f;
+        float vel_z_left = 0f;
+        float vel_p_left = 0f;
+
+        //Used for speed controller
+        Vector3 prev_vel_error = Vector3.zero;
+        Vector3 prev_vel_output = Vector3.zero;
+        Vector3 vel_error = Vector3.zero;
+
+        //Used for position controller
+        Vector3 prev_ENU_pos_output = Vector3.zero;
+        Vector3 ENU_pos_output = Vector3.zero;
+
+        //Used to reduce the frequency of the speed controller for better performance
+        float vel_counter = 0;
+        float vel_counter_max = 25;
+        float pos_counter = 0;
+        float pos_counter_max = 50; //.1 second period
+
+
 
         void OnValidate(){
             float delta = Time.fixedDeltaTime - 0.002f;
@@ -162,6 +185,32 @@ namespace dji
                 }
             }
         }
+
+        public bool TakeOff()
+        {
+            if(ControllerType != ControllerType.FLU_Velocity || Position.y >= TakeOffAltitude - TakeOffError){
+                Debug.Log("Can't take off. Either not in velocity control mode or already above takeoff altitude");
+                return false;
+            }
+            Debug.Log("Taking off");
+            isTakingOff = true;
+            isLanding = false;
+            MotorsOff = false;
+            TargetAlt = TakeOffAltitude;
+            return true;
+        }
+
+        public bool Land()
+        {
+            if(ControllerType != ControllerType.FLU_Velocity){
+                Debug.Log("Can't land. Not in velocity control mode");
+                return false;
+            }
+            isTakingOff = false;
+            isLanding = true;
+            TargetAlt = Position.y - depthSensor.depth;
+            return true;
+        }
  
         void FixedUpdate()
         {
@@ -180,11 +229,11 @@ namespace dji
             FLUVel.y = localVel.z;
             FLUVel.x = localVel.x;
             FLUVel.z = localVel.y;
-            position = ComAB.transform.position;
-            altitude = position.y;
+            Position = ComAB.transform.position;
+            altitude = Position.y;
 
 
-            if(isLanded){
+            if(MotorsOff){
                 FL.SetRpm(0);
                 FR.SetRpm(0);
                 BL.SetRpm(0);
@@ -204,24 +253,24 @@ namespace dji
                 depthSensor = GetComponentInChildren<LockedDirectionDepthSensor>();
             }
 
-            target_yaw = command_yaw; //target and command angles are split so that the same attitude control can be used for velocity. For yaw, these are currently always equivalent.
+            target_yaw = CommandYaw; //target and command angles are split so that the same attitude control can be used for velocity. For yaw, these are currently always equivalent.
 
-            if(controllerType == ControllerType.ENU_RelativePosition){
-                target_alt = commandPositionENU.z;
+            if(ControllerType == ControllerType.ENU_RelativePosition){
+                TargetAlt = CommandPositionENU.z;
             }
             //Vertical Controllers
             float alt_output;
-            if(controllerType == ControllerType.FLU_Attitude || controllerType == ControllerType.ENU_RelativePosition || isTakingOff || isLanding){
+            if(ControllerType == ControllerType.FLU_Attitude || ControllerType == ControllerType.ENU_RelativePosition || isTakingOff || isLanding){
                 //Altitude Controller. This is used either in Attitude Control Mode or while taking off or landing.
-                alt_error_pos = target_alt - altitude;
+                alt_error_pos = TargetAlt - altitude;
 
                 float k_alt_pos = 2712f; 
                 float z_alt_pos = .999263f;
                 float p_alt_pos = .9937f;
 
                 alt_output = k_alt_pos * alt_error_pos - k_alt_pos * z_alt_pos * prev_alt_error_pos + p_alt_pos * prev_alt_output_pos; //Using a lead/lag controller with the defined gain, k, zero, z, and pole, p.
-                if(alt_output > max_controller_output_alt){
-                    alt_output = max_controller_output_alt;
+                if(alt_output > MaxControllerOutputAltitude){
+                    alt_output = MaxControllerOutputAltitude;
                 }
                 else if(alt_output < -100){
                     alt_output = -100;
@@ -230,22 +279,22 @@ namespace dji
                 prev_alt_output_pos = alt_output;
 
                 if(isTakingOff){ //Checks if done taking off
-                    if(altitude > takeoff_srv.takeoffAlt - takeoff_srv.takeoffError){
+                    if(altitude > TakeOffAltitude - TakeOffError){
                         isTakingOff = false;
                         Debug.Log("Setting takeoff to false");
                     }
                 }
 
                 if(isLanding){
-                    Debug.Log("Depth: " + depthSensor.depth + " landingError: " + landing_srv.landingError);
-                    if(depthSensor.depth > landing_srv.landingError){
-                        target_alt = altitude - depthSensor.depth;
+                    Debug.Log("Depth: " + depthSensor.depth + " landingError: " + LandingError);
+                    if(depthSensor.depth > LandingError){
+                        TargetAlt = altitude - depthSensor.depth;
                     }
                     else{
                         isLanding = false;
                         Debug.Log("Setting landing to false");
                         if(!depthSensor.usingWater){
-                            isLanded = true;
+                            MotorsOff = true;
                         }
                         
                     }
@@ -254,37 +303,37 @@ namespace dji
 
             else{
                 //Vertical Speed controller 
-                alt_error_vel = commandVelocityFLU.z - FLUVel.z;
+                alt_error_vel = CommandVelocityFLU.z - FLUVel.z;
 
                 float k_alt_vel = 3000f;
                 float z_alt_vel = .85f;
                 float p_alt_vel = .9f;
 
                 alt_output = k_alt_vel * alt_error_vel - k_alt_vel * z_alt_vel * prev_alt_error_vel + p_alt_vel * prev_alt_output_vel; //Using a lead/lag controller with the defined gain, k, zero, z, and pole, p.
-                if(alt_output > max_controller_output_alt){
-                    alt_output = max_controller_output_alt;
+                if(alt_output > MaxControllerOutputAltitude){
+                    alt_output = MaxControllerOutputAltitude;
                 }
-                else if(alt_output < -max_controller_output_alt){
-                    alt_output = -max_controller_output_alt;
+                else if(alt_output < -MaxControllerOutputAltitude){
+                    alt_output = -MaxControllerOutputAltitude;
                 }
                 prev_alt_error_vel = alt_error_vel;
                 prev_alt_output_vel = alt_output;
             }
 
-            if(controllerType != ControllerType.ENU_RelativePosition){
+            if(ControllerType != ControllerType.ENU_RelativePosition){
                 prev_ENU_pos_output = FLUVel;
             }
 
-            if(controllerType == ControllerType.FLU_Velocity){
-                vel_error = FLUVel - commandVelocityFLU;
+            if(ControllerType == ControllerType.FLU_Velocity){
+                vel_error = FLUVel - CommandVelocityFLU;
             }
-            else if(pos_counter >= pos_counter_max && controllerType == ControllerType.ENU_RelativePosition){
+            else if(pos_counter >= pos_counter_max && ControllerType == ControllerType.ENU_RelativePosition){
                 //Main Position Controller Code. This is not currently based on drone dynamics and instead mimics captain.
                 pos_counter = 0;
                 Vector3 pos_in_FLU = Vector3.zero;
                 var yaw_rad = comYaw / 180 * Mathf.PI;
-                pos_in_FLU.x = Mathf.Cos(yaw_rad) * commandPositionENU.x - Mathf.Sin(yaw_rad) * commandPositionENU.y;
-                pos_in_FLU.y = Mathf.Cos(yaw_rad) * commandPositionENU.y + Mathf.Sin(yaw_rad) * commandPositionENU.x;
+                pos_in_FLU.x = Mathf.Cos(yaw_rad) * CommandPositionENU.x - Mathf.Sin(yaw_rad) * CommandPositionENU.y;
+                pos_in_FLU.y = Mathf.Cos(yaw_rad) * CommandPositionENU.y + Mathf.Sin(yaw_rad) * CommandPositionENU.x;
 
                 float k_pos = .5f;
                 float r_sigma = .9f;
@@ -300,10 +349,9 @@ namespace dji
                 prev_ENU_pos_output = ENU_pos_output;
             }
 
-            if(controllerType == ControllerType.FLU_Attitude){
-                target_pitch = command_pitch;
-                target_roll = command_roll;
-                vel_output = Vector3.zero;
+            if(ControllerType == ControllerType.FLU_Attitude){
+                target_pitch = CommandPitch;
+                target_roll = CommandRoll;
             }
 
             else if(vel_counter >= vel_counter_max){
@@ -343,11 +391,11 @@ namespace dji
             float p = .95f; //Larger makes "more aggressive", faster with more overshoot (between 0 and 1)
 
             var pitch_output = k * pitch_error - k * z * prev_pitch_error + p * prev_pitch_output; //Using a lead/lag controller with the defined gain, k, zero, z, and pole, p.
-            if(pitch_output > max_controller_output_pitch_roll){
-                pitch_output = max_controller_output_pitch_roll; //This is in prop rpm. Limiting to avoid physical and sim max speeds 
+            if(pitch_output > MaxControllerOutputPitchRoll){
+                pitch_output = MaxControllerOutputPitchRoll; //This is in prop rpm. Limiting to avoid physical and sim max speeds 
             }
-            else if(pitch_output < -max_controller_output_pitch_roll){
-                pitch_output = -max_controller_output_pitch_roll;
+            else if(pitch_output < -MaxControllerOutputPitchRoll){
+                pitch_output = -MaxControllerOutputPitchRoll;
             } 
             prev_pitch_error = pitch_error;
             prev_pitch_output = pitch_output;
@@ -362,11 +410,11 @@ namespace dji
             p = .95f;
 
             var roll_output = k * roll_error - k * z * prev_roll_error + p * prev_roll_output; //Using a lead/lag controller with the defined gain, k, zero, z, and pole, p.
-            if(roll_output > max_controller_output_pitch_roll){
-                roll_output = max_controller_output_pitch_roll;
+            if(roll_output > MaxControllerOutputPitchRoll){
+                roll_output = MaxControllerOutputPitchRoll;
             }
-            else if(roll_output < -max_controller_output_pitch_roll){
-                roll_output = -max_controller_output_pitch_roll;
+            else if(roll_output < -MaxControllerOutputPitchRoll){
+                roll_output = -MaxControllerOutputPitchRoll;
             }
             prev_roll_error = roll_error;
             prev_roll_output = roll_output;
@@ -390,27 +438,27 @@ namespace dji
             prev_yaw_error = yaw_error;
             prev_yaw_output = yaw_output;
 
-            var FL_RPM = base_speed + alt_output + pitch_output - roll_output - yaw_output;
-            var FR_RPM = base_speed + alt_output + pitch_output + roll_output + yaw_output;
-            var BL_RPM = base_speed + alt_output - pitch_output - roll_output + yaw_output;
-            var BR_RPM = base_speed + alt_output - pitch_output + roll_output - yaw_output;
+            var FL_RPM = BaseRPM + alt_output + pitch_output - roll_output - yaw_output;
+            var FR_RPM = BaseRPM + alt_output + pitch_output + roll_output + yaw_output;
+            var BL_RPM = BaseRPM + alt_output - pitch_output - roll_output + yaw_output;
+            var BR_RPM = BaseRPM + alt_output - pitch_output + roll_output - yaw_output;
 
-            if(FL_RPM > max_RPM || FR_RPM > max_RPM || BL_RPM > max_RPM || BR_RPM > max_RPM || FL_RPM < 0 || FR_RPM < 0 || BL_RPM < 0 || BR_RPM < 0){
+            if(FL_RPM > MaxRPM || FR_RPM > MaxRPM || BL_RPM > MaxRPM || BR_RPM > MaxRPM || FL_RPM < 0 || FR_RPM < 0 || BL_RPM < 0 || BR_RPM < 0){
                 Debug.LogWarning("Target RPM outside bounds! FL: " + FL_RPM + " FR: " + FR_RPM + " BL: " + BL_RPM + " BR: " + BR_RPM);
-                var available = max_RPM - (base_speed + alt_output);
+                var available = MaxRPM - (BaseRPM + alt_output);
                 float desired;
-                if(FL_RPM > max_RPM || FR_RPM > max_RPM || BL_RPM > max_RPM || BR_RPM > max_RPM){
-                    if(FL_RPM > max_RPM){
-                        desired = FL_RPM - (base_speed + alt_output);
+                if(FL_RPM > MaxRPM || FR_RPM > MaxRPM || BL_RPM > MaxRPM || BR_RPM > MaxRPM){
+                    if(FL_RPM > MaxRPM){
+                        desired = FL_RPM - (BaseRPM + alt_output);
                     }
-                    else if(FR_RPM > max_RPM){
-                        desired = FR_RPM - (base_speed + alt_output);
+                    else if(FR_RPM > MaxRPM){
+                        desired = FR_RPM - (BaseRPM + alt_output);
                     }
-                    else if(BL_RPM > max_RPM){
-                        desired = BL_RPM - (base_speed + alt_output);
+                    else if(BL_RPM > MaxRPM){
+                        desired = BL_RPM - (BaseRPM + alt_output);
                     }
                     else{
-                        desired = BR_RPM - (base_speed + alt_output);
+                        desired = BR_RPM - (BaseRPM + alt_output);
                     }
                     pitch_output *= available / desired;
                     roll_output *= available / desired;
@@ -420,11 +468,11 @@ namespace dji
                     prev_pitch_output = pitch_output;
                     prev_roll_output = roll_output;
 
-                    FL_RPM = base_speed + alt_output + pitch_output - roll_output - yaw_output;
-                    FR_RPM = base_speed + alt_output + pitch_output + roll_output + yaw_output;
-                    BL_RPM = base_speed + alt_output - pitch_output - roll_output + yaw_output;
-                    BR_RPM = base_speed + alt_output - pitch_output + roll_output - yaw_output;
-                    if(FL_RPM > max_RPM || FR_RPM > max_RPM || BL_RPM > max_RPM || BR_RPM > max_RPM){
+                    FL_RPM = BaseRPM + alt_output + pitch_output - roll_output - yaw_output;
+                    FR_RPM = BaseRPM + alt_output + pitch_output + roll_output + yaw_output;
+                    BL_RPM = BaseRPM + alt_output - pitch_output - roll_output + yaw_output;
+                    BR_RPM = BaseRPM + alt_output - pitch_output + roll_output - yaw_output;
+                    if(FL_RPM > MaxRPM || FR_RPM > MaxRPM || BL_RPM > MaxRPM || BR_RPM > MaxRPM){
                         Debug.LogWarning("Target RPM still too high! FL: " + FL_RPM + " FR: " + FR_RPM + " BL: " + BL_RPM + " BR: " + BR_RPM);
                     }
                 }
@@ -436,15 +484,15 @@ namespace dji
             BR.SetRpm(BR_RPM);
             if(log_data){
                 using (StreamWriter sw = File.AppendText(data_path)){
-                        sw.WriteLine($"{Time.fixedTime},{comRoll},{comPitch},{comYaw},{target_roll},{target_pitch},{target_yaw},{FLUVel.x},{FLUVel.y},{FLUVel.z},{commandVelocityFLU.x},{commandVelocityFLU.y},{commandVelocityFLU.z}, {FL_RPM}, {FR_RPM}, {BL_RPM}, {BR_RPM}, {target_pitch}, {target_roll}");
+                        sw.WriteLine($"{Time.fixedTime},{comRoll},{comPitch},{comYaw},{target_roll},{target_pitch},{target_yaw},{FLUVel.x},{FLUVel.y},{FLUVel.z},{CommandVelocityFLU.x},{CommandVelocityFLU.y},{CommandVelocityFLU.z}, {FL_RPM}, {FR_RPM}, {BL_RPM}, {BR_RPM}, {target_pitch}, {target_roll}");
                 }
             }
         }
 
         Vector3 _normalize_max_speed(Vector3 speed){
             var mag = Mathf.Sqrt(speed.x * speed.x + speed.y * speed.y + speed.z * speed.z);
-            if(mag > max_ENU_speed){
-                speed = speed / mag * max_ENU_speed;
+            if(mag > MaxENUSpeed){
+                speed = speed / mag * MaxENUSpeed;
             }
 
             return speed;

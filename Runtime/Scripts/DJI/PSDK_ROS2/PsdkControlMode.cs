@@ -20,7 +20,7 @@ namespace M350.PSDK_ROS2
                 controller = GetComponentInParent<DJIController>();
             }
             if(controller != null){
-                if(controller.controllerType == ControllerType.FLU_Attitude)
+                if(controller.ControllerType == ControllerType.FLU_Attitude)
                 {
                     ROSMsg.control_auth = 0;
                 }
