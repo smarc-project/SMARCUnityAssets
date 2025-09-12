@@ -22,6 +22,8 @@ namespace dji
         [Header("Drone Components")]
         public ArticulationBody ComAB;
         public Propeller FL, FR, BL, BR;
+        [Tooltip("Maximum RPM the props can reach. This overrides the max RPM set in the Propeller script")]
+        public float MaxRPM = 8000f;
 
 
         [Header("Control Commands")]
@@ -55,7 +57,6 @@ namespace dji
         [Header("Controller Limits")]
         public float MaxControllerOutputAltitude = 2000;
         public float MaxControllerOutputPitchRoll = 1000;
-        public float MaxRPM = 5200f;
         public float MaxENUSpeed = .8f;
 
         public bool IsTakingOff { get; private set; } = false;
@@ -145,11 +146,16 @@ namespace dji
             }
         }
 
-        void Awake(){
+        void Awake()
+        {
             FL.HoverDefault = false;
             BL.HoverDefault = false;
             FR.HoverDefault = false;
             BR.HoverDefault = false;
+            FL.RPMMax = MaxRPM;
+            BL.RPMMax = MaxRPM;
+            FR.RPMMax = MaxRPM;
+            BR.RPMMax = MaxRPM;
         }
 
         void Start(){
@@ -443,7 +449,7 @@ namespace dji
             var BL_RPM = BaseRPM + alt_output - pitch_output - roll_output + yaw_output;
             var BR_RPM = BaseRPM + alt_output - pitch_output + roll_output - yaw_output;
 
-            if(FL_RPM > MaxRPM || FR_RPM > MaxRPM || BL_RPM > MaxRPM || BR_RPM > MaxRPM || FL_RPM < 0 || FR_RPM < 0 || BL_RPM < 0 || BR_RPM < 0){
+            if(FL_RPM > MaxRPM || FR_RPM > MaxRPM || BL_RPM > MaxRPM || BR_RPM > MaxRPM){
                 Debug.LogWarning("Target RPM outside bounds! FL: " + FL_RPM + " FR: " + FR_RPM + " BL: " + BL_RPM + " BR: " + BR_RPM);
                 var available = MaxRPM - (BaseRPM + alt_output);
                 float desired;
