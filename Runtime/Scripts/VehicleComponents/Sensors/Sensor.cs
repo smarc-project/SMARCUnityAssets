@@ -1,5 +1,6 @@
 using UnityEngine;
 using ROS.Core;
+using Unity.Robotics.Core;
 
 namespace VehicleComponents.Sensors
 {
@@ -10,16 +11,24 @@ namespace VehicleComponents.Sensors
         public float frequency = 10f;
         public bool hasNewData = false;
 
-        protected float Period => 1.0f/frequency;
-        float timeSinceLastUpdate = 0f;
+        protected float Period => 1.0f / frequency;
+
+        
+        FrequencyTimer timer;
 
         protected void OnValidate()
         {
-            if(Period < Time.fixedDeltaTime)
+            if (Period < Time.fixedDeltaTime)
             {
-                Debug.LogWarning($"[{transform.name}] Sensor update frequency set to {frequency}Hz but Unity updates physics at {1f/Time.fixedDeltaTime}Hz. Setting sensor period to Unity's fixedDeltaTime!");
-                frequency = 1f/Time.fixedDeltaTime;
+                Debug.LogWarning($"[{transform.name}] Sensor update frequency set to {frequency}Hz but Unity updates physics at {1f / Time.fixedDeltaTime}Hz. Setting sensor period to Unity's fixedDeltaTime!");
+                frequency = 1f / Time.fixedDeltaTime;
             }
+        }
+
+        new void Awake()
+        {
+            base.Awake();
+            timer = new FrequencyTimer(frequency);
         }
 
 
@@ -35,12 +44,14 @@ namespace VehicleComponents.Sensors
             return false;
         }
 
-        void FixedUpdate()
+        new void FixedUpdate()
         {
-            timeSinceLastUpdate += Time.fixedDeltaTime;
-            if(timeSinceLastUpdate < Period) return;
-            hasNewData = UpdateSensor(timeSinceLastUpdate);
-            timeSinceLastUpdate = 0f;
+            base.FixedUpdate();
+            while (timer.NeedsTick(Clock.Now))
+            {
+                hasNewData = UpdateSensor(Period);
+                timer.Tick();
+            }
         }
 
     }

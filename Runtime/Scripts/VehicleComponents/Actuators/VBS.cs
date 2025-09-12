@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Runtime.CompilerServices;
-using Unity.Mathematics;
-using UnityEditor;
 using UnityEngine;
 
 namespace VehicleComponents.Actuators
@@ -50,8 +47,9 @@ namespace VehicleComponents.Actuators
             return true;
         }
 
-        public void FixedUpdate()
+        new public void FixedUpdate()
         {
+            base.FixedUpdate();
             if (Physics.simulationMode == SimulationMode.FixedUpdate) DoUpdate();
         }
 

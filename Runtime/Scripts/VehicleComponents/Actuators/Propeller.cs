@@ -60,8 +60,9 @@ namespace VehicleComponents.Actuators
             if (HoverDefault) InitializeRPMToStayAfloat();
         }
 
-        void FixedUpdate()
+        new void FixedUpdate()
         {
+            base.FixedUpdate();
             if (Physics.simulationMode == SimulationMode.FixedUpdate) DoUpdate();
         }
 
