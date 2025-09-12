@@ -58,8 +58,8 @@ namespace dji
         public float MaxRPM = 5200f;
         public float MaxENUSpeed = .8f;
 
-        bool isTakingOff = false;
-        bool isLanding = false;
+        public bool IsTakingOff { get; private set; } = false;
+        public bool IsLanding { get; private set; } = false;
 
 
 
@@ -193,8 +193,8 @@ namespace dji
                 return false;
             }
             Debug.Log("Taking off");
-            isTakingOff = true;
-            isLanding = false;
+            IsTakingOff = true;
+            IsLanding = false;
             MotorsOff = false;
             TargetAlt = TakeOffAltitude;
             return true;
@@ -206,8 +206,8 @@ namespace dji
                 Debug.Log("Can't land. Not in velocity control mode");
                 return false;
             }
-            isTakingOff = false;
-            isLanding = true;
+            IsTakingOff = false;
+            IsLanding = true;
             TargetAlt = Position.y - depthSensor.depth;
             return true;
         }
@@ -260,7 +260,7 @@ namespace dji
             }
             //Vertical Controllers
             float alt_output;
-            if(ControllerType == ControllerType.FLU_Attitude || ControllerType == ControllerType.ENU_RelativePosition || isTakingOff || isLanding){
+            if(ControllerType == ControllerType.FLU_Attitude || ControllerType == ControllerType.ENU_RelativePosition || IsTakingOff || IsLanding){
                 //Altitude Controller. This is used either in Attitude Control Mode or while taking off or landing.
                 alt_error_pos = TargetAlt - altitude;
 
@@ -278,20 +278,20 @@ namespace dji
                 prev_alt_error_pos = alt_error_pos;
                 prev_alt_output_pos = alt_output;
 
-                if(isTakingOff){ //Checks if done taking off
+                if(IsTakingOff){ //Checks if done taking off
                     if(altitude > TakeOffAltitude - TakeOffError){
-                        isTakingOff = false;
+                        IsTakingOff = false;
                         Debug.Log("Setting takeoff to false");
                     }
                 }
 
-                if(isLanding){
+                if(IsLanding){
                     Debug.Log("Depth: " + depthSensor.depth + " landingError: " + LandingError);
                     if(depthSensor.depth > LandingError){
                         TargetAlt = altitude - depthSensor.depth;
                     }
                     else{
-                        isLanding = false;
+                        IsLanding = false;
                         Debug.Log("Setting landing to false");
                         if(!depthSensor.usingWater){
                             MotorsOff = true;
