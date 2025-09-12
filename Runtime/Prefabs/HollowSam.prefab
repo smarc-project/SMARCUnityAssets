@@ -1580,6 +1580,7 @@ MonoBehaviour:
     type: 3}
   BuoyPrefab: {fileID: 8815314036595629783, guid: 1a141f36c860298228d360ce3f711dd2,
     type: 3}
+  RopeMaterial: {fileID: 2100000, guid: 26bbab7733c52ba43accdcce9c5853b3, type: 2}
   VehicleRopeLinkName: rope_link
   VehicleBaseLinkName: base_link
   RopeDiameter: 0.01
