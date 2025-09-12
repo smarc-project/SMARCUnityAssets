@@ -20,7 +20,7 @@ MonoBehaviour:
     m_OverrideState: 1
     m_Value: 1
   skyAmbientMode:
-    m_OverrideState: 0
+    m_OverrideState: 1
     m_Value: 1
   planetRadius:
     m_OverrideState: 1
@@ -36,10 +36,10 @@ MonoBehaviour:
     m_Value: {x: 0, y: -6378.1, z: 0}
   windOrientation:
     m_OverrideState: 1
-    m_Value: 0
+    m_Value: 136
   windSpeed:
     m_OverrideState: 1
-    m_Value: 0
+    m_Value: 1.36
   fogType:
     m_OverrideState: 1
     m_Value: 0
