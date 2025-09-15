@@ -151,15 +151,16 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ConnectedArticulationBody: {fileID: 0}
   ConnectedRigidbody: {fileID: 5350459715123617840}
+  MaxWaterQueryFrequency: 50
   VolumeObject: {fileID: 2126975242162296386}
   VolumeMesh: {fileID: 0}
   Volume: 0
-  WaterDensity: 997
-  DepthBeforeSubmerged: 0.1
+  WaterDensity: 200
+  DepthBeforeSubmerged: 0.5
   MaxBuoyancyForce: 1000
   UnderwaterDrag: 50
   UnderwaterAngularDrag: 5
-  AirDrag: 5
+  AirDrag: 20
   AirAngularDrag: 5
   IsUnderwater: 0
   IsSubmerged: 0
