@@ -18,14 +18,12 @@ namespace SmarcGUI.MissionPlanning.Tasks
         public TMP_InputField DescriptionField;
         public TMP_InputField TimeoutField;
         public Toggle DrawPathToggle;
-        public Toggle UseWebMercatorToggle;
         public RectTransform HighlightRT;
         public RectTransform SelectedHighlightRT;
         public LineRenderer PathLineRenderer;
 
         bool isSelected = false;
         List<TaskGUI> taskGUIs = new();
-        public bool PlanInWebMercator => UseWebMercatorToggle.isOn;
 
 
         MissionPlanStore missionPlanStore;
@@ -39,7 +37,6 @@ namespace SmarcGUI.MissionPlanning.Tasks
             DescriptionField.onEndEdit.AddListener(OnDescriptionChanged);
             TimeoutField.onEndEdit.AddListener(OnTimeoutChanged);
             DrawPathToggle.onValueChanged.AddListener((v) => PathLineRenderer.enabled = v);
-            UseWebMercatorToggle.onValueChanged.AddListener((v) => OnProjectionChanged());
         }
 
 
