@@ -15,6 +15,9 @@ namespace Rope
         public Rigidbody LoadTwoRB;
         MixedBody loadTwoBody;
 
+        [Header("Rope")]
+        public Material RopeMaterial;
+
         SpringJoint ropeJointOne;
         SpringJoint ropeJointTwo;
         LineRenderer LROne;
@@ -25,7 +28,7 @@ namespace Rope
         public float limitTwo;
         public float limitSum;
         public float ropeSpeed;
-        
+
 
         protected override void SetupEnds()
         {
@@ -40,6 +43,16 @@ namespace Rope
             ropeSpeed = 0;
             ropeJointOne.maxDistance = limitOne;
             ropeJointTwo.maxDistance = limitTwo;
+            
+            if (RopeMaterial != null)
+            {
+                LROne.material = RopeMaterial;
+                LROne.receiveShadows = true;
+                LROne.generateLightingData = true;
+                LRTwo.material = RopeMaterial;
+                LRTwo.receiveShadows = true;
+                LRTwo.generateLightingData = true;
+            }
         }
 
 
@@ -63,13 +76,14 @@ namespace Rope
             LRTwo.startColor = twoIsSlack ? Color.green : Color.red;
             LRTwo.endColor = LRTwo.startColor;
             
+            
             // both sides are slack, give maximum slack to the one
             // with the most rope already and tighten the other
             // without pulling the side with the less rope
-            if(oneIsSlack && twoIsSlack)
+            if (oneIsSlack && twoIsSlack)
             {
                 ropeSpeed = 0;
-                if(distOne > distTwo)
+                if (distOne > distTwo)
                 {
                     limitOne = RopeLength - distTwo;
                     limitTwo = RopeLength - limitOne;
@@ -81,13 +95,13 @@ namespace Rope
                 }
             }
             // one side is slack, let the other have all the slack rope
-            else if(oneIsSlack)
+            else if (oneIsSlack)
             {
                 ropeSpeed = 0;
                 limitTwo = RopeLength - distOne;
                 limitOne = RopeLength - limitTwo;
             }
-            else if(twoIsSlack)
+            else if (twoIsSlack)
             {
                 ropeSpeed = 0;
                 limitOne = RopeLength - distTwo;
@@ -98,7 +112,7 @@ namespace Rope
             {
                 var pullOne = ropeJointOne.currentForce.magnitude;
                 var pullTwo = ropeJointTwo.currentForce.magnitude;
-                float ropeAccel = (pullOne-pullTwo) / (loadOneBody.mass + loadTwoBody.mass);
+                float ropeAccel = (pullOne - pullTwo) / (loadOneBody.mass + loadTwoBody.mass);
                 ropeSpeed += ropeAccel * Time.fixedDeltaTime;
                 limitOne += ropeSpeed * Time.fixedDeltaTime;
                 limitOne = Mathf.Clamp(limitOne, 0, RopeLength);

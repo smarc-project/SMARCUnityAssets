@@ -49,6 +49,7 @@ namespace Rope
                 lineRenderer.generateLightingData = true;
             }
             CurrentRopeSpeed = 0;
+            CurrentLength = TargetLength;
             ropeJoint.maxDistance = CurrentLength;
             setup = true;
             Update();
@@ -60,10 +61,11 @@ namespace Rope
         {
             TargetLength = Mathf.Clamp(TargetLength, MinLength, RopeLength);
         }
-        
+
         void Awake()
         {
-            if(loadBody == null) loadBody = new MixedBody(LoadAB, LoadRB);
+            if (loadBody == null) loadBody = new MixedBody(LoadAB, LoadRB);
+            
         }
 
         void Update()
@@ -79,8 +81,7 @@ namespace Rope
 
         void FixedUpdate()
         {   
-            if(!setup) return;
-            
+            if (!setup) return;
 
             // simple speed control
             var lenDiff = TargetLength - CurrentLength;

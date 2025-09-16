@@ -54,6 +54,7 @@ MonoBehaviour:
   LoadOneRB: {fileID: 0}
   LoadTwoAB: {fileID: 0}
   LoadTwoRB: {fileID: 0}
+  RopeMaterial: {fileID: 2100000, guid: 26bbab7733c52ba43accdcce9c5853b3, type: 2}
   limitOne: 1.0319612
   limitTwo: 1.0804071
   limitSum: 0
@@ -488,6 +489,7 @@ GameObject:
   - component: {fileID: 5024393874022423876}
   - component: {fileID: 4757268333841122710}
   - component: {fileID: 2855852348665451609}
+  - component: {fileID: 890438897861535675}
   m_Layer: 0
   m_Name: Hook
   m_TagString: Untagged
@@ -561,7 +563,7 @@ Rigidbody:
   m_GameObject: {fileID: 6040559385985837056}
   serializedVersion: 4
   m_Mass: 0.1
-  m_Drag: 0.28
+  m_Drag: 0.3
   m_AngularDrag: 0.1
   m_CenterOfMass: {x: 0, y: 0, z: 0}
   m_InertiaTensor: {x: 1, y: 1, z: 1}
@@ -579,6 +581,42 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!114 &890438897861535675
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6040559385985837056}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9cabd620bcc508e47915e35234c68c5c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ConnectedArticulationBody: {fileID: 0}
+  ConnectedRigidbody: {fileID: 2855852348665451609}
+  MaxWaterQueryFrequency: 50
+  VolumeObject: {fileID: 0}
+  VolumeMesh: {fileID: 0}
+  Volume: 0
+  WaterDensity: 997
+  DepthBeforeSubmerged: 0.03
+  MaxBuoyancyForce: 1000
+  UnderwaterDrag: 10
+  UnderwaterAngularDrag: 5
+  AirDrag: -1
+  AirAngularDrag: -1
+  IsUnderwater: 0
+  IsSubmerged: 0
+  CurrentDepth: 0
+  AddGravity: 0
+  AutomaticCenterOfGravity: 0
+  Mass: 0
+  DrawForces: 0
+  AppliedBuoyancyForce: {x: 0, y: 0, z: 0}
+  AppliedGravityForce: {x: 0, y: 0, z: 0}
+  ApplyCustomForce: 0
+  CustomForce: {x: 0, y: 0, z: 0}
 --- !u!1 &6520412845958948343
 GameObject:
   m_ObjectHideFlags: 0

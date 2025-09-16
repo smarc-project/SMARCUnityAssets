@@ -5,7 +5,9 @@ namespace Rope
     public class WinchControl : MonoBehaviour
     {
         [Header("Winch controls")]
+        [Range(0f, 10f)]
         public float TargetLength = 0.5f;
+        [Range(0f, 5f)]
         public float WinchSpeed = 0.5f;
 
         [Header("Components")]
@@ -66,9 +68,12 @@ namespace Rope
 
             winchJointToVehicle.connectedBody = AttachmentRB;
             winchJointToVehicle.connectedArticulationBody = AttachmentAB;
+
             winch.RopeDiameter = RopeDiameter;
             winch.RopeLength = RopeLength;
             winch.RopeMaterial = RopeMaterial;
+            pulley.RopeMaterial = RopeMaterial;
+            
             winch.Setup();
         }
 
