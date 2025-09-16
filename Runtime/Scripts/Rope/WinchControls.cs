@@ -24,9 +24,10 @@ namespace Rope
         [Header("Rope properties")]
         public float RopeLength;
         public float RopeDiameter;
+        public Material RopeMaterial;
 
 
-        void Awake()
+        void Start()
         {
             if (AttachmentAB == null && AttachmentRB == null)
             {
@@ -67,6 +68,8 @@ namespace Rope
             winchJointToVehicle.connectedArticulationBody = AttachmentAB;
             winch.RopeDiameter = RopeDiameter;
             winch.RopeLength = RopeLength;
+            winch.RopeMaterial = RopeMaterial;
+            winch.Setup();
         }
 
         void FixedUpdate()
