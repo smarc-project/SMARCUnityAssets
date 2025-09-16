@@ -1,10 +1,6 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-
 using Force;
-using Utils = DefaultNamespace.Utils;
-using System;
+
 
 namespace Rope
 {
