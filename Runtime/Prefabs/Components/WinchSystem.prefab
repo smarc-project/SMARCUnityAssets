@@ -321,6 +321,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3658882480078120043}
+  - component: {fileID: 3161027279317484706}
   m_Layer: 0
   m_Name: WinchSystem
   m_TagString: Untagged
@@ -346,6 +347,27 @@ Transform:
   - {fileID: 920350988464342731}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &3161027279317484706
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4039007730990099910}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0321a45cab09b854a9f366252051d9cf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  TargetLength: 5
+  WinchSpeed: 0.5
+  WinchGO: {fileID: 3506910256720658690}
+  HookGO: {fileID: 6040559385985837056}
+  PulleyGO: {fileID: 754093669834084086}
+  AttachmentAB: {fileID: 0}
+  AttachmentRB: {fileID: 0}
+  RopeLength: 5
+  RopeDiameter: 0.05
 --- !u!1 &4202741248090405269
 GameObject:
   m_ObjectHideFlags: 0
