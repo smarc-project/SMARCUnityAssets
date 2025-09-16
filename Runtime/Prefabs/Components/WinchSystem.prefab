@@ -335,7 +335,8 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 3715248501297074839}
   m_Father: {fileID: 3658882480078120043}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &7404726597310584848
@@ -352,15 +353,16 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   RopeDiameter: 0.05
   RopeLength: 3
-  SetupOnStart: 1
+  SetupOnStart: 0
   LoadAB: {fileID: 0}
   LoadRB: {fileID: 2855852348665451609}
-  RopeMaterial: {fileID: 0}
+  RopeMaterial: {fileID: 2100000, guid: 26bbab7733c52ba43accdcce9c5853b3, type: 2}
   TargetLength: 0.1
   WinchSpeed: 0.5
   CurrentRopeSpeed: 0.5
   CurrentLength: 0.13
   MinLength: 0.1
+  ropeCollider: {fileID: 3202806141719433272}
   ActualDistance: 0
 --- !u!138 &8205656881797901549
 FixedJoint:
@@ -852,6 +854,61 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 0.03484248, y: 0.09744501, z: 0.033564556}
   m_Center: {x: 0.0019166451, y: -0.04088378, z: -0.00000042596693}
+--- !u!1 &9178390447606224746
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3715248501297074839}
+  - component: {fileID: 3202806141719433272}
+  m_Layer: 7
+  m_Name: RopeCollider
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &3715248501297074839
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9178390447606224746}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 5399844534318492535}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!136 &3202806141719433272
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9178390447606224746}
+  m_Material: {fileID: 13400000, guid: 532fd262430ec4d1b8f47d01daecd2eb, type: 2}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.02
+  m_Height: 0
+  m_Direction: 2
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1001 &3289976339369268615
 PrefabInstance:
   m_ObjectHideFlags: 0

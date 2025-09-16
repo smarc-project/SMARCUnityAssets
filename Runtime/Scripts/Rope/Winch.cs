@@ -25,6 +25,11 @@ namespace Rope
         public float CurrentLength = 0.5f;
         public float MinLength = 0.1f;
 
+
+        [Header("Rope collider")]
+        public CapsuleCollider ropeCollider;
+
+
         [Header("Debug")]
         public float ActualDistance;
 
@@ -65,7 +70,6 @@ namespace Rope
         void Awake()
         {
             if (loadBody == null) loadBody = new MixedBody(LoadAB, LoadRB);
-            
         }
 
         void Update()
@@ -80,12 +84,20 @@ namespace Rope
         }
 
         void FixedUpdate()
-        {   
+        {
             if (!setup) return;
+
+            // update rope collider to match rope shape
+            var midPoint = (transform.position + loadBody.position) / 2;
+            ropeCollider.transform.position = midPoint;
+            var toLoad = loadBody.position - transform.position;
+            if (toLoad.magnitude < 0.01f) toLoad = transform.up * 0.01f;
+            ropeCollider.transform.rotation = Quaternion.LookRotation(toLoad.normalized, transform.forward);
+            ropeCollider.height = toLoad.magnitude;
 
             // simple speed control
             var lenDiff = TargetLength - CurrentLength;
-            if(Mathf.Abs(lenDiff) > 0.025)
+            if (Mathf.Abs(lenDiff) > 0.025)
             {
                 CurrentRopeSpeed = lenDiff > 0 ? WinchSpeed : -WinchSpeed;
             }
@@ -97,12 +109,14 @@ namespace Rope
 
             CurrentLength += CurrentRopeSpeed * Time.fixedDeltaTime;
             CurrentLength = Mathf.Clamp(CurrentLength, MinLength, RopeLength);
-            if(CurrentLength == MinLength || CurrentLength == RopeLength)
+            if (CurrentLength == MinLength || CurrentLength == RopeLength)
             {
                 CurrentRopeSpeed = 0;
                 return;
             }
             ropeJoint.maxDistance = CurrentLength;
+
+            
         }
 
     }

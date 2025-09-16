@@ -486,7 +486,7 @@ GameObject:
   - component: {fileID: 1080205937504706963}
   - component: {fileID: 2453692462447050752}
   - component: {fileID: 3607058454141938631}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: RopeLink
   m_TagString: rope
   m_Icon: {fileID: 0}
