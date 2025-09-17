@@ -36,16 +36,16 @@ namespace M350.PSDK_ROS2
             }
             if(controller != null){
                 time_since_joy = (float)Clock.time - msg.header.stamp.sec - msg.header.stamp.nanosec / Mathf.Pow(10f,9f);
-                controller.controllerType = (ControllerType)1; //Position Control
+                controller.ControllerType = (ControllerType)1; //Position Control
                 if(time_since_joy  < joy_timeout){
-                    controller.commandPositionENU.x = msg.axes[0];
-                    controller.commandPositionENU.y = msg.axes[1];
-                    controller.commandPositionENU.z = msg.axes[2];
+                    controller.CommandPositionENU.x = msg.axes[0];
+                    controller.CommandPositionENU.y = msg.axes[1];
+                    controller.CommandPositionENU.z = msg.axes[2];
                 }
                 else{
-                    controller.commandPositionENU.x = 0;
-                    controller.commandPositionENU.y = 0;
-                    controller.commandVelocityFLU.z = 0;
+                    controller.CommandPositionENU.x = 0;
+                    controller.CommandPositionENU.y = 0;
+                    controller.CommandVelocityFLU.z = 0;
                 }
             }
             

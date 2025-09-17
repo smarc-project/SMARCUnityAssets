@@ -6,8 +6,9 @@ using ROS.Core;
 
 namespace M350.PSDK_ROS2
 {
-    public class PsdkTakeControlService : ROSBehaviour
+    public class PsdkReleaseControlService : ROSBehaviour
     {
+
         bool registered = false;
         DJIController controller = null;
 
@@ -31,7 +32,8 @@ namespace M350.PSDK_ROS2
                 controller = GetComponentInParent<DJIController>();
             }
             if(controller != null){
-                controller.controllerType = ControllerType.FLU_Velocity;
+                controller.TargetAlt = controller.Position.y;
+                controller.ControllerType = ControllerType.FLU_Attitude;
                 response.success = true;
                 return response;
             }

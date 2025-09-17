@@ -33,8 +33,9 @@ namespace VehicleComponents.Actuators
             return (1 - (mixedBody.jointPosition[0] - _minimumPos) / (_maximumPos - _minimumPos)) * 100;
         }
 
-        public void FixedUpdate()
+        new public void FixedUpdate()
         {
+            base.FixedUpdate();
             if (Physics.simulationMode == SimulationMode.FixedUpdate) DoUpdate();
         }
 

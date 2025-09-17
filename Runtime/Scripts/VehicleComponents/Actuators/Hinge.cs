@@ -21,8 +21,9 @@ namespace VehicleComponents.Actuators
             angle = Mathf.Clamp(a, -AngleMax, AngleMax);
         }
 
-        void FixedUpdate()
+        new void FixedUpdate()
         {
+            base.FixedUpdate();
             if (Physics.simulationMode == SimulationMode.FixedUpdate) DoUpdate();
         }
 
