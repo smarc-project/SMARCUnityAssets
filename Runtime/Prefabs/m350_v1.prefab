@@ -344,8 +344,8 @@ MonoBehaviour:
   CommandYaw: 0
   TargetAlt: 0
   BaseRPM: 3000
-  TakeOffAltitude: 5
-  TakeOffError: 0.1
+  TakeOffAltitude: 8
+  TakeOffError: 0.3
   LandingError: 0.3
   log_data: 0
   data_path: c:\School\UnityLogger.csv
@@ -7174,7 +7174,7 @@ PrefabInstance:
     - target: {fileID: 3658882480078120043, guid: 246faa4526e9e158389691a72feb5596,
         type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0
+      value: -1
       objectReference: {fileID: 0}
     - target: {fileID: 3658882480078120043, guid: 246faa4526e9e158389691a72feb5596,
         type: 3}
@@ -7184,12 +7184,12 @@ PrefabInstance:
     - target: {fileID: 3658882480078120043, guid: 246faa4526e9e158389691a72feb5596,
         type: 3}
       propertyPath: m_LocalRotation.y
-      value: 1
+      value: -0.00000008742278
       objectReference: {fileID: 0}
     - target: {fileID: 3658882480078120043, guid: 246faa4526e9e158389691a72feb5596,
         type: 3}
       propertyPath: m_LocalRotation.z
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 3658882480078120043, guid: 246faa4526e9e158389691a72feb5596,
         type: 3}
