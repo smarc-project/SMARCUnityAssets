@@ -138,6 +138,7 @@ namespace Rope
                 RopeContainer.transform.SetParent(gameObject.transform);
                 RopeContainer.transform.SetPositionAndRotation(VehicleRopeLink.transform.position, VehicleRopeLink.transform.rotation);
                 var ropetf = RopeContainer.AddComponent<ROSTransformTreePublisher>();
+                ropetf.NotARobot = true;
                 ropetf.SetBaseLinkName(RopeContainer.name);
             }
 

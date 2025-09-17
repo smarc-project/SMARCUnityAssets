@@ -6,6 +6,7 @@ using Unity.Robotics.Core;
 using Unity.Robotics.ROSTCPConnector.ROSGeometry;
 using UnityEngine;
 using ROS.Core;
+using Unity.Robotics.UrdfImporter;
 
 namespace ROS.Publishers
 {
@@ -41,11 +42,31 @@ namespace ROS.Publishers
         protected override void InitPublisher()
         {
             // we need map(ENU) -> odom(ENU) -> base_link(ENU) -> children(FLU)
-            if (!GetRobotGO(out OdomLinkGO)) return;
+            // if this is not a robot, or doesnt have a base_link, we assume _this object_
+            // will work as whatever is missing...
+            if (!GetRobotGO(out OdomLinkGO))
+            {
+                OdomLinkGO = transform.gameObject;
+            }
             if (GetBaseLink(out var baseLink))
             {
                 BaseLinkGO = baseLink.gameObject;
                 BaseLinkTreeNode = new TransformTreeNode(BaseLinkGO);
+            }
+            else
+            {
+                BaseLinkTreeNode = new TransformTreeNode(transform.gameObject);
+            }
+
+            // use top-level parent as the namespace for this tf tree if there is no robot name
+            if (robot_name == "")
+            {
+                Transform topParent = transform;
+                while (topParent.parent != null)
+                {
+                    topParent = topParent.parent;
+                }
+                robot_name = topParent.name;
             }
         }
 

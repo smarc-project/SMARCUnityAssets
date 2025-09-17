@@ -314,6 +314,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3658882480078120043}
   - component: {fileID: 3161027279317484706}
+  - component: {fileID: 5343509340713798613}
   m_Layer: 0
   m_Name: WinchSystem
   m_TagString: Untagged
@@ -360,6 +361,21 @@ MonoBehaviour:
   RopeLength: 5
   RopeDiameter: 0.05
   WinchRopeMaterial: {fileID: 2100000, guid: fdeaac0b8e5cf5e48a84b4f3e7d445a0, type: 2}
+--- !u!114 &5343509340713798613
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4039007730990099910}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 78564e3e0c2d8c65cb6601a38bee530d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  topic: /tf
+  NotARobot: 1
+  frequency: 10
 --- !u!1 &6040559385985837056
 GameObject:
   m_ObjectHideFlags: 0
@@ -373,6 +389,7 @@ GameObject:
   - component: {fileID: 4757268333841122710}
   - component: {fileID: 2855852348665451609}
   - component: {fileID: 890438897861535675}
+  - component: {fileID: 2391208386052598644}
   m_Layer: 7
   m_Name: Hook
   m_TagString: Untagged
@@ -445,7 +462,7 @@ Rigidbody:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6040559385985837056}
   serializedVersion: 4
-  m_Mass: 0.1
+  m_Mass: 0.5
   m_Drag: 0.3
   m_AngularDrag: 0.1
   m_CenterOfMass: {x: 0, y: 0, z: 0}
@@ -485,8 +502,8 @@ MonoBehaviour:
   WaterDensity: 997
   DepthBeforeSubmerged: 0.03
   MaxBuoyancyForce: 1000
-  UnderwaterDrag: 10
-  UnderwaterAngularDrag: 5
+  UnderwaterDrag: 2
+  UnderwaterAngularDrag: 0.5
   AirDrag: -1
   AirAngularDrag: -1
   IsUnderwater: 0
@@ -500,6 +517,19 @@ MonoBehaviour:
   AppliedGravityForce: {x: 0, y: 0, z: 0}
   ApplyCustomForce: 0
   CustomForce: {x: 0, y: 0, z: 0}
+--- !u!114 &2391208386052598644
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6040559385985837056}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fba5fd74d37a6cf4284698624eb8f6aa, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  IsBaseLink: 0
 --- !u!1 &6520412845958948343
 GameObject:
   m_ObjectHideFlags: 0
