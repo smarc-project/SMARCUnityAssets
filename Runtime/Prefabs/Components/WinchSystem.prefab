@@ -335,8 +335,7 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 3715248501297074839}
+  m_Children: []
   m_Father: {fileID: 3658882480078120043}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &7404726597310584848
@@ -356,7 +355,7 @@ MonoBehaviour:
   SetupOnStart: 0
   LoadAB: {fileID: 0}
   LoadRB: {fileID: 2855852348665451609}
-  RopeMaterial: {fileID: 2100000, guid: 26bbab7733c52ba43accdcce9c5853b3, type: 2}
+  RopeMaterial: {fileID: 2100000, guid: fdeaac0b8e5cf5e48a84b4f3e7d445a0, type: 2}
   TargetLength: 0.1
   WinchSpeed: 0.5
   CurrentRopeSpeed: 0.5
@@ -400,7 +399,7 @@ Rigidbody:
   m_ExcludeLayers:
     serializedVersion: 2
     m_Bits: 0
-  m_ImplicitCom: 1
+  m_ImplicitCom: 0
   m_ImplicitTensor: 0
   m_UseGravity: 0
   m_IsKinematic: 0
@@ -453,6 +452,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 5399844534318492535}
+  - {fileID: 3715248501297074839}
   - {fileID: 985426665093502865}
   - {fileID: 920350988464342731}
   m_Father: {fileID: 0}
@@ -478,7 +478,8 @@ MonoBehaviour:
   AttachmentRB: {fileID: 0}
   RopeLength: 5
   RopeDiameter: 0.05
-  RopeMaterial: {fileID: 2100000, guid: 26bbab7733c52ba43accdcce9c5853b3, type: 2}
+  WinchRopeMaterial: {fileID: 2100000, guid: fdeaac0b8e5cf5e48a84b4f3e7d445a0, type: 2}
+  PulleyRopeMaterial: {fileID: 2100000, guid: 26bbab7733c52ba43accdcce9c5853b3, type: 2}
 --- !u!1 &6040559385985837056
 GameObject:
   m_ObjectHideFlags: 0
@@ -865,7 +866,7 @@ GameObject:
   - component: {fileID: 3715248501297074839}
   - component: {fileID: 3202806141719433272}
   m_Layer: 7
-  m_Name: RopeCollider
+  m_Name: WinchHookRopeCollider
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -879,12 +880,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 9178390447606224746}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 5399844534318492535}
+  m_Father: {fileID: 3658882480078120043}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!136 &3202806141719433272
 CapsuleCollider:
@@ -899,7 +900,7 @@ CapsuleCollider:
     m_Bits: 0
   m_ExcludeLayers:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 1
   m_LayerOverridePriority: 0
   m_IsTrigger: 0
   m_ProvidesContacts: 0
@@ -971,7 +972,7 @@ PrefabInstance:
         type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
-      objectReference: {fileID: 2100000, guid: 26bbab7733c52ba43accdcce9c5853b3, type: 2}
+      objectReference: {fileID: 2100000, guid: fdeaac0b8e5cf5e48a84b4f3e7d445a0, type: 2}
     - target: {fileID: 919132149155446097, guid: 698bd83fc3f1e3f45b42ee20bd102060,
         type: 3}
       propertyPath: m_Name

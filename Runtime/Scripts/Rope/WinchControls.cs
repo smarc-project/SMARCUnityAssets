@@ -26,7 +26,9 @@ namespace Rope
         [Header("Rope properties")]
         public float RopeLength;
         public float RopeDiameter;
-        public Material RopeMaterial;
+        public Material WinchRopeMaterial;
+        public Material PulleyRopeMaterial;
+
 
 
         void Start()
@@ -71,8 +73,8 @@ namespace Rope
 
             winch.RopeDiameter = RopeDiameter;
             winch.RopeLength = RopeLength;
-            winch.RopeMaterial = RopeMaterial;
-            pulley.RopeMaterial = RopeMaterial;
+            winch.RopeMaterial = WinchRopeMaterial;
+            pulley.RopeMaterial = PulleyRopeMaterial;
             
             winch.Setup();
         }
