@@ -1,122 +1,5 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &754093669834084086
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 920350988464342731}
-  - component: {fileID: 4065076637292215025}
-  - component: {fileID: 4214407722293813177}
-  - component: {fileID: 2883172632654091541}
-  - component: {fileID: 7257790124343635275}
-  m_Layer: 0
-  m_Name: PulleyToLoads
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &920350988464342731
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 754093669834084086}
-  serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: -0.081, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 3658882480078120043}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &4065076637292215025
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 754093669834084086}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3fb4341d983e36f679c2423be66aa746, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  RopeDiameter: 0.1
-  RopeLength: 3
-  SetupOnStart: 0
-  LoadOneAB: {fileID: 0}
-  LoadOneRB: {fileID: 0}
-  LoadTwoAB: {fileID: 0}
-  LoadTwoRB: {fileID: 0}
-  RopeMaterial: {fileID: 2100000, guid: 26bbab7733c52ba43accdcce9c5853b3, type: 2}
-  limitOne: 1.0319612
-  limitTwo: 1.0804071
-  limitSum: 0
-  ropeSpeed: 0
---- !u!54 &4214407722293813177
-Rigidbody:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 754093669834084086}
-  serializedVersion: 4
-  m_Mass: 0.1
-  m_Drag: 0.36
-  m_AngularDrag: 0.37
-  m_CenterOfMass: {x: 0, y: 0, z: 0}
-  m_InertiaTensor: {x: 0.000001, y: 0.000001, z: 0.000001}
-  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ImplicitCom: 1
-  m_ImplicitTensor: 1
-  m_UseGravity: 0
-  m_IsKinematic: 0
-  m_Interpolate: 0
-  m_Constraints: 0
-  m_CollisionDetection: 0
---- !u!138 &2883172632654091541
-FixedJoint:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 754093669834084086}
-  serializedVersion: 1
-  m_ConnectedBody: {fileID: 2855852348665451609}
-  m_ConnectedArticulationBody: {fileID: 0}
-  m_BreakForce: Infinity
-  m_BreakTorque: Infinity
-  m_EnableCollision: 0
-  m_EnablePreprocessing: 0
-  m_MassScale: 1
-  m_ConnectedMassScale: 1
---- !u!114 &7257790124343635275
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 754093669834084086}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c45d08c9307ff52ef83b1dd1ccdde076, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  gizmoType: 0
-  radius: 0.02
-  color: {r: 0, g: 0.98625064, b: 1, a: 0.49019608}
 --- !u!1 &1555022314426872372
 GameObject:
   m_ObjectHideFlags: 0
@@ -128,7 +11,7 @@ GameObject:
   - component: {fileID: 6145984872375589815}
   - component: {fileID: 692992348655401547}
   - component: {fileID: 1695187272812736563}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Out (2)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -144,8 +27,8 @@ Transform:
   m_GameObject: {fileID: 1555022314426872372}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: -1, z: 0, w: 0}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalPosition: {x: 0, y: 0.1006999, z: 0}
+  m_LocalScale: {x: 1.1044339, y: 3.0879, z: 3.3831294}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 3056534817258184817}
@@ -163,7 +46,7 @@ BoxCollider:
     m_Bits: 0
   m_ExcludeLayers:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 129
   m_LayerOverridePriority: 0
   m_IsTrigger: 0
   m_ProvidesContacts: 0
@@ -203,7 +86,7 @@ GameObject:
   - component: {fileID: 1696552997343839088}
   - component: {fileID: 6779571731019928884}
   - component: {fileID: 1842120375294853305}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Out (3)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -219,8 +102,8 @@ Transform:
   m_GameObject: {fileID: 1586018291147808959}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0.7071068, z: 0, w: 0.7071068}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalPosition: {x: 0, y: 0.1006999, z: 0}
+  m_LocalScale: {x: 1.2752368, y: 3.0879, z: 2.9314768}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 3056534817258184817}
@@ -238,7 +121,7 @@ BoxCollider:
     m_Bits: 0
   m_ExcludeLayers:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 129
   m_LayerOverridePriority: 0
   m_IsTrigger: 0
   m_ProvidesContacts: 0
@@ -276,7 +159,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3056534817258184817}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Collisions
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -454,7 +337,6 @@ Transform:
   - {fileID: 5399844534318492535}
   - {fileID: 3715248501297074839}
   - {fileID: 985426665093502865}
-  - {fileID: 920350988464342731}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &3161027279317484706
@@ -473,13 +355,11 @@ MonoBehaviour:
   WinchSpeed: 0.5
   WinchGO: {fileID: 3506910256720658690}
   HookGO: {fileID: 6040559385985837056}
-  PulleyGO: {fileID: 754093669834084086}
   AttachmentAB: {fileID: 0}
   AttachmentRB: {fileID: 0}
   RopeLength: 5
   RopeDiameter: 0.05
   WinchRopeMaterial: {fileID: 2100000, guid: fdeaac0b8e5cf5e48a84b4f3e7d445a0, type: 2}
-  PulleyRopeMaterial: {fileID: 2100000, guid: 26bbab7733c52ba43accdcce9c5853b3, type: 2}
 --- !u!1 &6040559385985837056
 GameObject:
   m_ObjectHideFlags: 0
@@ -493,7 +373,7 @@ GameObject:
   - component: {fileID: 4757268333841122710}
   - component: {fileID: 2855852348665451609}
   - component: {fileID: 890438897861535675}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Hook
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -530,7 +410,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   WinchGO: {fileID: 3506910256720658690}
-  PulleyGO: {fileID: 754093669834084086}
+  PulleyGO: {fileID: 0}
   DrawForces: 1
   AttachToRopeLinkAfterStart: 0
   RopeLinkBuoy: {fileID: 0}
@@ -631,7 +511,7 @@ GameObject:
   - component: {fileID: 8173437704793006193}
   - component: {fileID: 1761434884875741205}
   - component: {fileID: 6998068293291212147}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Out (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -647,8 +527,8 @@ Transform:
   m_GameObject: {fileID: 6520412845958948343}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: -0.7071068, z: 0, w: 0.7071068}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalPosition: {x: 0, y: 0.1006999, z: 0}
+  m_LocalScale: {x: 1.5585401, y: 3.0879, z: 2.9314768}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 3056534817258184817}
@@ -666,7 +546,7 @@ BoxCollider:
     m_Bits: 0
   m_ExcludeLayers:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 129
   m_LayerOverridePriority: 0
   m_IsTrigger: 0
   m_ProvidesContacts: 0
@@ -706,7 +586,7 @@ GameObject:
   - component: {fileID: 9102791800429857109}
   - component: {fileID: 5839214145863671964}
   - component: {fileID: 1511306327679903069}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Out
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -722,8 +602,8 @@ Transform:
   m_GameObject: {fileID: 7762337256481731829}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalPosition: {x: 0, y: 0.1007, z: 0}
+  m_LocalScale: {x: 1.4862881, y: 3.0879, z: 3.3831294}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 3056534817258184817}
@@ -741,7 +621,7 @@ BoxCollider:
     m_Bits: 0
   m_ExcludeLayers:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 129
   m_LayerOverridePriority: 0
   m_IsTrigger: 0
   m_ProvidesContacts: 0
@@ -779,7 +659,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7934755587580752428}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Visuals
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -812,7 +692,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1245290814453178198}
   - component: {fileID: 3356265064436019195}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Column
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -847,7 +727,7 @@ BoxCollider:
     m_Bits: 0
   m_ExcludeLayers:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 129
   m_LayerOverridePriority: 0
   m_IsTrigger: 0
   m_ProvidesContacts: 0
@@ -866,7 +746,7 @@ GameObject:
   - component: {fileID: 3715248501297074839}
   - component: {fileID: 3202806141719433272}
   m_Layer: 7
-  m_Name: WinchHookRopeCollider
+  m_Name: RopeCollider
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -900,7 +780,7 @@ CapsuleCollider:
     m_Bits: 0
   m_ExcludeLayers:
     serializedVersion: 2
-    m_Bits: 1
+    m_Bits: 129
   m_LayerOverridePriority: 0
   m_IsTrigger: 0
   m_ProvidesContacts: 0
@@ -977,6 +857,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: alars_hook
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 698bd83fc3f1e3f45b42ee20bd102060,
+        type: 3}
+      propertyPath: m_Layer
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 8164078558771037576, guid: 698bd83fc3f1e3f45b42ee20bd102060,
+        type: 3}
+      propertyPath: m_Layer
+      value: 7
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

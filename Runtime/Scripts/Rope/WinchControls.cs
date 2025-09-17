@@ -16,8 +16,6 @@ namespace Rope
         FixedJoint winchJointToVehicle;
         public GameObject HookGO;
         RopeHook hook;
-        public GameObject PulleyGO;
-        Pulley pulley;
 
         [Header("Attachment point to vehicle")]
         public ArticulationBody AttachmentAB;
@@ -27,7 +25,6 @@ namespace Rope
         public float RopeLength;
         public float RopeDiameter;
         public Material WinchRopeMaterial;
-        public Material PulleyRopeMaterial;
 
 
 
@@ -39,21 +36,18 @@ namespace Rope
                 gameObject.SetActive(false);
                 WinchGO.SetActive(false);
                 HookGO.SetActive(false);
-                PulleyGO.SetActive(false);
                 return;
             }
 
             if (WinchGO != null) winch = WinchGO.GetComponent<Winch>();
             if (HookGO != null) hook = HookGO.GetComponent<RopeHook>();
-            if (PulleyGO != null) pulley = PulleyGO.GetComponent<Pulley>();
 
-            if (winch == null && hook == null && pulley == null)
+            if (winch == null && hook == null)
             {
-                Debug.LogError("No winch, hook or pulley component found on the assigned game objects. Please assign ALL.");
+                Debug.LogError("No winch or hook component found on the assigned game objects. Please assign ALL.");
                 gameObject.SetActive(false);
                 WinchGO.SetActive(false);
                 HookGO.SetActive(false);
-                PulleyGO.SetActive(false);
                 return;
             }
 
@@ -64,7 +58,6 @@ namespace Rope
                 gameObject.SetActive(false);
                 WinchGO.SetActive(false);
                 HookGO.SetActive(false);
-                PulleyGO.SetActive(false);
                 return;
             }
 
@@ -74,7 +67,6 @@ namespace Rope
             winch.RopeDiameter = RopeDiameter;
             winch.RopeLength = RopeLength;
             winch.RopeMaterial = WinchRopeMaterial;
-            pulley.RopeMaterial = PulleyRopeMaterial;
             
             winch.Setup();
         }

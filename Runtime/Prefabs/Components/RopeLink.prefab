@@ -544,10 +544,10 @@ CapsuleCollider:
   m_Material: {fileID: 13400000, guid: 532fd262430ec4d1b8f47d01daecd2eb, type: 2}
   m_IncludeLayers:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 128
   m_ExcludeLayers:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 4294967295
   m_LayerOverridePriority: 0
   m_IsTrigger: 0
   m_ProvidesContacts: 0
