@@ -155,7 +155,7 @@ namespace dji
             float delta = Time.fixedDeltaTime - 0.002f;
             if (Mathf.Abs(delta) > .0001)
             {
-                if (gameObject.scene.IsValid() && enabled) Debug.LogError("Disabling DJI Controller. Set fixed time step to .002 s for DJI captain to be functional. Currently: " + Time.fixedDeltaTime);
+                if (gameObject.scene.IsValid() && enabled) Debug.LogError("Disabling DJI Controller. Set fixed time step to .002 s (Edit->Project Settings->Time->Fixed Timestep) for DJI captain to be functional. Currently: " + Time.fixedDeltaTime);
                 enabled = false;
             }
         }
