@@ -25,7 +25,7 @@ namespace VehicleComponents.Sensors
             }
         }
 
-        new void Awake()
+        new protected void Awake()
         {
             base.Awake();
             timer = new FrequencyTimer(frequency);
