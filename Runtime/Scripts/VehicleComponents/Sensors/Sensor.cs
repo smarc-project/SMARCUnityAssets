@@ -47,12 +47,7 @@ namespace VehicleComponents.Sensors
         new void FixedUpdate()
         {
             base.FixedUpdate();
-            bool ticked = false;
-            while (timer.NeedsTick(Clock.Now))
-            {
-                timer.Tick();
-                ticked = true;
-            }
+            bool ticked = timer.ExhaustTicks(Clock.Now);
             if (!ticked) return;
             // we dont actually want to do more sensor updates per fixedupdate
             // unlike the ros publisher. since the sensor data would be exactly the same...

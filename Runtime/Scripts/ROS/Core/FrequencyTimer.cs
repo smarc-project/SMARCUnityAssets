@@ -18,12 +18,23 @@ namespace ROS.Core
 
         public bool NeedsTick(double now)
         {
+            if (frequency <= 0) return true;
             return now - lastUpdate >= period;
         }
 
         public void Tick()
         {
+            if (frequency <= 0) return;
             lastUpdate += period;
+        }
+
+        public bool ExhaustTicks(double now)
+        {
+            if (frequency <= 0) return true;
+            var timeToTick = now - lastUpdate;
+            var numTicks = (int)(timeToTick / period);
+            lastUpdate += numTicks * period;
+            return numTicks > 0;
         }
     }
 }

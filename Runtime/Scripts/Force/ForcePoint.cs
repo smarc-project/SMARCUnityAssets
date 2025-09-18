@@ -16,7 +16,7 @@ namespace Force
 
         [Header("Buoyancy")]
         [Tooltip("Because HDRP water level queries are expensive at high frequency, you might want to limit it to something managable. 50 is a good starting point. -1 to query every fixed update.")]
-        public float MaxWaterQueryFrequency = 50f;
+        public float WaterQueryFrequency = -1f;
 
         [Tooltip("GameObject that we will calculate the volume of. Set volume below to 0 to use.")]
         public GameObject VolumeObject;
@@ -135,7 +135,7 @@ namespace Force
             if (VolumeMesh == null && VolumeObject != null) VolumeMesh = VolumeObject.GetComponent<MeshFilter>().mesh;
             if (Volume == 0 && VolumeMesh != null) Volume = MeshVolume.CalculateVolumeOfMesh(VolumeMesh, VolumeObject.transform.lossyScale);
 
-            waterQueryTimer = new FrequencyTimer(MaxWaterQueryFrequency);
+            waterQueryTimer = new FrequencyTimer(WaterQueryFrequency);
         }
 
         void UpdateDepth()
@@ -169,22 +169,15 @@ namespace Force
                 if (DrawForces) Debug.DrawLine(forcePointPosition, forcePointPosition + AppliedGravityForce, Color.red, 0.1f);
             }
 
-
             // Only update water level related stuff at a limited frequency to avoid performance hits
-            bool ticked = false;
-            while (waterQueryTimer.NeedsTick(Clock.Now))
-            {
-                waterQueryTimer.Tick();
-                ticked = true;
-            }
-            if (ticked)
+            if (waterQueryTimer.ExhaustTicks(Clock.Now)) // returns true if any ticks were exhausted or if frequency is <= 0
             {
                 UpdateDepth();
                 // the forces applied need to be scaled up by the ratio of fixedupdate rate to water query rate
                 // since AddForceAtPosition assumes the force is per fixedupdate
                 // otherwise, if the water query rate is lower than fixedupdate rate, the forces will
                 // be under-applied
-                float waterForceScale = 1f/Time.fixedDeltaTime / MaxWaterQueryFrequency;
+                float waterForceScale = WaterQueryFrequency > 0 ? 1f / Time.fixedDeltaTime / WaterQueryFrequency : 1f;
                 if (IsUnderwater)
                 {
                     float displacementMultiplier = Mathf.Clamp01(CurrentDepth / DepthBeforeSubmerged);
